@@ -1,0 +1,106 @@
+#Keycloak/OAuth properties
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: -----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg+GCAhggKE1LtubmVBf6k6DoNdVs011Olytrn94HmeVNGbgVG0YyB9B55+X30hIez+oJMb8gwZ36xgkDjumo7FsU6JhTo01vCUopCbeuZdmY0ZcwtFZ7IIo69KZ5eQBwqW7tdk4WmSCcAcLKuPTMfZv4kpBx55qCzeodX03cfhtZnaVD+f62EVEhPeqj4QiRGRzEDQR7MKK1aAIExQWi7wyMTgP/gEbz/0BieC9lsLcmJkKzyVvsj5AU2wtX/6sxRxr9K4sJ+n3fC3IKmkBvEXYNUhRram5QvhwzF7Q8wzmLdiUrP4Bk953ahCOCFAQgVglGDsqxsrbsMqpC46KjvwIDAQAB -----END PUBLIC KEY-----
+
+#DB Properties
+spring:
+  jmx:
+    enabled: false
+  datasource:
+    hikari:
+      max-lifetime: 600000
+    url: jdbc:oracle:thin:@//oltp-scan01-dt.educ.gov.bc.ca:1521/OLTPD.world
+    username: graduation
+    password: lightb4lb$
+    driver-class: oracle.jdbc.driver.OracleDriver
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    hibernate:
+      ddl-auto: none
+  mvc:
+    log-request-details: false
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+  security:
+    user:
+      name: grad-api-user
+      password: SN9Wj@wY
+
+#Logging properties
+logging:
+  file:
+    max-history: 1
+    clean-history-on-start: true
+    max-size: 20MB
+    name: /logs/app.log
+  #  pattern:
+  #    file: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
+  #    console: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
+  level:
+    ca:
+      bc:
+        gov:
+          educ:
+            api:
+              ruleengine: DEBUG
+    org:
+      springframework:
+        web: INFO
+        security: INFO
+        boot:
+          autoconfigure:
+            logging: INFO
+
+#Edpoint Management properties
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+        #endpoints:
+      #web:
+      #exposure:
+      #include: *
+
+#Local properties
+server:
+  undertow:
+    threads:
+      worker: 128
+      io: 16
+  port: 8003
+
+springdoc:
+  api-docs:
+    path: /api/v1/api-docs
+  swagger-ui:
+    path: /api/v1/api-docs-ui.html
+    operationsSorter: method
+
+#Endpoint properties
+endpoint:
+  grad-student-api:
+    get-student-by-pen:
+      url: https://gradstudent-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1
+    get-all-students:
+      url: https://gradstudent-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/gradstudent
+  student-course-api:
+    get-student-course-by-pen:
+      url: https://student-course-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/studentcourse/pen
+  student-assessment-api:
+    get-student-assessment-by-pen:
+      url: https://student-assessment-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1
+  program-rule:
+    get-program-rules:
+      url: https://program-rule-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/program-rules
