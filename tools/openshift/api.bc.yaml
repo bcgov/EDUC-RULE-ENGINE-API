@@ -2,22 +2,22 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: 'educ-gradstudent-api-template'
+  template: 'educ-ruleengine-api-template'
 metadata:
-  name: 'educ-gradstudent-api-template'
+  name: 'educ-ruleengine-api-template'
 objects:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     labels:
-      build: educ-gradstudent-api-pipeline
-    name: educ-gradstudent-api-pipeline
+      build: educ-ruleengine-api-pipeline
+    name: educ-ruleengine-api-pipeline
     namespace: wbmfsf-tools
   spec:
     source:
       git:
         ref: main
-        uri: 'https://github.com/bcgov/EDUC-GRAD-STUDENT-API'
+        uri: 'https://github.com/bcgov/EDUC-RULE-ENGINE-API'
       type: Git
     strategy:
       jenkinsPipelineStrategy:
