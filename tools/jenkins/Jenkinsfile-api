@@ -38,12 +38,12 @@ pipeline{
       TEST = 'wbmfsf-test'
       PROD = 'wbmfsf-prod'
 
-      REPO_NAME = 'educ-grad-student-api'
+      REPO_NAME = 'educ-rule-engine-api'
       OWNER = 'bcgov'
       JOB_NAME = 'main'
       TAG = 'dev'
 
-      APP_NAME = 'gradstudent-api'
+      APP_NAME = 'rule-engine-api'
       APP_DOMAIN = 'pathfinder.gov.bc.ca'
 
       SOURCE_REPO_RAW = 'https://github.com/${OWNER}/${REPO_NAME}/main'
