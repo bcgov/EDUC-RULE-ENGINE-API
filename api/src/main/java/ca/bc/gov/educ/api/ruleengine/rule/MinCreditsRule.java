@@ -2,6 +2,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.ProgramRule;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,47 +18,40 @@ public class MinCreditsRule implements Rule {
     private static Logger logger = LoggerFactory.getLogger(MinCreditsRule.class);
 
     @Autowired
-    private ProgramRule programRule;
+    private MinCreditRuleData minCreditRuleData;
 
-    public boolean fire(ProgramRule programRule) {
+    public boolean fire(MinCreditRuleData minCreditRuleData) {
         int totalCredits;
-        int requiredCredits = Integer.parseInt(programRule.getRequiredCredits().trim());
+        int requiredCredits = Integer.parseInt(minCreditRuleData.getProgramRule().getRequiredCredits().trim());
+        StudentCourses studentCourses = minCreditRuleData.getStudentCourses();
+        ProgramRule programRule = minCreditRuleData.getProgramRule();
 
-        /*
-        List<AchievementDto> achievements = (List<AchievementDto>)parameters;
-
-        if (achievements == null || achievements.size() == 0)
+        if (studentCourses == null || studentCourses.getStudentCourseList() == null
+                || studentCourses.getStudentCourseList().size() == 0)
             return false;
 
-        if (programRule.getRequiredLevel() == 0) {
-            totalCredits = achievements
+        if (programRule.getRequiredLevel().trim().compareTo("") == 0) {
+            totalCredits = studentCourses.getStudentCourseList()
                     .stream()
-                    .filter(achievement -> !achievement.isDuplicate()
-                            && !achievement.isFailed()
+                    .filter(studentCourse -> !studentCourse.isDuplicate()
+                            && !studentCourse.isFailed()
                     )
-                    .mapToInt(achievement -> achievement.getCredits())
+                    .mapToInt(studentCourse -> studentCourse.getCredits())
                     .sum();
         }
         else {
-            totalCredits = achievements
+            totalCredits = studentCourses.getStudentCourseList()
                     .stream()
-                    .filter(achievement -> !achievement.isDuplicate()
-                            && !achievement.isFailed()
-                            && achievement.getCourse().getCourseGradeLevel().startsWith(programRule.getRequiredLevel() + "")
+                    .filter(studentCourse -> !studentCourse.isDuplicate()
+                            && !studentCourse.isFailed()
+                            && studentCourse.getCourseLevel().startsWith(programRule.getRequiredLevel() + "")
                             )
-                    .mapToInt(achievement -> achievement.getCredits())
+                    .mapToInt(studentCourse -> studentCourse.getCredits())
                     .sum();
         }
 
         logger.debug("Min Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
         return totalCredits >= requiredCredits;
-
-         */
-        return false;
-    }
-
-    public boolean fire(MinCreditRuleData data) {
-        return false;
     }
 
     @Override

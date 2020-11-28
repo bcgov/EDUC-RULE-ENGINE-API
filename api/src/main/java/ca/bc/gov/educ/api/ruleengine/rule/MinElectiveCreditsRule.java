@@ -1,5 +1,9 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.MinElectiveCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.ProgramRule;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,42 +16,45 @@ public class MinElectiveCreditsRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MinElectiveCreditsRule.class);
 
-    //@Autowired
-    //private ProgramRule programRule;
+    @Autowired
+    private MinElectiveCreditRuleData minElectiveCreditRuleData;
 
-    public <T> boolean fire(T parameters) {
-        int totalCredits = 0;
-        //int requiredCredits = programRule.getRequiredCredits();
+    public boolean fire(MinElectiveCreditRuleData minElectiveCreditRuleData) {
+        int totalCredits;
+        int requiredCredits = Integer.parseInt(minElectiveCreditRuleData.getProgramRule().getRequiredCredits().trim());
+        StudentCourses studentCourses = minElectiveCreditRuleData.getStudentCourses();
+        ProgramRule programRule = minElectiveCreditRuleData.getProgramRule();
 
-        /*List<AchievementDto> achievements = (List<AchievementDto>)parameters;
-
-        if (achievements == null || achievements.size() == 0)
+        if (studentCourses == null || studentCourses.getStudentCourseList() == null
+                || studentCourses.getStudentCourseList().size() == 0)
             return false;
 
-        if (programRule.getRequiredLevel() == 0) {
-            totalCredits = achievements
+        if (programRule.getRequiredLevel().trim().compareTo("") == 0) {
+            totalCredits = studentCourses.getStudentCourseList()
                     .stream()
-                    .filter(achievement -> !achievement.isDuplicate()
-                            && !achievement.isFailed()
+                    .filter(studentCourse -> !studentCourse.isDuplicate()
+                            && !studentCourse.isFailed()
                     )
-                    .mapToInt(achievement -> achievement.getCredits())
+                    .mapToInt(studentCourse -> studentCourse.getCredits())
                     .sum();
         }
         else {
-            totalCredits = achievements
+            totalCredits = studentCourses.getStudentCourseList()
                     .stream()
-                    .filter(achievement -> !achievement.isDuplicate()
-                            && !achievement.isFailed()
-                            && achievement.getCourse().getCourseGradeLevel().startsWith(programRule.getRequiredLevel() + "")
-                            )
-                    .mapToInt(achievement -> achievement.getCredits())
+                    .filter(studentCourse -> !studentCourse.isDuplicate()
+                            && !studentCourse.isFailed()
+                            && studentCourse.getCourseLevel().startsWith(programRule.getRequiredLevel() + "")
+                    )
+                    .mapToInt(studentCourse -> studentCourse.getCredits())
                     .sum();
         }
 
-        logger.debug("Min Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
+        logger.debug("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
         return totalCredits >= requiredCredits;
+    }
 
-         */
+    @Override
+    public <T> boolean fire(T parameters) {
         return false;
     }
 }
