@@ -1,17 +1,30 @@
 package ca.bc.gov.educ.api.ruleengine.controller;
 
-import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
-import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
+import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
+import ca.bc.gov.educ.api.ruleengine.util.PermissionsContants;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin
 @RestController
 @RequestMapping (RuleEngineApiConstants.RULE_ENGINE_API_ROOT_MAPPING)
+@EnableResourceServer
+@OpenAPIDefinition(info = @Info(title = "API for Rule Engine.", description = "This API is for Rule Engine.", version = "1"), security = {@SecurityRequirement(name = "OAUTH2", scopes = {"RUN_RULE_ENGINE"})})
 public class RuleEngineController {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleEngineController.class);
@@ -23,36 +36,42 @@ public class RuleEngineController {
     MinCreditRuleData minCreditRuleData;
 
     @PostMapping ("/find-not-completed")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public StudentCourses findNotCompletedCourses(@RequestBody StudentCourses studentCourses) {
         logger.debug("**** Mark NOT COMPLETED");
         return ruleEngineService.findAllIncompleteCourses(studentCourses);
     }
 
     @PostMapping ("/find-failed")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public StudentCourses findFailedCourses(@RequestBody StudentCourses studentCourses) {
         logger.debug("**** Mark FAILED");
         return ruleEngineService.findAllFailedCourses(studentCourses);
     }
 
     @PostMapping ("/find-duplicates")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public StudentCourses findDuplicateCourses(@RequestBody StudentCourses studentCourses) {
         logger.debug("**** Mark DUPLICATES");
         return ruleEngineService.findAllDuplicateCourses(studentCourses);
     }
 
     @PostMapping ("/run-mincredits")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public boolean runMinCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
         logger.debug("**** Running MinCreditsRule");
         return ruleEngineService.runMinCreditsRule(minCreditRuleData);
     }
 
     @PostMapping ("/run-matchcredits")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public boolean runMatchCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
         logger.debug("**** Running runMatchCreditsRule");
         return ruleEngineService.runMatchCreditsRule(minCreditRuleData);
     }
 
     @PostMapping ("/run-minelectivecredits")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public boolean runMinElectiveCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
         logger.debug("**** Running runMinElectiveCreditsRule");
         return ruleEngineService.runMinElectiveCreditsRule(minCreditRuleData);

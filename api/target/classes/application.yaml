@@ -3,7 +3,7 @@ security:
   oauth2:
     resource:
       jwt:
-        key-value: -----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg+GCAhggKE1LtubmVBf6k6DoNdVs011Olytrn94HmeVNGbgVG0YyB9B55+X30hIez+oJMb8gwZ36xgkDjumo7FsU6JhTo01vCUopCbeuZdmY0ZcwtFZ7IIo69KZ5eQBwqW7tdk4WmSCcAcLKuPTMfZv4kpBx55qCzeodX03cfhtZnaVD+f62EVEhPeqj4QiRGRzEDQR7MKK1aAIExQWi7wyMTgP/gEbz/0BieC9lsLcmJkKzyVvsj5AU2wtX/6sxRxr9K4sJ+n3fC3IKmkBvEXYNUhRram5QvhwzF7Q8wzmLdiUrP4Bk953ahCOCFAQgVglGDsqxsrbsMqpC46KjvwIDAQAB -----END PUBLIC KEY-----
+        key-value: ${KEYCLOAK_PUBLIC_KEY}
 
 #DB Properties
 spring:
@@ -11,10 +11,13 @@ spring:
     enabled: false
   datasource:
     hikari:
-      max-lifetime: 600000
-    url: jdbc:oracle:thin:@//oltp-scan01-dt.educ.gov.bc.ca:1521/OLTPD.world
-    username: graduation
-    password: lightb4lb$
+      pool-name: gradstudent-api-cp
+      maximum-pool-size: ${MAX_POOL_SIZE}
+      connection-timeout: ${CONNECTION_TIMEOUT}
+      max-lifetime: ${MAX_LIFETIME}
+    url: ${JDBC_URL}
+    username: ${ORACLE_USERNAME}
+    password: ${ORACLE_PASSWORD}
     driver-class: oracle.jdbc.driver.OracleDriver
   jpa:
     show-sql: true
@@ -22,15 +25,14 @@ spring:
     hibernate:
       ddl-auto: none
   mvc:
-    log-request-details: false
+    log-request-details: ${SPRING_SHOW_REQUEST_DETAILS}
   jackson:
     deserialization:
       fail-on-unknown-properties: true
-
   security:
     user:
-      name: grad-api-user
-      password: SN9Wj@wY
+      name: ${API_USERNAME}
+      password: ${API_PASSWORD}
 
 #Logging properties
 logging:
@@ -39,39 +41,23 @@ logging:
     clean-history-on-start: true
     max-size: 20MB
     name: /logs/app.log
-  #  pattern:
-  #    file: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
-  #    console: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
+  #pattern:
+  #  file: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
+  #  console: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
   level:
     ca:
       bc:
         gov:
           educ:
             api:
-              ruleengine: DEBUG
+              gradstudent: ${APP_LOG_LEVEL}
     org:
       springframework:
-        web: INFO
-        security: INFO
+        web: ${SPRING_WEB_LOG_LEVEL}
+        security: ${SPRING_SECURITY_LOG_LEVEL}
         boot:
           autoconfigure:
-            logging: INFO
-
-#Edpoint Management properties
-management:
-  metrics:
-    export:
-      prometheus:
-        enabled: true
-  endpoint:
-    prometheus:
-      enabled: true
-    metrics:
-      enabled: true
-        #endpoints:
-      #web:
-      #exposure:
-      #include: *
+            logging: ${SPRING_BOOT_AUTOCONFIG_LOG_LEVEL}
 
 #Local properties
 server:
@@ -79,8 +65,9 @@ server:
     threads:
       worker: 128
       io: 16
-  port: 8003
+  #port: ${HTTP_PORT}
 
+#API Documentation
 springdoc:
   api-docs:
     path: /api/v1/api-docs
@@ -101,6 +88,17 @@ endpoint:
   student-assessment-api:
     get-student-assessment-by-pen:
       url: https://student-assessment-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1
-  program-rule:
-    get-program-rules:
-      url: https://program-rule-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/program-rules
+  school-api:
+    school-by-min-code:
+      url: https://educ-grad-school-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/school/%s
+  code-api:
+    country:
+      country-by-country-code:
+        url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/country/%s
+      all-countries:
+        url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/country
+    province:
+      province-by-prov-code:
+        url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/province/%s
+      all-provinces:
+        url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/province
