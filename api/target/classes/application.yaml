@@ -1,0 +1,107 @@
+#Keycloak/OAuth properties
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: ${KEYCLOAK_PUBLIC_KEY}
+
+#DB Properties
+spring:
+  jmx:
+    enabled: false
+  datasource:
+    hikari:
+      pool-name: ruleengine-api-cp
+      maximum-pool-size: ${MAXIMUM_POOL_SIZE}
+      connection-timeout: ${CONNECTION_TIMEOUT}
+      max-lifetime: ${MAX_LIFETIME}
+    url: ${JDBC_URL}
+    username: ${ORACLE_USERNAME}
+    password: ${ORACLE_PASSWORD}
+    driver-class: oracle.jdbc.driver.OracleDriver
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    hibernate:
+      ddl-auto: none
+  mvc:
+    log-request-details: ${SPRING_SHOW_REQUEST_DETAILS}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  security:
+    user:
+      name: ${API_USERNAME}
+      password: ${API_PASSWORD}
+
+#Logging properties
+logging:
+  file:
+    max-history: 1
+    clean-history-on-start: true
+    max-size: 20MB
+    name: /logs/app.log
+  #pattern:
+  #  file: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
+  #  console: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
+  level:
+    ca:
+      bc:
+        gov:
+          educ:
+            api:
+              ruleengine: ${APP_LOG_LEVEL}
+    org:
+      springframework:
+        web: ${SPRING_WEB_LOG_LEVEL}
+        security: ${SPRING_SECURITY_LOG_LEVEL}
+        boot:
+          autoconfigure:
+            logging: ${SPRING_BOOT_AUTOCONFIG_LOG_LEVEL}
+
+#Local properties
+server:
+  undertow:
+    threads:
+      worker: 128
+      io: 16
+  #port: ${HTTP_PORT}
+
+#API Documentation
+springdoc:
+  api-docs:
+    path: /api/v1/api-docs
+  swagger-ui:
+    path: /api/v1/api-docs-ui.html
+    operationsSorter: method
+
+#Endpoint properties
+endpoint:
+  grad-student-api:
+    get-student-by-pen:
+      url: https://gradstudent-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1
+    get-all-students:
+      url: https://gradstudent-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/gradstudent
+  student-course-api:
+    get-student-course-by-pen:
+      url: https://student-course-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/studentcourse/pen
+  student-assessment-api:
+    get-student-assessment-by-pen:
+      url: https://student-assessment-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1
+  school-api:
+    school-by-min-code:
+      url: https://educ-grad-school-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/school/%s
+  code-api:
+    country:
+      country-by-country-code:
+        url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/country/%s
+      all-countries:
+        url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/country
+    province:
+      province-by-prov-code:
+        url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/province/%s
+      all-provinces:
+        url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/province
+  program-rule:
+    get-program-rules:
+      url: https://program-rule-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/program-rules
