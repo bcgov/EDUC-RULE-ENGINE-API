@@ -1,26 +1,24 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Component
-public class RuleEngine<T> {
+public class  RuleEngine {
 
-    private List<Rule> rules;
-    private T parameters;
+    private static Logger logger = LoggerFactory.getLogger(RuleEngine.class);
+
+    private List<Rule> rules = new ArrayList<Rule>();
 
     public RuleEngine() {}
-
-    public RuleEngine(Rule rule) {
-        rules.add(rule);
-    }
-
-    public RuleEngine(List<Rule> rules) {
-        this.setRules(rules);
-    }
 
     public void addRule(Rule rule) {
         rules.add(rule);
@@ -30,16 +28,16 @@ public class RuleEngine<T> {
         rules.addAll(rules);
     }
 
-    public boolean fireRules() {
-        boolean outcome = true;
+    public RuleData fireRules() {
+        RuleData outcome = null;
 
-        if (rules == null || rules.size() == 0)
+        if (rules == null || rules.size() == 0) {
+            logger.debug("!!!!Rules empty!!!!");
             return outcome;
+        }
         else {
             for (Rule rule : rules) {
-
-                if (!rule.fire(this.parameters))
-                    outcome = false;
+                outcome = rule.fire();
             }
         }
         return outcome;

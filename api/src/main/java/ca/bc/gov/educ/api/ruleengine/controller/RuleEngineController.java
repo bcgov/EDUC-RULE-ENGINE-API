@@ -1,8 +1,8 @@
 package ca.bc.gov.educ.api.ruleengine.controller;
 
+import ca.bc.gov.educ.api.ruleengine.rule.MatchRule;
 import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
-import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
+import ca.bc.gov.educ.api.ruleengine.struct.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,21 +41,22 @@ public class RuleEngineController {
     }
 
     @PostMapping ("/run-mincredits")
-    public boolean runMinCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
+    public RuleData runMinCreditsRule(@RequestBody MinCreditRuleData minCreditRuleInput) {
         logger.debug("**** Running MinCreditsRule");
-        return ruleEngineService.runMinCreditsRule(minCreditRuleData);
+        logger.debug("****MinCreditRuleData: " + minCreditRuleInput);
+        return ruleEngineService.runMinCreditsRule(minCreditRuleInput);
     }
 
-    @PostMapping ("/run-matchcredits")
-    public boolean runMatchCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
-        logger.debug("**** Running runMatchCreditsRule");
-        return ruleEngineService.runMatchCreditsRule(minCreditRuleData);
+    @PostMapping ("/run-matchrules")
+    public RuleData runMatchRules(@RequestBody MatchRuleData matchRuleInput) {
+        logger.debug("**** Running MatchRules");
+        return ruleEngineService.runMatchRules(matchRuleInput);
     }
 
     @PostMapping ("/run-minelectivecredits")
-    public boolean runMinElectiveCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
-        logger.debug("**** Running runMinElectiveCreditsRule");
-        return ruleEngineService.runMinElectiveCreditsRule(minCreditRuleData);
+    public RuleData runMinElectiveCreditsRule(@RequestBody MinElectiveCreditRuleData minElectiveCreditRuleInput) {
+        logger.debug("**** Running MinElectiveCreditsRule");
+        return ruleEngineService.runMinElectiveCreditsRule(minElectiveCreditRuleInput);
     }
 
     /*
