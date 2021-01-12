@@ -1,13 +1,7 @@
 package ca.bc.gov.educ.api.ruleengine.service;
 
-import ca.bc.gov.educ.api.ruleengine.rule.Rule;
-import ca.bc.gov.educ.api.ruleengine.rule.RuleFactory;
-import ca.bc.gov.educ.api.ruleengine.rule.RuleType;
-import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.ProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.rule.*;
+import ca.bc.gov.educ.api.ruleengine.struct.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +30,7 @@ public class RuleEngineService {
      * @throws java.lang.Exception
      */
     public StudentCourses findAllIncompleteCourses(StudentCourses studentCourses) {
-
+        //TODO: Make a new Rule class for Incomplete Courses
         List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
         studentCourseList = studentCourses.getStudentCourseList();
 
@@ -62,6 +56,7 @@ public class RuleEngineService {
      */
     public StudentCourses findAllFailedCourses(StudentCourses studentCourses) {
 
+        //TODO: Make a new Rule class for Failed Courses
         List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
         studentCourseList = studentCourses.getStudentCourseList();
 
@@ -83,7 +78,8 @@ public class RuleEngineService {
 
     public StudentCourses findAllDuplicateCourses(StudentCourses studentCourses) {
 
-        logger.debug("###################### Identifying Duplicates ######################");
+        //TODO: Make a new Rule class for Duplicate Courses
+        // logger.debug("###################### Identifying Duplicates ######################");
 
         List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
         studentCourseList = studentCourses.getStudentCourseList();
@@ -141,31 +137,39 @@ public class RuleEngineService {
         return studentCourses;
     }
 
-    public boolean runMinCreditsRule(MinCreditRuleData minCreditRuleData) {
+    public RuleData runMinCreditsRule(MinCreditRuleData minCreditRuleInput) {
 
-        String ruleType = minCreditRuleData.getProgramRule().getRequirementType();
-        Rule rule = ruleFactory.createRule(RuleType.valueOf(ruleType));
-        boolean result = ruleFactory.createRuleEngine(rule).fireRules();
-
-        return result;
-    }
-
-    public boolean runMatchCreditsRule(MinCreditRuleData minCreditRuleData) {
-
-        String ruleType = minCreditRuleData.getProgramRule().getRequirementType();
-        Rule rule = ruleFactory.createRule(RuleType.valueOf(ruleType));
-        boolean result = ruleFactory.createRuleEngine(rule).fireRules();
+        String ruleType = minCreditRuleInput.getProgramRule().getRequirementType();
+        logger.debug("Rule Type: " + ruleType);
+        Rule rule = ruleFactory.createRule(RuleType.MIN_CREDITS, minCreditRuleInput);
+        ((MinCreditsRule)rule).setInputData(minCreditRuleInput);
+        MinCreditRuleData result = (MinCreditRuleData) ruleFactory.createRuleEngine(rule).fireRules();
 
         return result;
     }
 
-    public boolean runMinElectiveCreditsRule(MinCreditRuleData minCreditRuleData) {
+    public RuleData runMatchRules(MatchRuleData matchRuleInput) {
 
-        String ruleType = minCreditRuleData.getProgramRule().getRequirementType();
-        Rule rule = ruleFactory.createRule(RuleType.valueOf(ruleType));
-        boolean result = ruleFactory.createRuleEngine(rule).fireRules();
+        String ruleType = "M";
+        Rule rule = ruleFactory.createRule(RuleType.MATCH, matchRuleInput);
+        ((MatchRule)rule).setInputData(matchRuleInput);
+        RuleData result = ruleFactory.createRuleEngine(rule).fireRules();
+
+        /*for (ProgramRule programRule : matchRuleInput.getProgramRules().getProgramRuleList()){
+            rule = ruleFactory.createRule(RuleType.MATCH, matchRuleInput);
+            result = ruleFactory.createRuleEngine(rule).fireRules();
+        }*/
 
         return result;
     }
 
+    public RuleData runMinElectiveCreditsRule(MinElectiveCreditRuleData minElectiveCreditRuleInput) {
+
+        String ruleType = minElectiveCreditRuleInput.getProgramRule().getRequirementType();
+        Rule rule = ruleFactory.createRule(RuleType.MIN_CREDITS_ELECTIVE, minElectiveCreditRuleInput);
+        ((MinElectiveCreditsRule)rule).setInputData(minElectiveCreditRuleInput);
+        RuleData result = ruleFactory.createRuleEngine(rule).fireRules();
+
+        return result;
+    }
 }

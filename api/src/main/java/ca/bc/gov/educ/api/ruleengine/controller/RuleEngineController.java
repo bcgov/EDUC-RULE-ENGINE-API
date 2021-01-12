@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
+import ca.bc.gov.educ.api.ruleengine.struct.MatchRuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.MinElectiveCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
 import ca.bc.gov.educ.api.ruleengine.util.PermissionsContants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
@@ -58,23 +61,25 @@ public class RuleEngineController {
 
     @PostMapping ("/run-mincredits")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
-    public boolean runMinCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
+    public RuleData runMinCreditsRule(@RequestBody MinCreditRuleData minCreditRuleInput) {
         logger.debug("**** Running MinCreditsRule");
-        return ruleEngineService.runMinCreditsRule(minCreditRuleData);
+        logger.debug("****MinCreditRuleData: " + minCreditRuleInput);
+        return ruleEngineService.runMinCreditsRule(minCreditRuleInput);
     }
 
-    @PostMapping ("/run-matchcredits")
+    
+    @PostMapping ("/run-matchrules")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
-    public boolean runMatchCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
-        logger.debug("**** Running runMatchCreditsRule");
-        return ruleEngineService.runMatchCreditsRule(minCreditRuleData);
+    public RuleData runMatchRules(@RequestBody MatchRuleData matchRuleInput) {
+        logger.debug("**** Running MatchRules");
+        return ruleEngineService.runMatchRules(matchRuleInput);
     }
 
     @PostMapping ("/run-minelectivecredits")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
-    public boolean runMinElectiveCreditsRule(@RequestBody MinCreditRuleData minCreditRuleData) {
-        logger.debug("**** Running runMinElectiveCreditsRule");
-        return ruleEngineService.runMinElectiveCreditsRule(minCreditRuleData);
+    public RuleData runMinElectiveCreditsRule(@RequestBody MinElectiveCreditRuleData minElectiveCreditRuleInput) {
+        logger.debug("**** Running MinElectiveCreditsRule");
+        return ruleEngineService.runMinElectiveCreditsRule(minElectiveCreditRuleInput);
     }
 
     /*

@@ -9,4 +9,15 @@ import java.util.List;
 @Component
 public class StudentCourses {
     private List<StudentCourse> studentCourseList;
+
+    @Override
+    public String toString() {
+        StringBuffer output = new StringBuffer("");
+
+        for (StudentCourse sc : studentCourseList) {
+            output.append(sc.toString())
+                    .append("\n");
+        }
+        return output.toString();
+    }
 }

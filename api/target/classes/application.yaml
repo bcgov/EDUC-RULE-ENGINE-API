@@ -11,8 +11,8 @@ spring:
     enabled: false
   datasource:
     hikari:
-      pool-name: gradstudent-api-cp
-      maximum-pool-size: ${MAX_POOL_SIZE}
+      pool-name: ruleengine-api-cp
+      maximum-pool-size: ${MAXIMUM_POOL_SIZE}
       connection-timeout: ${CONNECTION_TIMEOUT}
       max-lifetime: ${MAX_LIFETIME}
     url: ${JDBC_URL}
@@ -50,7 +50,7 @@ logging:
         gov:
           educ:
             api:
-              gradstudent: ${APP_LOG_LEVEL}
+              ruleengine: ${APP_LOG_LEVEL}
     org:
       springframework:
         web: ${SPRING_WEB_LOG_LEVEL}
@@ -102,3 +102,6 @@ endpoint:
         url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/province/%s
       all-provinces:
         url: https://educ-grad-code-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/code/province
+  program-rule:
+    get-program-rules:
+      url: https://program-rule-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/program-rules

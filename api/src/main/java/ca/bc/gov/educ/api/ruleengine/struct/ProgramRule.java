@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.ruleengine.struct;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -19,6 +20,8 @@ public class ProgramRule {
     private String requirementType;
     private String activeFlag;
     private String requiredLevel;
+    private Date activeDate;
+    private boolean passed;
 
     @Override
     public String toString() {
@@ -33,6 +36,8 @@ public class ProgramRule {
                 ", requirementType='" + requirementType + '\'' +
                 ", activeFlag='" + activeFlag + '\'' +
                 ", requiredLevel=" + requiredLevel +
+                ", activeDate=" + activeDate +
+                ", Passed=" + passed +
                 '}';
     }
 }
