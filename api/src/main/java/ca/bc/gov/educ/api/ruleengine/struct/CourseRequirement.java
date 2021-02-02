@@ -14,6 +14,7 @@ public class CourseRequirement {
     private String courseCode;
     private String courseLevel;
     private String ruleCode;
+    private boolean reqMet;
     private String createdBy;
     private Date createdTimestamp;
     private String updatedBy;
