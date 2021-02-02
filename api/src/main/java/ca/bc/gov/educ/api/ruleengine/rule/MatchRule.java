@@ -29,6 +29,10 @@ public class MatchRule implements Rule {
     final RuleType ruleType = RuleType.MATCH;
 
     public RuleData fire() {
+
+        List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
+        List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
+
         List<StudentCourse> courseList = inputData.getStudentCourses().getStudentCourseList();
         List<StudentCourse> originalCourseList = new ArrayList<StudentCourse>(courseList);
 
@@ -73,12 +77,16 @@ public class MatchRule implements Rule {
                         .filter(pr -> pr.getCode().compareTo(tempCourseRequirement.getRuleCode()) == 0)
                         .findAny()
                         .orElse(null);
+                logger.debug("ALERT: Inconsistent Data Found. " + tempCourseRequirement.getRuleCode() +
+                        " Exists in the CourseRequirments but doesn't exist in ProgramRules");
             }
             logger.debug("Temp Program Rule: " + tempProgramRule);
 
             if (tempCourseRequirement != null && tempProgramRule != null) {
                 tempCourse.setUsed(true);
+                tempCourse.setGradReqMet(tempCourse.getGradReqMet() + " " + tempProgramRule.getCode());
                 tempProgramRule.setPassed(true);
+                requirementsMet.add(new GradRequirement(tempProgramRule.getCode(), tempProgramRule.getRequirementName()));
             }
 
             tempSC = new StudentCourse();
@@ -114,12 +122,21 @@ public class MatchRule implements Rule {
 
         //logger.debug("Output Data:\n" + outputData);
 
-        if (finalProgramRulesList.stream().filter(pr -> !pr.isPassed()).findAny().orElse(null) == null) {
+        List<ProgramRule> failedRules = finalProgramRulesList.stream()
+                .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
+
+        if (failedRules.isEmpty()) {
             outputData.setPassed(true);
             logger.debug("All the match rules met!");
         } else {
+            for (ProgramRule failedRule : failedRules) {
+                requirementsNotMet.add(new GradRequirement(failedRule.getCode(), failedRule.getNotMetDescription()));
+            }
             logger.debug("One or more Match rules not met!");
         }
+
+        outputData.setPassMessages(requirementsMet);
+        outputData.setFailMessages(requirementsNotMet);
 
         /*ListIterator<AchievementDto> achievementsIterator = achievementsCopy.listIterator();
 

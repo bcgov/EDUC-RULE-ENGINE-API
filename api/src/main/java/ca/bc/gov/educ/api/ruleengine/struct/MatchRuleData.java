@@ -16,8 +16,8 @@ public class MatchRuleData implements RuleData {
     private StudentCourses studentCourses;
     private CourseRequirements courseRequirements;
     private boolean passed = false;
-    private List<String> passMessages;
-    private List<String> failedMessages;
+    private List<GradRequirement> passMessages;
+    private List<GradRequirement> failMessages;
 
     public MatchRuleData (ProgramRules programRules, StudentCourses studentCourses, CourseRequirements courseRequirements) {
         this.programRules = programRules;
