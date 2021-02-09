@@ -36,17 +36,17 @@ public class MatchRule implements Rule {
         List<StudentCourse> courseList = inputData.getStudentCourses().getStudentCourseList();
         List<StudentCourse> originalCourseList = new ArrayList<StudentCourse>(courseList);
 
-        List<GradProgramRule> programRulesMatch = inputData.getProgramRules().getProgramRuleList()
+        List<GradProgramRule> gradProgramRulesMatch = inputData.getGradProgramRules().getGradProgramRuleList()
                 .stream()
-                .filter(programRule -> "M".compareTo(programRule.getRequirementType()) == 0)
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) == 0)
                 .collect(Collectors.toList());
-        List<GradProgramRule> programRulesMatchOriginal = new ArrayList<GradProgramRule>(programRulesMatch);
+        List<GradProgramRule> programRulesMatchOriginal = new ArrayList<GradProgramRule>(gradProgramRulesMatch);
 
         List<CourseRequirement> courseRequirements = inputData.getCourseRequirements().getCourseRequirementList();
         List<CourseRequirement> originalCourseRequirements = new ArrayList<CourseRequirement>(courseRequirements);
 
         //logger.debug("Course Requirements: " + courseRequirements);
-        logger.debug("#### Match Program Rule size: " + programRulesMatch.size());
+        logger.debug("#### Match Program Rule size: " + gradProgramRulesMatch.size());
 
         ListIterator<StudentCourse> courseIterator = courseList.listIterator();
 
@@ -73,7 +73,7 @@ public class MatchRule implements Rule {
             GradProgramRule tempProgramRule = null;
 
             if (tempCourseRequirement != null) {
-                tempProgramRule = programRulesMatch.stream()
+                tempProgramRule = gradProgramRulesMatch.stream()
                         .filter(pr -> pr.getRuleCode().compareTo(tempCourseRequirement.getRuleCode()) == 0)
                         .findAny()
                         .orElse(null);
@@ -113,11 +113,11 @@ public class MatchRule implements Rule {
         CourseRequirements courseReqs = new CourseRequirements();
 
         studentCourses.setStudentCourseList(finalCourseList);
-        programRules.setProgramRuleList(finalProgramRulesList);
+        programRules.setGradProgramRuleList(finalProgramRulesList);
         courseReqs.setCourseRequirementList(originalCourseRequirements);
 
         outputData.setStudentCourses(studentCourses);
-        outputData.setProgramRules(programRules);
+        outputData.setGradProgramRules(programRules);
         outputData.setCourseRequirements(courseReqs);
 
         //logger.debug("Output Data:\n" + outputData);
