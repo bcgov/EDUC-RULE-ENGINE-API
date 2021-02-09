@@ -29,7 +29,7 @@ public class MinElectiveCreditsRule implements Rule {
         logger.debug("InputData:" + inputData);
         int requiredCredits = Integer.parseInt(inputData.getProgramRule().getRequiredCredits().trim());
         StudentCourses studentCourses = inputData.getStudentCourses();
-        ProgramRule programRule = inputData.getProgramRule();
+        GradProgramRule programRule = inputData.getProgramRule();
 
         if (studentCourses == null || studentCourses.getStudentCourseList() == null
                 || studentCourses.getStudentCourseList().size() == 0) {

@@ -25,9 +25,9 @@ public class MinCreditsRule implements Rule {
         int totalCredits;
         logger.debug("Min Credits Rule");
         logger.debug("InputData:" + inputData);
-        int requiredCredits = Integer.parseInt(inputData.getProgramRule().getRequiredCredits().trim());
+        int requiredCredits = Integer.parseInt(inputData.getGradProgramRule().getRequiredCredits().trim());
         StudentCourses studentCourses = inputData.getStudentCourses();
-        ProgramRule programRule = inputData.getProgramRule();
+        GradProgramRule programRule = inputData.getGradProgramRule();
 
         if (studentCourses == null || studentCourses.getStudentCourseList() == null
                 || studentCourses.getStudentCourseList().size() == 0) {

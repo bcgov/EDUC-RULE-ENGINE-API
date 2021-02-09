@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class MinCreditRuleData implements RuleData {
-    private ProgramRule programRule;
+    private GradProgramRule gradProgramRule;
     private StudentCourses studentCourses;
     private int acquiredCredits;
     private int requiredCredits;
