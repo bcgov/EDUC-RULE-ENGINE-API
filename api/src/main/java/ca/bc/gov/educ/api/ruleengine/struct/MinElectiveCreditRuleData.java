@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class MinElectiveCreditRuleData implements RuleData {
-    private GradProgramRule programRule;
+    private GradProgramRule gradProgramRule;
     private StudentCourses studentCourses;
     private int acquiredCredits;
     private int requiredCredits;
