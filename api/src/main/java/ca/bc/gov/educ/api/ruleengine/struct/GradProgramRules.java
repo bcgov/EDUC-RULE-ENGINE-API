@@ -8,5 +8,5 @@ import java.util.List;
 @Component
 @Data
 public class GradProgramRules {
-    List<GradProgramRule> programRuleList;
+    List<GradProgramRule> gradProgramRuleList;
 }
