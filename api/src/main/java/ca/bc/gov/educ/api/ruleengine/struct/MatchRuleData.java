@@ -12,14 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MatchRuleData implements RuleData {
-    private ProgramRules programRules;
+    private GradProgramRules programRules;
     private StudentCourses studentCourses;
     private CourseRequirements courseRequirements;
     private boolean passed = false;
     private List<GradRequirement> passMessages;
     private List<GradRequirement> failMessages;
 
-    public MatchRuleData (ProgramRules programRules, StudentCourses studentCourses, CourseRequirements courseRequirements) {
+    public MatchRuleData (GradProgramRules programRules, StudentCourses studentCourses, CourseRequirements courseRequirements) {
         this.programRules = programRules;
         this.studentCourses = studentCourses;
         this.courseRequirements = courseRequirements;

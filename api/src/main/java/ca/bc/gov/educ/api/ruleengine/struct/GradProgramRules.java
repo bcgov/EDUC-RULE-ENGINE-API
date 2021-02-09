@@ -7,6 +7,6 @@ import java.util.List;
 
 @Component
 @Data
-public class ProgramRules {
-    List<ProgramRule> programRuleList;
+public class GradProgramRules {
+    List<GradProgramRule> programRuleList;
 }
