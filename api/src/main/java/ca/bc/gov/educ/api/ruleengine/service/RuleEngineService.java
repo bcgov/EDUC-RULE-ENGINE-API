@@ -165,7 +165,7 @@ public class RuleEngineService {
 
     public RuleData runMinElectiveCreditsRule(MinElectiveCreditRuleData minElectiveCreditRuleInput) {
 
-        String ruleType = minElectiveCreditRuleInput.getProgramRule().getRequirementType();
+        String ruleType = minElectiveCreditRuleInput.getGradProgramRule().getRequirementType();
         Rule rule = ruleFactory.createRule(RuleType.MIN_CREDITS_ELECTIVE, minElectiveCreditRuleInput);
         ((MinElectiveCreditsRule)rule).setInputData(minElectiveCreditRuleInput);
         RuleData result = ruleFactory.createRuleEngine(rule).fireRules();
