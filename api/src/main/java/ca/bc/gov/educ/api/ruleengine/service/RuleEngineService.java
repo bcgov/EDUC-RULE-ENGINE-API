@@ -139,7 +139,7 @@ public class RuleEngineService {
 
     public RuleData runMinCreditsRule(MinCreditRuleData minCreditRuleInput) {
 
-        String ruleType = minCreditRuleInput.getProgramRule().getRequirementType();
+        String ruleType = minCreditRuleInput.getGradProgramRule().getRequirementType();
         logger.debug("Rule Type: " + ruleType);
         Rule rule = ruleFactory.createRule(RuleType.MIN_CREDITS, minCreditRuleInput);
         ((MinCreditsRule)rule).setInputData(minCreditRuleInput);
