@@ -83,10 +83,19 @@ public class MatchRule implements Rule {
             logger.debug("Temp Program Rule: " + tempProgramRule);
 
             if (tempCourseRequirement != null && tempProgramRule != null) {
-                tempCourse.setUsed(true);
-                tempCourse.setGradReqMet(tempCourse.getGradReqMet() + " " + tempProgramRule.getRuleCode());
-                tempProgramRule.setPassed(true);
-                requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
+
+                GradProgramRule finalTempProgramRule = tempProgramRule;
+                if (requirementsMet.stream()
+                                .filter(rm -> rm.getRule() == finalTempProgramRule.getRuleCode())
+                                .findAny().orElse(null) == null) {
+                    tempCourse.setUsed(true);
+                    tempCourse.setGradReqMet(tempCourse.getGradReqMet() + " " + tempProgramRule.getRuleCode());
+                    tempProgramRule.setPassed(true);
+                    requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
+                }
+                else {
+                    logger.debug("!!! Program Rule met Already: " + tempProgramRule);
+                }
             }
 
             tempSC = new StudentCourse();
