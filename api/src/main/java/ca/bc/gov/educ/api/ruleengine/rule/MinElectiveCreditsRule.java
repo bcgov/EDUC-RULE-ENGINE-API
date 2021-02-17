@@ -44,7 +44,7 @@ public class MinElectiveCreditsRule implements Rule {
                     .filter(sc -> !sc.isUsed())
                     .collect(Collectors.toList())
                     .stream()
-                    .mapToInt(studentCourse -> studentCourse.getCreditsUsedForGrad())
+                    .mapToInt(studentCourse -> studentCourse.getCredits())
                     .sum();
         }
         else {
@@ -53,7 +53,7 @@ public class MinElectiveCreditsRule implements Rule {
                     .filter(sc -> !sc.isUsed())
                     .collect(Collectors.toList())
                     .stream()
-                    .mapToInt(studentCourse -> studentCourse.getCreditsUsedForGrad())
+                    .mapToInt(studentCourse -> studentCourse.getCredits())
                     .sum();
         }
 

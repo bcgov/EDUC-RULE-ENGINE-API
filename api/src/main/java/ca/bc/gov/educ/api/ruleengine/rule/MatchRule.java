@@ -77,8 +77,6 @@ public class MatchRule implements Rule {
                         .filter(pr -> pr.getRuleCode().compareTo(tempCourseRequirement.getRuleCode()) == 0)
                         .findAny()
                         .orElse(null);
-                logger.debug("ALERT: Inconsistent Data Found. " + tempCourseRequirement.getRuleCode() +
-                        " Exists in the CourseRequirments but doesn't exist in ProgramRules");
             }
             logger.debug("Temp Program Rule: " + tempProgramRule);
 
