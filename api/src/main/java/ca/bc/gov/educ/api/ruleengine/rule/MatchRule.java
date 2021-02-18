@@ -87,6 +87,7 @@ public class MatchRule implements Rule {
                                 .filter(rm -> rm.getRule() == finalTempProgramRule.getRuleCode())
                                 .findAny().orElse(null) == null) {
                     tempCourse.setUsed(true);
+                    tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
                     tempCourse.setGradReqMet(tempCourse.getGradReqMet() + " " + tempProgramRule.getRuleCode());
                     tempProgramRule.setPassed(true);
                     requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
