@@ -31,20 +31,22 @@ public class MinCreditsRule implements Rule {
 
         if (studentCourses == null || studentCourses.getStudentCourseList() == null
                 || studentCourses.getStudentCourseList().size() == 0) {
-            logger.warn("Empty list sent to Min Credits Rule for processing");
+            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
             return null;
         }
 
         if (programRule.getRequiredLevel().trim().compareTo("") == 0) {
             totalCredits = studentCourses.getStudentCourseList()
                     .stream()
-                    .mapToInt(studentCourse -> studentCourse.getCreditsUsedForGrad())
+                    .mapToInt(studentCourse -> studentCourse.getCredits())
                     .sum();
         }
         else {
+            String requiredLevel = programRule.getRequiredLevel().trim();
             totalCredits = studentCourses.getStudentCourseList()
                     .stream()
-                    .mapToInt(studentCourse -> studentCourse.getCreditsUsedForGrad())
+                    .filter(sc -> sc.getCourseLevel().contains(requiredLevel))
+                    .mapToInt(studentCourse -> studentCourse.getCredits())
                     .sum();
         }
 
