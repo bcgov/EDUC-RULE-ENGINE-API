@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 @Data
@@ -24,7 +27,7 @@ public class MinElectiveCreditsRule implements Rule {
     final RuleType ruleType = RuleType.MIN_CREDITS_ELECTIVE;
 
     public MinElectiveCreditRuleData fire() {
-        int totalCredits;
+        int totalCredits = 0;
         logger.debug("Min Elective Credits Rule");
         logger.debug("InputData:" + inputData);
         int requiredCredits = Integer.parseInt(inputData.getGradProgramRule().getRequiredCredits().trim());
@@ -37,24 +40,42 @@ public class MinElectiveCreditsRule implements Rule {
             return null;
         }
 
-        if (programRule.getRequiredLevel() != null
-                && programRule.getRequiredLevel().trim().compareTo("") == 0) {
-            totalCredits = studentCourses.getStudentCourseList()
+        List<StudentCourse> tempStudentCourseList = new ArrayList<>();
+
+        if (programRule.getRequiredLevel() == null
+                || programRule.getRequiredLevel().trim().compareTo("") == 0) {
+            tempStudentCourseList = studentCourses.getStudentCourseList()
                     .stream()
                     .filter(sc -> !sc.isUsed())
-                    .collect(Collectors.toList())
-                    .stream()
-                    .mapToInt(studentCourse -> studentCourse.getCreditsUsedForGrad())
-                    .sum();
+                    .collect(Collectors.toList());
         }
         else {
-            totalCredits = studentCourses.getStudentCourseList()
+            tempStudentCourseList = studentCourses.getStudentCourseList()
                     .stream()
-                    .filter(sc -> !sc.isUsed())
-                    .collect(Collectors.toList())
-                    .stream()
-                    .mapToInt(studentCourse -> studentCourse.getCreditsUsedForGrad())
-                    .sum();
+                    .filter(sc -> !sc.isUsed() && sc.getCourseLevel().compareTo(programRule.getRequiredLevel().trim()) == 0)
+                    .collect(Collectors.toList());
+        }
+
+        ListIterator<StudentCourse> iter = tempStudentCourseList.listIterator();
+
+        while (iter.hasNext()) {
+            StudentCourse sc = iter.next();
+
+            if (totalCredits + sc.getCredits() <= requiredCredits) {
+                totalCredits += sc.getCredits();
+                sc.setCreditsUsedForGrad(sc.getCredits());
+            }
+            else {
+                int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+                totalCredits = requiredCredits;
+                sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+            }
+
+            sc.setUsed(true);
+
+            if (totalCredits == requiredCredits) {
+                break;
+            }
         }
 
         inputData.setRequiredCredits(requiredCredits);

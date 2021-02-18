@@ -77,8 +77,6 @@ public class MatchRule implements Rule {
                         .filter(pr -> pr.getRuleCode().compareTo(tempCourseRequirement.getRuleCode()) == 0)
                         .findAny()
                         .orElse(null);
-                logger.debug("ALERT: Inconsistent Data Found. " + tempCourseRequirement.getRuleCode() +
-                        " Exists in the CourseRequirments but doesn't exist in ProgramRules");
             }
             logger.debug("Temp Program Rule: " + tempProgramRule);
 
@@ -89,6 +87,7 @@ public class MatchRule implements Rule {
                                 .filter(rm -> rm.getRule() == finalTempProgramRule.getRuleCode())
                                 .findAny().orElse(null) == null) {
                     tempCourse.setUsed(true);
+                    tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
                     tempCourse.setGradReqMet(tempCourse.getGradReqMet() + " " + tempProgramRule.getRuleCode());
                     tempProgramRule.setPassed(true);
                     requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
