@@ -45,6 +45,13 @@ public class RuleEngineController {
         return ruleEngineService.findAllIncompleteCourses(studentCourses);
     }
 
+    @PostMapping ("/find-registered")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
+    public StudentCourses findRegisteredCourses(@RequestBody StudentCourses studentCourses) {
+        logger.debug("**** Mark REGISTERED");
+        return ruleEngineService.findAllRegisteredCourses(studentCourses);
+    }
+
     @PostMapping ("/find-failed")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public StudentCourses findFailedCourses(@RequestBody StudentCourses studentCourses) {
