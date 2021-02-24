@@ -40,11 +40,11 @@ public class RuleEngineService {
 
         for (StudentCourse studentCourse : studentCourseList) {
             String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
-            String sessionDate = studentCourse.getSessionDate() + "01";
+            String sessionDate = studentCourse.getSessionDate() + "/01";
             Date temp = new Date();
 
             try {
-                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyyMMdd");
+                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             }catch (ParseException pe) {
                 logger.error("ERROR: " + pe.getMessage());
@@ -53,7 +53,7 @@ public class RuleEngineService {
             int diff = RuleEngineApiUtils.getDifferenceInMonths(today, sessionDate);
 
             if ("".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
-                && diff > 1) {
+                && diff >= 1) {
                 studentCourse.setNotCompleted(true);
             }
         }
@@ -69,12 +69,12 @@ public class RuleEngineService {
      * @return StudentCourses
      * @throws java.lang.Exception
      */
-    public StudentCourses findAllRegisteredCourses(StudentCourses studentCourses) {
+    public StudentCourses findAllProjectedCourses(StudentCourses studentCourses) {
         //TODO: Make a new Rule class for Registered Courses
         List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
         studentCourseList = studentCourses.getStudentCourseList();
 
-        logger.debug("###################### Identifying REGISTERED COURSES ######################");
+        logger.debug("###################### Identifying PROJECTED COURSES ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
             String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
@@ -92,7 +92,7 @@ public class RuleEngineService {
 
             if ("".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
                     && diff < 1) {
-                studentCourse.setRegistered(true);
+                studentCourse.setProjected(true);
             }
         }
 

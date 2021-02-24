@@ -45,11 +45,11 @@ public class RuleEngineController {
         return ruleEngineService.findAllIncompleteCourses(studentCourses);
     }
 
-    @PostMapping ("/find-registered")
+    @PostMapping ("/find-projected")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
-    public StudentCourses findRegisteredCourses(@RequestBody StudentCourses studentCourses) {
-        logger.debug("**** Mark REGISTERED");
-        return ruleEngineService.findAllRegisteredCourses(studentCourses);
+    public StudentCourses findProjectedCourses(@RequestBody StudentCourses studentCourses) {
+        logger.debug("**** Mark PROJECTED");
+        return ruleEngineService.findAllProjectedCourses(studentCourses);
     }
 
     @PostMapping ("/find-failed")
@@ -66,7 +66,7 @@ public class RuleEngineController {
         return ruleEngineService.findAllDuplicateCourses(studentCourses);
     }
 
-    @PostMapping ("/run-mincredits")
+    @PostMapping ("/run-min-credits-rules")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public RuleData runMinCreditsRule(@RequestBody MinCreditRuleData minCreditRuleInput) {
         logger.debug("**** Running MinCreditsRule");
@@ -75,14 +75,14 @@ public class RuleEngineController {
     }
 
     
-    @PostMapping ("/run-matchrules")
+    @PostMapping ("/run-match-rules")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public RuleData runMatchRules(@RequestBody MatchRuleData matchRuleInput) {
         logger.debug("**** Running MatchRules");
         return ruleEngineService.runMatchRules(matchRuleInput);
     }
 
-    @PostMapping ("/run-minelectivecredits")
+    @PostMapping ("/run-min-elective-credits-rules")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public RuleData runMinElectiveCreditsRule(@RequestBody MinElectiveCreditRuleData minElectiveCreditRuleInput) {
         logger.debug("**** Running MinElectiveCreditsRule");
