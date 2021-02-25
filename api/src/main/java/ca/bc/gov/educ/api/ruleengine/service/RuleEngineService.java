@@ -2,12 +2,14 @@ package ca.bc.gov.educ.api.ruleengine.service;
 
 import ca.bc.gov.educ.api.ruleengine.rule.*;
 import ca.bc.gov.educ.api.ruleengine.struct.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.*;
 
 import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils.parseTraxDate;
@@ -37,9 +39,60 @@ public class RuleEngineService {
         logger.debug("###################### Identifying INCOMPLETE ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
-            if ("".compareTo(
-                    studentCourse.getCompletedCourseLetterGrade().trim()) == 0) {
+            String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
+            String sessionDate = studentCourse.getSessionDate() + "/01";
+            Date temp = new Date();
+
+            try {
+                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
+                sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
+            }catch (ParseException pe) {
+                logger.error("ERROR: " + pe.getMessage());
+            }
+
+            int diff = RuleEngineApiUtils.getDifferenceInMonths(today, sessionDate);
+
+            if ("".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
+                && diff >= 1) {
                 studentCourse.setNotCompleted(true);
+            }
+        }
+
+        studentCourses.setStudentCourseList(studentCourseList);
+
+        return studentCourses;
+    }
+
+    /**
+     * Find all the registered courses
+     *
+     * @return StudentCourses
+     * @throws java.lang.Exception
+     */
+    public StudentCourses findAllProjectedCourses(StudentCourses studentCourses) {
+        //TODO: Make a new Rule class for Registered Courses
+        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
+        studentCourseList = studentCourses.getStudentCourseList();
+
+        logger.debug("###################### Identifying PROJECTED COURSES ######################");
+
+        for (StudentCourse studentCourse : studentCourseList) {
+            String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
+            String sessionDate = studentCourse.getSessionDate() + "01";
+            Date temp = new Date();
+
+            try {
+                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyyMMdd");
+                sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
+            }catch (ParseException pe) {
+                logger.error("ERROR: " + pe.getMessage());
+            }
+
+            int diff = RuleEngineApiUtils.getDifferenceInMonths(today, sessionDate);
+
+            if ("".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
+                    && diff < 1) {
+                studentCourse.setProjected(true);
             }
         }
 
