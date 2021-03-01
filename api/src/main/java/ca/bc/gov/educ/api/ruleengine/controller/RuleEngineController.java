@@ -35,9 +35,6 @@ public class RuleEngineController {
     @Autowired
     RuleEngineService ruleEngineService;
 
-    @Autowired
-    MinCreditRuleData minCreditRuleData;
-
     @PostMapping ("/find-not-completed")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public StudentCourses findNotCompletedCourses(@RequestBody StudentCourses studentCourses) {
@@ -64,6 +61,20 @@ public class RuleEngineController {
     public StudentCourses findDuplicateCourses(@RequestBody StudentCourses studentCourses) {
         logger.debug("**** Mark DUPLICATES");
         return ruleEngineService.findAllDuplicateCourses(studentCourses);
+    }
+
+    @PostMapping ("/find-cp")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
+    public StudentCourses findCareerProgramCourses(@RequestBody StudentCourses studentCourses) {
+        logger.debug("**** Mark CAREER PROGRAM courses");
+        return ruleEngineService.findCareerProgramCourses(studentCourses);
+    }
+
+    @PostMapping ("/find-ld")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
+    public StudentCourses findLocallyDevelopedCourses(@RequestBody StudentCourses studentCourses) {
+        logger.debug("**** Mark LOCALLY DEVELOPED courses");
+        return ruleEngineService.findAllLocallyDevelopedCourses(studentCourses);
     }
 
     @PostMapping ("/run-min-credits-rules")

@@ -78,11 +78,11 @@ public class RuleEngineService {
 
         for (StudentCourse studentCourse : studentCourseList) {
             String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
-            String sessionDate = studentCourse.getSessionDate() + "01";
+            String sessionDate = studentCourse.getSessionDate() + "/01";
             Date temp = new Date();
 
             try {
-                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyyMMdd");
+                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             }catch (ParseException pe) {
                 logger.error("ERROR: " + pe.getMessage());
@@ -186,6 +186,56 @@ public class RuleEngineService {
 
         //Remove duplicates
         //copy = copy.stream().distinct().collect(Collectors.toList());
+
+        return studentCourses;
+    }
+
+    /**
+     * Find all the Career Program courses
+     *
+     * @return StudentCourses
+     * @throws java.lang.Exception
+     */
+    public StudentCourses findCareerProgramCourses(StudentCourses studentCourses) {
+
+        //TODO: Make a new Rule class for Career Program Courses
+        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
+        studentCourseList = studentCourses.getStudentCourseList();
+
+        logger.debug("###################### Identifying CAREER PROGRAM courses ######################");
+
+        for (StudentCourse studentCourse : studentCourseList) {
+            if (studentCourse.getCourseCode().startsWith("CP")) {
+                studentCourse.setCareerPrep(true);
+            }
+        }
+
+        studentCourses.setStudentCourseList(studentCourseList);
+
+        return studentCourses;
+    }
+
+    /**
+     * Find all the Locally Developed courses
+     *
+     * @return StudentCourses
+     * @throws java.lang.Exception
+     */
+    public StudentCourses findAllLocallyDevelopedCourses(StudentCourses studentCourses) {
+
+        //TODO: Make a new Rule class for Locally Developed Courses
+        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
+        studentCourseList = studentCourses.getStudentCourseList();
+
+        logger.debug("###################### Identifying LOCALLY DEVELOPED courses ######################");
+
+        for (StudentCourse studentCourse : studentCourseList) {
+            if (studentCourse.getCourseCode().startsWith("X")) {
+                studentCourse.setLocallyDeveloped(true);
+            }
+        }
+
+        studentCourses.setStudentCourseList(studentCourseList);
 
         return studentCourses;
     }
