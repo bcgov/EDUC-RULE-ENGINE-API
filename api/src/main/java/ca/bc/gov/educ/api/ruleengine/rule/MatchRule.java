@@ -91,9 +91,9 @@ public class MatchRule implements Rule {
 
                     if (tempCourse.getGradReqMet().length() > 0)
                         tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getRuleCode()
-                                + tempProgramRule.getRequirementName());
+                                + " - " + tempProgramRule.getRequirementName());
                     else
-                        tempCourse.setGradReqMet(tempProgramRule.getRuleCode() + tempProgramRule.getRequirementName());
+                        tempCourse.setGradReqMet(tempProgramRule.getRuleCode() + " - " + tempProgramRule.getRequirementName());
                     
                     tempProgramRule.setPassed(true);
                     requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
