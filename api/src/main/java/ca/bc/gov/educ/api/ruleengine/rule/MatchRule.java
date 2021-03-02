@@ -64,7 +64,7 @@ public class MatchRule implements Rule {
 
             CourseRequirement tempCourseRequirement = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
-                            && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0 )
+                            && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
                     .findAny()
                     .orElse(null);
 
@@ -84,15 +84,20 @@ public class MatchRule implements Rule {
 
                 GradProgramRule finalTempProgramRule = tempProgramRule;
                 if (requirementsMet.stream()
-                                .filter(rm -> rm.getRule() == finalTempProgramRule.getRuleCode())
-                                .findAny().orElse(null) == null) {
+                        .filter(rm -> rm.getRule() == finalTempProgramRule.getRuleCode())
+                        .findAny().orElse(null) == null) {
                     tempCourse.setUsed(true);
                     tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
-                    tempCourse.setGradReqMet(tempCourse.getGradReqMet() + " " + tempProgramRule.getRuleCode());
+
+                    if (tempCourse.getGradReqMet().length() > 0)
+                        tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getRuleCode()
+                                + tempProgramRule.getRequirementName());
+                    else
+                        tempCourse.setGradReqMet(tempProgramRule.getRuleCode());
+                    
                     tempProgramRule.setPassed(true);
                     requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
-                }
-                else {
+                } else {
                     logger.debug("!!! Program Rule met Already: " + tempProgramRule);
                 }
             }
