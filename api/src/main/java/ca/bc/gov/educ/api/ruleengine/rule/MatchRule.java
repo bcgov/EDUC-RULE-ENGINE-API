@@ -89,12 +89,16 @@ public class MatchRule implements Rule {
                     tempCourse.setUsed(true);
                     tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
 
-                    if (tempCourse.getGradReqMet().length() > 0)
-                        tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getRuleCode()
+                    if (tempCourse.getGradReqMet().length() > 0) {
+
+                        tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getRuleCode());
+                        tempCourse.setGradReqMetDetail(tempCourse.getGradReqMetDetail() + ", " + tempProgramRule.getRuleCode()
                                 + " - " + tempProgramRule.getRequirementName());
-                    else
-                        tempCourse.setGradReqMet(tempProgramRule.getRuleCode() + " - " + tempProgramRule.getRequirementName());
-                    
+                    } else {
+                        tempCourse.setGradReqMet(tempProgramRule.getRuleCode());
+                        tempCourse.setGradReqMetDetail(tempProgramRule.getRuleCode() + " - " + tempProgramRule.getRequirementName());
+                    }
+
                     tempProgramRule.setPassed(true);
                     requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
                 } else {
