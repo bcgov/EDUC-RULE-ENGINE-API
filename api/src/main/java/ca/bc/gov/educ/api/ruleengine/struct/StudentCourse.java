@@ -20,6 +20,7 @@ public class StudentCourse {
     private String sessionDate;
 	private String courseDescription;
 	private String gradReqMet;
+	private String gradReqMetDetail;
 	private Double completedCoursePercentage;
 	private String completedCourseLetterGrade;
 	private Double interimPercent;
@@ -30,8 +31,11 @@ public class StudentCourse {
 	private String relatedLevel;
 	private String hasRelatedCourse;
 	private boolean isNotCompleted;
+	private boolean isProjected;
 	private boolean isFailed;
 	private boolean isDuplicate;
+	private boolean isCareerPrep;
+	private boolean isLocallyDeveloped;
 	private boolean isUsed;
 
 	public Integer getCreditsUsedForGrad() {
@@ -57,13 +61,13 @@ public class StudentCourse {
 	public String toString() {
 		return "StudentCourse [pen=" + pen + ", courseCode=" + courseCode + ", courseName=" + courseName
 				+ ", courseLevel=" + courseLevel + ", sessionDate=" + sessionDate + ", courseDescription="
-				+ courseDescription + ", gradReqMet=" + gradReqMet + ", completedCoursePercentage="
-				+ completedCoursePercentage + ", completedCourseLetterGrade=" + completedCourseLetterGrade
-				+ ", interimPercent=" + interimPercent + ", interimLetterGrade=" + interimLetterGrade + ", credits="
-				+ credits + ", creditsUsedForGrad=" + creditsUsedForGrad + ", relatedCourse=" + relatedCourse
-				+ ", relatedLevel=" + relatedLevel + ", hasRelatedCourse=" + hasRelatedCourse + "]";
+				+ courseDescription + ", gradReqMet=" + gradReqMet + ", gradReqMetDetail=" + gradReqMetDetail
+				+ ", completedCoursePercentage=" + completedCoursePercentage + ", completedCourseLetterGrade="
+				+ completedCourseLetterGrade + ", interimPercent=" + interimPercent + ", interimLetterGrade="
+				+ interimLetterGrade + ", credits=" + credits + ", creditsUsedForGrad=" + creditsUsedForGrad
+				+ ", relatedCourse=" + relatedCourse + ", relatedLevel=" + relatedLevel + ", hasRelatedCourse="
+				+ hasRelatedCourse + ", isNotCompleted=" + isNotCompleted + ", isProjected=" + isProjected
+				+ ", isFailed=" + isFailed + ", isDuplicate=" + isDuplicate + ", isCareerPrep=" + isCareerPrep
+				+ ", isLocallyDeveloped=" + isLocallyDeveloped + ", isUsed=" + isUsed + "]";
 	}
-	
-	
-		
 }

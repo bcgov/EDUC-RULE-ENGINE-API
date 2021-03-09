@@ -3,7 +3,9 @@ package ca.bc.gov.educ.api.ruleengine.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 public class RuleEngineApiUtils {
@@ -66,5 +68,13 @@ public class RuleEngineApiUtils {
             e.printStackTrace();
             return null;
         }       
+    }
+
+    public static int getDifferenceInMonths(String date1, String date2) {
+        Period diff = Period.between(
+                LocalDate.parse(date1).withDayOfMonth(1),
+                LocalDate.parse(date2).withDayOfMonth(1));
+
+        return diff.getMonths();
     }
 }

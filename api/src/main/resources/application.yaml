@@ -75,33 +75,3 @@ springdoc:
     path: /api/v1/api-docs-ui.html
     operationsSorter: method
 
-#Endpoint properties
-endpoint:
-  grad-student-api:
-    get-student-by-pen:
-      url: https://gradstudent-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1
-    get-all-students:
-      url: https://gradstudent-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1/gradstudent
-  student-course-api:
-    get-student-course-by-pen:
-      url: https://student-course-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/studentcourse/pen
-  student-assessment-api:
-    get-student-assessment-by-pen:
-      url: https://student-assessment-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1
-  school-api:
-    school-by-min-code:
-      url: https://educ-grad-school-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1/school/%s
-  code-api:
-    country:
-      country-by-country-code:
-        url: https://educ-grad-code-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1/code/country/%s
-      all-countries:
-        url: https://educ-grad-code-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1/code/country
-    province:
-      province-by-prov-code:
-        url: https://educ-grad-code-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1/code/province/%s
-      all-provinces:
-        url: https://educ-grad-code-api-77c02f-dev.apps.silver.devops.gov.bc.ca/api/v1/code/province
-  program-rule:
-    get-program-rules:
-      url: https://program-rule-api-wbmfsf-dev.pathfinder.gov.bc.ca/api/v1/program-rules
