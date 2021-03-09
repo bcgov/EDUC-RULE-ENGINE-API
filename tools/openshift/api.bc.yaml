@@ -12,7 +12,7 @@ objects:
     labels:
       build: educ-ruleengine-api-pipeline
     name: educ-ruleengine-api-pipeline
-    namespace: wbmfsf-tools
+    namespace: 77c02f-tools
   spec:
     source:
       git:
