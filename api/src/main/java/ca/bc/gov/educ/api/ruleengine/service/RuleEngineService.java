@@ -17,9 +17,6 @@ import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils.parseTraxDat
 @Service
 public class RuleEngineService {
 
-    @Value("${endpoint.program-rule.get-program-rules.url}")
-    private String getProgramRulesURL;
-
     @Autowired
     RuleFactory ruleFactory;
 
