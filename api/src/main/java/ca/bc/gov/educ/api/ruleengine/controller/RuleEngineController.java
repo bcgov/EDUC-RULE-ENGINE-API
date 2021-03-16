@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
 import ca.bc.gov.educ.api.ruleengine.struct.MatchRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.SpecialMatchRuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.MinElectiveCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.SpecialMinElectiveCreditRuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
 import ca.bc.gov.educ.api.ruleengine.util.PermissionsContants;
@@ -98,6 +100,20 @@ public class RuleEngineController {
     public RuleData runMinElectiveCreditsRule(@RequestBody MinElectiveCreditRuleData minElectiveCreditRuleInput) {
         logger.debug("**** Running MinElectiveCreditsRule");
         return ruleEngineService.runMinElectiveCreditsRule(minElectiveCreditRuleInput);
+    }
+    
+    @PostMapping ("/run-special-match-rules")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
+    public RuleData runSpecialMatchRules(@RequestBody SpecialMatchRuleData matchRuleSpecialInput) {
+        logger.debug("**** Running Special Match Rules");
+        return ruleEngineService.runSpecialMatchRules(matchRuleSpecialInput);
+    }
+
+    @PostMapping ("/run-special-min-elective-credits-rules")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
+    public RuleData runSpecialMinElectiveCreditsRule(@RequestBody SpecialMinElectiveCreditRuleData minElectiveCreditSpecialRuleInput) {
+        logger.debug("**** Running Special Min Elective Credits Rule");
+        return ruleEngineService.runSpecialMinElectiveCreditsRule(minElectiveCreditSpecialRuleInput);
     }
 
     /*

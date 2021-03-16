@@ -1,18 +1,34 @@
 package ca.bc.gov.educ.api.ruleengine.service;
 
-import ca.bc.gov.educ.api.ruleengine.rule.*;
-import ca.bc.gov.educ.api.ruleengine.struct.*;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils.parseTraxDate;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.util.*;
-
-import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils.parseTraxDate;
+import ca.bc.gov.educ.api.ruleengine.rule.MatchRule;
+import ca.bc.gov.educ.api.ruleengine.rule.MinCreditsRule;
+import ca.bc.gov.educ.api.ruleengine.rule.MinElectiveCreditsRule;
+import ca.bc.gov.educ.api.ruleengine.rule.Rule;
+import ca.bc.gov.educ.api.ruleengine.rule.RuleFactory;
+import ca.bc.gov.educ.api.ruleengine.rule.RuleType;
+import ca.bc.gov.educ.api.ruleengine.rule.SpecialMatchRule;
+import ca.bc.gov.educ.api.ruleengine.rule.SpecialMinElectiveCreditsRule;
+import ca.bc.gov.educ.api.ruleengine.struct.MatchRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.MinElectiveCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.SpecialMatchRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.SpecialMinElectiveCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 
 @Service
 public class RuleEngineService {
@@ -272,4 +288,19 @@ public class RuleEngineService {
 
         return result;
     }
+
+	public RuleData runSpecialMatchRules(SpecialMatchRuleData matchRuleSpecialInput) {
+		Rule rule = RuleFactory.createRule(RuleType.SPECIAL_MATCH, matchRuleSpecialInput);
+        ((SpecialMatchRule)rule).setInputData(matchRuleSpecialInput);
+        RuleData result = ruleFactory.createRuleEngine(rule).fireRules();
+        return result;
+	}
+
+	public RuleData runSpecialMinElectiveCreditsRule(SpecialMinElectiveCreditRuleData minElectiveCreditSpecialRuleInput) {
+		Rule rule = RuleFactory.createRule(RuleType.SPECIAL_MIN_CREDITS_ELECTIVE, minElectiveCreditSpecialRuleInput);
+        ((SpecialMinElectiveCreditsRule)rule).setInputData(minElectiveCreditSpecialRuleInput);
+        RuleData result = ruleFactory.createRuleEngine(rule).fireRules();
+
+        return result;
+	}
 }

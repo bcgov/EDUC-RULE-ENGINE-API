@@ -1,15 +1,17 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.struct.MatchRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.MinElectiveCreditRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import ca.bc.gov.educ.api.ruleengine.struct.MatchRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.SpecialMatchRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.MinElectiveCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.SpecialMinElectiveCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 
 @Component
 public class RuleFactory {
@@ -24,6 +26,10 @@ public class RuleFactory {
                 return new MatchRule((MatchRuleData) inputData);
             case MIN_CREDITS_ELECTIVE:
                 return new MinElectiveCreditsRule((MinElectiveCreditRuleData) inputData);
+            case SPECIAL_MATCH:
+            	return new SpecialMatchRule((SpecialMatchRuleData) inputData);
+            case SPECIAL_MIN_CREDITS_ELECTIVE:
+            	return new SpecialMinElectiveCreditsRule((SpecialMinElectiveCreditRuleData) inputData);
             default:
                 return new MinCreditsRule((MinCreditRuleData) inputData);
         }
