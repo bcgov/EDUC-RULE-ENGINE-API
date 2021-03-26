@@ -9,4 +9,6 @@ public interface Rule {
     RuleType ruleType = null;
 
     RuleData fire();
+
+    public void setInputData(RuleData inputData);
 }

@@ -40,14 +40,14 @@ pipeline{
 
       REPO_NAME = 'educ-rule-engine-api'
       OWNER = 'bcgov'
-      JOB_NAME = 'main'
+      JOB_NAME = 'release-1.0.0'
       TAG = 'dev'
 
       APP_NAME = 'rule-engine-api'
       APP_DOMAIN = 'apps.silver.devops.gov.bc.ca'
 
-      SOURCE_REPO_RAW = 'https://github.com/${OWNER}/${REPO_NAME}/main'
-      SOURCE_REPO_REF = 'main'
+      SOURCE_REPO_RAW = 'https://github.com/${OWNER}/${REPO_NAME}/release/1.0.0'
+      SOURCE_REPO_REF = 'release/1.0.0'
       SOURCE_REPO_URL = 'https://github.com/${OWNER}/${REPO_NAME}.git'
 
       TOOLS_HOST_ROUTE = "${APP_NAME}-${TOOLS}.${APP_DOMAIN}"
@@ -95,7 +95,7 @@ pipeline{
       steps {
         script {
           openshift.withCluster() {
-            openshift.newBuild("--name=${REPO_NAME}-${JOB_NAME}", "--image-stream=redhat-openjdk18-openshift:1.1", "--binary")
+            openshift.newBuild("--name=${REPO_NAME}-${JOB_NAME}", "--image-stream=openjdk-11-rhel8:1.0", "--binary")
           }
         }
       }
