@@ -1,5 +1,13 @@
 package ca.bc.gov.educ.api.ruleengine.util;
 
+import ca.bc.gov.educ.api.ruleengine.controller.RuleEngineController;
+import ca.bc.gov.educ.api.ruleengine.rule.Rule;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -9,6 +17,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class RuleEngineApiUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(RuleEngineApiUtils.class);
 
     public static String formatDate (Date date) {
         if (date == null)
@@ -76,5 +86,31 @@ public class RuleEngineApiUtils {
                 LocalDate.parse(date2).withDayOfMonth(1));
 
         return diff.getMonths();
+    }
+
+    public static Rule getRuleObject(String ruleImplementation, RuleProcessorData data) {
+        Class<Rule> clazz;
+        Rule rule = null;
+
+        try {
+            clazz = (Class<Rule>)Class.forName("ca.bc.gov.educ.api.ruleengine.rule." + ruleImplementation);
+            rule = clazz.getDeclaredConstructor(RuleProcessorData.class).newInstance(data);
+            System.out.println("Class Created: " + rule.getClass());
+        }catch (Exception e) {
+            logger.debug("ERROR: No Such Class: " + ruleImplementation);
+            logger.debug("Message:" + e.getMessage());
+        }
+
+        return rule;
+    }
+
+    public static <T> T cloneObject(T input) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        T output = (T) objectMapper
+                .readValue(objectMapper.writeValueAsString(input), input.getClass());
+
+        return output;
     }
 }
