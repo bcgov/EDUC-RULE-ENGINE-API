@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 
 import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
 import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.SpecialMinElectiveCreditRuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,17 +28,17 @@ public class SpecialMinElectiveCreditsRule implements Rule {
     private static Logger logger = LoggerFactory.getLogger(SpecialMinElectiveCreditsRule.class);
 
     @Autowired
-    private SpecialMinElectiveCreditRuleData inputData;
+    private RuleProcessorData ruleProcessorData;
     final RuleType ruleType = RuleType.SPECIAL_MIN_CREDITS_ELECTIVE;
 
-    public SpecialMinElectiveCreditRuleData fire() {
+    public RuleProcessorData fire() {
     	    	
     	List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
         List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
 
-        List<StudentCourse> courseList = inputData.getStudentCourses().getStudentCourseList();
+        List<StudentCourse> courseList = ruleProcessorData.getStudentCourses();
         
-        List<GradSpecialProgramRule> gradSpecialProgramMinCreditElectiveRulesMatch = inputData.getGradSpecialProgramRules().getGradProgramRuleList()
+        List<GradSpecialProgramRule> gradSpecialProgramMinCreditElectiveRulesMatch = ruleProcessorData.getGradSpecialProgramRules()
                 .stream()
                 .filter(gradSpecialProgramRule -> "MCE".compareTo(gradSpecialProgramRule.getRequirementType()) == 0)
                 .collect(Collectors.toList());
@@ -120,7 +121,6 @@ public class SpecialMinElectiveCreditsRule implements Rule {
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
-            inputData.setPassed(true);
             logger.debug("All the match rules met!");
         } else {
             for (GradSpecialProgramRule failedRule : failedRules) {
@@ -132,11 +132,17 @@ public class SpecialMinElectiveCreditsRule implements Rule {
 
         logger.debug("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);        
 
-        inputData.setPassMessages(requirementsMet);
-        inputData.setFailMessages(requirementsNotMet);
+        ruleProcessorData.setRequirementsMet(requirementsMet);
+        ruleProcessorData.setNonGradReasons(requirementsNotMet);
 
         
-        return inputData;
+        return ruleProcessorData;
+    }
+    
+    @Override
+    public void setInputData(RuleData inputData) {
+        ruleProcessorData = (RuleProcessorData) inputData;
+        logger.info("SpecialMatchRule: Rule Processor Data set.");
     }
 
 }

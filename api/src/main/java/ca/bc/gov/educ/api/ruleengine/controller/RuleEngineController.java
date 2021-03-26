@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.controller;
 
+import ca.bc.gov.educ.api.ruleengine.struct.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
-import ca.bc.gov.educ.api.ruleengine.struct.MatchRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.SpecialMatchRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.MinCreditRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.MinElectiveCreditRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.SpecialMinElectiveCreditRuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
 import ca.bc.gov.educ.api.ruleengine.util.PermissionsContants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -87,7 +81,6 @@ public class RuleEngineController {
         return ruleEngineService.runMinCreditsRule(minCreditRuleInput);
     }
 
-    
     @PostMapping ("/run-match-rules")
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public RuleData runMatchRules(@RequestBody MatchRuleData matchRuleInput) {
@@ -114,6 +107,14 @@ public class RuleEngineController {
     public RuleData runSpecialMinElectiveCreditsRule(@RequestBody SpecialMinElectiveCreditRuleData minElectiveCreditSpecialRuleInput) {
         logger.debug("**** Running Special Min Elective Credits Rule");
         return ruleEngineService.runSpecialMinElectiveCreditsRule(minElectiveCreditSpecialRuleInput);
+    }
+
+    @PostMapping ("/run-grad-algorithm-rules")
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
+    public RuleProcessorData processGradAlgorithmRules(@RequestBody RuleProcessorData ruleProcessorData) {
+        logger.debug("**** Processing Grad Algorithm Rules");
+        //logger.debug("Received data:" + ruleProcessorData.toString());
+        return ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
     }
 
     /*

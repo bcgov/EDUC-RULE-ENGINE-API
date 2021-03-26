@@ -14,14 +14,11 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.bc.gov.educ.api.ruleengine.struct.CourseRequirement;
-import ca.bc.gov.educ.api.ruleengine.struct.CourseRequirements;
 import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
 import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRules;
-import ca.bc.gov.educ.api.ruleengine.struct.SpecialMatchRuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,7 +32,8 @@ public class SpecialMatchRule implements Rule {
     private static Logger logger = LoggerFactory.getLogger(SpecialMatchRule.class);
 
     @Autowired
-    private SpecialMatchRuleData inputData;
+    private RuleProcessorData ruleProcessorData;
+    
     final RuleType ruleType = RuleType.MATCH;
 
     public RuleData fire() {
@@ -43,12 +41,12 @@ public class SpecialMatchRule implements Rule {
         List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
         List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
 
-        List<StudentCourse> courseList = inputData.getStudentCourses().getStudentCourseList();
-        List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = inputData.getGradSpecialProgramRules().getGradProgramRuleList()
+        List<StudentCourse> courseList = ruleProcessorData.getStudentCourses();
+        List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRules()
                 .stream()
                 .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0)
                 .collect(Collectors.toList());
-        List<CourseRequirement> courseRequirements = inputData.getCourseRequirements().getCourseRequirementList();
+        List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
         List<CourseRequirement> originalCourseRequirements = new ArrayList<CourseRequirement>(courseRequirements);
        
         logger.debug("#### Match Special Program Rule size: " + gradSpecialProgramRulesMatch.size());
@@ -130,18 +128,9 @@ public class SpecialMatchRule implements Rule {
         }
         
         
-
-        SpecialMatchRuleData outputData = new SpecialMatchRuleData();
-        StudentCourses studentCourses = new StudentCourses();
-        GradSpecialProgramRules programRules = new GradSpecialProgramRules();
-        CourseRequirements courseReqs = new CourseRequirements();
-        
-        studentCourses.setStudentCourseList(finalCourseList);
-        programRules.setGradProgramRuleList(finalSpecialProgramRulesList);
-        courseReqs.setCourseRequirementList(originalCourseRequirements);
-        outputData.setStudentCourses(studentCourses);
-        outputData.setGradSpecialProgramRules(programRules);
-        outputData.setCourseRequirements(courseReqs);
+        ruleProcessorData.setStudentCourses(finalCourseList);
+        ruleProcessorData.setGradSpecialProgramRules(finalSpecialProgramRulesList);
+        ruleProcessorData.setCourseRequirements(originalCourseRequirements);
 
         //logger.debug("Output Data:\n" + outputData);
 
@@ -149,7 +138,6 @@ public class SpecialMatchRule implements Rule {
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
-            outputData.setPassed(true);
             logger.debug("All the match rules met!");
         } else {
             for (GradSpecialProgramRule failedRule : failedRules) {
@@ -158,8 +146,8 @@ public class SpecialMatchRule implements Rule {
             logger.debug("One or more Match rules not met!");
         }
 
-        outputData.setPassMessages(requirementsMet);
-        outputData.setFailMessages(requirementsNotMet);
+        ruleProcessorData.setRequirementsMet(requirementsMet);
+        ruleProcessorData.setNonGradReasons(requirementsNotMet);
 
         /*ListIterator<AchievementDto> achievementsIterator = achievementsCopy.listIterator();
 
@@ -209,12 +197,18 @@ public class SpecialMatchRule implements Rule {
             student.getGradMessages().add("All the Match rules met.");
         }*/
 
-        return outputData;
+        return ruleProcessorData;
     }
 
 
     public boolean fire(Object inputData, Object outputData) {
         return false;
+    }
+    
+    @Override
+    public void setInputData(RuleData inputData) {
+        ruleProcessorData = (RuleProcessorData) inputData;
+        logger.info("SpecialMatchRule: Rule Processor Data set.");
     }
 
 }

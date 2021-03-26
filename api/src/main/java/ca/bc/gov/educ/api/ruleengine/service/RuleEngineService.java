@@ -1,18 +1,20 @@
 package ca.bc.gov.educ.api.ruleengine.service;
 
 import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils.parseTraxDate;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import ca.bc.gov.educ.api.ruleengine.rule.*;
+import ca.bc.gov.educ.api.ruleengine.struct.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ca.bc.gov.educ.api.ruleengine.rule.MatchRule;
+import ca.bc.gov.educ.api.ruleengine.rule.MatchCreditsRule;
 import ca.bc.gov.educ.api.ruleengine.rule.MinCreditsRule;
 import ca.bc.gov.educ.api.ruleengine.rule.MinElectiveCreditsRule;
 import ca.bc.gov.educ.api.ruleengine.rule.Rule;
@@ -268,7 +270,7 @@ public class RuleEngineService {
 
         String ruleType = "M";
         Rule rule = ruleFactory.createRule(RuleType.MATCH, matchRuleInput);
-        ((MatchRule)rule).setInputData(matchRuleInput);
+        ((MatchCreditsRule)rule).setInputData(matchRuleInput);
         RuleData result = ruleFactory.createRuleEngine(rule).fireRules();
 
         /*for (ProgramRule programRule : matchRuleInput.getProgramRules().getProgramRuleList()){
@@ -288,7 +290,7 @@ public class RuleEngineService {
 
         return result;
     }
-
+    
 	public RuleData runSpecialMatchRules(SpecialMatchRuleData matchRuleSpecialInput) {
 		Rule rule = RuleFactory.createRule(RuleType.SPECIAL_MATCH, matchRuleSpecialInput);
         ((SpecialMatchRule)rule).setInputData(matchRuleSpecialInput);
@@ -303,4 +305,26 @@ public class RuleEngineService {
 
         return result;
 	}
+
+    @SneakyThrows
+    public RuleProcessorData processGradAlgorithmRules(RuleProcessorData ruleProcessorData) {
+
+        logger.debug("In Service ProcessGradAlgorithmRules");
+
+        RuleProcessorData originalData = RuleEngineApiUtils.cloneObject(ruleProcessorData);
+        ruleProcessorData.setGraduated(true);
+
+        //logger.debug("Original Data: " + originalData);
+
+        for (GradAlgorithmRule gradAlgorithmRule : originalData.getGradAlgorithmRules()) {
+            Rule rule = RuleEngineApiUtils.getRuleObject(gradAlgorithmRule.getRuleImplementation(), ruleProcessorData);
+            rule.setInputData(ruleProcessorData);
+            ruleProcessorData = (RuleProcessorData)rule.fire();
+        }
+
+        //logger.debug("Rule Processor Data: " + ruleProcessorData);
+
+        return ruleProcessorData;
+    }
+
 }
