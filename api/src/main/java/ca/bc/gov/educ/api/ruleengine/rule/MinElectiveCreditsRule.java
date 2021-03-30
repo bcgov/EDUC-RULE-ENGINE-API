@@ -45,14 +45,14 @@ public class MinElectiveCreditsRule implements Rule {
 
         List<GradProgramRule> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gpr -> "MCE".compareTo(gpr.getRequirementType()) == 0)
+                .filter(gpr -> "MCE".compareTo(gpr.getRequirementType()) == 0
+                        && "Y".compareTo(gpr.getIsActive()) == 0)
                 .collect(Collectors.toList());
 
         logger.debug(gradProgramRules.toString());
 
         for (GradProgramRule gradProgramRule : gradProgramRules) {
-            requiredCredits = Integer.parseInt(gradProgramRules.get(0).getRequiredCredits().trim()); //list
-
+            requiredCredits = Integer.parseInt(gradProgramRule.getRequiredCredits().trim()); //list
 
             List<StudentCourse> tempStudentCourseList = new ArrayList<>();
 
@@ -89,6 +89,7 @@ public class MinElectiveCreditsRule implements Rule {
 
             if (totalCredits >= requiredCredits) {
                 logger.info(gradProgramRule.getRequirementName() + " Passed");
+                gradProgramRule.setPassed(true);
 
                 List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils.parseTraxDate;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 
 @Data
 @Component
@@ -63,13 +63,13 @@ public class DuplicateCoursesRule implements Rule {
                         studentCourseList.get(j).setDuplicate(false);
                     } else if (studentCourseList.get(i).getCompletedCoursePercentage() == studentCourseList.get(j).getCompletedCoursePercentage()) {
 
-                        if (parseTraxDate(studentCourseList.get(i).getSessionDate())
-                                .compareTo(parseTraxDate(studentCourseList.get(j).getSessionDate())) < 0) {
+                        if (RuleEngineApiUtils.parseTraxDate(studentCourseList.get(i).getSessionDate())
+                                .compareTo(RuleEngineApiUtils.parseTraxDate(studentCourseList.get(j).getSessionDate())) < 0) {
                             //courseAchievements.set(j, courseAchievements.get(i));
                             studentCourseList.get(i).setDuplicate(false);
                             studentCourseList.get(j).setDuplicate(true);
-                        } else if (parseTraxDate(studentCourseList.get(i).getSessionDate())
-                                .compareTo(parseTraxDate(studentCourseList.get(j).getSessionDate())) >= 0) {
+                        } else if (RuleEngineApiUtils.parseTraxDate(studentCourseList.get(i).getSessionDate())
+                                .compareTo(RuleEngineApiUtils.parseTraxDate(studentCourseList.get(j).getSessionDate())) >= 0) {
                             //courseAchievements.set(i, courseAchievements.get(j));
                             studentCourseList.get(i).setDuplicate(true);
                             studentCourseList.get(j).setDuplicate(false);
@@ -80,9 +80,6 @@ public class DuplicateCoursesRule implements Rule {
                 }
             }
         }
-
-        //Remove duplicates
-        //copy = copy.stream().distinct().collect(Collectors.toList());
 
         logger.info("Duplicate Courses: " +
                 (int) studentCourseList

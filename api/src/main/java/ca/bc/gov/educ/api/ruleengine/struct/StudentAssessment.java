@@ -20,11 +20,4 @@ public class StudentAssessment {
     private Double percentComplete;
     private Double irtScore;
 
-    @Override
-    public String toString() {
-        return "StudentAssessment [pen=" + pen + ", assessmentCode=" + assessmentCode + ", sessionDate=" + sessionDate
-                + ", gradReqMet=" + gradReqMet + ", specialCase=" + specialCase + ", exceededWriteFlag="
-                + exceededWriteFlag + ", proficiencyScore=" + proficiencyScore + ", wroteFlag=" + wroteFlag
-                + ", rawScore=" + rawScore + ", percentComplete=" + percentComplete + ", irtScore=" + irtScore + "]";
-    }
 }

@@ -34,9 +34,8 @@ public class LDCoursesRule implements Rule {
         logger.debug("###################### Finding LOCALLY DEVELOPED courses ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
-            if (studentCourse.getCourseCode().startsWith("X")) {
+            if (studentCourse.getCourseCode().startsWith("X"))
                 studentCourse.setLocallyDeveloped(true);
-            }
         }
 
         ruleProcessorData.setStudentCourses(studentCourseList);

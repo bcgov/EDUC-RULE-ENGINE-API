@@ -38,7 +38,8 @@ public class MatchCreditsRule implements Rule {
 
         List<GradProgramRule> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) == 0)
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) == 0
+                        && "Y".compareTo(gradProgramRule.getIsActive()) == 0)
                 .collect(Collectors.toList());
 
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
@@ -122,6 +123,12 @@ public class MatchCreditsRule implements Rule {
                 logger.error("ERROR:" + e.getMessage());
             }
         }
+
+        //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
+        finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
+                .stream()
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) != 0)
+                .collect(Collectors.toList()));
 
         ruleProcessorData.setStudentCourses(finalCourseList);
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);
