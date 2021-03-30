@@ -34,12 +34,14 @@ public class FailedCoursesRule implements Rule {
         logger.debug("###################### Finding FAILED courses ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
-            if ("F".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
-                    || "I".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
-                    || "WR".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
-                    || "NM".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0) {
+
+            boolean failed = ruleProcessorData.getGradLetterGradeList()
+                    .stream()
+                    .anyMatch(lg -> lg.getLetterGrade().compareTo(studentCourse.getCompletedCourseLetterGrade()) == 0
+                            && lg.getPassFlag().compareTo("N") == 0);
+
+            if (failed)
                 studentCourse.setFailed(true);
-            }
         }
 
         ruleProcessorData.setStudentCourses(studentCourseList);

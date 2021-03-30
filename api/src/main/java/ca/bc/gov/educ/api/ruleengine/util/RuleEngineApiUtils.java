@@ -20,7 +20,7 @@ public class RuleEngineApiUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleEngineApiUtils.class);
 
-    public static String formatDate (Date date) {
+    public static String formatDate(Date date) {
         if (date == null)
             return null;
 
@@ -28,12 +28,12 @@ public class RuleEngineApiUtils {
         return simpleDateFormat.format(date);
     }
 
-    public static String formatDate (Date date, String dateFormat) {
+    public static String formatDate(Date date, String dateFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         return simpleDateFormat.format(date);
     }
 
-    public static Date parseDate (String dateString) {
+    public static Date parseDate(String dateString) {
         if (dateString == null || "".compareTo(dateString) == 0)
             return null;
 
@@ -49,7 +49,7 @@ public class RuleEngineApiUtils {
         return date;
     }
 
-    public static Date parseDate (String dateString, String dateFormat) throws ParseException {
+    public static Date parseDate(String dateString, String dateFormat) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         Date date = new Date();
 
@@ -61,8 +61,8 @@ public class RuleEngineApiUtils {
 
         return date;
     }
-    
-    public static String parseTraxDate (String sessionDate) {
+
+    public static String parseTraxDate(String sessionDate) {
         if (sessionDate == null)
             return null;
 
@@ -72,12 +72,12 @@ public class RuleEngineApiUtils {
         try {
             date = simpleDateFormat.parse(sessionDate);
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            return localDate.getYear() +"/"+ String.format("%02d", localDate.getMonthValue());
-            
+            return localDate.getYear() + "/" + String.format("%02d", localDate.getMonthValue());
+
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
-        }       
+        }
     }
 
     public static int getDifferenceInMonths(String date1, String date2) {
@@ -88,29 +88,4 @@ public class RuleEngineApiUtils {
         return diff.getMonths();
     }
 
-    public static Rule getRuleObject(String ruleImplementation, RuleProcessorData data) {
-        Class<Rule> clazz;
-        Rule rule = null;
-
-        try {
-            clazz = (Class<Rule>)Class.forName("ca.bc.gov.educ.api.ruleengine.rule." + ruleImplementation);
-            rule = clazz.getDeclaredConstructor(RuleProcessorData.class).newInstance(data);
-            System.out.println("Class Created: " + rule.getClass());
-        }catch (Exception e) {
-            logger.debug("ERROR: No Such Class: " + ruleImplementation);
-            logger.debug("Message:" + e.getMessage());
-        }
-
-        return rule;
-    }
-
-    public static <T> T cloneObject(T input) throws IOException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        T output = (T) objectMapper
-                .readValue(objectMapper.writeValueAsString(input), input.getClass());
-
-        return output;
-    }
 }
