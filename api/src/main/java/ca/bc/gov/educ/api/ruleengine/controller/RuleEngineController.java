@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.ruleengine.controller;
 
-import ca.bc.gov.educ.api.ruleengine.struct.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.util.PermissionsContants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;

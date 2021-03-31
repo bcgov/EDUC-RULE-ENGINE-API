@@ -31,6 +31,7 @@ public class StudentCourse {
     private String relatedLevel;
     private String hasRelatedCourse;
     private boolean isNotCompleted;
+    private String language;
     private boolean isProjected;
     private boolean isFailed;
     private boolean isDuplicate;
@@ -70,5 +71,4 @@ public class StudentCourse {
                 + ", isFailed=" + isFailed + ", isDuplicate=" + isDuplicate + ", isCareerPrep=" + isCareerPrep
                 + ", isLocallyDeveloped=" + isLocallyDeveloped + ", isUsed=" + isUsed + "]";
     }
-
 }
