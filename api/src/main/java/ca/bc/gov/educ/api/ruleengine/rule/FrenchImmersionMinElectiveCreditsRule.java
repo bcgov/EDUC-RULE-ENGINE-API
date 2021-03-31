@@ -84,7 +84,16 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 break;
             }
         }
-        
+        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialPrograms();
+
+        if (reqsMet == null)
+            reqsMet = new ArrayList<GradRequirement>();
+
+        reqsMet.addAll(requirementsMet);
+
+        ruleProcessorData.setRequirementsMetSpecialPrograms(reqsMet);
+        requirementsMet = new ArrayList<GradRequirement>();
+        requirementsNotMet = new ArrayList<GradRequirement>();
         List<StudentCourse> modifiedList2 = modifiedList.stream()
                 .filter(sc -> sc.isUsed())
                 .collect(Collectors.toList());
@@ -119,6 +128,14 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 break;
             }
         }            
+        reqsMet = ruleProcessorData.getRequirementsMetSpecialPrograms();
+
+        if (reqsMet == null)
+            reqsMet = new ArrayList<GradRequirement>();
+
+        reqsMet.addAll(requirementsMet);
+
+        ruleProcessorData.setRequirementsMetSpecialPrograms(reqsMet);
         
         List<GradSpecialProgramRule> failedRules = gradSpecialProgramMinCreditElectiveRulesMatch.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
@@ -129,11 +146,12 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             for (GradSpecialProgramRule failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
             }
+            ruleProcessorData.setSpecialProgramGraduated(false);
             logger.debug("One or more Min Elective Credit rules not met!");
         }
         
-        ruleProcessorData.setRequirementsMet(requirementsMet);
-        ruleProcessorData.setNonGradReasons(requirementsNotMet);
+        ruleProcessorData.setRequirementsMetSpecialPrograms(requirementsMet);
+        ruleProcessorData.setNonGradReasonsSpecialPrograms(requirementsNotMet);
 
         
         return ruleProcessorData;

@@ -31,6 +31,8 @@ public class RuleProcessorData implements RuleData {
     private List<GradLetterGrade> gradLetterGradeList;
     private List<GradRequirement> nonGradReasons;
     private List<GradRequirement> requirementsMet;
+    private List<GradRequirement> nonGradReasonsSpecialPrograms;
+    private List<GradRequirement> requirementsMetSpecialPrograms;
     private boolean isGraduated;
     private boolean isSpecialProgramGraduated;
     private boolean hasSpecialProgramFrenchImmersion;
