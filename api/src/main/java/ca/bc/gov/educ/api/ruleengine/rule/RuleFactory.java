@@ -1,12 +1,12 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.struct.*;
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 
 @Component
 public class RuleFactory {
