@@ -27,9 +27,9 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpecialMatchRule implements Rule {
+public class FrenchImmersionMatchRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(SpecialMatchRule.class);
+    private static Logger logger = LoggerFactory.getLogger(FrenchImmersionMatchRule.class);
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -38,11 +38,15 @@ public class SpecialMatchRule implements Rule {
 
     public RuleData fire() {
 
+    	if(!ruleProcessorData.isHasSpecialProgramFrenchImmersion()) {
+    		return ruleProcessorData;
+    	}
+    	ruleProcessorData.setSpecialProgramGraduated(true);
         List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
         List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
 
-        List<StudentCourse> courseList = ruleProcessorData.getStudentCourses();
-        List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRules()
+        List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForSpecialProgram();
+        List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
                 .stream()
                 .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0)
                 .collect(Collectors.toList());
@@ -128,11 +132,8 @@ public class SpecialMatchRule implements Rule {
         }
         
         
-        ruleProcessorData.setStudentCourses(finalCourseList);
-        ruleProcessorData.setGradSpecialProgramRules(finalSpecialProgramRulesList);
+        ruleProcessorData.setStudentCoursesForSpecialProgram(finalCourseList);
         ruleProcessorData.setCourseRequirements(originalCourseRequirements);
-
-        //logger.debug("Output Data:\n" + outputData);
 
         List<GradSpecialProgramRule> failedRules = finalSpecialProgramRulesList.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
@@ -143,60 +144,12 @@ public class SpecialMatchRule implements Rule {
             for (GradSpecialProgramRule failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
             }
+            ruleProcessorData.setSpecialProgramGraduated(false);
             logger.debug("One or more Match rules not met!");
         }
 
         ruleProcessorData.setRequirementsMet(requirementsMet);
         ruleProcessorData.setNonGradReasons(requirementsNotMet);
-
-        /*ListIterator<AchievementDto> achievementsIterator = achievementsCopy.listIterator();
-
-        while(achievementsIterator.hasNext()) {
-
-            AchievementDto tempAchievement = achievementsIterator.next();
-            ProgramRule tempProgramRule = programRulesMatch.stream()
-                    .filter(pr -> tempAchievement
-                            .getCourse()
-                            .getRequirementCode()
-                            .getRequirementCode() == pr.getRequirementCode())
-                    .findAny()
-                    .orElse(null);
-
-            if(tempProgramRule != null && !tempAchievement.isFailed() && !tempAchievement.isDuplicate()){
-                achievementsIterator.remove();
-                logger.debug("Requirement Met -> Requirement Code:" + tempProgramRule.getRequirementCode()
-                        + " Course:" + tempAchievement.getCourse().getCourseName() + "\n");
-
-                tempAchievement.setGradRequirementMet(tempProgramRule.getRequirementCode());
-                student.getRequirementsMet().add("Met " + tempProgramRule.getRequirementName());
-                finalAchievements.add(tempAchievement);
-                programRulesMatch.remove(tempProgramRule);
-                achievementsCopy.remove(tempAchievement);
-            }
-        }
-
-        finalAchievements = Stream.concat(finalAchievements.stream()
-                , achievementsCopy.stream())
-                .collect(Collectors.toList());
-
-        student.setAchievements(finalAchievements);
-
-        logger.debug("Leftover Course Achievements:" + achievementsCopy + "\n");
-        logger.debug("Leftover Program Rules: " + programRulesMatch + "\n");
-
-        if (programRulesMatch.size() > 0) {
-            gradStatusFlag = false;
-
-            for (ProgramRule programRule : programRulesMatch) {
-                student.getRequirementsNotMet().add(programRule.getNotMetDescription());
-            }
-
-            student.getGradMessages().add("All the Match rules not Met.");
-        }
-        else {
-            student.getGradMessages().add("All the Match rules met.");
-        }*/
-
         return ruleProcessorData;
     }
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import ca.bc.gov.educ.api.ruleengine.rule.Rule;
 import ca.bc.gov.educ.api.ruleengine.rule.RuleFactory;
-import ca.bc.gov.educ.api.ruleengine.struct.GradAlgorithmRule;
+import ca.bc.gov.educ.api.ruleengine.struct.GradAlgorithmRules;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.SneakyThrows;
@@ -30,12 +30,11 @@ public class RuleEngineService {
         RuleProcessorData originalData = RuleProcessorRuleUtils.cloneObject(ruleProcessorData);
         ruleProcessorData.setGraduated(true);
 
-        for (GradAlgorithmRule gradAlgorithmRule : originalData.getGradAlgorithmRules()) {
-            Rule rule = RuleFactory.createRule(gradAlgorithmRule.getRuleImplementation(), ruleProcessorData);
+        for (GradAlgorithmRules gradAlgorithmRule : originalData.getGradAlgorithmRules()) {
+        	Rule rule = RuleFactory.createRule(gradAlgorithmRule.getRuleImplementation(), ruleProcessorData);
             rule.setInputData(ruleProcessorData);
             ruleProcessorData = (RuleProcessorData)rule.fire();
         }
-
         return ruleProcessorData;
     }
 

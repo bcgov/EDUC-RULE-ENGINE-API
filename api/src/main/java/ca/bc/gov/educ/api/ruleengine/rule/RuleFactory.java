@@ -16,6 +16,7 @@ public class RuleFactory {
     public static Rule createRule(String ruleImplementation, RuleProcessorData data) {
         Class<Rule> clazz;
         Rule rule = null;
+
         try {
             clazz = (Class<Rule>) Class.forName("ca.bc.gov.educ.api.ruleengine.rule." + ruleImplementation);
             rule = clazz.getDeclaredConstructor(RuleProcessorData.class).newInstance(data);

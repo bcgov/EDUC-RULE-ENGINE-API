@@ -23,9 +23,8 @@ public class RestrictedCoursesRule implements Rule {
 
     @Override
     public RuleData fire() {
-
         logger.debug("###################### Finding COURSE RESTRICTIONS ###################### - NOT YET IMPLEMENTED!!!");
-
+        ruleProcessorData.setStudentCoursesForSpecialProgram(ruleProcessorData.getStudentCourses());
         return ruleProcessorData;
     }
 
