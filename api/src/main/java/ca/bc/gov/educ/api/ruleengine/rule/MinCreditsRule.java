@@ -34,7 +34,7 @@ public class MinCreditsRule implements Rule {
 
         if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");
-            return null;
+            return ruleProcessorData;
         }
 
         List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
@@ -44,26 +44,20 @@ public class MinCreditsRule implements Rule {
 
         List<GradProgramRule> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gpr -> "MC".compareTo(gpr.getRequirementType()) == 0)
+                .filter(gpr -> "MC".compareTo(gpr.getRequirementType()) == 0
+                            && "Y".compareTo(gpr.getIsActive()) == 0)
                 .collect(Collectors.toList());
 
         logger.debug(gradProgramRules.toString());
 
         for (GradProgramRule gradProgramRule : gradProgramRules) {
-
             requiredCredits = Integer.parseInt(gradProgramRule.getRequiredCredits().trim());
-
             totalCredits = studentCourses
                     .stream()
                     .mapToInt(StudentCourse::getCredits)
                     .sum();
 
-            if (gradProgramRule.getRequiredLevel().trim().compareTo("") == 0) {
-                totalCredits = studentCourses
-                        .stream()
-                        .mapToInt(StudentCourse::getCredits)
-                        .sum();
-            } else {
+            if (gradProgramRule.getRequiredLevel().trim().compareTo("") != 0) {
                 String requiredLevel = gradProgramRule.getRequiredLevel().trim();
                 totalCredits = studentCourses
                         .stream()
@@ -75,6 +69,8 @@ public class MinCreditsRule implements Rule {
             if (totalCredits >= requiredCredits) {
                 logger.info(gradProgramRule.getRequirementName() + " Passed");
 
+                gradProgramRule.setPassed(true);
+
                 List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
                 if (reqsMet == null)
@@ -83,9 +79,6 @@ public class MinCreditsRule implements Rule {
                 reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(),
                         gradProgramRule.getRequirementName()));
                 ruleProcessorData.setRequirementsMet(reqsMet);
-
-                logger.debug("Min Credits Rule: Total-" + totalCredits + " Required-" + requiredCredits);
-
             } else {
                 logger.info(gradProgramRule.getRequirementDesc() + " Failed!");
                 ruleProcessorData.setGraduated(false);
@@ -104,8 +97,9 @@ public class MinCreditsRule implements Rule {
 
             requiredCredits = 0;
             totalCredits = 0;
-
         }
+
+        logger.debug(ruleProcessorData.toString());
 
         return ruleProcessorData;
     }
@@ -115,5 +109,4 @@ public class MinCreditsRule implements Rule {
         ruleProcessorData = (RuleProcessorData) inputData;
         logger.info("MinCreditsRule: Rule Processor Data set.");
     }
-
 }
