@@ -39,14 +39,13 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     	List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
         List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
 
-        List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForSpecialProgram();
-        
+        List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForFrenchImmersion();
         List<GradSpecialProgramRule> gradSpecialProgramMinCreditElectiveRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
                 .stream()
                 .filter(gradSpecialProgramRule -> "MCE".compareTo(gradSpecialProgramRule.getRequirementType()) == 0)
                 .collect(Collectors.toList());
        
-        logger.debug("#### Min Credit Elective Special Program Rule size: " + gradSpecialProgramMinCreditElectiveRulesMatch.size());
+        logger.debug("#### French Immersion Min Credit Elective Special Program Rule size: " + gradSpecialProgramMinCreditElectiveRulesMatch.size());
 
         List<StudentCourse> modifiedList = courseList.stream()
                 .filter(sc -> !sc.isUsed())
@@ -122,6 +121,15 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
 		            		}
 		            	}
             		sc.setUsed(true);
+            		if (sc.getGradReqMet().length() > 0) {
+
+                        sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getRuleCode());
+                        sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getRuleCode()
+                                + " - " + pR.getRequirementName());
+                    } else {
+                        sc.setGradReqMet(pR.getRuleCode());
+                        sc.setGradReqMetDetail(pR.getRuleCode() + " - " + pR.getRequirementName());
+                    }
             		}            		
             	}            
             if ((totalCreditsGrade11or12 == requiredCreditsGrad11or12) && totalCreditsGrade11or12 != 0) {
@@ -146,21 +154,23 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             for (GradSpecialProgramRule failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
             }
-            ruleProcessorData.setSpecialProgramGraduated(false);
-            logger.debug("One or more Min Elective Credit rules not met!");
-        }
-        
-        ruleProcessorData.setRequirementsMetSpecialPrograms(requirementsMet);
-        ruleProcessorData.setNonGradReasonsSpecialPrograms(requirementsNotMet);
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialPrograms();
 
-        
+            if (nonGradReasons == null)
+                nonGradReasons = new ArrayList<GradRequirement>();
+
+            nonGradReasons.addAll(requirementsNotMet);
+            ruleProcessorData.setNonGradReasonsSpecialPrograms(nonGradReasons);
+            ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(false);
+            logger.debug("One or more Min Elective Credit rules not met!");
+        }        
         return ruleProcessorData;
     }
     
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("SpecialMinElectiveCreditRule: Rule Processor Data set.");
+        logger.info("FrenchImmersionMinElectiveCreditRule: Rule Processor Data set.");
     }
 
 }
