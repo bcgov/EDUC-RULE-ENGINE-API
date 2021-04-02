@@ -41,19 +41,19 @@ public class FrenchImmersionMatchRule implements Rule {
     	if(!ruleProcessorData.isHasSpecialProgramFrenchImmersion()) {
     		return ruleProcessorData;
     	}
-    	ruleProcessorData.setSpecialProgramGraduated(true);
+    	ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(true);
         List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
         List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
 
-        List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForSpecialProgram();
+        List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForFrenchImmersion();
         List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
                 .stream()
-                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0)
+                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
+                		&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0)
                 .collect(Collectors.toList());
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
-        List<CourseRequirement> originalCourseRequirements = new ArrayList<CourseRequirement>(courseRequirements);
        
-        logger.debug("#### Match Special Program Rule size: " + gradSpecialProgramRulesMatch.size());
+        logger.info("#### Match Special Program Rule size: " + gradSpecialProgramRulesMatch.size());
 
         ListIterator<StudentCourse> courseIterator = courseList.listIterator();
        
@@ -132,8 +132,7 @@ public class FrenchImmersionMatchRule implements Rule {
         }
         
         
-        ruleProcessorData.setStudentCoursesForSpecialProgram(finalCourseList);
-        ruleProcessorData.setCourseRequirements(originalCourseRequirements);
+        ruleProcessorData.setStudentCoursesForFrenchImmersion(finalCourseList);
 
         List<GradSpecialProgramRule> failedRules = finalSpecialProgramRulesList.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
@@ -144,7 +143,7 @@ public class FrenchImmersionMatchRule implements Rule {
             for (GradSpecialProgramRule failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
             }
-            ruleProcessorData.setSpecialProgramGraduated(false);
+            ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(false);
             
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialPrograms();
 
@@ -175,7 +174,7 @@ public class FrenchImmersionMatchRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("SpecialMatchRule: Rule Processor Data set.");
+        logger.info("FrenchImmersionMatchRule: Rule Processor Data set.");
     }
 
 }
