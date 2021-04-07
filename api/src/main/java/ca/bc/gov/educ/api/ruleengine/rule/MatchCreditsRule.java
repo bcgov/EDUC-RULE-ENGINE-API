@@ -48,13 +48,13 @@ public class MatchCreditsRule implements Rule {
         //logger.debug("Course Requirements: " + courseRequirements);
         logger.debug("#### Match Program Rule size: " + gradProgramRulesMatch.size());
 
-        ListIterator<StudentCourse> courseIterator = courseList.listIterator();
-
         List<StudentCourse> finalCourseList = new ArrayList<StudentCourse>();
         List<GradProgramRule> finalProgramRulesList = new ArrayList<GradProgramRule>();
         StudentCourse tempSC;
         GradProgramRule tempPR;
         ObjectMapper objectMapper = new ObjectMapper();
+
+        ListIterator<StudentCourse> courseIterator = courseList.listIterator();
 
         while (courseIterator.hasNext()) {
             StudentCourse tempCourse = courseIterator.next();
@@ -115,8 +115,9 @@ public class MatchCreditsRule implements Rule {
                 logger.debug("TempSC: " + tempSC);
                 logger.debug("Final course List size: : " + finalCourseList.size());
                 tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), GradProgramRule.class);
-                if (tempPR != null)
+                if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
                     finalProgramRulesList.add(tempPR);
+                }
                 logger.debug("TempPR: " + tempPR);
                 logger.debug("Final Program rules list size: " + finalProgramRulesList.size());
             } catch (IOException e) {
@@ -124,17 +125,7 @@ public class MatchCreditsRule implements Rule {
             }
         }
 
-        //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
-        finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
-                .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) != 0)
-                .collect(Collectors.toList()));
-
-        ruleProcessorData.setStudentCourses(finalCourseList);
-        ruleProcessorData.setGradProgramRules(finalProgramRulesList);
-        ruleProcessorData.setCourseRequirements(originalCourseRequirements);
-
-        //logger.debug("Output Data:\n" + outputData);
+        logger.debug("Final Program rules list: " + finalProgramRulesList);
 
         List<GradProgramRule> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
@@ -157,6 +148,18 @@ public class MatchCreditsRule implements Rule {
             nonGradReasons.addAll(requirementsNotMet);
             ruleProcessorData.setNonGradReasons(nonGradReasons);
         }
+
+        //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
+        finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
+                .stream()
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) != 0)
+                .collect(Collectors.toList()));
+
+        logger.debug("Final Program rules list size 2: " + finalProgramRulesList.size());
+
+        ruleProcessorData.setStudentCourses(finalCourseList);
+        ruleProcessorData.setGradProgramRules(finalProgramRulesList);
+        ruleProcessorData.setCourseRequirements(originalCourseRequirements);
 
         List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
