@@ -3,6 +3,10 @@ package ca.bc.gov.educ.api.ruleengine.util;
 import ca.bc.gov.educ.api.ruleengine.controller.RuleEngineController;
 import ca.bc.gov.educ.api.ruleengine.rule.Rule;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +19,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class RuleEngineApiUtils {
 
@@ -86,6 +91,21 @@ public class RuleEngineApiUtils {
                 LocalDate.parse(date2).withDayOfMonth(1));
 
         return diff.getMonths();
+    }
+    
+    public static List<StudentCourse> getClone(List<StudentCourse> listCourses) {
+    	ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+
+		try {
+			json = mapper.writeValueAsString(listCourses);
+			List<StudentCourse> cList = mapper.readValue(json, new TypeReference<List<StudentCourse>>(){});
+			return cList;
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
     }
 
 }

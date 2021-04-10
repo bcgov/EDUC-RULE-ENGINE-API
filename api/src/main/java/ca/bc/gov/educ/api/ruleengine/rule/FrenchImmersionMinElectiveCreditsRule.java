@@ -15,6 +15,7 @@ import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -83,14 +84,15 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 break;
             }
         }
-        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialPrograms();
+        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsFrenchImmersion();
 
         if (reqsMet == null)
             reqsMet = new ArrayList<GradRequirement>();
 
         reqsMet.addAll(requirementsMet);
 
-        ruleProcessorData.setRequirementsMetSpecialPrograms(reqsMet);
+        ruleProcessorData.setRequirementsMetSpecialProgramsFrenchImmersion(reqsMet);
+        ruleProcessorData.setStudentCoursesForFrenchImmersion(RuleEngineApiUtils.getClone(modifiedList));
         requirementsMet = new ArrayList<GradRequirement>();
         requirementsNotMet = new ArrayList<GradRequirement>();
         List<StudentCourse> modifiedList2 = modifiedList.stream()
@@ -136,14 +138,14 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 break;
             }
         }            
-        reqsMet = ruleProcessorData.getRequirementsMetSpecialPrograms();
+        reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsFrenchImmersion();
 
         if (reqsMet == null)
             reqsMet = new ArrayList<GradRequirement>();
 
         reqsMet.addAll(requirementsMet);
 
-        ruleProcessorData.setRequirementsMetSpecialPrograms(reqsMet);
+        ruleProcessorData.setRequirementsMetSpecialProgramsFrenchImmersion(reqsMet);
         
         List<GradSpecialProgramRule> failedRules = gradSpecialProgramMinCreditElectiveRulesMatch.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
@@ -154,13 +156,13 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             for (GradSpecialProgramRule failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
             }
-            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialPrograms();
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsFrenchImmersion();
 
             if (nonGradReasons == null)
                 nonGradReasons = new ArrayList<GradRequirement>();
 
             nonGradReasons.addAll(requirementsNotMet);
-            ruleProcessorData.setNonGradReasonsSpecialPrograms(nonGradReasons);
+            ruleProcessorData.setNonGradReasonsSpecialProgramsFrenchImmersion(nonGradReasons);
             ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(false);
             logger.debug("One or more Min Elective Credit rules not met!");
         }        

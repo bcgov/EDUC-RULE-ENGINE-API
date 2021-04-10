@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -10,11 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
 import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,7 +56,9 @@ public class CareerProgramMatchRule implements Rule {
 
         ListIterator<StudentCourse> studentCourseIterator = courseList.listIterator();
         int totalCredits = 0;        
-        int requiredCredits = 0;        
+        int requiredCredits = 0;     
+        List<StudentCourse> finalCourseList = new ArrayList<StudentCourse>();
+        ObjectMapper objectMapper = new ObjectMapper();
         while (studentCourseIterator.hasNext()) {
             
         	StudentCourse sc = studentCourseIterator.next();
@@ -78,19 +84,29 @@ public class CareerProgramMatchRule implements Rule {
             		}
             	}
             }
+        	StudentCourse tempSC = new StudentCourse();
+            try {
+                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
+                if (tempSC != null)
+                    finalCourseList.add(tempSC);
+            } catch (IOException e) {
+                logger.error("ERROR:" + e.getMessage());
+            }
 	       
             if ((totalCredits >= requiredCredits) && totalCredits != 0) {
                 break;
             }
         }
-        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialPrograms();
+        
+        ruleProcessorData.setStudentCoursesForCareerProgram(RuleEngineApiUtils.getClone(finalCourseList));
+        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsCareerProgram();
 
         if (reqsMet == null)
             reqsMet = new ArrayList<GradRequirement>();
 
         reqsMet.addAll(requirementsMet);
 
-        ruleProcessorData.setRequirementsMetSpecialPrograms(reqsMet);        
+        ruleProcessorData.setRequirementsMetSpecialProgramsCareerProgram(reqsMet);        
         
         List<GradSpecialProgramRule> failedRules = careerProgramRulesMatch.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
@@ -101,13 +117,13 @@ public class CareerProgramMatchRule implements Rule {
             for (GradSpecialProgramRule failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
             }
-            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialPrograms();
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsCareerProgram();
 
             if (nonGradReasons == null)
                 nonGradReasons = new ArrayList<GradRequirement>();
 
             nonGradReasons.addAll(requirementsNotMet);
-            ruleProcessorData.setNonGradReasonsSpecialPrograms(nonGradReasons);
+            ruleProcessorData.setNonGradReasonsSpecialProgramsCareerProgram(nonGradReasons);
             ruleProcessorData.setSpecialProgramCareerProgramGraduated(false);
             logger.debug("One or more Career Program rules not met!");
         }        
