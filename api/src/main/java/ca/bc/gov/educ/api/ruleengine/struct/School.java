@@ -22,6 +22,7 @@ public class School {
     private String countryCode;
     private String countryName;
     private String postal;
+    private String independentAffiliation;
 
     @Override
     public String toString() {
@@ -30,6 +31,6 @@ public class School {
                 + certificateEligibility + ", independentDesignation=" + independentDesignation + ", mailerType="
                 + mailerType + ", address1=" + address1 + ", address2=" + address2 + ", city=" + city + ", provCode="
                 + provCode + ", provinceName=" + provinceName + ", countryCode=" + countryCode + ", countryName="
-                + countryName + ", postal=" + postal + "]";
+                + countryName + ", postal=" + postal + ", independentAffiliation=" + independentAffiliation +"]";
     }
 }

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RuleProcessorData implements RuleData {
 
-    private GradStudent gradStudent;
+	private GradStudent gradStudent;
     private List<GradAlgorithmRules> gradAlgorithmRules;
     private List<GradProgramRule> gradProgramRules;
     private List<GradSpecialProgramRule> gradSpecialProgramRulesFrenchImmersion;
@@ -32,16 +32,20 @@ public class RuleProcessorData implements RuleData {
     private List<GradLetterGrade> gradLetterGradeList;
     private List<GradRequirement> nonGradReasons;
     private List<GradRequirement> requirementsMet;
-    private List<GradRequirement> nonGradReasonsSpecialPrograms;
-    private List<GradRequirement> requirementsMetSpecialPrograms;
+    private List<GradRequirement> nonGradReasonsSpecialProgramsFrenchImmersion;
+    private List<GradRequirement> requirementsMetSpecialProgramsFrenchImmersion;
+    private List<GradRequirement> nonGradReasonsSpecialProgramsCareerProgram;
+    private List<GradRequirement> requirementsMetSpecialProgramsCareerProgram;
     private boolean isGraduated;
     private boolean isSpecialProgramFrenchImmersionGraduated;
     private boolean isSpecialProgramAdvancedPlacementGraduated;
-    private boolean isSpecialProgramInternationalBaccalaureateGraduated;
+    private boolean isSpecialProgramInternationalBaccalaureateGraduatedBD;
+    private boolean isSpecialProgramInternationalBaccalaureateGraduatedBC;
     private boolean isSpecialProgramCareerProgramGraduated;
     private boolean hasSpecialProgramFrenchImmersion;
     private boolean hasSpecialProgramAdvancedPlacement;
-    private boolean hasSpecialProgramInternationalBaccalaureate;
+    private boolean hasSpecialProgramInternationalBaccalaureateBD;
+    private boolean hasSpecialProgramInternationalBaccalaureateBC;
     private boolean hasSpecialProgramCareerProgram;
     private GradAlgorithmGraduationStatus gradStatus;
     private SpecialGradAlgorithmGraduationStatus gradSpecialProgramStatus;

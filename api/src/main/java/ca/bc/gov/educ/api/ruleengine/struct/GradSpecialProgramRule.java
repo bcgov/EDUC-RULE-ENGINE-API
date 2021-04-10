@@ -22,16 +22,16 @@ public class GradSpecialProgramRule {
 	private String requirementDesc;
 	private String isActive;
 	private UUID specialProgramID;
-	private boolean passed;
-	
-	@Override
-	public String toString() {
-		return "GradSpecialProgramRule [id=" + id + ", ruleCode=" + ruleCode + ", requirementName=" + requirementName
-				+ ", requirementType=" + requirementType + ", requirementTypeDesc=" + requirementTypeDesc
-				+ ", requiredCredits=" + requiredCredits + ", notMetDesc=" + notMetDesc + ", requiredLevel="
-				+ requiredLevel + ", languageOfInstruction=" + languageOfInstruction + ", requirementDesc="
-				+ requirementDesc + ", isActive=" + isActive + ", specialProgramID=" + specialProgramID + "]";
-	}
-	
+	private String ruleCategory;
+    private boolean passed;
+
+    @Override
+    public String toString() {
+        return "GradProgramRule [id=" + id + ", ruleCode=" + ruleCode + ", requirementName=" + requirementName
+                + ", requirementType=" + requirementType + ", requirementTypeDesc=" + requirementTypeDesc
+                + ", requiredCredits=" + requiredCredits + ", notMetDesc=" + notMetDesc + ", requiredLevel="
+                + requiredLevel + ", languageOfInstruction=" + languageOfInstruction + ", requirementDesc="
+                + requirementDesc + ", isActive=" + isActive + ", specialProgramID=" + specialProgramID + ", ruleCategory="+ruleCategory+"]";
+    }
 	
 }

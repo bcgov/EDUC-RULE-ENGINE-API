@@ -145,24 +145,24 @@ public class FrenchImmersionMatchRule implements Rule {
             }
             ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(false);
             
-            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialPrograms();
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsFrenchImmersion();
 
             if (nonGradReasons == null)
                 nonGradReasons = new ArrayList<GradRequirement>();
 
             nonGradReasons.addAll(requirementsNotMet);
-            ruleProcessorData.setNonGradReasonsSpecialPrograms(nonGradReasons);
+            ruleProcessorData.setNonGradReasonsSpecialProgramsFrenchImmersion(nonGradReasons);
             logger.debug("One or more Match rules not met!");
         }
         
-        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialPrograms();
+        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsFrenchImmersion();
 
         if (reqsMet == null)
             reqsMet = new ArrayList<GradRequirement>();
 
         reqsMet.addAll(requirementsMet);
 
-        ruleProcessorData.setRequirementsMetSpecialPrograms(reqsMet);
+        ruleProcessorData.setRequirementsMetSpecialProgramsFrenchImmersion(reqsMet);
         return ruleProcessorData;
     }
 
