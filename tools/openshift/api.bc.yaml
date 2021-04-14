@@ -16,7 +16,7 @@ objects:
   spec:
     source:
       git:
-        ref: release/1.0.0
+        ref: main
         uri: 'https://github.com/bcgov/EDUC-RULE-ENGINE-API'
       type: Git
     strategy:
