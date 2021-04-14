@@ -35,7 +35,6 @@ public class RuleEngineController {
     @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public RuleProcessorData processGradAlgorithmRules(@RequestBody RuleProcessorData ruleProcessorData) {
         logger.debug("**** Processing Grad Algorithm Rules");
-        //logger.debug("Received data:" + ruleProcessorData.toString());
         return ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
     }
 }
