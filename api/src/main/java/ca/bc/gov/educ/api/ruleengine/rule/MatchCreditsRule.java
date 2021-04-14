@@ -20,12 +20,13 @@ import java.util.stream.Collectors;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MatchRule implements Rule {
+public class MatchCreditsRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(MatchRule.class);
+    private static Logger logger = LoggerFactory.getLogger(MatchCreditsRule.class);
 
     @Autowired
-    private MatchRuleData inputData;
+    private RuleProcessorData ruleProcessorData;
+
     final RuleType ruleType = RuleType.MATCH;
 
     public RuleData fire() {
@@ -33,28 +34,27 @@ public class MatchRule implements Rule {
         List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
         List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
 
-        List<StudentCourse> courseList = inputData.getStudentCourses().getStudentCourseList();
-        List<StudentCourse> originalCourseList = new ArrayList<StudentCourse>(courseList);
+        List<StudentCourse> courseList = ruleProcessorData.getStudentCourses();
 
-        List<GradProgramRule> gradProgramRulesMatch = inputData.getGradProgramRules().getGradProgramRuleList()
+        List<GradProgramRule> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) == 0)
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) == 0
+                        && "Y".compareTo(gradProgramRule.getIsActive()) == 0)
                 .collect(Collectors.toList());
-        List<GradProgramRule> programRulesMatchOriginal = new ArrayList<GradProgramRule>(gradProgramRulesMatch);
 
-        List<CourseRequirement> courseRequirements = inputData.getCourseRequirements().getCourseRequirementList();
+        List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
         List<CourseRequirement> originalCourseRequirements = new ArrayList<CourseRequirement>(courseRequirements);
 
         //logger.debug("Course Requirements: " + courseRequirements);
         logger.debug("#### Match Program Rule size: " + gradProgramRulesMatch.size());
-
-        ListIterator<StudentCourse> courseIterator = courseList.listIterator();
 
         List<StudentCourse> finalCourseList = new ArrayList<StudentCourse>();
         List<GradProgramRule> finalProgramRulesList = new ArrayList<GradProgramRule>();
         StudentCourse tempSC;
         GradProgramRule tempPR;
         ObjectMapper objectMapper = new ObjectMapper();
+
+        ListIterator<StudentCourse> courseIterator = courseList.listIterator();
 
         while (courseIterator.hasNext()) {
             StudentCourse tempCourse = courseIterator.next();
@@ -115,8 +115,9 @@ public class MatchRule implements Rule {
                 logger.debug("TempSC: " + tempSC);
                 logger.debug("Final course List size: : " + finalCourseList.size());
                 tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), GradProgramRule.class);
-                if (tempPR != null)
+                if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
                     finalProgramRulesList.add(tempPR);
+                }
                 logger.debug("TempPR: " + tempPR);
                 logger.debug("Final Program rules list size: " + finalProgramRulesList.size());
             } catch (IOException e) {
@@ -124,91 +125,57 @@ public class MatchRule implements Rule {
             }
         }
 
-        MatchRuleData outputData = new MatchRuleData();
-        StudentCourses studentCourses = new StudentCourses();
-        GradProgramRules programRules = new GradProgramRules();
-        CourseRequirements courseReqs = new CourseRequirements();
-
-        studentCourses.setStudentCourseList(finalCourseList);
-        programRules.setGradProgramRuleList(finalProgramRulesList);
-        courseReqs.setCourseRequirementList(originalCourseRequirements);
-
-        outputData.setStudentCourses(studentCourses);
-        outputData.setGradProgramRules(programRules);
-        outputData.setCourseRequirements(courseReqs);
-
-        //logger.debug("Output Data:\n" + outputData);
+        logger.debug("Final Program rules list: " + finalProgramRulesList);
 
         List<GradProgramRule> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
-            outputData.setPassed(true);
             logger.debug("All the match rules met!");
         } else {
             for (GradProgramRule failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
             }
-            logger.debug("One or more Match rules not met!");
+
+            logger.info("One or more Match rules not met!");
+            ruleProcessorData.setGraduated(false);
+
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
+
+            if (nonGradReasons == null)
+                nonGradReasons = new ArrayList<GradRequirement>();
+
+            nonGradReasons.addAll(requirementsNotMet);
+            ruleProcessorData.setNonGradReasons(nonGradReasons);
         }
 
-        outputData.setPassMessages(requirementsMet);
-        outputData.setFailMessages(requirementsNotMet);
+        //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
+        finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
+                .stream()
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) != 0)
+                .collect(Collectors.toList()));
 
-        /*ListIterator<AchievementDto> achievementsIterator = achievementsCopy.listIterator();
+        logger.debug("Final Program rules list size 2: " + finalProgramRulesList.size());
 
-        while(achievementsIterator.hasNext()) {
+        ruleProcessorData.setStudentCourses(finalCourseList);
+        ruleProcessorData.setGradProgramRules(finalProgramRulesList);
+        ruleProcessorData.setCourseRequirements(originalCourseRequirements);
 
-            AchievementDto tempAchievement = achievementsIterator.next();
-            ProgramRule tempProgramRule = programRulesMatch.stream()
-                    .filter(pr -> tempAchievement
-                            .getCourse()
-                            .getRequirementCode()
-                            .getRequirementCode() == pr.getRequirementCode())
-                    .findAny()
-                    .orElse(null);
+        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
-            if(tempProgramRule != null && !tempAchievement.isFailed() && !tempAchievement.isDuplicate()){
-                achievementsIterator.remove();
-                logger.debug("Requirement Met -> Requirement Code:" + tempProgramRule.getRequirementCode()
-                        + " Course:" + tempAchievement.getCourse().getCourseName() + "\n");
+        if (reqsMet == null)
+            reqsMet = new ArrayList<GradRequirement>();
 
-                tempAchievement.setGradRequirementMet(tempProgramRule.getRequirementCode());
-                student.getRequirementsMet().add("Met " + tempProgramRule.getRequirementName());
-                finalAchievements.add(tempAchievement);
-                programRulesMatch.remove(tempProgramRule);
-                achievementsCopy.remove(tempAchievement);
-            }
-        }
+        reqsMet.addAll(requirementsMet);
+        ruleProcessorData.setRequirementsMet(reqsMet);
 
-        finalAchievements = Stream.concat(finalAchievements.stream()
-                , achievementsCopy.stream())
-                .collect(Collectors.toList());
-
-        student.setAchievements(finalAchievements);
-
-        logger.debug("Leftover Course Achievements:" + achievementsCopy + "\n");
-        logger.debug("Leftover Program Rules: " + programRulesMatch + "\n");
-
-        if (programRulesMatch.size() > 0) {
-            gradStatusFlag = false;
-
-            for (ProgramRule programRule : programRulesMatch) {
-                student.getRequirementsNotMet().add(programRule.getNotMetDescription());
-            }
-
-            student.getGradMessages().add("All the Match rules not Met.");
-        }
-        else {
-            student.getGradMessages().add("All the Match rules met.");
-        }*/
-
-        return outputData;
+        return ruleProcessorData;
     }
 
-
-    public boolean fire(Object inputData, Object outputData) {
-        return false;
+    @Override
+    public void setInputData(RuleData inputData) {
+        ruleProcessorData = (RuleProcessorData) inputData;
+        logger.info("MatchRule: Rule Processor Data set.");
     }
 
 }

@@ -8,21 +8,21 @@ import lombok.Data;
 
 @Data
 @Component
-public class GradProgramRule {
+public class GradSpecialProgramRule {
 
-    private UUID id;
-    private String ruleCode;
-    private String requirementName;
-    private String requirementType;
-    private String requirementTypeDesc;
-    private String requiredCredits;
-    private String notMetDesc;
-    private String requiredLevel;
-    private String languageOfInstruction;
-    private String requirementDesc;
-    private String isActive;
-    private String programCode;
-    private String ruleCategory;
+	private UUID id;
+    private String ruleCode; 
+	private String requirementName;
+	private String requirementType;
+	private String requirementTypeDesc;
+	private String requiredCredits;
+	private String notMetDesc;
+	private String requiredLevel;
+	private String languageOfInstruction;
+	private String requirementDesc;
+	private String isActive;
+	private UUID specialProgramID;
+	private String ruleCategory;
     private boolean passed;
 
     @Override
@@ -31,6 +31,7 @@ public class GradProgramRule {
                 + ", requirementType=" + requirementType + ", requirementTypeDesc=" + requirementTypeDesc
                 + ", requiredCredits=" + requiredCredits + ", notMetDesc=" + notMetDesc + ", requiredLevel="
                 + requiredLevel + ", languageOfInstruction=" + languageOfInstruction + ", requirementDesc="
-                + requirementDesc + ", isActive=" + isActive + ", programCode=" + programCode + ", ruleCategory="+ruleCategory+"]";
+                + requirementDesc + ", isActive=" + isActive + ", specialProgramID=" + specialProgramID + ", ruleCategory="+ruleCategory+"]";
     }
+	
 }

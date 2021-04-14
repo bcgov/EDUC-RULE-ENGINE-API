@@ -1,6 +1,7 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.struct.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,105 +24,110 @@ public class MinElectiveCreditsRule implements Rule {
     private static Logger logger = LoggerFactory.getLogger(MinElectiveCreditsRule.class);
 
     @Autowired
-    private MinElectiveCreditRuleData inputData;
+    private RuleProcessorData ruleProcessorData;
+
     final RuleType ruleType = RuleType.MIN_CREDITS_ELECTIVE;
 
-    public MinElectiveCreditRuleData fire() {
+    public RuleData fire() {
         int totalCredits = 0;
+        int requiredCredits = 0;
         logger.debug("Min Elective Credits Rule");
-        logger.debug("InputData:" + inputData);
-        int requiredCredits = Integer.parseInt(inputData.getGradProgramRule().getRequiredCredits().trim());
-        StudentCourses studentCourses = inputData.getStudentCourses();
-        GradProgramRule programRule = inputData.getGradProgramRule();
 
-        if (studentCourses == null || studentCourses.getStudentCourseList() == null
-                || studentCourses.getStudentCourseList().size() == 0) {
-            logger.warn("Empty list sent to Min Elective Credits Rule for processing");
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
+            logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
             return null;
         }
 
-        List<StudentCourse> tempStudentCourseList = new ArrayList<>();
+        List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
+                ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
-        if (programRule.getRequiredLevel() == null
-                || programRule.getRequiredLevel().trim().compareTo("") == 0) {
-            tempStudentCourseList = studentCourses.getStudentCourseList()
-                    .stream()
-                    .filter(sc -> !sc.isUsed())
-                    .collect(Collectors.toList());
-        }
-        else {
-            tempStudentCourseList = studentCourses.getStudentCourseList()
-                    .stream()
-                    .filter(sc -> !sc.isUsed() && sc.getCourseLevel().compareTo(programRule.getRequiredLevel().trim()) == 0)
-                    .collect(Collectors.toList());
-        }
+        logger.debug("Unique Courses: " + studentCourses.size());
 
-        ListIterator<StudentCourse> iter = tempStudentCourseList.listIterator();
+        List<GradProgramRule> gradProgramRules = ruleProcessorData.getGradProgramRules()
+                .stream()
+                .filter(gpr -> "MCE".compareTo(gpr.getRequirementType()) == 0
+                        && "Y".compareTo(gpr.getIsActive()) == 0)
+                .collect(Collectors.toList());
 
-        while (iter.hasNext()) {
-            StudentCourse sc = iter.next();
+        logger.debug(gradProgramRules.toString());
 
-            if (totalCredits + sc.getCredits() <= requiredCredits) {
-                totalCredits += sc.getCredits();
-                sc.setCreditsUsedForGrad(sc.getCredits());
+        for (GradProgramRule gradProgramRule : gradProgramRules) {
+            requiredCredits = Integer.parseInt(gradProgramRule.getRequiredCredits().trim()); //list
+
+            List<StudentCourse> tempStudentCourseList = new ArrayList<>();
+
+            if (gradProgramRule.getRequiredLevel() == null
+                    || gradProgramRule.getRequiredLevel().trim().compareTo("") == 0) {
+                tempStudentCourseList = studentCourses
+                        .stream()
+                        .filter(sc -> !sc.isUsed())
+                        .collect(Collectors.toList());
+            } else {
+                tempStudentCourseList = studentCourses
+                        .stream()
+                        .filter(sc -> !sc.isUsed() && sc.getCourseLevel()
+                                .compareTo(gradProgramRule.getRequiredLevel().trim()) == 0)
+                        .collect(Collectors.toList());
             }
-            else {
-                int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-                totalCredits = requiredCredits;
-                sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+
+            for (StudentCourse sc : tempStudentCourseList) {
+                if (totalCredits + sc.getCredits() <= requiredCredits) {
+                    totalCredits += sc.getCredits();
+                    sc.setCreditsUsedForGrad(sc.getCredits());
+                } else {
+                    int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+                    totalCredits = requiredCredits;
+                    sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+                }
+
+                sc.setUsed(true);
+
+                if (totalCredits == requiredCredits) {
+                    break;
+                }
             }
 
-            sc.setUsed(true);
+            if (totalCredits >= requiredCredits) {
+                logger.info(gradProgramRule.getRequirementName() + " Passed");
+                gradProgramRule.setPassed(true);
 
-            if (totalCredits == requiredCredits) {
-                break;
+                List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
+
+                if (reqsMet == null)
+                    reqsMet = new ArrayList<GradRequirement>();
+
+                reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(),
+                        gradProgramRule.getRequirementName()));
+                ruleProcessorData.setRequirementsMet(reqsMet);
+                logger.debug("Min Elective Credits Rule: Total-" + totalCredits + " Required-" + requiredCredits);
+
+            } else {
+                logger.info(gradProgramRule.getRequirementDesc() + " Failed!");
+                ruleProcessorData.setGraduated(false);
+
+                List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
+
+                if (nonGradReasons == null)
+                    nonGradReasons = new ArrayList<GradRequirement>();
+
+                nonGradReasons.add(new GradRequirement(gradProgramRule.getRuleCode(),
+                        gradProgramRule.getNotMetDesc()));
+                ruleProcessorData.setNonGradReasons(nonGradReasons);
             }
+
+            logger.info("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
+
+            requiredCredits = 0;
+            totalCredits = 0;
         }
 
-        inputData.setRequiredCredits(requiredCredits);
-        inputData.setAcquiredCredits(totalCredits);
-
-        if (totalCredits >= requiredCredits)
-            inputData.setPassed(true);
-
-        logger.debug("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
-        //return totalCredits >= requiredCredits;
-        return inputData;
+        return ruleProcessorData;
     }
 
-   /* public MinElectiveCreditRuleData fire() {
-        int totalCredits;
-        int requiredCredits = Integer.parseInt(inputData.getProgramRule().getRequiredCredits().trim());
-        StudentCourses studentCourses = inputData.getStudentCourses();
-        ProgramRule programRule = inputData.getProgramRule();
-
-        if (studentCourses == null || studentCourses.getStudentCourseList() == null
-                || studentCourses.getStudentCourseList().size() == 0)
-            return null;
-
-        if (programRule.getRequiredLevel().trim().compareTo("") == 0) {
-            totalCredits = studentCourses.getStudentCourseList()
-                    .stream()
-                    .filter(studentCourse -> !studentCourse.isDuplicate()
-                            && !studentCourse.isFailed()
-                    )
-                    .mapToInt(studentCourse -> studentCourse.getCredits())
-                    .sum();
-        }
-        else {
-            totalCredits = studentCourses.getStudentCourseList()
-                    .stream()
-                    .filter(studentCourse -> !studentCourse.isDuplicate()
-                            && !studentCourse.isFailed()
-                            && studentCourse.getCourseLevel().startsWith(programRule.getRequiredLevel() + "")
-                    )
-                    .mapToInt(studentCourse -> studentCourse.getCredits())
-                    .sum();
-        }
-
-        logger.debug("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
-        //return totalCredits >= requiredCredits;
-        return new MinElectiveCreditRuleData();
-    }*/
+    @Override
+    public void setInputData(RuleData inputData) {
+        ruleProcessorData = (RuleProcessorData) inputData;
+        logger.info("MinElectiveCreditsRule: Rule Processor Data set.");
+    }
 
 }

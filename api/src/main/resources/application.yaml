@@ -28,7 +28,7 @@ spring:
     log-request-details: ${SPRING_SHOW_REQUEST_DETAILS}
   jackson:
     deserialization:
-      fail-on-unknown-properties: true
+      fail-on-unknown-properties: false
   security:
     user:
       name: ${API_USERNAME}
