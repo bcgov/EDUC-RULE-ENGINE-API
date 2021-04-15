@@ -1,6 +1,9 @@
 package ca.bc.gov.educ.api.ruleengine.struct;
 
 import lombok.Data;
+
+import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 
 @Data
@@ -16,4 +19,5 @@ public class GradAlgorithmGraduationStatus {
     private String schoolOfRecord;
     private String studentGrade;
     private String studentStatus;
+    private UUID studentID;
 }
