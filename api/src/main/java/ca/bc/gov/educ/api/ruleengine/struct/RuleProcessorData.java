@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RuleProcessorData implements RuleData {
 
-	private GradStudent gradStudent;
+	private GradSearchStudent gradStudent;
     private List<GradAlgorithmRules> gradAlgorithmRules;
     private List<GradProgramRule> gradProgramRules;
     private List<GradSpecialProgramRule> gradSpecialProgramRulesFrenchImmersion;
