@@ -19,6 +19,7 @@ import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,7 +46,8 @@ public class FrenchImmersionMatchRule implements Rule {
         List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
         List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
 
-        List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForFrenchImmersion();
+        List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
+        		ruleProcessorData.getStudentCoursesForFrenchImmersion(), ruleProcessorData.isProjected());
         List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
                 .stream()
                 .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
