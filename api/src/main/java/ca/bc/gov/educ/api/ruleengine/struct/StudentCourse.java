@@ -39,6 +39,7 @@ public class StudentCourse {
     private boolean isCareerPrep;
     private boolean isLocallyDeveloped;
     private boolean isUsed;
+    private boolean isRestricted;
 
     public Integer getCreditsUsedForGrad() {
         if (creditsUsedForGrad == null)
@@ -70,6 +71,6 @@ public class StudentCourse {
                 + ", relatedCourse=" + relatedCourse + ", relatedLevel=" + relatedLevel + ", hasRelatedCourse="
                 + hasRelatedCourse + ", isNotCompleted=" + isNotCompleted + ", isProjected=" + isProjected
                 + ", isFailed=" + isFailed + ", isDuplicate=" + isDuplicate + ", isCareerPrep=" + isCareerPrep
-                + ", isLocallyDeveloped=" + isLocallyDeveloped + ", isUsed=" + isUsed + "]";
+                + ", isLocallyDeveloped=" + isLocallyDeveloped + ", isUsed=" + isUsed + ", isRestricted=" + isRestricted +"]";
     }
 }

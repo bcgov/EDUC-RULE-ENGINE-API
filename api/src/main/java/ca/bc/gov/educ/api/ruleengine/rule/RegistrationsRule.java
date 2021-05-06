@@ -47,7 +47,7 @@ public class RegistrationsRule implements Rule {
                 logger.error("ERROR: " + pe.getMessage());
             }
 
-            int diff = RuleEngineApiUtils.getDifferenceInMonths(today, sessionDate);
+            int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
 
             if ("".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
                     && diff < 1) {
