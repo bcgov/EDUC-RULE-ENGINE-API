@@ -24,5 +24,7 @@ public class StudentAssessment {
     private boolean isDuplicate;
     private boolean isUsed;
     private boolean isProjected;
+    private boolean isNotCompleted;
+    private String equivalentCode;
     
 }
