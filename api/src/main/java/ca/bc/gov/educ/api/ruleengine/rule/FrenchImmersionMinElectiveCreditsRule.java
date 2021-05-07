@@ -46,7 +46,9 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForFrenchImmersion();
         List<GradSpecialProgramRule> gradSpecialProgramMinCreditElectiveRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
                 .stream()
-                .filter(gradSpecialProgramRule -> "MCE".compareTo(gradSpecialProgramRule.getRequirementType()) == 0)
+                .filter(gradSpecialProgramRule -> "MCE".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
+                		&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
+                		&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
                 .collect(Collectors.toList());
        
         logger.debug("#### French Immersion Min Credit Elective Special Program Rule size: " + gradSpecialProgramMinCreditElectiveRulesMatch.size());

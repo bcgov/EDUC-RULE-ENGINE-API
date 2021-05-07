@@ -50,7 +50,9 @@ public class CareerProgramMatchRule implements Rule {
         		ruleProcessorData.getStudentCoursesForCareerProgram(), ruleProcessorData.isProjected());
         List<GradSpecialProgramRule> careerProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesCareerProgram()
                 .stream()
-                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0)
+                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0 
+                		&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
+                		&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
                 .collect(Collectors.toList());
        
         logger.debug("#### Career Program Rule size: " + careerProgramRulesMatch.size());
