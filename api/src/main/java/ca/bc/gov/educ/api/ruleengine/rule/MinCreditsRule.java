@@ -45,7 +45,8 @@ public class MinCreditsRule implements Rule {
         List<GradProgramRule> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gpr -> "MC".compareTo(gpr.getRequirementType()) == 0
-                            && "Y".compareTo(gpr.getIsActive()) == 0)
+                            && "Y".compareTo(gpr.getIsActive()) == 0
+                            && "C".compareTo(gpr.getRuleCategory()) == 0)
                 .collect(Collectors.toList());
 
         logger.debug(gradProgramRules.toString());

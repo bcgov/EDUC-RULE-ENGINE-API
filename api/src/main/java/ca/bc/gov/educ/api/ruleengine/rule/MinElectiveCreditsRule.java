@@ -1,19 +1,23 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.struct.*;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.stream.Collectors;
+import ca.bc.gov.educ.api.ruleengine.struct.GradProgramRule;
+import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Component
@@ -46,7 +50,8 @@ public class MinElectiveCreditsRule implements Rule {
         List<GradProgramRule> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gpr -> "MCE".compareTo(gpr.getRequirementType()) == 0
-                        && "Y".compareTo(gpr.getIsActive()) == 0)
+                        && "Y".compareTo(gpr.getIsActive()) == 0
+                        && "C".compareTo(gpr.getRuleCategory()) == 0)
                 .collect(Collectors.toList());
 
         logger.debug(gradProgramRules.toString());

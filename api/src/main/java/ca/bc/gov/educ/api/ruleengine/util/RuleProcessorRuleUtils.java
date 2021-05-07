@@ -1,15 +1,17 @@
 package ca.bc.gov.educ.api.ruleengine.util;
 
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 
 public class RuleProcessorRuleUtils {
 
@@ -63,12 +65,36 @@ public class RuleProcessorRuleUtils {
         return excludedStudentCourseList;
     }
 
-    public static <T> T cloneObject(T input) throws IOException {
+    @SuppressWarnings("unchecked")
+	public static <T> T cloneObject(T input) throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         return (T) objectMapper
                 .readValue(objectMapper.writeValueAsString(input), input.getClass());
+    }
+    
+    public static List<StudentAssessment> getUniqueStudentAssessments(List<StudentAssessment> studentAssessments,
+			boolean projected) {
+        List<StudentAssessment> uniqueStudentAssessmentList = new ArrayList<StudentAssessment>();
+
+        uniqueStudentAssessmentList = studentAssessments
+                .stream()
+                .filter(sc -> !sc.isNotCompleted()
+                        && !sc.isDuplicate()
+                        && !sc.isFailed())
+                .collect(Collectors.toList());
+
+        if (!projected) {
+            logger.info("Excluding Registrations!");
+            uniqueStudentAssessmentList = uniqueStudentAssessmentList
+                    .stream()
+                    .filter(sc -> !sc.isProjected())
+                    .collect(Collectors.toList());
+        } else
+            logger.info("Including Registrations!");
+
+        return uniqueStudentAssessmentList;
     }
 
 }
