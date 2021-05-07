@@ -51,7 +51,8 @@ public class FrenchImmersionMatchRule implements Rule {
         List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
                 .stream()
                 .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
-                		&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0)
+                		&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
+                		&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
                 .collect(Collectors.toList());
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
        
