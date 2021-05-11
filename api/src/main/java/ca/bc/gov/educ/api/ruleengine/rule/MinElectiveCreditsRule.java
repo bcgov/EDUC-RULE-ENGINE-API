@@ -84,7 +84,15 @@ public class MinElectiveCreditsRule implements Rule {
                     totalCredits = requiredCredits;
                     sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
                 }
-
+                if (sc.getGradReqMet().length() > 0) {
+                	
+                    sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getRuleCode());
+                    sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getRuleCode()
+                            + " - " + gradProgramRule.getRequirementName());
+                } else {
+                    sc.setGradReqMet(gradProgramRule.getRuleCode());
+                    sc.setGradReqMetDetail(gradProgramRule.getRuleCode() + " - " + gradProgramRule.getRequirementName());
+                }
                 sc.setUsed(true);
 
                 if (totalCredits == requiredCredits) {
