@@ -101,7 +101,7 @@ public class MinCreditsRule implements Rule {
         }
 
         logger.debug(ruleProcessorData.toString());
-
+        ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }
 
