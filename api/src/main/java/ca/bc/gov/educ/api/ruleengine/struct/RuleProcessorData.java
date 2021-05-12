@@ -29,6 +29,7 @@ public class RuleProcessorData implements RuleData {
     private List<StudentCourse> studentCoursesForCareerProgram;
     private List<StudentAssessment> studentAssessments;
     private List<CourseRequirement> courseRequirements;
+    private List<CourseRestriction> courseRestrictions;
     private List<AssessmentRequirement> assessmentRequirements;
     private List<GradLetterGrade> gradLetterGradeList;
     private List<GradSpecialCase> gradSpecialCaseList;
