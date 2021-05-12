@@ -26,7 +26,8 @@ public class RuleProcessorRuleUtils {
                         && !sc.isDuplicate()
                         && !sc.isFailed()
                         && !sc.isCareerPrep()
-                        && !sc.isLocallyDeveloped())
+                        && !sc.isLocallyDeveloped()
+                        && !sc.isRestricted())
                 .collect(Collectors.toList());
 
         if (!projected) {
@@ -50,7 +51,8 @@ public class RuleProcessorRuleUtils {
                         && sc.isDuplicate()
                         && sc.isFailed()
                         && sc.isCareerPrep()
-                        && sc.isLocallyDeveloped())
+                        && sc.isLocallyDeveloped()
+                        && sc.isRestricted())
                 .collect(Collectors.toList());
 
         if (!projected) {
