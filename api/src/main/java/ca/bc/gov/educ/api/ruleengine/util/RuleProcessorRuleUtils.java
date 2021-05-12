@@ -43,28 +43,16 @@ public class RuleProcessorRuleUtils {
     }
 
     public static List<StudentCourse> getExcludedStudentCourses(List<StudentCourse> studentCourses, boolean projected) {
-        List<StudentCourse> excludedStudentCourseList = new ArrayList<StudentCourse>();
-
-        excludedStudentCourseList = studentCourses
+        return studentCourses
                 .stream()
                 .filter(sc -> sc.isNotCompleted()
-                        && sc.isDuplicate()
-                        && sc.isFailed()
-                        && sc.isCareerPrep()
-                        && sc.isLocallyDeveloped()
-                        && sc.isRestricted())
+                        || sc.isDuplicate()
+                        || sc.isFailed()
+                        || sc.isCareerPrep()
+                        || sc.isLocallyDeveloped()
+                        || sc.isRestricted()
+                        || (!projected && sc.isProjected()))
                 .collect(Collectors.toList());
-
-        if (!projected) {
-            logger.info("Excluding Registrations!");
-            excludedStudentCourseList = excludedStudentCourseList
-                    .stream()
-                    .filter(StudentCourse::isProjected)
-                    .collect(Collectors.toList());
-        } else
-            logger.info("Including Registrations!");
-
-        return excludedStudentCourseList;
     }
 
     @SuppressWarnings("unchecked")
@@ -78,9 +66,8 @@ public class RuleProcessorRuleUtils {
     
     public static List<StudentAssessment> getUniqueStudentAssessments(List<StudentAssessment> studentAssessments,
 			boolean projected) {
-        List<StudentAssessment> uniqueStudentAssessmentList = new ArrayList<StudentAssessment>();
-
-        uniqueStudentAssessmentList = studentAssessments
+        
+         List<StudentAssessment> uniqueStudentAssessmentList = studentAssessments
                 .stream()
                 .filter(sc -> !sc.isNotCompleted()
                         && !sc.isDuplicate()
@@ -97,6 +84,16 @@ public class RuleProcessorRuleUtils {
             logger.info("Including Registrations!");
 
         return uniqueStudentAssessmentList;
+    }
+    
+    public static List<StudentAssessment> getExcludedStudentAssessments(List<StudentAssessment> studentAssessments, boolean projected) {
+        return studentAssessments
+                .stream()
+                .filter(sc -> sc.isNotCompleted()
+                        || sc.isDuplicate()
+                        || sc.isFailed()
+                        || (!projected && sc.isProjected()))
+                .collect(Collectors.toList());
     }
 
 }
