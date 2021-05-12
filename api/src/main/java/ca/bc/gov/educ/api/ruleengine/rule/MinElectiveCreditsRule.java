@@ -133,7 +133,7 @@ public class MinElectiveCreditsRule implements Rule {
             requiredCredits = 0;
             totalCredits = 0;
         }
-
+        ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
         return ruleProcessorData;
     }
 

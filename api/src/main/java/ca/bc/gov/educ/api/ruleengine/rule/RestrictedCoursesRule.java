@@ -37,7 +37,8 @@ public class RestrictedCoursesRule implements Rule {
         
         List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-        
+        List<StudentCourse> excludedCourses = RuleProcessorRuleUtils.getExcludedStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
+        ruleProcessorData.setExcludedCourses(excludedCourses);
         List<CourseRestriction> restrictedCourses = ruleProcessorData.getCourseRestrictions();
         for (int i = 0; i < studentCourses.size(); i++) {
         	StudentCourse sCourse =  studentCourses.get(i);

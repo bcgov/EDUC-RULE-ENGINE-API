@@ -35,10 +35,11 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
         List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
         List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
-
         List<StudentAssessment> assessmentList = RuleProcessorRuleUtils.getUniqueStudentAssessments(
                 ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
-
+        List<StudentAssessment> excludedAssessments = RuleProcessorRuleUtils.getExcludedStudentAssessments(
+                ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
+        ruleProcessorData.setExcludedAssessments(excludedAssessments);
         logger.debug("Unique Assessments: " + assessmentList.size());
 
         List<GradProgramRule> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
@@ -159,7 +160,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: " + finalProgramRulesList.size());
-
+        finalAssessmentList.addAll(ruleProcessorData.getExcludedAssessments());
         ruleProcessorData.setStudentAssessments(finalAssessmentList);
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);
         ruleProcessorData.setAssessmentRequirements(originalAssessmentRequirements);

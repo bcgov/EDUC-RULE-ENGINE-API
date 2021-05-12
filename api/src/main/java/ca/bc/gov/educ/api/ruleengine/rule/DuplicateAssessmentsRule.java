@@ -89,7 +89,7 @@ public class DuplicateAssessmentsRule implements Rule {
             }
         }
 
-        logger.info("Duplicate Courses: " +
+        logger.info("Duplicate Assessments: " +
                 (int) studentAssessmentList
                         .stream()
                         .filter(StudentAssessment::isDuplicate)
