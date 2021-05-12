@@ -25,8 +25,10 @@ public class RuleProcessorData implements RuleData {
     private List<GradSpecialProgramRule> gradSpecialProgramRulesInternationalBaccalaureateBC;
     private List<GradSpecialProgramRule> gradSpecialProgramRulesCareerProgram;
     private List<StudentCourse> studentCourses;
+    private List<StudentCourse> excludedCourses;
     private List<StudentCourse> studentCoursesForFrenchImmersion;
     private List<StudentCourse> studentCoursesForCareerProgram;
+    private List<StudentAssessment> excludedAssessments;
     private List<StudentAssessment> studentAssessments;
     private List<CourseRequirement> courseRequirements;
     private List<CourseRestriction> courseRestrictions;
