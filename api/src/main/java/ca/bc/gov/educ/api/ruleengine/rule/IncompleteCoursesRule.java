@@ -1,5 +1,14 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
@@ -7,15 +16,6 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Component
@@ -26,12 +26,10 @@ public class IncompleteCoursesRule implements Rule {
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
-    //final RuleType ruleType = RuleType.MATCH;
 
     public RuleData fire() {
 
-        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
-        studentCourseList = ((RuleProcessorData) ruleProcessorData).getStudentCourses();
+         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         logger.debug("###################### Finding INCOMPLETE courses ######################");
 
@@ -48,8 +46,11 @@ public class IncompleteCoursesRule implements Rule {
             }
 
             int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
-
-            if ("".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
+            String completedCourseLetterGrade = "";
+            if(studentCourse.getCompletedCourseLetterGrade() != null) {
+            	completedCourseLetterGrade = studentCourse.getCompletedCourseLetterGrade();
+            }
+            if ("".compareTo(completedCourseLetterGrade.trim()) == 0
                     && diff >= 1) {
                 studentCourse.setNotCompleted(true);
             }
