@@ -25,122 +25,113 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MinElectiveCreditsRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(MinElectiveCreditsRule.class);
+	private static Logger logger = LoggerFactory.getLogger(MinElectiveCreditsRule.class);
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
+	@Autowired
+	private RuleProcessorData ruleProcessorData;
 
-    final RuleType ruleType = RuleType.MIN_CREDITS_ELECTIVE;
+	public RuleData fire() {
+		int totalCredits = 0;
+		int requiredCredits = 0;
+		logger.debug("Min Elective Credits Rule");
 
-    public RuleData fire() {
-        int totalCredits = 0;
-        int requiredCredits = 0;
-        logger.debug("Min Elective Credits Rule");
+		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
+			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
+			return null;
+		}
 
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
-            logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
-            return null;
-        }
+		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
+				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
-        List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
-                ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
+		logger.debug("Unique Courses: " + studentCourses.size());
 
-        logger.debug("Unique Courses: " + studentCourses.size());
+		List<GradProgramRule> gradProgramRules = ruleProcessorData
+				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getRequirementType()) == 0
+						&& "Y".compareTo(gpr.getIsActive()) == 0 && "C".compareTo(gpr.getRuleCategory()) == 0)
+				.collect(Collectors.toList());
 
-        List<GradProgramRule> gradProgramRules = ruleProcessorData.getGradProgramRules()
-                .stream()
-                .filter(gpr -> "MCE".compareTo(gpr.getRequirementType()) == 0
-                        && "Y".compareTo(gpr.getIsActive()) == 0
-                        && "C".compareTo(gpr.getRuleCategory()) == 0)
-                .collect(Collectors.toList());
+		logger.debug(gradProgramRules.toString());
 
-        logger.debug(gradProgramRules.toString());
+		for (GradProgramRule gradProgramRule : gradProgramRules) {
+			requiredCredits = Integer.parseInt(gradProgramRule.getRequiredCredits().trim()); // list
 
-        for (GradProgramRule gradProgramRule : gradProgramRules) {
-            requiredCredits = Integer.parseInt(gradProgramRule.getRequiredCredits().trim()); //list
+			List<StudentCourse> tempStudentCourseList = null;
 
-            List<StudentCourse> tempStudentCourseList = new ArrayList<>();
+			if (gradProgramRule.getRequiredLevel() == null
+					|| gradProgramRule.getRequiredLevel().trim().compareTo("") == 0) {
+				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).collect(Collectors.toList());
+			} else {
+				tempStudentCourseList = studentCourses.stream()
+						.filter(sc -> !sc.isUsed()
+								&& sc.getCourseLevel().compareTo(gradProgramRule.getRequiredLevel().trim()) == 0)
+						.collect(Collectors.toList());
+			}
 
-            if (gradProgramRule.getRequiredLevel() == null
-                    || gradProgramRule.getRequiredLevel().trim().compareTo("") == 0) {
-                tempStudentCourseList = studentCourses
-                        .stream()
-                        .filter(sc -> !sc.isUsed())
-                        .collect(Collectors.toList());
-            } else {
-                tempStudentCourseList = studentCourses
-                        .stream()
-                        .filter(sc -> !sc.isUsed() && sc.getCourseLevel()
-                                .compareTo(gradProgramRule.getRequiredLevel().trim()) == 0)
-                        .collect(Collectors.toList());
-            }
+			for (StudentCourse sc : tempStudentCourseList) {
+				if (totalCredits + sc.getCredits() <= requiredCredits) {
+					totalCredits += sc.getCredits();
+					sc.setCreditsUsedForGrad(sc.getCredits());
+				} else {
+					int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+					totalCredits = requiredCredits;
+					sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+				}
+				if (sc.getGradReqMet().length() > 0) {
 
-            for (StudentCourse sc : tempStudentCourseList) {
-                if (totalCredits + sc.getCredits() <= requiredCredits) {
-                    totalCredits += sc.getCredits();
-                    sc.setCreditsUsedForGrad(sc.getCredits());
-                } else {
-                    int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-                    totalCredits = requiredCredits;
-                    sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
-                }
-                if (sc.getGradReqMet().length() > 0) {
-                	
-                    sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getRuleCode());
-                    sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getRuleCode()
-                            + " - " + gradProgramRule.getRequirementName());
-                } else {
-                    sc.setGradReqMet(gradProgramRule.getRuleCode());
-                    sc.setGradReqMetDetail(gradProgramRule.getRuleCode() + " - " + gradProgramRule.getRequirementName());
-                }
-                sc.setUsed(true);
+					sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getRuleCode());
+					sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getRuleCode() + " - "
+							+ gradProgramRule.getRequirementName());
+				} else {
+					sc.setGradReqMet(gradProgramRule.getRuleCode());
+					sc.setGradReqMetDetail(
+							gradProgramRule.getRuleCode() + " - " + gradProgramRule.getRequirementName());
+				}
+				sc.setUsed(true);
 
-                if (totalCredits == requiredCredits) {
-                    break;
-                }
-            }
+				if (totalCredits == requiredCredits) {
+					break;
+				}
+			}
 
-            if (totalCredits >= requiredCredits) {
-                logger.info(gradProgramRule.getRequirementName() + " Passed");
-                gradProgramRule.setPassed(true);
+			if (totalCredits >= requiredCredits) {
+				logger.info(gradProgramRule.getRequirementName() + " Passed");
+				gradProgramRule.setPassed(true);
 
-                List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
+				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
-                if (reqsMet == null)
-                    reqsMet = new ArrayList<GradRequirement>();
+				if (reqsMet == null)
+					reqsMet = new ArrayList<>();
 
-                reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(),
-                        gradProgramRule.getRequirementName()));
-                ruleProcessorData.setRequirementsMet(reqsMet);
-                logger.debug("Min Elective Credits Rule: Total-" + totalCredits + " Required-" + requiredCredits);
+				reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(), gradProgramRule.getRequirementName()));
+				ruleProcessorData.setRequirementsMet(reqsMet);
+				logger.debug("Min Elective Credits Rule: Total-" + totalCredits + " Required-" + requiredCredits);
 
-            } else {
-                logger.info(gradProgramRule.getRequirementDesc() + " Failed!");
-                ruleProcessorData.setGraduated(false);
+			} else {
+				logger.info(gradProgramRule.getRequirementDesc() + " Failed!");
+				ruleProcessorData.setGraduated(false);
 
-                List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
+				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
 
-                if (nonGradReasons == null)
-                    nonGradReasons = new ArrayList<GradRequirement>();
+				if (nonGradReasons == null)
+					nonGradReasons = new ArrayList<>();
 
-                nonGradReasons.add(new GradRequirement(gradProgramRule.getRuleCode(),
-                        gradProgramRule.getNotMetDesc()));
-                ruleProcessorData.setNonGradReasons(nonGradReasons);
-            }
+				nonGradReasons.add(new GradRequirement(gradProgramRule.getRuleCode(), gradProgramRule.getNotMetDesc()));
+				ruleProcessorData.setNonGradReasons(nonGradReasons);
+			}
 
-            logger.info("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
+			logger.info("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
 
-            requiredCredits = 0;
-            totalCredits = 0;
-        }
-        ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
-        return ruleProcessorData;
-    }
+			requiredCredits = 0;
+			totalCredits = 0;
+		}
+		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
+		return ruleProcessorData;
+	}
 
-    @Override
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MinElectiveCreditsRule: Rule Processor Data set.");
-    }
+	@Override
+	public void setInputData(RuleData inputData) {
+		ruleProcessorData = (RuleProcessorData) inputData;
+		logger.info("MinElectiveCreditsRule: Rule Processor Data set.");
+	}
 
 }

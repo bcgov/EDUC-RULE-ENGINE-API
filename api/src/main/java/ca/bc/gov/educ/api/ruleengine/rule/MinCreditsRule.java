@@ -25,14 +25,12 @@ public class MinCreditsRule implements Rule {
     @Autowired
     private RuleProcessorData ruleProcessorData;
 
-    final RuleType ruleType = RuleType.MIN_CREDITS;
-
     public RuleData fire() {
         int totalCredits;
         int requiredCredits;
         logger.debug("Min Credits Rule");
 
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");
             return ruleProcessorData;
         }
@@ -75,7 +73,7 @@ public class MinCreditsRule implements Rule {
                 List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
                 if (reqsMet == null)
-                    reqsMet = new ArrayList<GradRequirement>();
+                    reqsMet = new ArrayList<>();
 
                 reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(),
                         gradProgramRule.getRequirementName()));
@@ -87,7 +85,7 @@ public class MinCreditsRule implements Rule {
                 List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
 
                 if (nonGradReasons == null)
-                    nonGradReasons = new ArrayList<GradRequirement>();
+                    nonGradReasons = new ArrayList<>();
 
                 nonGradReasons.add(new GradRequirement(gradProgramRule.getRuleCode(),
                         gradProgramRule.getNotMetDesc()));
@@ -95,9 +93,6 @@ public class MinCreditsRule implements Rule {
             }
 
             logger.info("Min Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
-
-            requiredCredits = 0;
-            totalCredits = 0;
         }
 
         logger.debug(ruleProcessorData.toString());

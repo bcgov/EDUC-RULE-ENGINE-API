@@ -25,58 +25,59 @@ public class AssessmentRegistrationsRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(AssessmentRegistrationsRule.class.getName());
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
+	@Autowired
+	private RuleProcessorData ruleProcessorData;
 
-    @Override
-    public RuleData fire() {
-         
-         List<StudentAssessment> studentAssessmentList = ruleProcessorData.getStudentAssessments();
+	@Override
+	public RuleData fire() {
 
-        logger.log(Level.INFO,"###################### Finding PROJECTED assessments (For Projected GRAD) ######################");
+		List<StudentAssessment> studentAssessmentList = ruleProcessorData.getStudentAssessments();
 
-        for (StudentAssessment studentAssessment : studentAssessmentList) {
-            String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
-            String sessionDate = studentAssessment.getSessionDate() + "/01";
-            Date temp = new Date();
+		logger.log(Level.INFO,
+				"###################### Finding PROJECTED assessments (For Projected GRAD) ######################");
 
-            try {
-                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
-                sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
-            } catch (ParseException pe) {
-                logger.log(Level.SEVERE,"ERROR: {0}",pe.getMessage());
-            }
+		for (StudentAssessment studentAssessment : studentAssessmentList) {
+			String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
+			String sessionDate = studentAssessment.getSessionDate() + "/01";
+			Date temp = new Date();
 
-            int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
-            String proficiencyScore = null;
-            if(studentAssessment.getProficiencyScore() == null) {
-            	proficiencyScore = "0.0";
-            }else {
-            	proficiencyScore = studentAssessment.getProficiencyScore().toString();
-            }
-            String specialCase = "";
-            if(studentAssessment.getSpecialCase() == null) {
-            	specialCase = "";
-            }else {
-            	specialCase = studentAssessment.getSpecialCase();
-            }
-            if ("".compareTo(specialCase.trim()) == 0  
-            		&& "".compareTo(studentAssessment.getExceededWriteFlag().trim()) == 0
-            		&& "0.0".compareTo(proficiencyScore) == 0
-                    && diff < 1) {
-                studentAssessment.setProjected(true);
-            }
-        }
+			try {
+				temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
+				sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
+			} catch (ParseException pe) {
+				logger.log(Level.SEVERE, "ERROR: {0}", pe.getMessage());
+			}
 
-        ruleProcessorData.setStudentAssessments(studentAssessmentList);
+			int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate, today);
+			String proficiencyScore = null;
+			if (studentAssessment.getProficiencyScore() == null) {
+				proficiencyScore = "0.0";
+			} else {
+				proficiencyScore = studentAssessment.getProficiencyScore().toString();
+			}
+			String specialCase = "";
+			if (studentAssessment.getSpecialCase() == null) {
+				specialCase = "";
+			} else {
+				specialCase = studentAssessment.getSpecialCase();
+			}
+			if ("".compareTo(specialCase.trim()) == 0
+					&& "".compareTo(studentAssessment.getExceededWriteFlag().trim()) == 0
+					&& "0.0".compareTo(proficiencyScore) == 0 && diff < 1) {
+				studentAssessment.setProjected(true);
+			}
+		}
 
-        logger.log(Level.INFO,"Projected Assessments (Registrations): {0} ",(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
-        return ruleProcessorData;
-    }
+		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-    @Override
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("AssessmentRegistrationsRule: Rule Processor Data set.");
-    }
+		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",
+				(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
+		return ruleProcessorData;
+	}
+
+	@Override
+	public void setInputData(RuleData inputData) {
+		ruleProcessorData = (RuleProcessorData) inputData;
+		logger.info("AssessmentRegistrationsRule: Rule Processor Data set.");
+	}
 }
