@@ -28,7 +28,7 @@ public class CPCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
+        List<StudentCourse> studentCourseList = new ArrayList<>();
         studentCourseList = ruleProcessorData.getStudentCourses();
 
         logger.debug("###################### Finding CAREER PROGRAM courses ######################");
