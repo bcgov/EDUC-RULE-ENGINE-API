@@ -29,18 +29,15 @@ public class AssessmentsMatchCreditsRule implements Rule {
     @Autowired
     private RuleProcessorData ruleProcessorData;
 
-    final RuleType ruleType = RuleType.MATCH;
-
     public RuleData fire() {
 
-        List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
-        List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
+        List<GradRequirement> requirementsMet = new ArrayList<>();
+        List<GradRequirement> requirementsNotMet = new ArrayList<>();
         List<StudentAssessment> assessmentList = RuleProcessorRuleUtils.getUniqueStudentAssessments(
                 ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
         List<StudentAssessment> excludedAssessments = RuleProcessorRuleUtils.getExcludedStudentAssessments(
                 ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
         ruleProcessorData.setExcludedAssessments(excludedAssessments);
-        logger.debug("Unique Assessments: " + assessmentList.size());
 
         List<GradProgramRule> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
                 .stream()
@@ -52,10 +49,10 @@ public class AssessmentsMatchCreditsRule implements Rule {
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
         List<AssessmentRequirement> originalAssessmentRequirements = new ArrayList<AssessmentRequirement>(assessmentRequirements);
 
-        logger.debug("#### Match Program Rule size: " + gradProgramRulesMatch.size());
+        logger.debug(String.format("#### Match Program Rule size: %s",gradProgramRulesMatch.size()));
 
-        List<StudentAssessment> finalAssessmentList = new ArrayList<StudentAssessment>();
-        List<GradProgramRule> finalProgramRulesList = new ArrayList<GradProgramRule>();
+        List<StudentAssessment> finalAssessmentList = new ArrayList<>();
+        List<GradProgramRule> finalProgramRulesList = new ArrayList<>();
         StudentAssessment tempSA;
         GradProgramRule tempPR;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -89,7 +86,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
                 GradProgramRule finalTempProgramRule = tempProgramRule;
                 if (requirementsMet.stream()
-                        .filter(rm -> rm.getRule() == finalTempProgramRule.getRuleCode())
+                        .filter(rm -> rm.getRule().equals(finalTempProgramRule.getRuleCode()))
                         .findAny().orElse(null) == null) {
                     tempAssessment.setUsed(true);
 
@@ -168,7 +165,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
         List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
         if (reqsMet == null)
-            reqsMet = new ArrayList<GradRequirement>();
+            reqsMet = new ArrayList<>();
 
         reqsMet.addAll(requirementsMet);
         ruleProcessorData.setRequirementsMet(reqsMet);
