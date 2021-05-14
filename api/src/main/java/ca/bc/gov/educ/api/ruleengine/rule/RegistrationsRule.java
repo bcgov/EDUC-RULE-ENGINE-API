@@ -49,7 +49,11 @@ public class RegistrationsRule implements Rule {
 
             int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
 
-            if ("".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
+            String completedCourseLetterGrade = "";
+            if(studentCourse.getCompletedCourseLetterGrade() != null) {
+            	completedCourseLetterGrade = studentCourse.getCompletedCourseLetterGrade();
+            }
+            if ("".compareTo(completedCourseLetterGrade.trim()) == 0
                     && diff < 1) {
                 studentCourse.setProjected(true);
             }
