@@ -48,7 +48,7 @@ public class IncompleteAssessmentsRule implements Rule {
             }
 
             int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
-            String proficiencyScore = "0.0";
+            String proficiencyScore = null;
             
             if(studentAssessment.getProficiencyScore() == null) {
             	proficiencyScore = "0.0";
