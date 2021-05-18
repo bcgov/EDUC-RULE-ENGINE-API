@@ -36,8 +36,10 @@ public class DuplicateCoursesRule implements Rule {
 
             for (int j = i + 1; j < studentCourseList.size(); j++) {
 
-                if (studentCourseList.get(i).getCourseCode().equals(studentCourseList.get(j).getCourseCode())
-                        && studentCourseList.get(i).getCourseLevel().equals(studentCourseList.get(j).getCourseLevel())) {
+                if (studentCourseList.get(i).getCourseCode().equals(studentCourseList.get(j).getCourseCode()) 
+                		&& !studentCourseList.get(i).isDuplicate()
+                        && studentCourseList.get(i).getCourseLevel().equals(studentCourseList.get(j).getCourseLevel())
+                        && !studentCourseList.get(j).isDuplicate()) {
 
                 	logger.log(Level.SEVERE,"comparing " + studentCourseList.get(i).getCourseCode() + " with "
                             + studentCourseList.get(j).getCourseCode() + " -> Duplicate FOUND - CourseID:"
@@ -64,11 +66,10 @@ public class DuplicateCoursesRule implements Rule {
     
     private void compareSessionDates(List<StudentCourse> studentCourseList, int i, int j) {
     	if (RuleEngineApiUtils.parsingTraxDate(studentCourseList.get(i).getSessionDate())
-                .compareTo(RuleEngineApiUtils.parsingTraxDate(studentCourseList.get(j).getSessionDate())) < 0) {
+                .before(RuleEngineApiUtils.parsingTraxDate(studentCourseList.get(j).getSessionDate()))) {
             studentCourseList.get(i).setDuplicate(false);
             studentCourseList.get(j).setDuplicate(true);
-        } else if (RuleEngineApiUtils.parsingTraxDate(studentCourseList.get(i).getSessionDate())
-                .compareTo(RuleEngineApiUtils.parsingTraxDate(studentCourseList.get(j).getSessionDate())) >= 0) {
+        }else {
             studentCourseList.get(i).setDuplicate(true);
             studentCourseList.get(j).setDuplicate(false);
         }
