@@ -71,10 +71,12 @@ public class MatchCreditsRule implements Rule {
 
             if (!tempCourseRequirement.isEmpty()) {
                 for(CourseRequirement cr:tempCourseRequirement) {
-	                tempProgramRule = gradProgramRulesMatch.stream()
-	                        .filter(pr -> pr.getRuleCode().compareTo(cr.getRuleCode()) == 0)
-	                        .findAny()
-	                        .orElse(null);
+                	if(tempProgramRule == null) {
+	                	tempProgramRule = gradProgramRulesMatch.stream()
+		                        .filter(pr -> pr.getRuleCode().compareTo(cr.getRuleCode()) == 0)
+		                        .findAny()
+		                        .orElse(null);
+                	}
                 }
             }
             logger.debug("Temp Program Rule: " + tempProgramRule);
