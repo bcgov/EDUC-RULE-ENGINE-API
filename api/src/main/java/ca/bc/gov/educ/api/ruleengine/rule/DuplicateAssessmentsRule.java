@@ -112,8 +112,7 @@ public class DuplicateAssessmentsRule implements Rule {
 		if (RuleEngineApiUtils.parsingTraxDate(sessionDate1).before(RuleEngineApiUtils.parsingTraxDate(sessionDate2))) {
 			studentAssessmentList.get(i).setDuplicate(false);
 			studentAssessmentList.get(j).setDuplicate(true);
-		} else if (RuleEngineApiUtils.parsingTraxDate(studentAssessmentList.get(i).getSessionDate())
-				.before(RuleEngineApiUtils.parsingTraxDate(studentAssessmentList.get(j).getSessionDate()))) {
+		} else {
 			studentAssessmentList.get(i).setDuplicate(true);
 			studentAssessmentList.get(j).setDuplicate(false);
 		}
