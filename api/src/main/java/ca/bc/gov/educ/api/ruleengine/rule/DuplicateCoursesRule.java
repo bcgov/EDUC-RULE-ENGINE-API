@@ -60,7 +60,7 @@ public class DuplicateCoursesRule implements Rule {
             }
         }
 
-        logger.info("Duplicate Courses: {0} ",(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
+        logger.info("Duplicate Courses: "+(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
         return ruleProcessorData;
     }
     
