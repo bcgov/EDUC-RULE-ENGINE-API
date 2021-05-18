@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -34,38 +33,19 @@ public class DuplicateAssessmentsRule implements Rule {
 	@Override
 	public RuleData fire() {
 
-		logger.log(Level.INFO, "###################### Finding DUPLICATE courses ######################");
+		logger.log(Level.INFO, "###################### Finding DUPLICATE Assessments ######################");
 
-		List<StudentAssessment> studentAssessmentList = new ArrayList<>();
 		List<StudentAssessment> originalList = ruleProcessorData.getStudentAssessments();
-		studentAssessmentList = originalList.stream().filter(sc -> !sc.isNotCompleted() && !sc.isFailed())
+		List<StudentAssessment> studentAssessmentList = originalList.stream().filter(sc -> !sc.isNotCompleted() && !sc.isFailed())
 				.collect(Collectors.toList());
-		studentAssessmentList.forEach(sA -> {
-			if (sA.getAssessmentCode().equalsIgnoreCase("NME10") || sA.getAssessmentCode().equalsIgnoreCase("NME")) {
-				sA.setEquivalentCode("NME");
-			} else if (sA.getAssessmentCode().equalsIgnoreCase("NMF10")
-					|| sA.getAssessmentCode().equalsIgnoreCase("NMF")) {
-				sA.setEquivalentCode("NMF");
-			} else {
-				sA.setEquivalentCode(sA.getAssessmentCode());
-			}
-			if (sA.getProficiencyScore() == null) {
-				sA.setProficiencyScore(0.0);
-			}
-			if (sA.getSpecialCase() == null) {
-				sA.setSpecialCase("");
-			}
-		});
-		Collections.sort(studentAssessmentList,
-				Comparator.comparing(StudentAssessment::getPen).thenComparing(StudentAssessment::getEquivalentCode)
-						.reversed().thenComparing(StudentAssessment::getProficiencyScore).reversed()
-						.thenComparing(StudentAssessment::getSpecialCase)
-						.thenComparing(StudentAssessment::getSessionDate));
+		studentAssessmentList = getModifiedAndSortedData(studentAssessmentList);
 
 		for (int i = 0; i < studentAssessmentList.size() - 1; i++) {
 			for (int j = i + 1; j < studentAssessmentList.size(); j++) {
 				if (studentAssessmentList.get(i).getAssessmentCode()
-						.equals(studentAssessmentList.get(j).getAssessmentCode())) {
+						.equals(studentAssessmentList.get(j).getAssessmentCode())
+						&& studentAssessmentList.get(i).isDuplicate() 
+						&& studentAssessmentList.get(j).isDuplicate()) {
 					Double proficiencyScore1 = studentAssessmentList.get(i).getProficiencyScore() != null
 							? studentAssessmentList.get(i).getProficiencyScore()
 							: Double.valueOf("0.0");
@@ -94,8 +74,7 @@ public class DuplicateAssessmentsRule implements Rule {
 							compareSpecialCases(specialCase1, specialCase2, studentAssessmentList, i, j);
 						}
 					} else {
-						compareDifferentProficiencyScore(proficiencyScore1, proficiencyScore2, studentAssessmentList, i,
-								j);
+						compareDifferentProficiencyScore(proficiencyScore1, proficiencyScore2, studentAssessmentList, i,j);
 					}
 				}
 			}
@@ -105,6 +84,31 @@ public class DuplicateAssessmentsRule implements Rule {
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isDuplicate).count());
 
 		return ruleProcessorData;
+	}
+
+	private List<StudentAssessment> getModifiedAndSortedData(List<StudentAssessment> studentAssessmentList) {
+		studentAssessmentList.forEach(sA -> {
+			if (sA.getAssessmentCode().equalsIgnoreCase("NME10") || sA.getAssessmentCode().equalsIgnoreCase("NME")) {
+				sA.setEquivalentCode("NME");
+			} else if (sA.getAssessmentCode().equalsIgnoreCase("NMF10")
+					|| sA.getAssessmentCode().equalsIgnoreCase("NMF")) {
+				sA.setEquivalentCode("NMF");
+			} else {
+				sA.setEquivalentCode(sA.getAssessmentCode());
+			}
+			if (sA.getProficiencyScore() == null) {
+				sA.setProficiencyScore(0.0);
+			}
+			if (sA.getSpecialCase() == null) {
+				sA.setSpecialCase("");
+			}
+		});
+		Collections.sort(studentAssessmentList,
+				Comparator.comparing(StudentAssessment::getPen).thenComparing(StudentAssessment::getEquivalentCode)
+						.reversed().thenComparing(StudentAssessment::getProficiencyScore).reversed()
+						.thenComparing(StudentAssessment::getSpecialCase)
+						.thenComparing(StudentAssessment::getSessionDate));
+		return studentAssessmentList;
 	}
 
 	public void compareSessionDates(String sessionDate1, String sessionDate2,

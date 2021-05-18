@@ -1,9 +1,9 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DuplicateCoursesRule implements Rule {
 
-    private static Logger logger = Logger.getLogger(DuplicateCoursesRule.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(DuplicateCoursesRule.class);
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -29,7 +29,7 @@ public class DuplicateCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        logger.log(Level.INFO,"###################### Finding DUPLICATE courses ######################");
+        logger.info("###################### Finding DUPLICATE courses ######################");
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         for (int i = 0; i < studentCourseList.size() - 1; i++) {
@@ -41,7 +41,7 @@ public class DuplicateCoursesRule implements Rule {
                         && studentCourseList.get(i).getCourseLevel().equals(studentCourseList.get(j).getCourseLevel())
                         && !studentCourseList.get(j).isDuplicate()) {
 
-                	logger.log(Level.SEVERE,"comparing " + studentCourseList.get(i).getCourseCode() + " with "
+                	logger.debug("comparing " + studentCourseList.get(i).getCourseCode() + " with "
                             + studentCourseList.get(j).getCourseCode() + " -> Duplicate FOUND - CourseID:"
                             + studentCourseList.get(i).getCourseCode() + "-" + studentCourseList.get(i).getCourseLevel());
 
@@ -60,7 +60,7 @@ public class DuplicateCoursesRule implements Rule {
             }
         }
 
-        logger.log(Level.INFO,"Duplicate Courses: {0} ",(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
+        logger.info("Duplicate Courses: {0} ",(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
         return ruleProcessorData;
     }
     
