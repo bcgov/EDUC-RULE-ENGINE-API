@@ -47,7 +47,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 .collect(Collectors.toList());
 
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
-        List<AssessmentRequirement> originalAssessmentRequirements = new ArrayList<AssessmentRequirement>(assessmentRequirements);
+        List<AssessmentRequirement> originalAssessmentRequirements = new ArrayList<>(assessmentRequirements);
 
         logger.debug(String.format("#### Match Program Rule size: %s",gradProgramRulesMatch.size()));
 
@@ -65,24 +65,27 @@ public class AssessmentsMatchCreditsRule implements Rule {
             logger.debug("Processing Assessment: Code=" + tempAssessment.getAssessmentCode());
             logger.debug("Assessment Requirements size: " + assessmentRequirements.size());
 
-            AssessmentRequirement tempAssessmentRequirement = assessmentRequirements.stream()
+            List<AssessmentRequirement> tempAssessmentRequirement = assessmentRequirements.stream()
                     .filter(ar -> tempAssessment.getAssessmentCode().compareTo(ar.getAssessmentCode()) == 0)
-                    .findAny()
-                    .orElse(null);
+                    .collect(Collectors.toList());
 
             logger.debug("Temp Assessment Requirement: " + tempAssessmentRequirement);
 
             GradProgramRule tempProgramRule = null;
 
-            if (tempAssessmentRequirement != null) {
-                tempProgramRule = gradProgramRulesMatch.stream()
-                        .filter(pr -> pr.getRuleCode().compareTo(tempAssessmentRequirement.getRuleCode()) == 0)
+            if (!tempAssessmentRequirement.isEmpty()) {
+                for(AssessmentRequirement ar:tempAssessmentRequirement) {
+                	if(tempProgramRule == null) {
+                	tempProgramRule = gradProgramRulesMatch.stream()
+                        .filter(pr -> pr.getRuleCode().compareTo(ar.getRuleCode()) == 0)
                         .findAny()
                         .orElse(null);
+                	}
+                }
             }
             logger.debug("Temp Program Rule: " + tempProgramRule);
 
-            if (tempAssessmentRequirement != null && tempProgramRule != null) {
+            if (!tempAssessmentRequirement.isEmpty() && tempProgramRule != null) {
 
                 GradProgramRule finalTempProgramRule = tempProgramRule;
                 if (requirementsMet.stream()
@@ -144,7 +147,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
 
             if (nonGradReasons == null)
-                nonGradReasons = new ArrayList<GradRequirement>();
+                nonGradReasons = new ArrayList<>();
 
             nonGradReasons.addAll(requirementsNotMet);
             ruleProcessorData.setNonGradReasons(nonGradReasons);
