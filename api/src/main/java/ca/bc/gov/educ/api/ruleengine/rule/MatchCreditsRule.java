@@ -80,33 +80,8 @@ public class MatchCreditsRule implements Rule {
                 }
             }
             logger.debug("Temp Program Rule: " + tempProgramRule);
-
-            if (!tempCourseRequirement.isEmpty() && tempProgramRule != null) {
-
-                GradProgramRule finalTempProgramRule = tempProgramRule;
-                if (requirementsMet.stream()
-                        .filter(rm -> rm.getRule().equals(finalTempProgramRule.getRuleCode()))
-                        .findAny()
-                        .orElse(null) == null) {
-                    tempCourse.setUsed(true);
-                    tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
-
-                    if (tempCourse.getGradReqMet().length() > 0) {
-
-                        tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getRuleCode());
-                        tempCourse.setGradReqMetDetail(tempCourse.getGradReqMetDetail() + ", " + tempProgramRule.getRuleCode()
-                                + " - " + tempProgramRule.getRequirementName());
-                    } else {
-                        tempCourse.setGradReqMet(tempProgramRule.getRuleCode());
-                        tempCourse.setGradReqMetDetail(tempProgramRule.getRuleCode() + " - " + tempProgramRule.getRequirementName());
-                    }
-
-                    tempProgramRule.setPassed(true);
-                    requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
-                } else {
-                    logger.debug("!!! Program Rule met Already: " + tempProgramRule);
-                }
-            }
+            processCourse(tempCourse,tempCourseRequirement,tempProgramRule,requirementsMet,gradProgramRulesMatch);
+            
 
             tempSC = new StudentCourse();
             tempPR = new GradProgramRule();
@@ -128,8 +103,43 @@ public class MatchCreditsRule implements Rule {
         }
 
         logger.debug("Final Program rules list: " + finalProgramRulesList);
+        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet);        
 
-        List<GradProgramRule> failedRules = finalProgramRulesList.stream()
+        return ruleProcessorData;
+    }
+    
+    private void processCourse(StudentCourse tempCourse, List<CourseRequirement> tempCourseRequirement, GradProgramRule tempProgramRule, List<GradRequirement> requirementsMet, List<GradProgramRule> gradProgramRulesMatch) {
+    	if (!tempCourseRequirement.isEmpty() && tempProgramRule != null) {
+
+            GradProgramRule finalTempProgramRule = tempProgramRule;
+            if (requirementsMet.stream()
+                    .filter(rm -> rm.getRule().equals(finalTempProgramRule.getRuleCode()))
+                    .findAny()
+                    .orElse(null) == null) {
+            	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet,gradProgramRulesMatch,null);
+            } else {
+                logger.debug("!!! Program Rule met Already: " + tempProgramRule);
+            }
+        }else {
+        	if(tempCourse.getCourseCode().startsWith("Y") 
+        			&& tempCourse.getCourseLevel().contains("11")
+        			&& (tempCourse.getFineArtsAppliedSkills().compareTo("B") == 0
+        			|| tempCourse.getFineArtsAppliedSkills().compareTo("F") == 0
+        			|| tempCourse.getFineArtsAppliedSkills().compareTo("A") == 0)) {
+        		tempProgramRule = gradProgramRulesMatch.stream()
+                        .filter(pr -> pr.getRuleCode().compareTo("111") == 0 && !pr.isPassed())
+                        .findAny()
+                        .orElse(null);
+        		if(tempProgramRule != null) {
+        			setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet,gradProgramRulesMatch,"ExceptionalCase");
+        		}
+        	}
+        }
+		
+	}
+
+	public void processReqMetAndNotMet(List<GradProgramRule> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet) {
+    	List<GradProgramRule> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
@@ -170,8 +180,26 @@ public class MatchCreditsRule implements Rule {
 
         reqsMet.addAll(requirementsMet);
         ruleProcessorData.setRequirementsMet(reqsMet);
+    }
+    
+    public void setDetailsForCourses(StudentCourse tempCourse, GradProgramRule tempProgramRule, List<GradRequirement> requirementsMet, List<GradProgramRule> gradProgramRulesMatch, String exceptionalCase) {
+    	tempCourse.setUsed(true);
+        tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
 
-        return ruleProcessorData;
+        if (tempCourse.getGradReqMet().length() > 0) {
+
+            tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getRuleCode());
+            tempCourse.setGradReqMetDetail(tempCourse.getGradReqMetDetail() + ", " + tempProgramRule.getRuleCode()
+                    + " - " + tempProgramRule.getRequirementName());
+        } else {
+            tempCourse.setGradReqMet(tempProgramRule.getRuleCode());
+            tempCourse.setGradReqMetDetail(tempProgramRule.getRuleCode() + " - " + tempProgramRule.getRequirementName());
+        }
+
+        tempProgramRule.setPassed(true);
+        if(exceptionalCase != null)
+        	gradProgramRulesMatch.stream().filter(pr -> pr.getRuleCode().compareTo("111") == 0).forEach(pR -> pR.setPassed(true));
+        requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
     }
 
     @Override
