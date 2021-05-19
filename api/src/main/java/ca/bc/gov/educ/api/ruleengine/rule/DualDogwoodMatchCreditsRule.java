@@ -28,26 +28,26 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class FrenchImmersionMatchRule implements Rule {
+public class DualDogwoodMatchCreditsRule implements Rule {
 
-	private static Logger logger = LoggerFactory.getLogger(FrenchImmersionMatchRule.class);
+	private static Logger logger = LoggerFactory.getLogger(DualDogwoodMatchCreditsRule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
 
 	public RuleData fire() {
 
-		if (!ruleProcessorData.isHasSpecialProgramFrenchImmersion()) {
+		if (!ruleProcessorData.isHasSpecialProgramDualDogwood()) {
 			return ruleProcessorData;
 		}
-		ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(true);
+		ruleProcessorData.setSpecialProgramDualDogwoodGraduated(true);
 		List<GradRequirement> requirementsMet = new ArrayList<>();
 		List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
 		List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
-				ruleProcessorData.getStudentCoursesForFrenchImmersion(), ruleProcessorData.isProjected());
+				ruleProcessorData.getStudentCoursesForDualDogwood(), ruleProcessorData.isProjected());
 		List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData
-				.getGradSpecialProgramRulesFrenchImmersion().stream()
+				.getGradSpecialProgramRulesDualDogwood().stream()
 				.filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
 						&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
 						&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
@@ -139,7 +139,7 @@ public class FrenchImmersionMatchRule implements Rule {
 			}
 		}
 
-		ruleProcessorData.setStudentCoursesForFrenchImmersion(finalCourseList);
+		ruleProcessorData.setStudentCoursesForDualDogwood(finalCourseList);
 
 		List<GradSpecialProgramRule> failedRules = finalSpecialProgramRulesList.stream().filter(pr -> !pr.isPassed())
 				.collect(Collectors.toList());
@@ -150,33 +150,33 @@ public class FrenchImmersionMatchRule implements Rule {
 			for (GradSpecialProgramRule failedRule : failedRules) {
 				requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
 			}
-			ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(false);
+			ruleProcessorData.setSpecialProgramDualDogwoodGraduated(false);
 
-			List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsFrenchImmersion();
+			List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsDualDogwood();
 
 			if (nonGradReasons == null)
 				nonGradReasons = new ArrayList<>();
 
 			nonGradReasons.addAll(requirementsNotMet);
-			ruleProcessorData.setNonGradReasonsSpecialProgramsFrenchImmersion(nonGradReasons);
+			ruleProcessorData.setNonGradReasonsSpecialProgramsDualDogwood(nonGradReasons);
 			logger.debug("One or more Match rules not met!");
 		}
 
-		List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsFrenchImmersion();
+		List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsDualDogwood();
 
 		if (reqsMet == null)
 			reqsMet = new ArrayList<>();
 
 		reqsMet.addAll(requirementsMet);
 
-		ruleProcessorData.setRequirementsMetSpecialProgramsFrenchImmersion(reqsMet);
+		ruleProcessorData.setRequirementsMetSpecialProgramsDualDogwood(reqsMet);
 		return ruleProcessorData;
 	}
 
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("FrenchImmersionMatchRule: Rule Processor Data set.");
+		logger.info("DualDogwoodMatchCreditsRule: Rule Processor Data set.");
 	}
 
 }

@@ -72,8 +72,15 @@ public class AssessmentRegistrationsRule implements Rule {
 
 		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
+		prepareAssessmentForSpecialPrograms();
 		return ruleProcessorData;
 	}
+	
+	private void prepareAssessmentForSpecialPrograms() {
+    	List<StudentAssessment> listAssessments = ruleProcessorData.getStudentAssessments();        
+        if(ruleProcessorData.isHasSpecialProgramDualDogwood())
+        	ruleProcessorData.setStudentAssessmentsForDualDogwood(RuleEngineApiUtils.getAssessmentClone(listAssessments));
+    }
 
 	@Override
 	public void setInputData(RuleData inputData) {
