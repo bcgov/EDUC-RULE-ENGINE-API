@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.bc.gov.educ.api.ruleengine.struct.CourseRequirement;
+import ca.bc.gov.educ.api.ruleengine.struct.AssessmentRequirement;
 import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
 import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,87 +28,85 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class FrenchImmersionMatchRule implements Rule {
+public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 
-	private static Logger logger = LoggerFactory.getLogger(FrenchImmersionMatchRule.class);
+	private static Logger logger = LoggerFactory.getLogger(AssessmentDualDogwoodMatchCreditsRule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
 
 	public RuleData fire() {
 
-		if (!ruleProcessorData.isHasSpecialProgramFrenchImmersion()) {
+		if (!ruleProcessorData.isHasSpecialProgramDualDogwood()) {
 			return ruleProcessorData;
 		}
-		ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(true);
+		ruleProcessorData.setSpecialProgramDualDogwoodGraduated(true);
 		List<GradRequirement> requirementsMet = new ArrayList<>();
 		List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
-		List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
-				ruleProcessorData.getStudentCoursesForFrenchImmersion(), ruleProcessorData.isProjected());
+		List<StudentAssessment> assessmentList = RuleProcessorRuleUtils.getUniqueStudentAssessments(
+				ruleProcessorData.getStudentAssessmentsForDualDogwood(), ruleProcessorData.isProjected());
 		List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData
-				.getGradSpecialProgramRulesFrenchImmersion().stream()
+				.getGradSpecialProgramRulesDualDogwood().stream()
 				.filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
 						&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
-						&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
+						&& "A".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
 				.collect(Collectors.toList());
-		List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
+		List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
 
 		logger.debug("#### Match Special Program Rule size: " + gradSpecialProgramRulesMatch.size());
 
-		ListIterator<StudentCourse> courseIterator = courseList.listIterator();
+		ListIterator<StudentAssessment> assessmentIterator = assessmentList.listIterator();
 
-		List<StudentCourse> finalCourseList = new ArrayList<>();
+		List<StudentAssessment> finalAssessmentList = new ArrayList<>();
 		List<GradSpecialProgramRule> finalSpecialProgramRulesList = new ArrayList<>();
-		StudentCourse tempSC;
+		StudentAssessment tempSC;
 		GradSpecialProgramRule tempSPR;
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		while (courseIterator.hasNext()) {
-			StudentCourse tempCourse = courseIterator.next();
+		while (assessmentIterator.hasNext()) {
+			StudentAssessment tempAssessment = assessmentIterator.next();
 
-			logger.debug(
-					"Processing Course: Code=" + tempCourse.getCourseCode() + " Level=" + tempCourse.getCourseLevel());
-			logger.debug("Course Requirements size: " + courseRequirements.size());
+            logger.debug("Processing Assessment: Code=" + tempAssessment.getAssessmentCode());
+            logger.debug("Assessment Requirements size: " + assessmentRequirements.size());
 
-			List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
-                    .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
-                            && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
+            List<AssessmentRequirement> tempAssessmentRequirement = assessmentRequirements.stream()
+                    .filter(ar -> tempAssessment.getAssessmentCode().compareTo(ar.getAssessmentCode()) == 0)
                     .collect(Collectors.toList());
 
-			logger.debug("Temp Course Requirement: " + tempCourseRequirement);
+            logger.debug("Temp Assessment Requirement: " + tempAssessmentRequirement);
 
-			GradSpecialProgramRule tempSpecialProgramRule = null;
-
-			if (!tempCourseRequirement.isEmpty()) {
-                for(CourseRequirement cr:tempCourseRequirement) {
+            GradSpecialProgramRule tempSpecialProgramRule = null;
+            if (!tempAssessmentRequirement.isEmpty()) {
+                for(AssessmentRequirement ar:tempAssessmentRequirement) {
                 	if(tempSpecialProgramRule == null) {
-						tempSpecialProgramRule = gradSpecialProgramRulesMatch.stream()
-								.filter(pr -> pr.getRuleCode().compareTo(cr.getRuleCode()) == 0).findAny()
-								.orElse(null);
+                		tempSpecialProgramRule = gradSpecialProgramRulesMatch.stream()
+                        .filter(pr -> pr.getRuleCode().compareTo(ar.getRuleCode()) == 0)
+                        .findAny()
+                        .orElse(null);
                 	}
                 }
-			}
+            }
+			
 			logger.debug("Temp Program Rule: " + tempSpecialProgramRule);
 
-			if (!tempCourseRequirement.isEmpty() && tempSpecialProgramRule != null) {
+			if (!tempAssessmentRequirement.isEmpty() && tempSpecialProgramRule != null) {
 
 				GradSpecialProgramRule finalTempProgramRule = tempSpecialProgramRule;
 				if (requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getRuleCode())).findAny()
 						.orElse(null) == null) {
-					tempCourse.setUsed(true);
-					tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
+					tempAssessment.setUsed(true);
 
-					if (tempCourse.getGradReqMet().length() > 0) {
+					if (tempAssessment.getGradReqMet().length() > 0) {
 
-						tempCourse.setGradReqMet(
-								tempCourse.getGradReqMet() + ", " + tempSpecialProgramRule.getRuleCode());
-						tempCourse.setGradReqMetDetail(
-								tempCourse.getGradReqMetDetail() + ", " + tempSpecialProgramRule.getRuleCode() + " - "
+						tempAssessment.setGradReqMet(
+								tempAssessment.getGradReqMet() + ", " + tempSpecialProgramRule.getRuleCode());
+						tempAssessment.setGradReqMetDetail(
+								tempAssessment.getGradReqMetDetail() + ", " + tempSpecialProgramRule.getRuleCode() + " - "
 										+ tempSpecialProgramRule.getRequirementName());
 					} else {
-						tempCourse.setGradReqMet(tempSpecialProgramRule.getRuleCode());
-						tempCourse.setGradReqMetDetail(tempSpecialProgramRule.getRuleCode() + " - "
+						tempAssessment.setGradReqMet(tempSpecialProgramRule.getRuleCode());
+						tempAssessment.setGradReqMetDetail(tempSpecialProgramRule.getRuleCode() + " - "
 								+ tempSpecialProgramRule.getRequirementName());
 					}
 
@@ -120,14 +118,14 @@ public class FrenchImmersionMatchRule implements Rule {
 				}
 			}
 
-			tempSC = new StudentCourse();
+			tempSC = new StudentAssessment();
 			tempSPR = new GradSpecialProgramRule();
 			try {
-				tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
+				tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempAssessment), StudentAssessment.class);
 				if (tempSC != null)
-					finalCourseList.add(tempSC);
+					finalAssessmentList.add(tempSC);
 				logger.debug("TempSC: " + tempSC);
-				logger.debug("Final course List size: : " + finalCourseList.size());
+				logger.debug("Final Assessment List size: : " + finalAssessmentList.size());
 				tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(tempSpecialProgramRule),
 						GradSpecialProgramRule.class);
 				if (tempSPR != null)
@@ -139,7 +137,7 @@ public class FrenchImmersionMatchRule implements Rule {
 			}
 		}
 
-		ruleProcessorData.setStudentCoursesForFrenchImmersion(finalCourseList);
+		ruleProcessorData.setStudentAssessmentsForDualDogwood(finalAssessmentList);
 
 		List<GradSpecialProgramRule> failedRules = finalSpecialProgramRulesList.stream().filter(pr -> !pr.isPassed())
 				.collect(Collectors.toList());
@@ -150,33 +148,33 @@ public class FrenchImmersionMatchRule implements Rule {
 			for (GradSpecialProgramRule failedRule : failedRules) {
 				requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
 			}
-			ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(false);
+			ruleProcessorData.setSpecialProgramDualDogwoodGraduated(false);
 
-			List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsFrenchImmersion();
+			List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsDualDogwood();
 
 			if (nonGradReasons == null)
 				nonGradReasons = new ArrayList<>();
 
 			nonGradReasons.addAll(requirementsNotMet);
-			ruleProcessorData.setNonGradReasonsSpecialProgramsFrenchImmersion(nonGradReasons);
+			ruleProcessorData.setNonGradReasonsSpecialProgramsDualDogwood(nonGradReasons);
 			logger.debug("One or more Match rules not met!");
 		}
 
-		List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsFrenchImmersion();
+		List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsDualDogwood();
 
 		if (reqsMet == null)
 			reqsMet = new ArrayList<>();
 
 		reqsMet.addAll(requirementsMet);
 
-		ruleProcessorData.setRequirementsMetSpecialProgramsFrenchImmersion(reqsMet);
+		ruleProcessorData.setRequirementsMetSpecialProgramsDualDogwood(reqsMet);
 		return ruleProcessorData;
 	}
 
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("FrenchImmersionMatchRule: Rule Processor Data set.");
+		logger.info("AssessmentDualDogwoodMatchCreditsRule: Rule Processor Data set.");
 	}
 
 }

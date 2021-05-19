@@ -110,11 +110,14 @@ public class RestrictedCoursesRule implements Rule {
     }
     private void prepareCoursesForSpecialPrograms() {
     	List<StudentCourse> listCourses = ruleProcessorData.getStudentCourses();
-        if(ruleProcessorData.isHasSpecialProgramFrenchImmersion()) {
+        if(ruleProcessorData.isHasSpecialProgramFrenchImmersion()) 
         	ruleProcessorData.setStudentCoursesForFrenchImmersion(RuleEngineApiUtils.getClone(listCourses));
-        }
+        
         if(ruleProcessorData.isHasSpecialProgramCareerProgram())
         	ruleProcessorData.setStudentCoursesForCareerProgram(RuleEngineApiUtils.getClone(listCourses));
+        
+        if(ruleProcessorData.isHasSpecialProgramDualDogwood())
+        	ruleProcessorData.setStudentCoursesForDualDogwood(RuleEngineApiUtils.getClone(listCourses));
     }
     
     @Override

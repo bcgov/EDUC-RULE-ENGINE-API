@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -15,17 +16,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 
 public class RuleEngineApiUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleEngineApiUtils.class);
+    private static final String ERROR_MSG = "Error : ";
+    private static final String DATE_FORMAT = "yyyyMM";
 
-    public static String formatDate(Date date) {
+    private RuleEngineApiUtils() {}
+
+	public static String formatDate(Date date) {
         if (date == null)
             return null;
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
         return simpleDateFormat.format(date);
     }
 
@@ -38,13 +44,13 @@ public class RuleEngineApiUtils {
         if (dateString == null || "".compareTo(dateString) == 0)
             return null;
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
         Date date = new Date();
 
         try {
             date = simpleDateFormat.parse(dateString);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.info(ERROR_MSG+e.getMessage());
         }
 
         return date;
@@ -57,7 +63,7 @@ public class RuleEngineApiUtils {
         try {
             date = simpleDateFormat.parse(dateString);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.info(ERROR_MSG+e.getMessage());
         }
 
         return date;
@@ -67,7 +73,7 @@ public class RuleEngineApiUtils {
         if (sessionDate == null)
             return null;
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
         Date date = new Date();
 
         try {
@@ -76,7 +82,7 @@ public class RuleEngineApiUtils {
             return localDate.getYear() + "/" + String.format("%02d", localDate.getMonthValue());
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.info(ERROR_MSG+e.getMessage());
             return null;
         }
     }
@@ -109,13 +115,27 @@ public class RuleEngineApiUtils {
 
 		try {
 			json = mapper.writeValueAsString(listCourses);
-			List<StudentCourse> cList = mapper.readValue(json, new TypeReference<List<StudentCourse>>(){});
-			return cList;
+			return mapper.readValue(json, new TypeReference<List<StudentCourse>>(){});
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			logger.info(ERROR_MSG+e.getMessage());
 		}
-		return null;
+		return Collections.emptyList();
 		
     }
+    
+    public static List<StudentAssessment> getAssessmentClone(List<StudentAssessment> listAssessments) {
+    	ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+
+		try {
+			json = mapper.writeValueAsString(listAssessments);
+			return mapper.readValue(json, new TypeReference<List<StudentAssessment>>(){});
+		} catch (JsonProcessingException e) {
+			logger.info(ERROR_MSG+e.getMessage());
+		}
+		return Collections.emptyList();
+		
+    }
+    
 
 }
