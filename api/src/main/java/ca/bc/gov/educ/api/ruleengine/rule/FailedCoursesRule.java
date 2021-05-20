@@ -34,13 +34,15 @@ public class FailedCoursesRule implements Rule {
 		logger.log(Level.INFO, "###################### Finding FAILED courses ######################");
 
 		for (StudentCourse studentCourse : studentCourseList) {
-
+			String finalLetterGrade = studentCourse.getCompletedCourseLetterGrade();
+			if(finalLetterGrade != null) {
 			boolean failed = ruleProcessorData.getGradLetterGradeList().stream()
-					.anyMatch(lg -> lg.getLetterGrade().compareTo(studentCourse.getCompletedCourseLetterGrade()) == 0
+					.anyMatch(lg -> lg.getLetterGrade().compareTo(finalLetterGrade) == 0
 							&& lg.getPassFlag().compareTo("N") == 0);
 
 			if (failed)
 				studentCourse.setFailed(true);
+			}
 		}
 
 		ruleProcessorData.setStudentCourses(studentCourseList);
