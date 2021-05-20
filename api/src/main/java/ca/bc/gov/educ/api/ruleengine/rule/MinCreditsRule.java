@@ -5,6 +5,8 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,14 +62,20 @@ public class MinCreditsRule implements Rule {
                 String requiredLevel = gradProgramRule.getRequiredLevel().trim();
                 totalCredits = studentCourses
                         .stream()
-                        .filter(sc -> sc.getCourseLevel().contains(requiredLevel))
+                        .filter(sc -> sc.getCourseLevel().contains(requiredLevel)
+                        		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel())))
                         .mapToInt(StudentCourse::getCredits)
                         .sum();
             }
 
             if (totalCredits >= requiredCredits) {
                 logger.info(gradProgramRule.getRequirementName() + " Passed");
-
+                //setting those course who have met this rule
+                studentCourses
+                	.stream()
+                	.filter(sc -> sc.getCourseLevel().contains(gradProgramRule.getRequiredLevel().trim())
+                		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel())))
+                	.forEach(sc -> {processReqMet(sc,gradProgramRule);});
                 gradProgramRule.setPassed(true);
 
                 List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
@@ -98,6 +106,18 @@ public class MinCreditsRule implements Rule {
         logger.debug(ruleProcessorData.toString());
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
+    }
+    
+    public void processReqMet(StudentCourse sc, GradProgramRule gradProgramRule) {
+    	if (sc.getGradReqMet().length() > 0) {
+
+            sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getRuleCode());
+            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getRuleCode()
+                    + " - " + gradProgramRule.getRequirementName());
+        } else {
+            sc.setGradReqMet(gradProgramRule.getRuleCode());
+            sc.setGradReqMetDetail(gradProgramRule.getRuleCode() + " - " + gradProgramRule.getRequirementName());
+        }
     }
 
     @Override
