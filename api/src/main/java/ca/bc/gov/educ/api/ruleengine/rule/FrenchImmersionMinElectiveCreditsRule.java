@@ -33,16 +33,14 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
-    final RuleType ruleType = RuleType.SPECIAL_MIN_CREDITS_ELECTIVE;
 
     public RuleProcessorData fire() {
     	    	
     	if(!ruleProcessorData.isHasSpecialProgramFrenchImmersion()) {
     		return ruleProcessorData;
     	}
-    	List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
-        List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
-
+    	List<GradRequirement> requirementsMet = new ArrayList<>();
+        
         List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForFrenchImmersion();
         List<GradSpecialProgramRule> gradSpecialProgramMinCreditElectiveRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
                 .stream()
@@ -52,12 +50,17 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 .collect(Collectors.toList());
        
         logger.debug("#### French Immersion Min Credit Elective Special Program Rule size: " + gradSpecialProgramMinCreditElectiveRulesMatch.size());
-        List<StudentCourse> finalCourseList = new ArrayList<StudentCourse>();
-        List<StudentCourse> finalCourseList2 = new ArrayList<StudentCourse>();
+        List<StudentCourse> finalCourseList = new ArrayList<>();
+        List<StudentCourse> finalCourseList2 = new ArrayList<>();
         StudentCourse tempSC;
         ObjectMapper objectMapper = new ObjectMapper();
-        List<StudentCourse> matchedList = courseList.stream().filter(sc -> sc.isUsed()).collect(Collectors.toList());
-        List<StudentCourse> modifiedList = courseList.stream()
+        List<StudentCourse> matchedList = courseList
+        		.stream()
+        		.filter(sc -> (sc.isUsed()))
+        		.collect(Collectors.toList());
+        
+        List<StudentCourse> modifiedList = courseList
+        		.stream()
                 .filter(sc -> !sc.isUsed())
                 .collect(Collectors.toList());
         ListIterator<StudentCourse> studentCourseIterator = modifiedList.listIterator();
@@ -69,35 +72,10 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         	StudentCourse sc = studentCourseIterator.next();
         	if(!requirementAchieved) {
 	        	for(GradSpecialProgramRule pR:gradSpecialProgramMinCreditElectiveRulesMatch) {            	
-	            	if((pR.getRequiredLevel() == null || pR.getRequiredLevel().trim().compareTo("") == 0)) {
-	            		if(sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F")) {
-		            		requiredCredits = Integer.parseInt(pR.getRequiredCredits());
-		            		if (totalCredits + sc.getCredits() <= requiredCredits) {
-		    	                totalCredits += sc.getCredits();  
-		    	                sc.setCreditsUsedForGrad(sc.getCredits());
-		    	            }
-		    	            else {
-		    	                int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-		    	                totalCredits = requiredCredits;
-		    	                sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
-		    	            }
-		            		
-		            		if (totalCredits == requiredCredits) {
-		            			requirementsMet.add(new GradRequirement(pR.getRuleCode(), pR.getRequirementName()));
-		            			pR.setPassed(true);
-		            		}
-		            		if (sc.getGradReqMet().length() > 0) {
-	
-		                        sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getRuleCode());
-		                        sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getRuleCode()
-		                                + " - " + pR.getRequirementName());
-		                    } else {
-		                        sc.setGradReqMet(pR.getRuleCode());
-		                        sc.setGradReqMetDetail(pR.getRuleCode() + " - " + pR.getRequirementName());
-		                    }
-		            		sc.setUsed(true);
-	            		}
-	            	}
+	        		if((pR.getRequiredLevel() == null || pR.getRequiredLevel().trim().compareTo("") == 0) && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F")) {
+	        			requiredCredits = Integer.parseInt(pR.getRequiredCredits());
+	        			totalCredits = processCredits(pR,totalCredits,sc,requirementsMet);
+	        		}
 	            }
         	}
         	tempSC = new StudentCourse();
@@ -115,53 +93,26 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsFrenchImmersion();
 
         if (reqsMet == null)
-            reqsMet = new ArrayList<GradRequirement>();
+            reqsMet = new ArrayList<>();
 
         reqsMet.addAll(requirementsMet);
 
         ruleProcessorData.setRequirementsMetSpecialProgramsFrenchImmersion(reqsMet);
-        requirementsMet = new ArrayList<GradRequirement>();
-        requirementsNotMet = new ArrayList<GradRequirement>();
+        requirementsMet = new ArrayList<>();
+        List<GradRequirement> requirementsNotMet = new ArrayList<>();
         ListIterator<StudentCourse> studentCourseIterator2 = finalCourseList.listIterator();
         int totalCreditsGrade11or12 = 0;
         int requiredCreditsGrad11or12 = 0;
         requirementAchieved = false;
         while (studentCourseIterator2.hasNext()) {            
         	StudentCourse sc = studentCourseIterator2.next();
-        	if(!requirementAchieved) {
-	        	if(sc.isUsed()) {
-	        		for(GradSpecialProgramRule pR:gradSpecialProgramMinCreditElectiveRulesMatch) {            	
-		            	if((pR.getRequiredLevel() != null && pR.getRequiredLevel().trim().compareTo("11 or 12") == 0)) {
-		            		if(sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F") && (sc.getCourseLevel().trim().equalsIgnoreCase("11") || sc.getCourseLevel().trim().equalsIgnoreCase("12"))) {
-		            			requiredCreditsGrad11or12 = Integer.parseInt(pR.getRequiredCredits());
-			            		if (totalCreditsGrade11or12 + sc.getCredits() <= requiredCreditsGrad11or12) {
-			            			totalCreditsGrade11or12 += sc.getCredits();  
-			    	                sc.setCreditsUsedForGrad(sc.getCredits());
-			    	            }
-			    	            else {
-			    	                int extraCredits = totalCreditsGrade11or12 + sc.getCredits() - requiredCreditsGrad11or12;
-			    	                totalCreditsGrade11or12 = requiredCreditsGrad11or12;
-			    	                sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
-			    	            }
-			            		
-			            		if (totalCreditsGrade11or12 == requiredCreditsGrad11or12) {
-			            			requirementsMet.add(new GradRequirement(pR.getRuleCode(), pR.getRequirementName()));
-			            			pR.setPassed(true);
-			            		}
-			            		sc.setUsed(true);
-			            		if (sc.getGradReqMet().length() > 0) {
-		
-			                        sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getRuleCode());
-			                        sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getRuleCode()
-			                                + " - " + pR.getRequirementName());
-			                    } else {
-			                        sc.setGradReqMet(pR.getRuleCode());
-			                        sc.setGradReqMetDetail(pR.getRuleCode() + " - " + pR.getRequirementName());
-			                    }
-				            }	            		
-		            	}            		
-	        		}
-	        	}
+        	if(!requirementAchieved && sc.isUsed()) {
+        		for(GradSpecialProgramRule pR:gradSpecialProgramMinCreditElectiveRulesMatch) {            	
+        			if(pR.getRequiredLevel() != null && pR.getRequiredLevel().trim().compareTo("11 or 12") == 0 && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F") && (sc.getCourseLevel().trim().equalsIgnoreCase("11") || sc.getCourseLevel().trim().equalsIgnoreCase("12"))) {
+        				requiredCreditsGrad11or12 = Integer.parseInt(pR.getRequiredCredits());
+        				totalCreditsGrade11or12 = processCredits(pR,totalCreditsGrade11or12,sc,requirementsMet);
+        			}         		
+        		}
         	}
         	
         	tempSC = new StudentCourse();
@@ -180,7 +131,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsFrenchImmersion();
 
         if (reqsMet == null)
-            reqsMet = new ArrayList<GradRequirement>();
+            reqsMet = new ArrayList<>();
 
         reqsMet.addAll(requirementsMet);
 
@@ -199,7 +150,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsFrenchImmersion();
 
             if (nonGradReasons == null)
-                nonGradReasons = new ArrayList<GradRequirement>();
+                nonGradReasons = new ArrayList<>();
 
             nonGradReasons.addAll(requirementsNotMet);
             ruleProcessorData.setNonGradReasonsSpecialProgramsFrenchImmersion(nonGradReasons);
@@ -207,6 +158,37 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             logger.debug("One or more Min Elective Credit rules not met!");
         }        
         return ruleProcessorData;
+    }
+    
+    public int processCredits(GradSpecialProgramRule pR, int totalCredits, StudentCourse sc, List<GradRequirement> requirementsMet) {
+    	
+		int requiredCredits = Integer.parseInt(pR.getRequiredCredits());
+		if (totalCredits + sc.getCredits() <= requiredCredits) {
+			totalCredits += sc.getCredits();  
+            sc.setCreditsUsedForGrad(sc.getCredits());
+        }
+        else {
+            int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+            totalCredits = requiredCredits;
+            sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+        }
+		
+		if (totalCredits == requiredCredits) {
+			requirementsMet.add(new GradRequirement(pR.getRuleCode(), pR.getRequirementName()));
+			pR.setPassed(true);
+		}
+		sc.setUsed(true);
+		if (sc.getGradReqMet().length() > 0) {
+
+            sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getRuleCode());
+            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getRuleCode()
+                    + " - " + pR.getRequirementName());
+        } else {
+            sc.setGradReqMet(pR.getRuleCode());
+            sc.setGradReqMetDetail(pR.getRuleCode() + " - " + pR.getRequirementName());
+        }	            		
+    	
+    	return totalCredits;
     }
     
     @Override

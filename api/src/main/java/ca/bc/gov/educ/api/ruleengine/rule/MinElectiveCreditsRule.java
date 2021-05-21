@@ -37,7 +37,7 @@ public class MinElectiveCreditsRule implements Rule {
 
 		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
-			return null;
+			return ruleProcessorData;
 		}
 
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
