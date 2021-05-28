@@ -43,6 +43,8 @@ public class StudentCourse {
     private boolean isDuplicate;
     private boolean isCareerPrep;
     private boolean isLocallyDeveloped;
+    private boolean isBoardAuthorityAuthorized;
+    private boolean isIndependentDirectedStudies;
     private boolean isUsed;
     private boolean isRestricted;
 
