@@ -18,16 +18,17 @@ public class RuleProcessorRuleUtils {
     private static final Logger logger = LoggerFactory.getLogger(RuleProcessorRuleUtils.class);
 
     public static List<StudentCourse> getUniqueStudentCourses(List<StudentCourse> studentCourses, boolean projected) {
-        List<StudentCourse> uniqueStudentCourseList = new ArrayList<StudentCourse>();
-
-        uniqueStudentCourseList = studentCourses
+         
+         List<StudentCourse> uniqueStudentCourseList = studentCourses
                 .stream()
                 .filter(sc -> !sc.isNotCompleted()
                         && !sc.isDuplicate()
                         && !sc.isFailed()
                         && !sc.isCareerPrep()
                         && !sc.isLocallyDeveloped()
-                        && !sc.isRestricted())
+                        && !sc.isRestricted()
+                        && !sc.isBoardAuthorityAuthorized()
+                        && !sc.isIndependentDirectedStudies())
                 .collect(Collectors.toList());
 
         if (!projected) {
@@ -51,6 +52,8 @@ public class RuleProcessorRuleUtils {
                         || sc.isCareerPrep()
                         || sc.isLocallyDeveloped()
                         || sc.isRestricted()
+                        || sc.isBoardAuthorityAuthorized()
+                        || sc.isIndependentDirectedStudies()
                         || (!projected && sc.isProjected()))
                 .collect(Collectors.toList());
     }
