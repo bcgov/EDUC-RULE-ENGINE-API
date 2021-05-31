@@ -14,11 +14,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.bc.gov.educ.api.ruleengine.struct.CourseRequirement;
+import ca.bc.gov.educ.api.ruleengine.struct.GradProgramRule;
 import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
 import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -140,7 +142,13 @@ public class FrenchImmersionMatchRule implements Rule {
 		}
 
 		ruleProcessorData.setStudentCoursesForFrenchImmersion(finalCourseList);
-
+		
+		List<GradSpecialProgramRule> unusedRules = null;
+		if(gradSpecialProgramRulesMatch.size() != finalSpecialProgramRulesList.size()) {
+    		unusedRules = RuleEngineApiUtils.getCloneSpecialProgramRule(gradSpecialProgramRulesMatch);
+    		unusedRules.removeAll(finalSpecialProgramRulesList);
+    		finalSpecialProgramRulesList.addAll(unusedRules);
+    	}
 		List<GradSpecialProgramRule> failedRules = finalSpecialProgramRulesList.stream().filter(pr -> !pr.isPassed())
 				.collect(Collectors.toList());
 
