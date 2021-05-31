@@ -19,6 +19,7 @@ import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -139,6 +140,13 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 
 		ruleProcessorData.setStudentAssessmentsForDualDogwood(finalAssessmentList);
 
+		List<GradSpecialProgramRule> unusedRules = null;
+		if(gradSpecialProgramRulesMatch.size() != finalSpecialProgramRulesList.size()) {
+    		unusedRules = RuleEngineApiUtils.getCloneSpecialProgramRule(gradSpecialProgramRulesMatch);
+    		unusedRules.removeAll(finalSpecialProgramRulesList);
+    		finalSpecialProgramRulesList.addAll(unusedRules);
+    	}
+		
 		List<GradSpecialProgramRule> failedRules = finalSpecialProgramRulesList.stream().filter(pr -> !pr.isPassed())
 				.collect(Collectors.toList());
 

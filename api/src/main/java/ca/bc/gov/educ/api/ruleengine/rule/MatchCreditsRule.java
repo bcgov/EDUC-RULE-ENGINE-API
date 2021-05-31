@@ -1,6 +1,8 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.struct.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -103,7 +105,7 @@ public class MatchCreditsRule implements Rule {
         }
 
         logger.debug("Final Program rules list: " + finalProgramRulesList);
-        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet);        
+        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);        
 
         return ruleProcessorData;
     }
@@ -138,8 +140,14 @@ public class MatchCreditsRule implements Rule {
 		
 	}
 
-	public void processReqMetAndNotMet(List<GradProgramRule> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet) {
-    	List<GradProgramRule> failedRules = finalProgramRulesList.stream()
+	public void processReqMetAndNotMet(List<GradProgramRule> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet, List<GradProgramRule> gradProgramRulesMatch) {
+    	List<GradProgramRule> unusedRules = null;
+		if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
+    		unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
+    		unusedRules.removeAll(finalProgramRulesList);
+    		finalProgramRulesList.addAll(unusedRules);
+    	}
+		List<GradProgramRule> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
@@ -166,6 +174,7 @@ public class MatchCreditsRule implements Rule {
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) != 0 || "C".compareTo(gradProgramRule.getRuleCategory()) != 0)
                 .collect(Collectors.toList()));
+       
 
         logger.debug("Final Program rules list size 2: " + finalProgramRulesList.size());
 
