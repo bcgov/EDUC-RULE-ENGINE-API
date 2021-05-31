@@ -1,6 +1,7 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.struct.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -130,7 +131,12 @@ public class AssessmentsMatchCreditsRule implements Rule {
         }
 
         logger.debug("Final Program rules list: " + finalProgramRulesList);
-
+        List<GradProgramRule> unusedRules = null;
+		if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
+    		unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
+    		unusedRules.removeAll(finalProgramRulesList);
+    		finalProgramRulesList.addAll(unusedRules);
+    	}
         List<GradProgramRule> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
 

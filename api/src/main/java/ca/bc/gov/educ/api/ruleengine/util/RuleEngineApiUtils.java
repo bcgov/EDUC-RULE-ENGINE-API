@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ca.bc.gov.educ.api.ruleengine.struct.GradProgramRule;
+import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 
@@ -137,5 +139,31 @@ public class RuleEngineApiUtils {
 		
     }
     
+    public static List<GradProgramRule> getCloneProgramRule(List<GradProgramRule> rules) {
+    	ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+
+		try {
+			json = mapper.writeValueAsString(rules);
+			return mapper.readValue(json, new TypeReference<List<GradProgramRule>>(){});
+		} catch (JsonProcessingException e) {
+			logger.info(ERROR_MSG+e.getMessage());
+		}
+		return Collections.emptyList();
+		
+    }
+    public static List<GradSpecialProgramRule> getCloneSpecialProgramRule(List<GradSpecialProgramRule> rules) {
+    	ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+
+		try {
+			json = mapper.writeValueAsString(rules);
+			return mapper.readValue(json, new TypeReference<List<GradSpecialProgramRule>>(){});
+		} catch (JsonProcessingException e) {
+			logger.info(ERROR_MSG+e.getMessage());
+		}
+		return Collections.emptyList();
+		
+    }
 
 }
