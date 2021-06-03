@@ -138,6 +138,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 				if (totalCredits >= requiredCredits) {
 					logger.info(gradProgramRule.getRequirementName() + " Passed");
 					gradProgramRule.setPassed(true);
+					ruleProcessorData.setGraduated(true);
 	
 					List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 	
@@ -169,8 +170,11 @@ public class MinCreditsElective12OtherRule implements Rule {
 					
                 });
 				List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
-				delReqsMet.removeIf(e -> e.getRule().compareTo("502") == 0);				
-				
+				delReqsMet.removeIf(e -> e.getRule().compareTo("502") == 0);	
+				if(ruleProcessorData.getNonGradReasons() != null) {
+					List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
+					delNonGradReason.removeIf(e -> e.getRule().compareTo("502") == 0);
+				}
 			}
 
 			logger.info("Min Elective Credits 12 Other -> Required:" + requiredCredits + " Has:" + totalCredits);
