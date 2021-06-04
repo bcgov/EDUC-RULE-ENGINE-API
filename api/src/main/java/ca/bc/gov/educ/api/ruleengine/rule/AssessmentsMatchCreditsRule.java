@@ -34,6 +34,8 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
+        List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
+                ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<StudentAssessment> assessmentList = RuleProcessorRuleUtils.getUniqueStudentAssessments(
                 ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
         List<StudentAssessment> excludedAssessments = RuleProcessorRuleUtils.getExcludedStudentAssessments(
@@ -137,6 +139,19 @@ public class AssessmentsMatchCreditsRule implements Rule {
     		unusedRules.removeAll(finalProgramRulesList);
     		finalProgramRulesList.addAll(unusedRules);
     	}
+		
+		for(GradProgramRule pr:finalProgramRulesList) {
+			if(!pr.isPassed() && pr.getRuleCode().compareTo("116")==0) {
+				for(StudentCourse sc:courseList) {
+					if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("NME10") ||
+							sc.getMetLitNumRequirement().equalsIgnoreCase("NME") ||
+							sc.getMetLitNumRequirement().equalsIgnoreCase("NMF10") ||
+							sc.getMetLitNumRequirement().equalsIgnoreCase("NMF"))) {
+						createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
+					}
+				}
+			}
+		}
         List<GradProgramRule> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
 
@@ -182,7 +197,27 @@ public class AssessmentsMatchCreditsRule implements Rule {
         return ruleProcessorData;
     }
 
-    @Override
+    private void createAssessmentRecord(List<StudentAssessment> finalAssessmentList, String aCode, List<Assessment> assmList, GradProgramRule pr,String pen, List<GradRequirement> requirementsMet) {
+    	StudentAssessment sA = new StudentAssessment();
+    	sA.setAssessmentCode(aCode);
+    	sA.setPen(pen);
+    	Assessment asmt = assmList.stream()
+    			  .filter(amt -> aCode.equals(amt.getAssessmentCode()))
+    			  .findAny()
+    			  .orElse(null);
+    	if(asmt != null) {
+    		sA.setAssessmentName(asmt.getAssessmentName());
+    	}
+    	sA.setGradReqMet(pr.getRuleCode());
+        sA.setGradReqMetDetail(pr.getRuleCode() + " - " + pr.getRequirementName());
+        sA.setSpecialCase("M");
+        finalAssessmentList.add(sA);
+        pr.setPassed(true);
+        requirementsMet.add(new GradRequirement(pr.getRuleCode(), pr.getRequirementName()));
+        	
+	}
+
+	@Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
         logger.info("AssessmentsMatchCreditsRule: Rule Processor Data set.");
