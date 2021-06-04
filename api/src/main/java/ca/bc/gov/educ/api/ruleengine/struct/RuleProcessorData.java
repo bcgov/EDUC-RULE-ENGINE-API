@@ -36,6 +36,7 @@ public class RuleProcessorData implements RuleData {
     private List<CourseRequirement> courseRequirements;
     private List<CourseRestriction> courseRestrictions;
     private List<AssessmentRequirement> assessmentRequirements;
+    private List<Assessment> assessmentList;
     private List<GradLetterGrade> gradLetterGradeList;
     private List<GradSpecialCase> gradSpecialCaseList;
     private List<GradRequirement> nonGradReasons;
