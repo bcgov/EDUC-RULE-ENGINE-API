@@ -5,6 +5,8 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,12 @@ public class MinCreditsRule implements Rule {
     @Autowired
     private RuleProcessorData ruleProcessorData;
 
-    final RuleType ruleType = RuleType.MIN_CREDITS;
-
     public RuleData fire() {
         int totalCredits;
         int requiredCredits;
         logger.debug("Min Credits Rule");
 
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");
             return ruleProcessorData;
         }
@@ -45,7 +45,8 @@ public class MinCreditsRule implements Rule {
         List<GradProgramRule> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gpr -> "MC".compareTo(gpr.getRequirementType()) == 0
-                            && "Y".compareTo(gpr.getIsActive()) == 0)
+                            && "Y".compareTo(gpr.getIsActive()) == 0
+                            && "C".compareTo(gpr.getRuleCategory()) == 0)
                 .collect(Collectors.toList());
 
         logger.debug(gradProgramRules.toString());
@@ -61,20 +62,26 @@ public class MinCreditsRule implements Rule {
                 String requiredLevel = gradProgramRule.getRequiredLevel().trim();
                 totalCredits = studentCourses
                         .stream()
-                        .filter(sc -> sc.getCourseLevel().contains(requiredLevel))
+                        .filter(sc -> sc.getCourseLevel().contains(requiredLevel)
+                        		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel())))
                         .mapToInt(StudentCourse::getCredits)
                         .sum();
             }
 
             if (totalCredits >= requiredCredits) {
                 logger.info(gradProgramRule.getRequirementName() + " Passed");
-
+                //setting those course who have met this rule
+                studentCourses
+                	.stream()
+                	.filter(sc -> sc.getCourseLevel().contains(gradProgramRule.getRequiredLevel().trim())
+                		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel())))
+                	.forEach(sc -> {processReqMet(sc,gradProgramRule);});
                 gradProgramRule.setPassed(true);
 
                 List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
                 if (reqsMet == null)
-                    reqsMet = new ArrayList<GradRequirement>();
+                    reqsMet = new ArrayList<>();
 
                 reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(),
                         gradProgramRule.getRequirementName()));
@@ -86,7 +93,7 @@ public class MinCreditsRule implements Rule {
                 List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
 
                 if (nonGradReasons == null)
-                    nonGradReasons = new ArrayList<GradRequirement>();
+                    nonGradReasons = new ArrayList<>();
 
                 nonGradReasons.add(new GradRequirement(gradProgramRule.getRuleCode(),
                         gradProgramRule.getNotMetDesc()));
@@ -94,14 +101,23 @@ public class MinCreditsRule implements Rule {
             }
 
             logger.info("Min Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
-
-            requiredCredits = 0;
-            totalCredits = 0;
         }
 
         logger.debug(ruleProcessorData.toString());
-
+        ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
+    }
+    
+    public void processReqMet(StudentCourse sc, GradProgramRule gradProgramRule) {
+    	if (sc.getGradReqMet().length() > 0) {
+
+            sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getRuleCode());
+            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getRuleCode()
+                    + " - " + gradProgramRule.getRequirementName());
+        } else {
+            sc.setGradReqMet(gradProgramRule.getRuleCode());
+            sc.setGradReqMetDetail(gradProgramRule.getRuleCode() + " - " + gradProgramRule.getRequirementName());
+        }
     }
 
     @Override

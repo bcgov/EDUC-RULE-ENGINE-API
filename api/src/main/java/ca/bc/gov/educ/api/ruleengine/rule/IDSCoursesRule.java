@@ -1,26 +1,26 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class CPCoursesRule implements Rule {
+public class IDSCoursesRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(CPCoursesRule.class);
+    private static Logger logger = LoggerFactory.getLogger(IDSCoursesRule.class);
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -28,23 +28,22 @@ public class CPCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        List<StudentCourse> studentCourseList = new ArrayList<>();
-        studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
-        logger.debug("###################### Finding CAREER PROGRAM courses ######################");
+        logger.debug("###################### Finding Independent Directed Studies (IDS)  courses ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
-            if (studentCourse.getCourseCode().startsWith("CP")) {
-                studentCourse.setCareerPrep(true);
+            if (studentCourse.getCourseCode().startsWith("IDS")) {
+                studentCourse.setIndependentDirectedStudies(true);
             }
         }
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Career Program Courses: " +
+        logger.info("Independent Directed Studies Courses: " +
                 (int) studentCourseList
                         .stream()
-                        .filter(StudentCourse::isCareerPrep)
+                        .filter(StudentCourse::isIndependentDirectedStudies)
                         .count());
 
         return ruleProcessorData;
@@ -53,6 +52,6 @@ public class CPCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("CPCoursesRule: Rule Processor Data set.");
+        logger.info("IDSCoursesRule: Rule Processor Data set.");
     }
 }

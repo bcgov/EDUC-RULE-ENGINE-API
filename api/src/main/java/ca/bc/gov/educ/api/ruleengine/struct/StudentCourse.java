@@ -25,6 +25,11 @@ public class StudentCourse {
     private String completedCourseLetterGrade;
     private Double interimPercent;
     private String interimLetterGrade;
+    private Double bestSchoolPercent; 
+    private Double bestExamPercent;  
+    private String equivOrChallenge;
+    private String fineArtsAppliedSkills;    
+    private String metLitNumRequirement; 
     private Integer credits;
     private Integer creditsUsedForGrad;
     private String relatedCourse;
@@ -38,7 +43,10 @@ public class StudentCourse {
     private boolean isDuplicate;
     private boolean isCareerPrep;
     private boolean isLocallyDeveloped;
+    private boolean isBoardAuthorityAuthorized;
+    private boolean isIndependentDirectedStudies;
     private boolean isUsed;
+    private boolean isRestricted;
 
     public Integer getCreditsUsedForGrad() {
         if (creditsUsedForGrad == null)
@@ -70,6 +78,6 @@ public class StudentCourse {
                 + ", relatedCourse=" + relatedCourse + ", relatedLevel=" + relatedLevel + ", hasRelatedCourse="
                 + hasRelatedCourse + ", isNotCompleted=" + isNotCompleted + ", isProjected=" + isProjected
                 + ", isFailed=" + isFailed + ", isDuplicate=" + isDuplicate + ", isCareerPrep=" + isCareerPrep
-                + ", isLocallyDeveloped=" + isLocallyDeveloped + ", isUsed=" + isUsed + "]";
+                + ", isLocallyDeveloped=" + isLocallyDeveloped + ", isUsed=" + isUsed + ", isRestricted=" + isRestricted +"]";
     }
 }

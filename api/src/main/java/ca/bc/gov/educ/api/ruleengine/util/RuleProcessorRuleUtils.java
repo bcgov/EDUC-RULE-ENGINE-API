@@ -1,30 +1,34 @@
 package ca.bc.gov.educ.api.ruleengine.util;
 
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourses;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 
 public class RuleProcessorRuleUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleProcessorRuleUtils.class);
 
     public static List<StudentCourse> getUniqueStudentCourses(List<StudentCourse> studentCourses, boolean projected) {
-        List<StudentCourse> uniqueStudentCourseList = new ArrayList<StudentCourse>();
-
-        uniqueStudentCourseList = studentCourses
+         
+         List<StudentCourse> uniqueStudentCourseList = studentCourses
                 .stream()
                 .filter(sc -> !sc.isNotCompleted()
                         && !sc.isDuplicate()
                         && !sc.isFailed()
                         && !sc.isCareerPrep()
-                        && !sc.isLocallyDeveloped())
+                        && !sc.isLocallyDeveloped()
+                        && !sc.isRestricted()
+                        && !sc.isBoardAuthorityAuthorized()
+                        && !sc.isIndependentDirectedStudies())
                 .collect(Collectors.toList());
 
         if (!projected) {
@@ -40,35 +44,59 @@ public class RuleProcessorRuleUtils {
     }
 
     public static List<StudentCourse> getExcludedStudentCourses(List<StudentCourse> studentCourses, boolean projected) {
-        List<StudentCourse> excludedStudentCourseList = new ArrayList<StudentCourse>();
-
-        excludedStudentCourseList = studentCourses
+        return studentCourses
                 .stream()
                 .filter(sc -> sc.isNotCompleted()
-                        && sc.isDuplicate()
-                        && sc.isFailed()
-                        && sc.isCareerPrep()
-                        && sc.isLocallyDeveloped())
+                        || sc.isDuplicate()
+                        || sc.isFailed()
+                        || sc.isCareerPrep()
+                        || sc.isLocallyDeveloped()
+                        || sc.isRestricted()
+                        || sc.isBoardAuthorityAuthorized()
+                        || sc.isIndependentDirectedStudies()
+                        || (!projected && sc.isProjected()))
                 .collect(Collectors.toList());
-
-        if (!projected) {
-            logger.info("Excluding Registrations!");
-            excludedStudentCourseList = excludedStudentCourseList
-                    .stream()
-                    .filter(StudentCourse::isProjected)
-                    .collect(Collectors.toList());
-        } else
-            logger.info("Including Registrations!");
-
-        return excludedStudentCourseList;
     }
 
-    public static <T> T cloneObject(T input) throws IOException {
+    @SuppressWarnings("unchecked")
+	public static <T> T cloneObject(T input) throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         return (T) objectMapper
                 .readValue(objectMapper.writeValueAsString(input), input.getClass());
+    }
+    
+    public static List<StudentAssessment> getUniqueStudentAssessments(List<StudentAssessment> studentAssessments,
+			boolean projected) {
+        
+         List<StudentAssessment> uniqueStudentAssessmentList = studentAssessments
+                .stream()
+                .filter(sc -> !sc.isNotCompleted()
+                        && !sc.isDuplicate()
+                        && !sc.isFailed())
+                .collect(Collectors.toList());
+
+        if (!projected) {
+            logger.info("Excluding Registrations!");
+            uniqueStudentAssessmentList = uniqueStudentAssessmentList
+                    .stream()
+                    .filter(sc -> !sc.isProjected())
+                    .collect(Collectors.toList());
+        } else
+            logger.info("Including Registrations!");
+
+        return uniqueStudentAssessmentList;
+    }
+    
+    public static List<StudentAssessment> getExcludedStudentAssessments(List<StudentAssessment> studentAssessments, boolean projected) {
+        return studentAssessments
+                .stream()
+                .filter(sc -> sc.isNotCompleted()
+                        || sc.isDuplicate()
+                        || sc.isFailed()
+                        || (!projected && sc.isProjected()))
+                .collect(Collectors.toList());
     }
 
 }

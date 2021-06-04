@@ -18,9 +18,9 @@ import java.util.List;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class CPCoursesRule implements Rule {
+public class BAACoursesRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(CPCoursesRule.class);
+    private static Logger logger = LoggerFactory.getLogger(BAACoursesRule.class);
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -28,23 +28,22 @@ public class CPCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        List<StudentCourse> studentCourseList = new ArrayList<>();
-        studentCourseList = ruleProcessorData.getStudentCourses();
+         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
-        logger.debug("###################### Finding CAREER PROGRAM courses ######################");
+        logger.debug("###################### Finding Board/Authority Authorized (BAA) courses ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
-            if (studentCourse.getCourseCode().startsWith("CP")) {
-                studentCourse.setCareerPrep(true);
+            if (studentCourse.getCourseCode().startsWith("Y")) {
+                studentCourse.setBoardAuthorityAuthorized(true);
             }
         }
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Career Program Courses: " +
+        logger.info("Board/Authority Authorized: " +
                 (int) studentCourseList
                         .stream()
-                        .filter(StudentCourse::isCareerPrep)
+                        .filter(StudentCourse::isBoardAuthorityAuthorized)
                         .count());
 
         return ruleProcessorData;
@@ -53,6 +52,6 @@ public class CPCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("CPCoursesRule: Rule Processor Data set.");
+        logger.info("BAACoursesRule: Rule Processor Data set.");
     }
 }

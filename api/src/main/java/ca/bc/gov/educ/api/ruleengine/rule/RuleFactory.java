@@ -13,7 +13,8 @@ public class RuleFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleFactory.class);
 
-    public static Rule createRule(String ruleImplementation, RuleProcessorData data) {
+    @SuppressWarnings("unchecked")
+	public static Rule createRule(String ruleImplementation, RuleProcessorData data) {
         Class<Rule> clazz;
         Rule rule = null;
 

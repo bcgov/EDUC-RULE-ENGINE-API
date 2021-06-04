@@ -6,13 +6,13 @@ import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Data
 @Component
@@ -20,43 +20,41 @@ import java.util.List;
 @AllArgsConstructor
 public class FailedCoursesRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(FailedCoursesRule.class);
+	private static Logger logger = Logger.getLogger(FailedCoursesRule.class.getName());
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
+	@Autowired
+	private RuleProcessorData ruleProcessorData;
 
-    @Override
-    public RuleData fire() {
+	@Override
+	public RuleData fire() {
 
-        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
-        studentCourseList = ruleProcessorData.getStudentCourses();
+		List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
+		studentCourseList = ruleProcessorData.getStudentCourses();
 
-        logger.debug("###################### Finding FAILED courses ######################");
+		logger.log(Level.INFO, "###################### Finding FAILED courses ######################");
 
-        for (StudentCourse studentCourse : studentCourseList) {
+		for (StudentCourse studentCourse : studentCourseList) {
+			String finalLetterGrade = studentCourse.getCompletedCourseLetterGrade();
+			if(finalLetterGrade != null) {
+			boolean failed = ruleProcessorData.getGradLetterGradeList().stream()
+					.anyMatch(lg -> lg.getLetterGrade().compareTo(finalLetterGrade) == 0
+							&& lg.getPassFlag().compareTo("N") == 0);
 
-            boolean failed = ruleProcessorData.getGradLetterGradeList()
-                    .stream()
-                    .anyMatch(lg -> lg.getLetterGrade().compareTo(studentCourse.getCompletedCourseLetterGrade()) == 0
-                            && lg.getPassFlag().compareTo("N") == 0);
+			if (failed)
+				studentCourse.setFailed(true);
+			}
+		}
 
-            if (failed)
-                studentCourse.setFailed(true);
-        }
+		ruleProcessorData.setStudentCourses(studentCourseList);
 
-        ruleProcessorData.setStudentCourses(studentCourseList);
+		logger.log(Level.INFO, "Failed Courses: {0} ",
+				(int) studentCourseList.stream().filter(StudentCourse::isFailed).count());
 
-        logger.info("Failed Courses: " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isFailed)
-                        .count());
+		return ruleProcessorData;
+	}
 
-        return ruleProcessorData;
-    }
-
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("FailedCoursesRule: Rule Processor Data set.");
-    }
+	public void setInputData(RuleData inputData) {
+		ruleProcessorData = (RuleProcessorData) inputData;
+		logger.info("FailedCoursesRule: Rule Processor Data set.");
+	}
 }

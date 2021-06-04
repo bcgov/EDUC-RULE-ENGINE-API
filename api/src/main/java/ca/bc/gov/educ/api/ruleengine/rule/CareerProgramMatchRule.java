@@ -19,6 +19,7 @@ import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,8 +34,6 @@ public class CareerProgramMatchRule implements Rule {
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
-    
-    final RuleType ruleType = RuleType.MATCH;
 
     public RuleData fire() {
 
@@ -42,14 +41,16 @@ public class CareerProgramMatchRule implements Rule {
     		return ruleProcessorData;
     	}
     	ruleProcessorData.setSpecialProgramCareerProgramGraduated(true);
-    	List<GradRequirement> requirementsMet = new ArrayList<GradRequirement>();
-        List<GradRequirement> requirementsNotMet = new ArrayList<GradRequirement>();
+    	List<GradRequirement> requirementsMet = new ArrayList<>();
+        List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
-        List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForCareerProgram();
-        
+        List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
+        		ruleProcessorData.getStudentCoursesForCareerProgram(), ruleProcessorData.isProjected());
         List<GradSpecialProgramRule> careerProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesCareerProgram()
                 .stream()
-                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0)
+                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0 
+                		&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
+                		&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
                 .collect(Collectors.toList());
        
         logger.debug("#### Career Program Rule size: " + careerProgramRulesMatch.size());
@@ -102,7 +103,7 @@ public class CareerProgramMatchRule implements Rule {
         List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsCareerProgram();
 
         if (reqsMet == null)
-            reqsMet = new ArrayList<GradRequirement>();
+            reqsMet = new ArrayList<>();
 
         reqsMet.addAll(requirementsMet);
 
@@ -120,7 +121,7 @@ public class CareerProgramMatchRule implements Rule {
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsCareerProgram();
 
             if (nonGradReasons == null)
-                nonGradReasons = new ArrayList<GradRequirement>();
+                nonGradReasons = new ArrayList<>();
 
             nonGradReasons.addAll(requirementsNotMet);
             ruleProcessorData.setNonGradReasonsSpecialProgramsCareerProgram(nonGradReasons);
@@ -128,11 +129,6 @@ public class CareerProgramMatchRule implements Rule {
             logger.debug("One or more Career Program rules not met!");
         }        
         return ruleProcessorData;
-    }
-
-
-    public boolean fire(Object inputData, Object outputData) {
-        return false;
     }
     
     @Override

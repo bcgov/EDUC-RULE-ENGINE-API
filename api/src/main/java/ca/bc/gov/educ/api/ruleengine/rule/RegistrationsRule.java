@@ -30,7 +30,7 @@ public class RegistrationsRule implements Rule {
 
     @Override
     public RuleData fire() {
-        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
+        List<StudentCourse> studentCourseList = new ArrayList<>();
         studentCourseList = ruleProcessorData.getStudentCourses();
 
         logger.debug("###################### Finding PROJECTED courses (For Projected GRAD) ######################");
@@ -47,9 +47,13 @@ public class RegistrationsRule implements Rule {
                 logger.error("ERROR: " + pe.getMessage());
             }
 
-            int diff = RuleEngineApiUtils.getDifferenceInMonths(today, sessionDate);
+            int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
 
-            if ("".compareTo(studentCourse.getCompletedCourseLetterGrade().trim()) == 0
+            String completedCourseLetterGrade = "";
+            if(studentCourse.getCompletedCourseLetterGrade() != null) {
+            	completedCourseLetterGrade = studentCourse.getCompletedCourseLetterGrade();
+            }
+            if ("".compareTo(completedCourseLetterGrade.trim()) == 0
                     && diff < 1) {
                 studentCourse.setProjected(true);
             }

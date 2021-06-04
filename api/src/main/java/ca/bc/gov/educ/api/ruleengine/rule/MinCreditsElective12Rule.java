@@ -23,9 +23,9 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MinElectiveCreditsRule implements Rule {
+public class MinCreditsElective12Rule implements Rule {
 
-	private static Logger logger = LoggerFactory.getLogger(MinElectiveCreditsRule.class);
+	private static Logger logger = LoggerFactory.getLogger(MinCreditsElective12Rule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
@@ -33,9 +33,9 @@ public class MinElectiveCreditsRule implements Rule {
 	public RuleData fire() {
 		int totalCredits = 0;
 		int requiredCredits = 0;
-		logger.debug("Min Elective Credits Rule");
+		logger.debug("Min Credits Elective 12 Rule");
 
-		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
+		if (ruleProcessorData.getStudentCourses().isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
 			return ruleProcessorData;
 		}
@@ -46,7 +46,7 @@ public class MinElectiveCreditsRule implements Rule {
 		logger.debug("Unique Courses: " + studentCourses.size());
 
 		List<GradProgramRule> gradProgramRules = ruleProcessorData
-				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getRequirementType()) == 0
+				.getGradProgramRules().stream().filter(gpr -> "MCE12".compareTo(gpr.getRequirementType()) == 0
 						&& "Y".compareTo(gpr.getIsActive()) == 0 && "C".compareTo(gpr.getRuleCategory()) == 0)
 				.collect(Collectors.toList());
 
@@ -104,7 +104,7 @@ public class MinElectiveCreditsRule implements Rule {
 
 				reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(), gradProgramRule.getRequirementName()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
-				logger.debug("Min Elective Credits Rule: Total-" + totalCredits + " Required-" + requiredCredits);
+				logger.debug("Min Credits Elective 12 Rule: Total-" + totalCredits + " Required-" + requiredCredits);
 
 			} else {
 				logger.info(gradProgramRule.getRequirementDesc() + " Failed!");
@@ -124,14 +124,14 @@ public class MinElectiveCreditsRule implements Rule {
 			requiredCredits = 0;
 			totalCredits = 0;
 		}
-		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
+		ruleProcessorData.setStudentCourses(studentCourses);
 		return ruleProcessorData;
 	}
 
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinElectiveCreditsRule: Rule Processor Data set.");
+		logger.info("MinCreditsElective12Rule: Rule Processor Data set.");
 	}
 
 }

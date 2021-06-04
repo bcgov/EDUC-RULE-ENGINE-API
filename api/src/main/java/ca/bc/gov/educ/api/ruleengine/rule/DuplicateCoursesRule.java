@@ -1,20 +1,19 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
+import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Component
@@ -30,50 +29,30 @@ public class DuplicateCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        logger.debug("###################### Finding DUPLICATE courses ######################");
-
-        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
-        studentCourseList = ruleProcessorData.getStudentCourses();
+        logger.info("###################### Finding DUPLICATE courses ######################");
+        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         for (int i = 0; i < studentCourseList.size() - 1; i++) {
 
             for (int j = i + 1; j < studentCourseList.size(); j++) {
 
-                if (studentCourseList.get(i).getCourseCode().equals(studentCourseList.get(j).getCourseCode())
-                        && studentCourseList.get(i).getCourseLevel().equals(studentCourseList.get(j).getCourseLevel())) {
+                if (studentCourseList.get(i).getCourseCode().equals(studentCourseList.get(j).getCourseCode()) 
+                		&& !studentCourseList.get(i).isDuplicate()
+                        && studentCourseList.get(i).getCourseLevel().equals(studentCourseList.get(j).getCourseLevel())
+                        && !studentCourseList.get(j).isDuplicate()) {
 
-                    logger.debug("comparing " + studentCourseList.get(i).getCourseCode() + " with "
+                	logger.debug("comparing " + studentCourseList.get(i).getCourseCode() + " with "
                             + studentCourseList.get(j).getCourseCode() + " -> Duplicate FOUND - CourseID:"
                             + studentCourseList.get(i).getCourseCode() + "-" + studentCourseList.get(i).getCourseLevel());
 
-                    //      IF finalPercent of A greater than finalPercent of B -> SELECT A copy to B
-                    //      IF finalPercent of B greater than finalPercent of A -> SELECT B copy to A
-                    //      IF finalPercent of A equals to finalPercent of B ->
-                    //              IF sessionDate of A is older than sessionDate of B -> SELECT A copy to B
-                    //              IF sessionDate of B is older than sessionDate of A -> SELECT B copy  to A
-                    //              IF sessionDate of A is equal to sessionDate of B -> SELECT A copy to B
-
                     if (studentCourseList.get(i).getCompletedCoursePercentage() > studentCourseList.get(j).getCompletedCoursePercentage()) {
-                        //copy.set(j, copy.get(i));
                         studentCourseList.get(i).setDuplicate(false);
                         studentCourseList.get(j).setDuplicate(true);
                     } else if (studentCourseList.get(i).getCompletedCoursePercentage() < studentCourseList.get(j).getCompletedCoursePercentage()) {
-                        //courseAchievements.set(i, courseAchievements.get(j));
                         studentCourseList.get(i).setDuplicate(true);
                         studentCourseList.get(j).setDuplicate(false);
-                    } else if (studentCourseList.get(i).getCompletedCoursePercentage() == studentCourseList.get(j).getCompletedCoursePercentage()) {
-
-                        if (RuleEngineApiUtils.parseTraxDate(studentCourseList.get(i).getSessionDate())
-                                .compareTo(RuleEngineApiUtils.parseTraxDate(studentCourseList.get(j).getSessionDate())) < 0) {
-                            //courseAchievements.set(j, courseAchievements.get(i));
-                            studentCourseList.get(i).setDuplicate(false);
-                            studentCourseList.get(j).setDuplicate(true);
-                        } else if (RuleEngineApiUtils.parseTraxDate(studentCourseList.get(i).getSessionDate())
-                                .compareTo(RuleEngineApiUtils.parseTraxDate(studentCourseList.get(j).getSessionDate())) >= 0) {
-                            //courseAchievements.set(i, courseAchievements.get(j));
-                            studentCourseList.get(i).setDuplicate(true);
-                            studentCourseList.get(j).setDuplicate(false);
-                        }
+                    } else if (studentCourseList.get(i).getCompletedCoursePercentage().equals(studentCourseList.get(j).getCompletedCoursePercentage())) {
+                    	compareSessionDates(studentCourseList,i,j);                        
                     }
                 } else {
                     //Do Nothing
@@ -81,15 +60,21 @@ public class DuplicateCoursesRule implements Rule {
             }
         }
 
-        logger.info("Duplicate Courses: " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isDuplicate)
-                        .count());
-
+        logger.info("Duplicate Courses: "+(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
         return ruleProcessorData;
     }
-
+    
+    private void compareSessionDates(List<StudentCourse> studentCourseList, int i, int j) {
+    	if (RuleEngineApiUtils.parsingTraxDate(studentCourseList.get(i).getSessionDate())
+                .before(RuleEngineApiUtils.parsingTraxDate(studentCourseList.get(j).getSessionDate()))) {
+            studentCourseList.get(i).setDuplicate(false);
+            studentCourseList.get(j).setDuplicate(true);
+        }else {
+            studentCourseList.get(i).setDuplicate(true);
+            studentCourseList.get(j).setDuplicate(false);
+        }
+    }
+    
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;

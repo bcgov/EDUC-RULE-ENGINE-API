@@ -1,6 +1,11 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +19,7 @@ import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,20 +29,21 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MinElectiveCreditsRule implements Rule {
+public class MinAdultCoursesRule implements Rule {
 
-	private static Logger logger = LoggerFactory.getLogger(MinElectiveCreditsRule.class);
+	private static Logger logger = LoggerFactory.getLogger(MinAdultCoursesRule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
 
 	public RuleData fire() {
+		logger.debug("Min Credits Elective 12 Rule");
+
 		int totalCredits = 0;
 		int requiredCredits = 0;
-		logger.debug("Min Elective Credits Rule");
-
-		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
-			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
+		
+		if (ruleProcessorData.getStudentCourses().isEmpty()) {
+			logger.warn("!!!Empty list sent to Min Adult Courses Rule for processing");
 			return ruleProcessorData;
 		}
 
@@ -44,9 +51,9 @@ public class MinElectiveCreditsRule implements Rule {
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
 		logger.debug("Unique Courses: " + studentCourses.size());
-
+		String dobOfStudent = ruleProcessorData.getGradStudent().getDob();
 		List<GradProgramRule> gradProgramRules = ruleProcessorData
-				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getRequirementType()) == 0
+				.getGradProgramRules().stream().filter(gpr -> "MAC".compareTo(gpr.getRequirementType()) == 0
 						&& "Y".compareTo(gpr.getIsActive()) == 0 && "C".compareTo(gpr.getRuleCategory()) == 0)
 				.collect(Collectors.toList());
 
@@ -59,35 +66,26 @@ public class MinElectiveCreditsRule implements Rule {
 
 			if (gradProgramRule.getRequiredLevel() == null
 					|| gradProgramRule.getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).collect(Collectors.toList());
+				tempStudentCourseList = studentCourses.stream().filter(sc -> sc.isUsed()).collect(Collectors.toList());
 			} else {
 				tempStudentCourseList = studentCourses.stream()
-						.filter(sc -> !sc.isUsed()
+						.filter(sc -> sc.isUsed()
 								&& sc.getCourseLevel().compareTo(gradProgramRule.getRequiredLevel().trim()) == 0)
 						.collect(Collectors.toList());
 			}
 
 			for (StudentCourse sc : tempStudentCourseList) {
-				if (totalCredits + sc.getCredits() <= requiredCredits) {
-					totalCredits += sc.getCredits();
-					sc.setCreditsUsedForGrad(sc.getCredits());
-				} else {
-					int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-					totalCredits = requiredCredits;
-					sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+				String courseSessionDate = sc.getSessionDate() + "/01";
+				Date temp = null;
+				try {
+					temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
+				} catch (ParseException e) {
+					e.getMessage();
 				}
-				if (sc.getGradReqMet().length() > 0) {
-
-					sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getRuleCode());
-					sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getRuleCode() + " - "
-							+ gradProgramRule.getRequirementName());
-				} else {
-					sc.setGradReqMet(gradProgramRule.getRuleCode());
-					sc.setGradReqMetDetail(
-							gradProgramRule.getRuleCode() + " - " + gradProgramRule.getRequirementName());
+				int age = calculateAge(dobOfStudent,RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
+				if(age >= 18 && (totalCredits + sc.getCredits()) <= requiredCredits) {
+						totalCredits += sc.getCredits();
 				}
-				sc.setUsed(true);
-
 				if (totalCredits == requiredCredits) {
 					break;
 				}
@@ -104,7 +102,7 @@ public class MinElectiveCreditsRule implements Rule {
 
 				reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(), gradProgramRule.getRequirementName()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
-				logger.debug("Min Elective Credits Rule: Total-" + totalCredits + " Required-" + requiredCredits);
+				logger.debug("Min Adult Courses : Total-" + totalCredits + " Required-" + requiredCredits);
 
 			} else {
 				logger.info(gradProgramRule.getRequirementDesc() + " Failed!");
@@ -119,19 +117,23 @@ public class MinElectiveCreditsRule implements Rule {
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
 
-			logger.info("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
-
-			requiredCredits = 0;
-			totalCredits = 0;
+			logger.info("Min Adult Courses -> Required:" + requiredCredits + " Has:" + totalCredits);
 		}
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
 	}
+	
+	public int calculateAge(String dob,String sessionDate) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate birthDate = LocalDate.parse(dob, dateFormatter);
+        LocalDate sDate = LocalDate.parse(sessionDate, dateFormatter);
+        return Period.between(birthDate, sDate).getYears();
+    }
 
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinElectiveCreditsRule: Rule Processor Data set.");
+		logger.info("MinCreditsElective12Rule: Rule Processor Data set.");
 	}
 
 }

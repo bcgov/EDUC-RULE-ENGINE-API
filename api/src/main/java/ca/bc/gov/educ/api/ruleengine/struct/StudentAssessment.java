@@ -12,6 +12,7 @@ public class StudentAssessment {
     private String assessmentName;
     private String sessionDate;
     private String gradReqMet;
+    private String gradReqMetDetail;
     private String specialCase;
     private String exceededWriteFlag;
     private Double proficiencyScore;
@@ -19,5 +20,11 @@ public class StudentAssessment {
     private Double rawScore;
     private Double percentComplete;
     private Double irtScore;
-
+    private boolean isFailed;
+    private boolean isDuplicate;
+    private boolean isUsed;
+    private boolean isProjected;
+    private boolean isNotCompleted;
+    private String equivalentCode;
+    
 }
