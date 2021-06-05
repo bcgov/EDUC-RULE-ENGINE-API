@@ -71,11 +71,19 @@ public class MinCreditsRule implements Rule {
             if (totalCredits >= requiredCredits) {
                 logger.info(gradProgramRule.getRequirementName() + " Passed");
                 //setting those course who have met this rule
-                studentCourses
-                	.stream()
-                	.filter(sc -> sc.getCourseLevel().contains(gradProgramRule.getRequiredLevel().trim())
-                		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel())))
-                	.forEach(sc -> {processReqMet(sc,gradProgramRule);});
+                int tC=0;
+                for(StudentCourse sc:studentCourses) {
+                	if(sc.getCourseLevel().contains(gradProgramRule.getRequiredLevel().trim())
+                    		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel()))) {
+                		tC += sc.getCredits();
+                		if(tC<=requiredCredits) {
+                			processReqMet(sc,gradProgramRule);
+                		}else {
+                			break;
+                		}
+                		
+                	}
+                }
                 gradProgramRule.setPassed(true);
 
                 List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
