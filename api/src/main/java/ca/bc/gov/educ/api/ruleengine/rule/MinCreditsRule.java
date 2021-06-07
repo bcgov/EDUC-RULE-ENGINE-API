@@ -121,7 +121,8 @@ public class MinCreditsRule implements Rule {
 	}
 
 	public void processReqMet(StudentCourse sc, GradProgramRule gradProgramRule) {
-    	if (sc.getGradReqMet().length() > 0) {
+		sc.setUsed(true);
+		if (sc.getGradReqMet().length() > 0) {
 
             sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getRuleCode());
             sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getRuleCode()
