@@ -67,15 +67,10 @@ public class MinCreditsRule implements Rule {
                         .mapToInt(StudentCourse::getCredits)
                         .sum();
             }
+            setCoursesReqMet(studentCourses,gradProgramRule,requiredCredits);
 
             if (totalCredits >= requiredCredits) {
                 logger.info(gradProgramRule.getRequirementName() + " Passed");
-                //setting those course who have met this rule
-                studentCourses
-                	.stream()
-                	.filter(sc -> sc.getCourseLevel().contains(gradProgramRule.getRequiredLevel().trim())
-                		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel())))
-                	.forEach(sc -> {processReqMet(sc,gradProgramRule);});
                 gradProgramRule.setPassed(true);
 
                 List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
@@ -108,7 +103,24 @@ public class MinCreditsRule implements Rule {
         return ruleProcessorData;
     }
     
-    public void processReqMet(StudentCourse sc, GradProgramRule gradProgramRule) {
+    private void setCoursesReqMet(List<StudentCourse> studentCourses, GradProgramRule gradProgramRule, int requiredCredits) {
+    	//setting those course who have met this rule
+        int tC=0;
+        for(StudentCourse sc:studentCourses) {
+        	if(sc.getCourseLevel().contains(gradProgramRule.getRequiredLevel().trim())
+            		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel()))) {
+        		tC += sc.getCredits();
+        		if(tC<=requiredCredits) {
+        			processReqMet(sc,gradProgramRule);
+        		}else {
+        			break;
+        		}
+        		
+        	}
+        }		
+	}
+
+	public void processReqMet(StudentCourse sc, GradProgramRule gradProgramRule) {
     	if (sc.getGradReqMet().length() > 0) {
 
             sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getRuleCode());
@@ -119,6 +131,8 @@ public class MinCreditsRule implements Rule {
             sc.setGradReqMetDetail(gradProgramRule.getRuleCode() + " - " + gradProgramRule.getRequirementName());
         }
     }
+    
+    
 
     @Override
     public void setInputData(RuleData inputData) {
