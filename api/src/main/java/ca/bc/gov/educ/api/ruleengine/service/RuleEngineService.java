@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import ca.bc.gov.educ.api.ruleengine.dto.GradAlgorithmRules;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.rule.Rule;
 import ca.bc.gov.educ.api.ruleengine.rule.RuleFactory;
-import ca.bc.gov.educ.api.ruleengine.struct.GradAlgorithmRules;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.SneakyThrows;
 
