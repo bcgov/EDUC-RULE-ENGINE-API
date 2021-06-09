@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.ruleengine.struct;
+package ca.bc.gov.educ.api.ruleengine.dto;
 
 import java.util.List;
 
