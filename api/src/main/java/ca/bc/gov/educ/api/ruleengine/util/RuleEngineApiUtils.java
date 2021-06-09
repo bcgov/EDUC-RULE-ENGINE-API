@@ -16,10 +16,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.bc.gov.educ.api.ruleengine.struct.GradProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.dto.GradProgramRule;
+import ca.bc.gov.educ.api.ruleengine.dto.GradSpecialProgramRule;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 
 public class RuleEngineApiUtils {
 

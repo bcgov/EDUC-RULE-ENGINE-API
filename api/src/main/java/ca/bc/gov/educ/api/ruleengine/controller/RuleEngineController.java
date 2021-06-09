@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.util.PermissionsContants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
