@@ -119,6 +119,112 @@ public class RuleEngineServiceTest {
 		assertNotNull(ruleProcessorData);
 	}
 	
+	//
+	@Test
+	public void testProcessGradAlgorithmRules_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN");	
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_2018EN_FI_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("FI");	
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_2018PF_DD_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("DD");
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_1950EN_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN");
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_1950EN_2_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-2");
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_1950EN_3_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-3");	
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_1950EN_4_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-4");
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_2018EN_CP_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("CP");	
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_2018PF_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-PF");	
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_2018EN_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-UNGRAD");	
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_2018EN_Dup_Asmt_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-DUP-ASSMT");
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_2018PF_DD_Fail_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("DD-FAIL");	
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	
+	@Test
+	public void testProcessGradAlgorithmRules_2018EN_MINCREDITS_Fail_projectedfalse() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-MIN-CREDIT-FAIL");	
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
+	//
+	
 	private RuleProcessorData getRuleProcessorData(String category) {
 		File file = null;
 		if(category.equals("2018-EN")) {
