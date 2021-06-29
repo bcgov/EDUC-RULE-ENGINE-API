@@ -81,6 +81,16 @@ public class CareerProgramMatchRule implements Rule {
 	            			requirementsMet.add(new GradRequirement(pR.getRuleCode(), pR.getRequirementName()));
 	            			pR.setPassed(true);
 	            		}
+	            		if (sc.getGradReqMet().length() > 0) {
+
+	    					sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getRuleCode());
+	    					sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getRuleCode() + " - "
+	    							+ pR.getRequirementName());
+	    				} else {
+	    					sc.setGradReqMet(pR.getRuleCode());
+	    					sc.setGradReqMetDetail(
+	    							pR.getRuleCode() + " - " + pR.getRequirementName());
+	    				}
 	            		sc.setUsed(true);
             		}
             	}
