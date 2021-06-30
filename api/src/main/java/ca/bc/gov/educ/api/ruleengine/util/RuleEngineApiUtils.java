@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -104,11 +105,15 @@ public class RuleEngineApiUtils {
     }
 
     public static int getDifferenceInMonths(String date1, String date2) {
-        Period diff = Period.between(
+    	Period diff = Period.between(
                 LocalDate.parse(date1).withDayOfMonth(1),
                 LocalDate.parse(date2).withDayOfMonth(1));
+    	int monthsYear = diff.getYears() * 12;
+    	int months = diff.getMonths();
+    	
+    	
 
-        return diff.getMonths();
+        return monthsYear + months;
     }
     
     public static List<StudentCourse> getClone(List<StudentCourse> listCourses) {
