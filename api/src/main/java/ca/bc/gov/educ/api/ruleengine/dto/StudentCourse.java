@@ -33,9 +33,11 @@ public class StudentCourse {
     private Integer credits;
     private Integer creditsUsedForGrad;
     private String relatedCourse;
+    private String relatedCourseName;
     private String relatedLevel;
     private String hasRelatedCourse;
     private boolean isNotCompleted;
+    private String genericCourseType;
     private String language;
     private String workExpFlag;
     private boolean isProjected;
