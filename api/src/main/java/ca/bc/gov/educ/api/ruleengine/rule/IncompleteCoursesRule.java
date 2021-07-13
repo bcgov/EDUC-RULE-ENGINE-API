@@ -51,7 +51,7 @@ public class IncompleteCoursesRule implements Rule {
             	completedCourseLetterGrade = studentCourse.getCompletedCourseLetterGrade();
             }
             if ("".compareTo(completedCourseLetterGrade.trim()) == 0
-                    && diff >= 1) {
+                    && diff > 1) {
                 studentCourse.setNotCompleted(true);
             }
         }
