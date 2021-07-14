@@ -63,7 +63,7 @@ public class MinCreditsElective12Rule implements Rule {
 			} else {
 				tempStudentCourseList = studentCourses.stream()
 						.filter(sc -> !sc.isUsed()
-								&& sc.getCourseLevel().compareTo(gradProgramRule.getRequiredLevel().trim()) == 0)
+								&& sc.getCourseLevel().contains(gradProgramRule.getRequiredLevel().trim()))
 						.collect(Collectors.toList());
 			}
 
