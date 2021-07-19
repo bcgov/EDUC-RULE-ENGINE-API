@@ -49,6 +49,7 @@ public class StudentCourse {
     private boolean isIndependentDirectedStudies;
     private boolean isUsed;
     private boolean isRestricted;
+    private boolean isWorkExpCourse;
 
     public Integer getCreditsUsedForGrad() {
         if (creditsUsedForGrad == null)
