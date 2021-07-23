@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.GradProgramRule;
+import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
 import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
@@ -52,25 +52,25 @@ public class MinAdultCoursesRule implements Rule {
 
 		logger.debug("Unique Courses: " + studentCourses.size());
 		String dobOfStudent = ruleProcessorData.getGradStudent().getDob();
-		List<GradProgramRule> gradProgramRules = ruleProcessorData
-				.getGradProgramRules().stream().filter(gpr -> "MAC".compareTo(gpr.getRequirementType()) == 0
-						&& "Y".compareTo(gpr.getIsActive()) == 0 && "C".compareTo(gpr.getRuleCategory()) == 0)
+		List<ProgramRequirement> gradProgramRules = ruleProcessorData
+				.getGradProgramRules().stream().filter(gpr -> "MAC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 
 		logger.debug(gradProgramRules.toString());
 
-		for (GradProgramRule gradProgramRule : gradProgramRules) {
-			requiredCredits = Integer.parseInt(gradProgramRule.getRequiredCredits().trim()); // list
+		for (ProgramRequirement gradProgramRule : gradProgramRules) {
+			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 
 			List<StudentCourse> tempStudentCourseList = null;
 
-			if (gradProgramRule.getRequiredLevel() == null
-					|| gradProgramRule.getRequiredLevel().trim().compareTo("") == 0) {
+			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
+					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
 				tempStudentCourseList = studentCourses.stream().filter(sc -> sc.isUsed()).collect(Collectors.toList());
 			} else {
 				tempStudentCourseList = studentCourses.stream()
 						.filter(sc -> sc.isUsed()
-								&& sc.getCourseLevel().compareTo(gradProgramRule.getRequiredLevel().trim()) == 0)
+								&& sc.getCourseLevel().compareTo(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) == 0)
 						.collect(Collectors.toList());
 			}
 
@@ -92,20 +92,20 @@ public class MinAdultCoursesRule implements Rule {
 			}
 
 			if (totalCredits >= requiredCredits) {
-				logger.info(gradProgramRule.getRequirementName() + " Passed");
-				gradProgramRule.setPassed(true);
+				logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
+				gradProgramRule.getProgramRequirementCode().setPassed(true);
 
 				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
 				if (reqsMet == null)
 					reqsMet = new ArrayList<>();
 
-				reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(), gradProgramRule.getRequirementName()));
+				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
 				logger.debug("Min Adult Courses : Total-" + totalCredits + " Required-" + requiredCredits);
 
 			} else {
-				logger.info(gradProgramRule.getRequirementDesc() + " Failed!");
+				logger.info(gradProgramRule.getProgramRequirementCode().getDescription() + " Failed!");
 				ruleProcessorData.setGraduated(false);
 
 				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -113,7 +113,7 @@ public class MinAdultCoursesRule implements Rule {
 				if (nonGradReasons == null)
 					nonGradReasons = new ArrayList<>();
 
-				nonGradReasons.add(new GradRequirement(gradProgramRule.getRuleCode(), gradProgramRule.getNotMetDesc()));
+				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
 
