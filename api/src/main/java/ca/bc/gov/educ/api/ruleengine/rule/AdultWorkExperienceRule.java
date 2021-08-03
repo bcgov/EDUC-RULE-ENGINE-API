@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.bc.gov.educ.api.ruleengine.dto.CourseRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.GradProgramRule;
 import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
@@ -39,7 +39,7 @@ public class AdultWorkExperienceRule implements Rule {
 		logger.debug("Adult Work Experience Rule");
 		
 		if (ruleProcessorData.getStudentCourses().isEmpty()) {
-			logger.warn("!!!Empty list sent to Min Adult Courses Rule for processing");
+			logger.warn("!!!Empty list sent to Adult Work Experience Rule for processing");
 			return ruleProcessorData;
 		}
 
@@ -48,14 +48,14 @@ public class AdultWorkExperienceRule implements Rule {
 		List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
 		
 		logger.debug("Unique Courses: " + studentCourses.size());
-		List<GradProgramRule> gradProgramRules = ruleProcessorData
-				.getGradProgramRules().stream().filter(gpr -> "MWEX".compareTo(gpr.getRequirementType()) == 0
-						&& "Y".compareTo(gpr.getIsActive()) == 0 && "C".compareTo(gpr.getRuleCategory()) == 0)
+		List<ProgramRequirement> gradProgramRules = ruleProcessorData
+				.getGradProgramRules().stream().filter(gpr -> "MWEX".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 
 		logger.debug(gradProgramRules.toString());
 		List<StudentCourse> finalCourseList = new ArrayList<>();
-		for (GradProgramRule gradProgramRule : gradProgramRules) {
+		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			
 	        ListIterator<StudentCourse> courseIterator = studentCourses.listIterator();
 	        StudentCourse tempSC;
@@ -73,13 +73,13 @@ public class AdultWorkExperienceRule implements Rule {
 
 	            logger.debug("Temp Course Requirement: " + tempCourseRequirement);
 
-	            GradProgramRule tempProgramRule = null;
+	            ProgramRequirement tempProgramRule = null;
 
 	            if (!tempCourseRequirement.isEmpty()) {
 	                for(CourseRequirement cr:tempCourseRequirement) {
 	                	if(tempProgramRule == null) {
 		                	tempProgramRule = gradProgramRules.stream()
-			                        .filter(pr -> pr.getRuleCode().compareTo(cr.getRuleCode()) == 0)
+			                        .filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo(cr.getRuleCode().getCourseRequirementCode()) == 0)
 			                        .findAny()
 			                        .orElse(null);
 	                	}
@@ -101,7 +101,7 @@ public class AdultWorkExperienceRule implements Rule {
 	        
 	        long numberOfWExCourses = finalCourseList.stream().filter(sc -> sc.isWorkExpCourse()).count();
 	        if(numberOfWExCourses > 1L) {
-	        	gradProgramRule.setPassed(false);
+	        	gradProgramRule.getProgramRequirementCode().setPassed(false);
 	        	ruleProcessorData.setGraduated(false);
 
 				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -109,17 +109,17 @@ public class AdultWorkExperienceRule implements Rule {
 				if (nonGradReasons == null)
 					nonGradReasons = new ArrayList<>();
 
-				nonGradReasons.add(new GradRequirement(gradProgramRule.getRuleCode(), gradProgramRule.getNotMetDesc()));
+				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 	        }else {
-	        	gradProgramRule.setPassed(true);
+	        	gradProgramRule.getProgramRequirementCode().setPassed(true);
 
 				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 
 				if (reqsMet == null)
 					reqsMet = new ArrayList<>();
 
-				reqsMet.add(new GradRequirement(gradProgramRule.getRuleCode(), gradProgramRule.getRequirementName()));
+				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
 	        }
 		}
