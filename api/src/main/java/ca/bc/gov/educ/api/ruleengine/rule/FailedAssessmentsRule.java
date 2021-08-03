@@ -34,8 +34,8 @@ public class FailedAssessmentsRule implements Rule {
 
 		for (StudentAssessment studentAssessment : studentAssessmentList) {
 
-			boolean failed = ruleProcessorData.getGradSpecialCaseList().stream()
-					.anyMatch(lg -> lg.getSpecialCase()
+			boolean failed = ruleProcessorData.getSpecialCaseList().stream()
+					.anyMatch(lg -> lg.getSpCase()
 							.compareTo(studentAssessment.getSpecialCase() != null
 									? studentAssessment.getSpecialCase().trim()
 									: "") == 0

@@ -30,556 +30,934 @@
 		"studentGrade": "12",
 		"studentStatus": "A"
 	},
-	"gradAlgorithmRules": [
+	"letterGradeList": [
 		{
-			"id": "be75bc4e-6f99-66a5-e053-9ae9228eeb4d",
-			"ruleName": "Incomplete",
-			"ruleImplementation": "IncompleteCoursesRule",
-			"ruleDescription": "The student achievement record session date is earlier than a month ago and the achievement was not written or given a special case",
+			"grade": "A",
+			"gpaMarkValue": "4",
+			"passFlag": "Y"
+		},
+		{
+			"grade": "B",
+			"gpaMarkValue": "3",
+			"passFlag": "Y"
+		},
+		{
+			"grade": "C+",
+			"gpaMarkValue": "2.5",
+			"passFlag": "Y"
+		},
+		{
+			"grade": "C",
+			"gpaMarkValue": "2",
+			"passFlag": "Y"
+		},
+		{
+			"grade": "C-",
+			"gpaMarkValue": "1",
+			"passFlag": "Y"
+		},
+		{
+			"grade": "RM",
+			"gpaMarkValue": "0",
+			"passFlag": "Y"
+		},
+		{
+			"grade": "F",
+			"gpaMarkValue": "0",
+			"passFlag": "N"
+		},
+		{
+			"grade": "NM",
+			"gpaMarkValue": "0",
+			"passFlag": "N"
+		},
+		{
+			"grade": "WR",
+			"gpaMarkValue": "0",
+			"passFlag": "N"
+		},
+		{
+			"grade": "SG",
+			"gpaMarkValue": "0",
+			"passFlag": "Y"
+		},
+		{
+			"grade": "TS",
+			"gpaMarkValue": "0",
+			"passFlag": "Y"
+		},
+		{
+			"grade": "I",
+			"gpaMarkValue": "0",
+			"passFlag": "N"
+		},
+		{
+			"grade": "P",
+			"gpaMarkValue": "1",
+			"passFlag": "Y"
+		}
+	],
+	"specialCaseList": [
+		{
+			"spCase": "X",
+			"label": null,
+			"displayOrder": 0,
+			"description": "Not Completed",
+			"passFlag": "N",
+			"effectiveDate": 1623456000000,
+			"expiryDate": 4102358400000
+		},
+		{
+			"spCase": "Q",
+			"label": null,
+			"displayOrder": 0,
+			"description": "Disqualified",
+			"passFlag": "N",
+			"effectiveDate": 1623456000000,
+			"expiryDate": 946598400000
+		},
+		{
+			"spCase": "M",
+			"label": null,
+			"displayOrder": 0,
+			"description": "Met",
+			"passFlag": "Y",
+			"effectiveDate": 1623456000000,
+			"expiryDate": 946598400000
+		},
+		{
+			"spCase": "E",
+			"label": null,
+			"displayOrder": 0,
+			"description": "Exempt",
+			"passFlag": "Y",
+			"effectiveDate": 1623456000000,
+			"expiryDate": 946598400000
+		},
+		{
+			"spCase": "A",
+			"label": null,
+			"displayOrder": 0,
+			"description": "Aegrotat",
+			"passFlag": "Y",
+			"effectiveDate": 1623456000000,
+			"expiryDate": 946598400000
+		}
+	],
+	"algorithmRules": [
+		{
+			"programAlgoRuleID": "c70b587f-af3b-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 10,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "INCOMPLETE_CRSE_RULE",
+				"ruleImplementation": "IncompleteCoursesRule",
+				"label": "Rule for Incomplete Courses",
+				"description": "The student achievement record session date is earlier than a month ago and the achievement was not written or given a special case",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "c1ad1541-8c55-808d-e053-98e9228e8043",
-			"ruleName": "Incomplete Assessments",
-			"ruleImplementation": "IncompleteAssessmentsRule",
-			"ruleDescription": "The student achievement record session date is earlier than a month ago and the achievement was not written or given a special case",
+			"programAlgoRuleID": "c70b587f-af3c-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 11,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "INCOMPLETE_ASSMT_RULE",
+				"ruleImplementation": "IncompleteAssessmentsRule",
+				"label": "Rule for Incomplete Assessments",
+				"description": "The student achievement record session date is earlier than a month ago and the achievement was not written or given a special case",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6f9a-66a5-e053-9ae9228eeb4d",
-			"ruleName": "Registrations",
-			"ruleImplementation": "RegistrationsRule",
-			"ruleDescription": "The student achievement record session date is from a month ago or later and the achievement was not written or given a special case",
+			"programAlgoRuleID": "c70b587f-af3d-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 20,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "CRSE_REGISTRATION_RULE",
+				"ruleImplementation": "RegistrationsRule",
+				"label": "Registrations",
+				"description": "The student achievement record session date is from a month ago or later and the achievement was not written or given a special case",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "c1ad1541-8c56-808d-e053-98e9228e8043",
-			"ruleName": "Assessment Registrations",
-			"ruleImplementation": "AssessmentRegistrationsRule",
-			"ruleDescription": "The student achievement record session date is from a month ago or later and the achievement was not written or given a special case",
+			"programAlgoRuleID": "c70b587f-af3e-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 21,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "ASSMT_REGISTRATION_RULE",
+				"ruleImplementation": "AssessmentRegistrationsRule",
+				"label": "Assessment Registrations",
+				"description": "The student achievement record session date is from a month ago or later and the achievement was not written or given a special case",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6f9b-66a5-e053-9ae9228eeb4d",
-			"ruleName": "Failed",
-			"ruleImplementation": "FailedCoursesRule",
-			"ruleDescription": "Based on letter grade table or special case table showing which letter grades or special case are deemed a pass vs fail",
+			"programAlgoRuleID": "c70b587f-af3f-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 30,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "FAILED_CRSE_RULE",
+				"ruleImplementation": "FailedCoursesRule",
+				"label": "Failed",
+				"description": "Based on letter grade table or special case table showing which letter grades or special case are deemed a pass vs fail",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "c1ad1541-8c57-808d-e053-98e9228e8043",
-			"ruleName": "Failed Assessments",
-			"ruleImplementation": "FailedAssessmentsRule",
-			"ruleDescription": "Based on letter grade table or special case table showing which letter grades or special case are deemed a pass vs fail",
+			"programAlgoRuleID": "c70b587f-af40-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 31,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "FAILED_ASSMT_RULE",
+				"ruleImplementation": "FailedAssessmentsRule",
+				"label": "Failed Assessments",
+				"description": "Based on letter grade table or special case table showing which letter grades or special case are deemed a pass vs fail",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6f9c-66a5-e053-9ae9228eeb4d",
-			"ruleName": "Duplicate",
-			"ruleImplementation": "DuplicateCoursesRule",
-			"ruleDescription": "If duplicate course code and course level the course with the highest number of credits, highest final %, earliest session date is used",
+			"programAlgoRuleID": "c70b587f-af41-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 40,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "DUPLICATE_CRSE_RULE",
+				"ruleImplementation": "DuplicateCoursesRule",
+				"label": "Duplicate",
+				"description": "If duplicate course code and course level the course with the highest number of credits, highest final %, earliest session date is used",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "c1ad1541-8c58-808d-e053-98e9228e8043",
-			"ruleName": "Duplicate Assessments",
-			"ruleImplementation": "DuplicateAssessmentsRule",
-			"ruleDescription": "If duplicate assessment code and the assessment with the highest proficiency score, highest special case,earliest ssion date is used",
+			"programAlgoRuleID": "c70b587f-af42-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 41,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "DUPLICATE_ASSMT_RULE",
+				"ruleImplementation": "DuplicateAssessmentsRule",
+				"label": "Duplicate Assessments",
+				"description": "If duplicate assessment code and the assessment with the highest proficiency score, highest special case,earliest ssion date is used",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6f9d-66a5-e053-9ae9228eeb4d",
-			"ruleName": "CPCourses",
-			"ruleImplementation": "CPCoursesRule",
-			"ruleDescription": "Career Preparation (�CP�) courses are not eligible for 2018 program even though they are reported on the transcript ",
+			"programAlgoRuleID": "c70b587f-af43-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 50,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "CP_CRSE_RULE",
+				"ruleImplementation": "CPCoursesRule",
+				"label": "CPCourses",
+				"description": "Career Preparation (“CP”) courses are not eligible for 2018 program even though they are reported on the transcript ",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6f9e-66a5-e053-9ae9228eeb4d",
-			"ruleName": "LDCourses",
-			"ruleImplementation": "LDCoursesRule",
-			"ruleDescription": "Locally Developed (LD � �X�) courses are not eligible for 2018 program even though they are reported on the transcript",
+			"programAlgoRuleID": "c70b587f-af44-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 60,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "LD_CRSE_RULE",
+				"ruleImplementation": "LDCoursesRule",
+				"label": "LDCourses",
+				"description": "Locally Developed (LD – “X”) courses are not eligible for 2018 program even though they are reported on the transcript",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6f9f-66a5-e053-9ae9228eeb4d",
-			"ruleName": "RestrictedCourses",
-			"ruleImplementation": "RestrictedCoursesRule",
-			"ruleDescription": "If course is restricted against another course the course with the highest number of credits, highest final %, earliest session date is used ",
+			"programAlgoRuleID": "c70b587f-af45-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 70,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "RESTRICTED_CRSE_RULE",
+				"ruleImplementation": "RestrictedCoursesRule",
+				"label": "RestrictedCourses",
+				"description": "If course is restricted against another course the course with the highest number of credits, highest final %, earliest session date is used ",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6fa0-66a5-e053-9ae9228eeb4d",
-			"ruleName": "MinCredits",
-			"ruleImplementation": "MinCreditsRule",
-			"ruleDescription": "Student requires a minimum of 16 grade 12 level credits",
+			"programAlgoRuleID": "c70b587f-af46-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 80,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "MIN_CREDITS_RULE",
+				"ruleImplementation": "MinCreditsRule",
+				"label": "MinCredits",
+				"description": "Student requires a minimum of 16 grade 12 level credits",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6fa8-66a5-e053-9ae9228eeb4d",
-			"ruleName": "MatchCredits",
-			"ruleImplementation": "MatchCreditsRule",
-			"ruleDescription": "Student must meet a minimum of 4-credits from each of the specified non-elective subject areas",
+			"programAlgoRuleID": "c70b587f-af47-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 90,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "MATCH_CREDITS_RULE",
+				"ruleImplementation": "MatchCreditsRule",
+				"label": "MatchCredits",
+				"description": "Student must meet a minimum of 4-credits from each of the specified non-elective subject areas",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "c1c337f8-f4ef-f19b-e053-9ae9228e20b2",
-			"ruleName": "AssessmentsMatchCredits",
-			"ruleImplementation": "AssessmentsMatchCreditsRule",
-			"ruleDescription": "Student must meet a minimum of 4-credits from each of the specified non-elective subject areas",
+			"programAlgoRuleID": "c70b587f-af48-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 91,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "ASSMT_MATCH_CREDITS_RULE",
+				"ruleImplementation": "AssessmentsMatchCreditsRule",
+				"label": "AssessmentsMatchCredits",
+				"description": "Student must meet a minimum of 4-credits from each of the specified non-elective subject areas",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "be75bc4e-6fa9-66a5-e053-9ae9228eeb4d",
-			"ruleName": "MinElectiveCredits",
-			"ruleImplementation": "MinElectiveCreditsRule",
-			"ruleDescription": "Student must meet a minimum of 28 elective credits",
+			"programAlgoRuleID": "c70b587f-af49-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 100,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "MIN_ELECTIVE_CREDITS_RULE",
+				"ruleImplementation": "MinElectiveCreditsRule",
+				"label": "MinElectiveCredits",
+				"description": "Student must meet a minimum of 28 elective credits",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "beb2b6f8-7098-aeab-e053-98e9228e8ef0",
-			"ruleName": "FrenchImmersionMatchCredits",
-			"ruleImplementation": "FrenchImmersionMatchRule",
-			"ruleDescription": "Student must meet a minimum of 4-credits from each of the specified French immersion non-elective subject areas",
+			"programAlgoRuleID": "c70b587f-af4a-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 110,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "FI_MATCH_CREDITS_RULE",
+				"ruleImplementation": "FrenchImmersionMatchRule",
+				"label": "FrenchImmersionMatchCredits",
+				"description": "Student must meet a minimum of 4-credits from each of the specified French immersion non-elective subject areas",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "beb2b6f8-7099-aeab-e053-98e9228e8ef0",
-			"ruleName": "FrenchImmersionMinElectiveCredit",
-			"ruleImplementation": "FrenchImmersionMinElectiveCreditsRule",
-			"ruleDescription": "Student must meet a minimum of 12 elective credits from courses taught in French � 4 credits at the grade 11 or 12 level",
+			"programAlgoRuleID": "c70b587f-af4b-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 120,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "FI_MIN_ELECTIVE_CREDITS_RULE",
+				"ruleImplementation": "FrenchImmersionMinElectiveCreditsRule",
+				"label": "FrenchImmersionMinElectiveCredit",
+				"description": "Student must meet a minimum of 12 elective credits from courses taught in French – 4 credits at the grade 11 or 12 level",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		},
 		{
-			"id": "bedbd851-e8b4-2b0f-e053-9ae9228e5289",
-			"ruleName": "CareerProgramMatchCredits",
-			"ruleImplementation": "CareerProgramMatchRule",
-			"ruleDescription": "Student must have a course that meets a minimum of 3 credits that is considered a work experience course",
+			"programAlgoRuleID": "c70b587f-af4c-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
 			"sortOrder": 130,
-			"programCode": "2018-EN",
-			"isActive": "Y"
+			"algorithmRuleCode": {
+				"algoRuleCode": "CP_MATCH_CREDITS_RULE",
+				"ruleImplementation": "CareerProgramMatchRule",
+				"label": "CareerProgramMatchCredits",
+				"description": "Student must have a course that meets a minimum of 3 credits that is considered a work experience course",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
 		}
 	],
 	"gradProgramRules": [
 		{
-			"id": "ba9cc340-0977-0660-e053-9ae9228e5742",
-			"ruleCode": "102",
-			"requirementName": "Language Arts 11",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Language Arts 11",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Language Arts 11 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96da-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "100",
+				"label": "16 Gr 12 credits",
+				"description": "Students must complete a minimum of 16 credits at the Grade 12 level ",
+				"requirementTypeCode": {
+					"reqTypeCode": "MC",
+					"label": "Min Credits",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "16",
+				"notMetDesc": "Fewer than 16 Gr 12 credits",
+				"requiredLevel": "12",
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0975-0660-e053-9ae9228e5742",
-			"ruleCode": "100",
-			"requirementName": "16 Gr 12 credits",
-			"requirementType": "MC",
-			"requirementTypeDesc": "Min Credits",
-			"requiredCredits": "16",
-			"notMetDesc": "Fewer than 16 Gr 12 credits",
-			"requiredLevel": "12",
-			"languageOfInstruction": null,
-			"requirementDesc": "Students must complete a minimum of 16 credits at the Grade 12 level ",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96db-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "101",
+				"label": "Language Arts 10",
+				"description": "Credits must be earned in the Language Arts 10 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Language Arts 10",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0976-0660-e053-9ae9228e5742",
-			"ruleCode": "101",
-			"requirementName": "Language Arts 10",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Language Arts 10",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Language Arts 10 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96dc-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "102",
+				"label": "Language Arts 11",
+				"description": "Credits must be earned in the Language Arts 11 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Language Arts 11",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0978-0660-e053-9ae9228e5742",
-			"ruleCode": "103",
-			"requirementName": "Language Arts 12",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Language Arts 12",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Language Arts 12 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96dd-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "103",
+				"label": "Language Arts 12",
+				"description": "Credits must be earned in the Language Arts 12 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Language Arts 12",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0979-0660-e053-9ae9228e5742",
-			"ruleCode": "104",
-			"requirementName": "Social Studies 10",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Social Studies 10",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Social Studies 10 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96de-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "104",
+				"label": "Social Studies 10",
+				"description": "Credits must be earned in the Social Studies 10 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Social Studies 10",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-097a-0660-e053-9ae9228e5742",
-			"ruleCode": "105",
-			"requirementName": "Social Studies 11 or 12",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Social Studies 11 or 12",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Social Studies 11 or 12 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96df-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "105",
+				"label": "Social Studies 11 or 12",
+				"description": "Credits must be earned in the Social Studies 11 or 12 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Social Studies 11 or 12",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-097b-0660-e053-9ae9228e5742",
-			"ruleCode": "106",
-			"requirementName": "Mathematics 10",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Mathematics 10",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Mathematics 10 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e0-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "106",
+				"label": "Mathematics 10",
+				"description": "Credits must be earned in the Mathematics 10 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Mathematics 10",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-097c-0660-e053-9ae9228e5742",
-			"ruleCode": "107",
-			"requirementName": "Mathematics 11 or 12",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Mathematics 11 or 12",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Mathematics 11 or 12 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e1-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "107",
+				"label": "Mathematics 11 or 12",
+				"description": "Credits must be earned in the Mathematics 11 or 12 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Mathematics 11 or 12",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-097d-0660-e053-9ae9228e5742",
-			"ruleCode": "108",
-			"requirementName": "Science 10",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Science 10",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Science 10 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e2-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "108",
+				"label": "Science 10",
+				"description": "Credits must be earned in the Science 10 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Science 10",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-097e-0660-e053-9ae9228e5742",
-			"ruleCode": "109",
-			"requirementName": "Science 11 or 12",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Science 11 or 12",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Science 11 or 12 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e3-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "109",
+				"label": "Science 11 or 12",
+				"description": "Credits must be earned in the Science 11 or 12 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Science 11 or 12",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-097f-0660-e053-9ae9228e5742",
-			"ruleCode": "110",
-			"requirementName": "Physical and Health Education 10",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Physical and Health Education 10",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Physical and Health Education 10 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e4-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "110",
+				"label": "Physical and Health Education 10",
+				"description": "Credits must be earned in the Physical and Health Education 10 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Physical and Health Education 10",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0980-0660-e053-9ae9228e5742",
-			"ruleCode": "111",
-			"requirementName": "Arts Education/ADST credits",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "Fewer than 4 Arts Education/Applied Design, Skills, and Technologies",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the  Arts Education and/or an Applied Design, Skills, and Technologies 10, 11, or 12 subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e5-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "111",
+				"label": "Arts Education/ADST credits",
+				"description": "Credits must be earned in the  Arts Education and/or an Applied Design, Skills, and Technologies 10, 11, or 12 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "Fewer than 4 Arts Education/Applied Design, Skills, and Technologies",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0981-0660-e053-9ae9228e5742",
-			"ruleCode": "112",
-			"requirementName": "Career Life Education",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Career Life Education",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Career Life Education subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e6-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "112",
+				"label": "Career Life Education",
+				"description": "Credits must be earned in the Career Life Education subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Career Life Education",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0982-0660-e053-9ae9228e5742",
-			"ruleCode": "113",
-			"requirementName": "Career Life Connections",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Career Life Connections",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Career Life Connections subject area",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e7-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "113",
+				"label": "Career Life Connections",
+				"description": "Credits must be earned in the Career Life Connections subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Career Life Connections",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0985-0660-e053-9ae9228e5742",
-			"ruleCode": "115",
-			"requirementName": "Literacy 10 Assessment",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "0",
-			"notMetDesc": "No Literacy 10 Assessment",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Students must write a Grade 10 Literacy Assessment in order to graduate",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "A",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e8-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "115",
+				"label": "Literacy 10 Assessment",
+				"description": "Students must write a Grade 10 Literacy Assessment in order to graduate",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "0",
+				"notMetDesc": "No Literacy 10 Assessment",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "A",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0986-0660-e053-9ae9228e5742",
-			"ruleCode": "118",
-			"requirementName": "Literacy 12 Assessment",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "0",
-			"notMetDesc": "No Literacy 12 Assessment",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Students must write a Grade 12 Literacy Assessments�in order to graduate",
-			"isActive": "N",
-			"programCode": "2018-EN",
-			"ruleCategory": "A",
-			"passed": false
+			"programRequirementID": "c722e6e1-96e9-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "116",
+				"label": "Numeracy 10 Assessment",
+				"description": "Students must write a Grade 10 Numeracy Assessments in order to graduate",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "0",
+				"notMetDesc": "No Numeracy 10 Assessment",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "A",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0984-0660-e053-9ae9228e5742",
-			"ruleCode": "116",
-			"requirementName": "Numeracy 10 Assessment",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "0",
-			"notMetDesc": "No Numeracy 10 Assessment",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Students must write a Grade 10 Numeracy Assessments in order to graduate",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "A",
-			"passed": false
+			"programRequirementID": "c722e6e1-96ea-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "117",
+				"label": "28 Elective credits",
+				"description": "Students must complete a minimum of 28 elective credits",
+				"requirementTypeCode": {
+					"reqTypeCode": "MCE",
+					"label": "Min Credits Elective",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "28",
+				"notMetDesc": "Fewer than 28 Elective credits",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "ba9cc340-0983-0660-e053-9ae9228e5742",
-			"ruleCode": "117",
-			"requirementName": "28 Elective credits",
-			"requirementType": "MCE",
-			"requirementTypeDesc": "Min Credits Elective",
-			"requiredCredits": "28",
-			"notMetDesc": "Fewer than 28 Elective credits",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Students must complete a minimum of 28�elective credits",
-			"isActive": "Y",
-			"programCode": "2018-EN",
-			"ruleCategory": "C",
-			"passed": false
+			"programRequirementID": "c722e6e1-96eb-63a3-e053-98e9228e6e46",
+			"graduationProgramCode": "2018-EN",
+			"programRequirementCode": {
+				"proReqCode": "118",
+				"label": "Literacy 12 Assessment",
+				"description": "Students must write a Grade 12 Literacy Assessments in order to graduate",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "0",
+				"notMetDesc": "No Literacy 12 Assessment",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "N",
+				"requirementCategory": "A",
+				"passed": false
+			}
 		}
 	],
 	"gradSpecialProgramRulesFrenchImmersion": [
 		{
-			"id": "bad845a9-e651-a3f2-e053-98e9228e3fb8",
-			"ruleCode": "200",
-			"requirementName": "Fran�ais langue seconde-immersion 12 - French Immersion ",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Fran�ais langue seconde-immersion 12 ",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Fran�ais langue seconde-immersion 12 subject area",
-			"isActive": "Y",
-			"specialProgramID": "bad845a9-e63e-a3f2-e053-98e9228e3fb8",
-			"ruleCategory": "C",
-			"passed": false
+			"optionalProgramRequirementID": "c732d2c0-b971-3487-e053-98e9228e24f2",
+			"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+			"optionalProgramRequirementCode": {
+				"optProReqCode": "200",
+				"label": "Français langue seconde-immersion 12 - French Immersion ",
+				"description": "Credits must be earned in the Français langue seconde-immersion 12 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Français langue seconde-immersion 12 ",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "bad845a9-e652-a3f2-e053-98e9228e3fb8",
-			"ruleCode": "201",
-			"requirementName": "Fran�ais langue seconde-immersion 11 - French Immersion ",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Fran�ais langue seconde-immersion 11 ",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Fran�ais langue seconde-immersion 11 subject area",
-			"isActive": "Y",
-			"specialProgramID": "bad845a9-e63e-a3f2-e053-98e9228e3fb8",
-			"ruleCategory": "C",
-			"passed": false
+			"optionalProgramRequirementID": "c732d2c0-b972-3487-e053-98e9228e24f2",
+			"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+			"optionalProgramRequirementCode": {
+				"optProReqCode": "201",
+				"label": "Français langue seconde-immersion 11 - French Immersion ",
+				"description": "Credits must be earned in the Français langue seconde-immersion 11 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Français langue seconde-immersion 11 ",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "bad845a9-e653-a3f2-e053-98e9228e3fb8",
-			"ruleCode": "202",
-			"requirementName": "Fran�ais langue seconde-immersion 10 - French Immersion ",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "4",
-			"notMetDesc": "No Fran�ais langue seconde-immersion 10 ",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Credits must be earned in the Fran�ais langue seconde-immersion 10 subject area",
-			"isActive": "Y",
-			"specialProgramID": "bad845a9-e63e-a3f2-e053-98e9228e3fb8",
-			"ruleCategory": "C",
-			"passed": false
+			"optionalProgramRequirementID": "c732d2c0-b973-3487-e053-98e9228e24f2",
+			"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+			"optionalProgramRequirementCode": {
+				"optProReqCode": "202",
+				"label": "Français langue seconde-immersion 10 - French Immersion ",
+				"description": "Credits must be earned in the Français langue seconde-immersion 10 subject area",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "No Français langue seconde-immersion 10 ",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "bad845a9-e654-a3f2-e053-98e9228e3fb8",
-			"ruleCode": "203",
-			"requirementName": "Evaluation de Litteratie 12 - Immersion - French Immersion ",
-			"requirementType": "M",
-			"requirementTypeDesc": "Match",
-			"requiredCredits": "0",
-			"notMetDesc": "No Evaluation de Litteratie 12 - Immersion ",
-			"requiredLevel": null,
-			"languageOfInstruction": null,
-			"requirementDesc": "Students must write the Evaluation de Litteratie 12 - Immersion in order to graduate",
-			"isActive": "N",
-			"specialProgramID": "bad845a9-e63e-a3f2-e053-98e9228e3fb8",
-			"ruleCategory": "A",
-			"passed": false
+			"optionalProgramRequirementID": "c732d2c0-b974-3487-e053-98e9228e24f2",
+			"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+			"optionalProgramRequirementCode": {
+				"optProReqCode": "203",
+				"label": "Evaluation de Litteratie 12 - Immersion - French Immersion ",
+				"description": "Students must write the Evaluation de Litteratie 12 - Immersion in order to graduate",
+				"requirementTypeCode": {
+					"reqTypeCode": "M",
+					"label": "Match",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "0",
+				"notMetDesc": "No Evaluation de Litteratie 12 - Immersion ",
+				"requiredLevel": null,
+				"languageOfInstruction": null,
+				"activeRequirement": "Y",
+				"requirementCategory": "A",
+				"passed": false
+			}
 		},
 		{
-			"id": "bad845a9-e655-a3f2-e053-98e9228e3fb8",
-			"ruleCode": "204",
-			"requirementName": "12 Other French credits - French Immersion",
-			"requirementType": "MCE",
-			"requirementTypeDesc": "Min Credits Elective",
-			"requiredCredits": "12",
-			"notMetDesc": "Fewer than 12 Other French credits",
-			"requiredLevel": null,
-			"languageOfInstruction": "French",
-			"requirementDesc": "Students must complete a minimum of 12 credits in French",
-			"isActive": "Y",
-			"specialProgramID": "bad845a9-e63e-a3f2-e053-98e9228e3fb8",
-			"ruleCategory": "C",
-			"passed": false
+			"optionalProgramRequirementID": "c732d2c0-b975-3487-e053-98e9228e24f2",
+			"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+			"optionalProgramRequirementCode": {
+				"optProReqCode": "204",
+				"label": "12 Other French credits - French Immersion",
+				"description": "Students must complete a minimum of 12 credits in French",
+				"requirementTypeCode": {
+					"reqTypeCode": "MCE",
+					"label": "Min Credits Elective",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "12",
+				"notMetDesc": "Fewer than 12 Other French credits",
+				"requiredLevel": null,
+				"languageOfInstruction": "French",
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		},
 		{
-			"id": "bad845a9-e656-a3f2-e053-98e9228e3fb8",
-			"ruleCode": "205",
-			"requirementName": "4 Gr 11 or 12 Other French credits - French Immersion",
-			"requirementType": "MCE",
-			"requirementTypeDesc": "Min Credits Elective",
-			"requiredCredits": "4",
-			"notMetDesc": "Fewer than 4 Gr 11 or 12 French Other credits",
-			"requiredLevel": "11 or 12",
-			"languageOfInstruction": "French",
-			"requirementDesc": "Students must complete a minimum of 4 credits in French at the grade 11 or 12 level",
-			"isActive": "Y",
-			"specialProgramID": "bad845a9-e63e-a3f2-e053-98e9228e3fb8",
-			"ruleCategory": "C",
-			"passed": false
+			"optionalProgramRequirementID": "c732d2c0-b976-3487-e053-98e9228e24f2",
+			"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+			"optionalProgramRequirementCode": {
+				"optProReqCode": "205",
+				"label": "4 Gr 11 or 12 Other French credits - French Immersion",
+				"description": "Students must complete a minimum of 4 credits in French at the grade 11 or 12 level",
+				"requirementTypeCode": {
+					"reqTypeCode": "MCE",
+					"label": "Min Credits Elective",
+					"displayOrder": 0,
+					"description": null,
+					"effectiveDate": 1623654000000,
+					"expiryDate": 946627200000
+				},
+				"requiredCredits": "4",
+				"notMetDesc": "Fewer than 4 Gr 11 or 12 French Other credits",
+				"requiredLevel": "11 or 12",
+				"languageOfInstruction": "French",
+				"activeRequirement": "Y",
+				"requirementCategory": "C",
+				"passed": false
+			}
 		}
 	],
 	"gradSpecialProgramRulesAdvancedPlacement": null,
@@ -609,20 +987,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -645,20 +1026,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "F",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -681,20 +1065,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "Y",
+			"genericCourseType": "G",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -717,20 +1104,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -753,20 +1143,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -789,20 +1182,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -825,20 +1221,23 @@
 			"credits": 2,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "Y",
+			"genericCourseType": "G",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -861,20 +1260,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "F",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -897,20 +1299,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -933,20 +1338,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -969,20 +1377,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1005,20 +1416,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1041,20 +1455,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1077,20 +1494,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1113,20 +1533,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1149,20 +1572,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1185,20 +1611,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1221,20 +1650,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "F",
 			"workExpFlag": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1257,20 +1689,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1293,20 +1728,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "Y",
+			"genericCourseType": "G",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1329,20 +1767,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1365,20 +1806,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "F",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1401,20 +1845,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1437,20 +1884,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "F",
 			"workExpFlag": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1473,20 +1923,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "F",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1509,20 +1962,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1545,20 +2001,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "F",
 			"workExpFlag": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1581,20 +2040,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1617,20 +2079,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		},
 		{
 			"pen": "126966100",
@@ -1653,20 +2118,23 @@
 			"credits": 4,
 			"creditsUsedForGrad": 0,
 			"relatedCourse": "",
+			"relatedCourseName": null,
 			"relatedLevel": "",
 			"hasRelatedCourse": "N",
+			"genericCourseType": "",
 			"language": "",
 			"workExpFlag": " ",
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false,
-			"locallyDeveloped": false,
 			"careerPrep": false,
 			"restricted": false,
-			"independentDirectedStudies": false,
-			"boardAuthorityAuthorized": false
+			"locallyDeveloped": false,
+			"notCompleted": false,
+			"duplicate": false,
+			"workExpCourse": false,
+			"boardAuthorityAuthorized": false,
+			"independentDirectedStudies": false
 		}
 	],
 	"excludedCourses": null,
@@ -1692,9 +2160,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		},
 		{
 			"pen": "126966100",
@@ -1713,9 +2181,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		},
 		{
 			"pen": "126966100",
@@ -1734,9 +2202,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		},
 		{
 			"pen": "126966100",
@@ -1755,9 +2223,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		},
 		{
 			"pen": "126966100",
@@ -1776,9 +2244,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		},
 		{
 			"pen": "126966100",
@@ -1797,9 +2265,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		},
 		{
 			"pen": "126966100",
@@ -1818,9 +2286,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		},
 		{
 			"pen": "126966100",
@@ -1839,9 +2307,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		},
 		{
 			"pen": "126966100",
@@ -1860,9 +2328,9 @@
 			"equivalentCode": null,
 			"used": false,
 			"projected": false,
-			"duplicate": false,
 			"failed": false,
-			"notCompleted": false
+			"notCompleted": false,
+			"duplicate": false
 		}
 	],
 	"studentAssessmentsForDualDogwood": null,
@@ -1871,397 +2339,469 @@
 			"courseRequirementId": "b247fbd2-3946-fd0e-e053-98e9228e3dbe",
 			"courseCode": "PE",
 			"courseLevel": "10",
-			"ruleCode": "110",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
+			"ruleCode": {
+				"courseRequirementCode": "110",
+				"label": null,
+				"description": "Physical and Health Education 10",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b247fbd2-3949-fd0e-e053-98e9228e3dbe",
 			"courseCode": "AC",
 			"courseLevel": "11",
-			"ruleCode": "111",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-37a1-fd0e-e053-98e9228e3dbe",
-			"courseCode": "EN",
-			"courseLevel": "10",
-			"ruleCode": "101",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-37a9-fd0e-e053-98e9228e3dbe",
-			"courseCode": "LTST",
-			"courseLevel": "10",
-			"ruleCode": "101",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-37bd-fd0e-e053-98e9228e3dbe",
-			"courseCode": "EN",
-			"courseLevel": "11",
-			"ruleCode": "102",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-37d1-fd0e-e053-98e9228e3dbe",
-			"courseCode": "LTST",
-			"courseLevel": "11",
-			"ruleCode": "102",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-37dd-fd0e-e053-98e9228e3dbe",
-			"courseCode": "EN",
-			"courseLevel": "12",
-			"ruleCode": "103",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-37df-fd0e-e053-98e9228e3dbe",
-			"courseCode": "ENST",
-			"courseLevel": "12",
-			"ruleCode": "103",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-37ed-fd0e-e053-98e9228e3dbe",
-			"courseCode": "SCH",
-			"courseLevel": "10",
-			"ruleCode": "104",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-3824-fd0e-e053-98e9228e3dbe",
-			"courseCode": "LST",
-			"courseLevel": "12",
-			"ruleCode": "105",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-3834-fd0e-e053-98e9228e3dbe",
-			"courseCode": "SCH",
-			"courseLevel": "11",
-			"ruleCode": "105",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-3846-fd0e-e053-98e9228e3dbe",
-			"courseCode": "FMP",
-			"courseLevel": "10",
-			"ruleCode": "106",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-386d-fd0e-e053-98e9228e3dbe",
-			"courseCode": "FOM",
-			"courseLevel": "11",
-			"ruleCode": "107",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
-		},
-		{
-			"courseRequirementId": "b247fbd2-386e-fd0e-e053-98e9228e3dbe",
-			"courseCode": "FOM",
-			"courseLevel": "12",
-			"ruleCode": "107",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
+			"ruleCode": {
+				"courseRequirementCode": "111",
+				"label": null,
+				"description": "Arts Education/ADST credits",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b247fbd2-38c9-fd0e-e053-98e9228e3dbe",
 			"courseCode": "SC",
 			"courseLevel": "10",
-			"ruleCode": "108",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
+			"ruleCode": {
+				"courseRequirementCode": "108",
+				"label": null,
+				"description": "Science 10",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b247fbd2-38d6-fd0e-e053-98e9228e3dbe",
 			"courseCode": "ATPH",
 			"courseLevel": "12",
-			"ruleCode": "109",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
+			"ruleCode": {
+				"courseRequirementCode": "109",
+				"label": null,
+				"description": "Science 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b247fbd2-38d8-fd0e-e053-98e9228e3dbe",
 			"courseCode": "BI",
 			"courseLevel": "11",
-			"ruleCode": "109",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
+			"ruleCode": {
+				"courseRequirementCode": "109",
+				"label": null,
+				"description": "Science 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b247fbd2-38d9-fd0e-e053-98e9228e3dbe",
 			"courseCode": "BI",
 			"courseLevel": "12",
-			"ruleCode": "109",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
+			"ruleCode": {
+				"courseRequirementCode": "109",
+				"label": null,
+				"description": "Science 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-37a1-fd0e-e053-98e9228e3dbe",
+			"courseCode": "EN",
+			"courseLevel": "10",
+			"ruleCode": {
+				"courseRequirementCode": "101",
+				"label": null,
+				"description": "Language Arts 10",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-37a9-fd0e-e053-98e9228e3dbe",
+			"courseCode": "LTST",
+			"courseLevel": "10",
+			"ruleCode": {
+				"courseRequirementCode": "101",
+				"label": null,
+				"description": "Language Arts 10",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-37bd-fd0e-e053-98e9228e3dbe",
+			"courseCode": "EN",
+			"courseLevel": "11",
+			"ruleCode": {
+				"courseRequirementCode": "102",
+				"label": null,
+				"description": "Language Arts 11",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-37d1-fd0e-e053-98e9228e3dbe",
+			"courseCode": "LTST",
+			"courseLevel": "11",
+			"ruleCode": {
+				"courseRequirementCode": "102",
+				"label": null,
+				"description": "Language Arts 11",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-37dd-fd0e-e053-98e9228e3dbe",
+			"courseCode": "EN",
+			"courseLevel": "12",
+			"ruleCode": {
+				"courseRequirementCode": "103",
+				"label": null,
+				"description": "Language Arts 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-37df-fd0e-e053-98e9228e3dbe",
+			"courseCode": "ENST",
+			"courseLevel": "12",
+			"ruleCode": {
+				"courseRequirementCode": "103",
+				"label": null,
+				"description": "Language Arts 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-37ed-fd0e-e053-98e9228e3dbe",
+			"courseCode": "SCH",
+			"courseLevel": "10",
+			"ruleCode": {
+				"courseRequirementCode": "104",
+				"label": null,
+				"description": "Social Studies 10",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-3824-fd0e-e053-98e9228e3dbe",
+			"courseCode": "LST",
+			"courseLevel": "12",
+			"ruleCode": {
+				"courseRequirementCode": "105",
+				"label": null,
+				"description": "Social Studies 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-3834-fd0e-e053-98e9228e3dbe",
+			"courseCode": "SCH",
+			"courseLevel": "11",
+			"ruleCode": {
+				"courseRequirementCode": "105",
+				"label": null,
+				"description": "Social Studies 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-3846-fd0e-e053-98e9228e3dbe",
+			"courseCode": "FMP",
+			"courseLevel": "10",
+			"ruleCode": {
+				"courseRequirementCode": "106",
+				"label": null,
+				"description": "Mathematics 10",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-386d-fd0e-e053-98e9228e3dbe",
+			"courseCode": "FOM",
+			"courseLevel": "11",
+			"ruleCode": {
+				"courseRequirementCode": "107",
+				"label": null,
+				"description": "Mathematics 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
+		},
+		{
+			"courseRequirementId": "b247fbd2-386e-fd0e-e053-98e9228e3dbe",
+			"courseCode": "FOM",
+			"courseLevel": "12",
+			"ruleCode": {
+				"courseRequirementCode": "107",
+				"label": null,
+				"description": "Mathematics 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b247fbd2-3d35-fd0e-e053-98e9228e3dbe",
 			"courseCode": "PLANF",
 			"courseLevel": "10",
-			"ruleCode": "112",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
+			"ruleCode": {
+				"courseRequirementCode": "112",
+				"label": null,
+				"description": "Career Life Education",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b247fbd2-3d36-fd0e-e053-98e9228e3dbe",
 			"courseCode": "CLC",
 			"courseLevel": "",
-			"ruleCode": "113",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603324800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603324800000
+			"ruleCode": {
+				"courseRequirementCode": "113",
+				"label": null,
+				"description": "Career Life Connections",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "c2db21e9-f376-06e1-e053-98e9228e0029",
 			"courseCode": "AC",
 			"courseLevel": "11",
-			"ruleCode": "501",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1621555200000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1621555200000
+			"ruleCode": {
+				"courseRequirementCode": "501",
+				"label": null,
+				"description": "Mathematics 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "c2db21e9-f392-06e1-e053-98e9228e0029",
 			"courseCode": "EN",
 			"courseLevel": "12",
-			"ruleCode": "500",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1621555200000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1621555200000
+			"ruleCode": {
+				"courseRequirementCode": "500",
+				"label": null,
+				"description": "Language Arts 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "c2db21e9-f395-06e1-e053-98e9228e0029",
 			"courseCode": "ENST",
 			"courseLevel": "12",
-			"ruleCode": "500",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1621555200000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1621555200000
+			"ruleCode": {
+				"courseRequirementCode": "500",
+				"label": null,
+				"description": "Language Arts 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "c2db21e9-f39a-06e1-e053-98e9228e0029",
 			"courseCode": "FOM",
 			"courseLevel": "11",
-			"ruleCode": "501",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1621555200000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1621555200000
+			"ruleCode": {
+				"courseRequirementCode": "501",
+				"label": null,
+				"description": "Mathematics 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "c2db21e9-f39b-06e1-e053-98e9228e0029",
 			"courseCode": "FOM",
 			"courseLevel": "12",
-			"ruleCode": "501",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1621555200000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1621555200000
+			"ruleCode": {
+				"courseRequirementCode": "501",
+				"label": null,
+				"description": "Mathematics 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "c2db21e9-f39e-06e1-e053-98e9228e0029",
 			"courseCode": "FRAL",
 			"courseLevel": "12",
-			"ruleCode": "500",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1621555200000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1621555200000
+			"ruleCode": {
+				"courseRequirementCode": "500",
+				"label": null,
+				"description": "Language Arts 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "c2db21e9-f3d4-06e1-e053-98e9228e0029",
 			"courseCode": "SCH",
 			"courseLevel": "11",
-			"ruleCode": "502",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1621555200000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1621555200000
+			"ruleCode": {
+				"courseRequirementCode": "502",
+				"label": null,
+				"description": "Social Studies 11 or 12",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee08-d1f0-e053-98e9228ef4a6",
 			"courseCode": "EN",
 			"courseLevel": "10",
-			"ruleCode": "400",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "400",
+				"label": null,
+				"description": "Language Arts 10 - English",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee09-d1f0-e053-98e9228ef4a6",
 			"courseCode": "EN",
 			"courseLevel": "11",
-			"ruleCode": "401",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "401",
+				"label": null,
+				"description": "Language Arts 11 - English",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee0a-d1f0-e053-98e9228ef4a6",
 			"courseCode": "EN",
 			"courseLevel": "12",
-			"ruleCode": "402",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "402",
+				"label": null,
+				"description": "Language Arts 12 - English",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee0d-d1f0-e053-98e9228ef4a6",
 			"courseCode": "ENST",
 			"courseLevel": "12",
-			"ruleCode": "402",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "402",
+				"label": null,
+				"description": "Language Arts 12 - English",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee15-d1f0-e053-98e9228ef4a6",
 			"courseCode": "LTST",
 			"courseLevel": "10",
-			"ruleCode": "400",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "400",
+				"label": null,
+				"description": "Language Arts 10 - English",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee16-d1f0-e053-98e9228ef4a6",
 			"courseCode": "LTST",
 			"courseLevel": "11",
-			"ruleCode": "401",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "401",
+				"label": null,
+				"description": "Language Arts 11 - English",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee28-d1f0-e053-98e9228ef4a6",
 			"courseCode": "FRAL",
 			"courseLevel": "12",
-			"ruleCode": "200",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "200",
+				"label": null,
+				"description": "Français langue seconde-immersion 12 - French Immersion ",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee2e-d1f0-e053-98e9228ef4a6",
 			"courseCode": "FRAL",
 			"courseLevel": "11",
-			"ruleCode": "201",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "201",
+				"label": null,
+				"description": "Français langue seconde-immersion 11 - French Immersion ",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		},
 		{
 			"courseRequirementId": "b29a121c-ee38-d1f0-e053-98e9228ef4a6",
 			"courseCode": "FRAL",
 			"courseLevel": "10",
-			"ruleCode": "202",
-			"reqMet": false,
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1603670400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1603670400000
+			"ruleCode": {
+				"courseRequirementCode": "202",
+				"label": null,
+				"description": "Français langue seconde-immersion 10 - French Immersion ",
+				"effectiveDate": 1626048000000,
+				"expiryDate": 4102358400000
+			},
+			"courseName": null
 		}
 	],
 	"courseRestrictions": [
@@ -2271,8 +2811,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "SS",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2018/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2017/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "64d6396a-39ee-4c64-a9f4-aa67a6680a10",
@@ -2280,8 +2820,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "PLAN",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "2011/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2010/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "b7e8ea57-6f42-4485-95d2-114a4be80d86",
@@ -2289,8 +2829,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "PLANF",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "2011/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2010/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "50611f10-e02c-411c-8e58-4191e3e22248",
@@ -2298,8 +2838,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "PLAN",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2011/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2010/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "e3e077e3-cb92-495a-85cd-45abf2f0a244",
@@ -2307,8 +2847,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "FOMF",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "2012/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2011/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "8f4c2009-94f3-4781-b904-c9386f70dd8e",
@@ -2316,8 +2856,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "FMPF",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2015/01",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2014/11",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "3b6a7291-5f5b-4683-8468-6da2f210c128",
@@ -2325,8 +2865,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "QFMP",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2015/01",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2014/11",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "97570ddf-0399-47c3-9767-6654b6b51bcd",
@@ -2334,8 +2874,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "QFMPF",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2015/01",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2014/11",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "ad37a170-b395-4dd1-9548-4b647b9b2766",
@@ -2343,8 +2883,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "LSTF",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "2019/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2018/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "b8d5dde9-5e85-4c33-a520-1918765dc954",
@@ -2352,62 +2892,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "ATPHF",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "2019/07",
-			"restrictionEndDate": null
-		},
-		{
-			"courseRestrictionId": "8d885663-3ae9-4ebe-973b-e98b00ab6732",
-			"mainCourse": "AC",
-			"mainCourseLevel": "11",
-			"restrictedCourse": "COP",
-			"restrictedCourseLevel": "11",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
-		},
-		{
-			"courseRestrictionId": "313435a8-dec4-483f-9c1a-f5a774d9b8fc",
-			"mainCourse": "BI",
-			"mainCourseLevel": "12",
-			"restrictedCourse": "BIOSR",
-			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
-		},
-		{
-			"courseRestrictionId": "6b2db2e8-08c9-4dbf-8357-d67c9184abb0",
-			"mainCourse": "BI",
-			"mainCourseLevel": "12",
-			"restrictedCourse": "QBI",
-			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
-		},
-		{
-			"courseRestrictionId": "74f81c07-db42-48e0-bf14-94a62aab7f2a",
-			"mainCourse": "BI",
-			"mainCourseLevel": "12",
-			"restrictedCourse": "QBIOS",
-			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
-		},
-		{
-			"courseRestrictionId": "93d04881-cf39-4fa0-b738-ae2692619139",
-			"mainCourse": "BI",
-			"mainCourseLevel": "12",
-			"restrictedCourse": "UABEB",
-			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
-		},
-		{
-			"courseRestrictionId": "4e1804ca-8276-4fa5-a22c-9493e93693f0",
-			"mainCourse": "PLANF",
-			"mainCourseLevel": "12",
-			"restrictedCourse": "PLANF",
-			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2011/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2018/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "06dbd3c5-fb0e-45ab-b92a-b23e09c280be",
@@ -2415,8 +2901,8 @@
 			"mainCourseLevel": "11",
 			"restrictedCourse": "UABEE",
 			"restrictedCourseLevel": "11",
-			"restrictionStartDate": "1998/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1997/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "2e37902e-623b-4496-87c6-b9bc1f1ebdf5",
@@ -2424,8 +2910,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "UABEE",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1997/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1996/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "1dbff23f-444a-40e8-a320-24cac2df5353",
@@ -2433,8 +2919,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "QEN",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1997/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1996/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "93da5306-fbf4-4b23-aa18-a496368b1a27",
@@ -2442,8 +2928,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "QFR",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "b625c1cb-b784-482e-9b2a-b2cdb8fcc635",
@@ -2451,8 +2937,8 @@
 			"mainCourseLevel": "11",
 			"restrictedCourse": "FRALP",
 			"restrictedCourseLevel": "11",
-			"restrictionStartDate": "1998/09",
-			"restrictionEndDate": "2019/06"
+			"restrictionStartDate": "1997/03",
+			"restrictionEndDate": "2018/06"
 		},
 		{
 			"courseRestrictionId": "6c07de80-0b96-4a94-a738-e456f9386089",
@@ -2460,8 +2946,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "QFRAP",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1998/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1997/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "a3ddddf1-8a5d-4235-b5dd-4ca203375e3b",
@@ -2469,8 +2955,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "QFRAL",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1998/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1997/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "3fdbca5a-3bb3-4f56-8d3a-9b82a58f4548",
@@ -2478,8 +2964,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "FRALP",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1998/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1997/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "6ce0c5aa-4a7f-4ce0-97e6-ac6c36d7812c",
@@ -2487,8 +2973,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "PLAN",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "2011/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2010/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "63474777-1a93-45c3-b0a0-6d8932ca6ad0",
@@ -2496,8 +2982,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "PLAN",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2011/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2010/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "24ed3768-82ea-41d0-bc41-762605328e7e",
@@ -2505,8 +2991,8 @@
 			"mainCourseLevel": "11",
 			"restrictedCourse": "PEAS",
 			"restrictedCourseLevel": "11",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "28224616-f17c-4001-ae64-e3c51c588ec3",
@@ -2514,8 +3000,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "PEAS",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "8590806c-4ac6-4b38-b713-ae8ca6b48930",
@@ -2523,8 +3009,8 @@
 			"mainCourseLevel": "11",
 			"restrictedCourse": "SS",
 			"restrictedCourseLevel": "11",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "a40edc42-4f5a-46c6-bf98-754897a48c21",
@@ -2532,8 +3018,8 @@
 			"mainCourseLevel": "11",
 			"restrictedCourse": "UABES",
 			"restrictedCourseLevel": "11",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "d5b69fb4-32a6-463f-b01b-6291732245b6",
@@ -2541,8 +3027,8 @@
 			"mainCourseLevel": "11",
 			"restrictedCourse": "QSS",
 			"restrictedCourseLevel": "11",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "c297c99e-7762-4b6c-aba3-088e77244e0f",
@@ -2550,8 +3036,8 @@
 			"mainCourseLevel": "11",
 			"restrictedCourse": "ESP",
 			"restrictedCourseLevel": "11",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "0c34bda2-99e2-4d76-9ef3-f3ed29175852",
@@ -2559,8 +3045,8 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "ESP",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "d82a6df5-020c-42e2-bc46-122ede5f4b73",
@@ -2568,8 +3054,62 @@
 			"mainCourseLevel": "12",
 			"restrictedCourse": "QSP",
 			"restrictedCourseLevel": "12",
-			"restrictionStartDate": "1995/09",
-			"restrictionEndDate": null
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
+		},
+		{
+			"courseRestrictionId": "8d885663-3ae9-4ebe-973b-e98b00ab6732",
+			"mainCourse": "AC",
+			"mainCourseLevel": "11",
+			"restrictedCourse": "COP",
+			"restrictedCourseLevel": "11",
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
+		},
+		{
+			"courseRestrictionId": "313435a8-dec4-483f-9c1a-f5a774d9b8fc",
+			"mainCourse": "BI",
+			"mainCourseLevel": "12",
+			"restrictedCourse": "BIOSR",
+			"restrictedCourseLevel": "12",
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
+		},
+		{
+			"courseRestrictionId": "6b2db2e8-08c9-4dbf-8357-d67c9184abb0",
+			"mainCourse": "BI",
+			"mainCourseLevel": "12",
+			"restrictedCourse": "QBI",
+			"restrictedCourseLevel": "12",
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
+		},
+		{
+			"courseRestrictionId": "74f81c07-db42-48e0-bf14-94a62aab7f2a",
+			"mainCourse": "BI",
+			"mainCourseLevel": "12",
+			"restrictedCourse": "QBIOS",
+			"restrictedCourseLevel": "12",
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
+		},
+		{
+			"courseRestrictionId": "93d04881-cf39-4fa0-b738-ae2692619139",
+			"mainCourse": "BI",
+			"mainCourseLevel": "12",
+			"restrictedCourse": "UABEB",
+			"restrictedCourseLevel": "12",
+			"restrictionStartDate": "1994/03",
+			"restrictionEndDate": "1997/12"
+		},
+		{
+			"courseRestrictionId": "4e1804ca-8276-4fa5-a22c-9493e93693f0",
+			"mainCourse": "PLANF",
+			"mainCourseLevel": "12",
+			"restrictedCourse": "PLANF",
+			"restrictedCourseLevel": "10",
+			"restrictionStartDate": "2010/05",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "518df3ad-4f15-411e-a1fb-dd7111262f05",
@@ -2577,8 +3117,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "QSCF",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2015/01",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2014/11",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "55ace6f0-cdec-495c-a18d-52614573f520",
@@ -2586,8 +3126,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "QSC",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2015/01",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2014/11",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "cd15d0a7-5f5f-4f72-b635-1087c10afaaa",
@@ -2595,8 +3135,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "SCF",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2015/01",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2014/11",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "65e7bd99-d808-42d6-8de0-eefebf26339e",
@@ -2604,8 +3144,8 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "QEN",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2015/01",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2014/11",
+			"restrictionEndDate": "1997/12"
 		},
 		{
 			"courseRestrictionId": "eae87a6e-8681-4b4b-940d-36726e852acd",
@@ -2613,66 +3153,101 @@
 			"mainCourseLevel": "10",
 			"restrictedCourse": "ESP",
 			"restrictedCourseLevel": "10",
-			"restrictionStartDate": "2018/07",
-			"restrictionEndDate": null
+			"restrictionStartDate": "2017/05",
+			"restrictionEndDate": "1997/12"
 		}
 	],
 	"assessmentRequirements": [
 		{
 			"assessmentRequirementId": "b247fbd2-3d5d-fd0e-e053-98e9228e3dbe",
 			"assessmentCode": "NME",
-			"ruleCode": "116",
-			"assessmentName": null
+			"ruleCode": {
+				"assmtRequirementCode": "116",
+				"label": null,
+				"description": "Numeracy 10 Assessment",
+				"effectiveDate": 1624147200000,
+				"expiryDate": 4102358400000
+			}
 		},
 		{
 			"assessmentRequirementId": "b247fbd2-3d5e-fd0e-e053-98e9228e3dbe",
 			"assessmentCode": "NME10",
-			"ruleCode": "116",
-			"assessmentName": null
+			"ruleCode": {
+				"assmtRequirementCode": "116",
+				"label": null,
+				"description": "Numeracy 10 Assessment",
+				"effectiveDate": 1624147200000,
+				"expiryDate": 4102358400000
+			}
 		},
 		{
 			"assessmentRequirementId": "b247fbd2-3d61-fd0e-e053-98e9228e3dbe",
 			"assessmentCode": "LTE10",
-			"ruleCode": "115",
-			"assessmentName": null
+			"ruleCode": {
+				"assmtRequirementCode": "115",
+				"label": null,
+				"description": "Literacy 10 Assessment",
+				"effectiveDate": 1624147200000,
+				"expiryDate": 946598400000
+			}
 		},
 		{
 			"assessmentRequirementId": "b247fbd2-3d63-fd0e-e053-98e9228e3dbe",
 			"assessmentCode": "LTE12",
-			"ruleCode": "118",
-			"assessmentName": null
+			"ruleCode": {
+				"assmtRequirementCode": "118",
+				"label": null,
+				"description": "Literacy 12 Assessment",
+				"effectiveDate": 1624147200000,
+				"expiryDate": 946598400000
+			}
 		},
 		{
 			"assessmentRequirementId": "b29a121c-ee47-d1f0-e053-98e9228ef4a6",
 			"assessmentCode": "LTF12",
-			"ruleCode": "203",
-			"assessmentName": null
+			"ruleCode": {
+				"assmtRequirementCode": "203",
+				"label": null,
+				"description": "Evaluation de Litteratie 12 - Immersion - French Immersion ",
+				"effectiveDate": 1624147200000,
+				"expiryDate": 946598400000
+			}
 		},
 		{
 			"assessmentRequirementId": "b29a121c-ee49-d1f0-e053-98e9228ef4a6",
 			"assessmentCode": "LTE10",
-			"ruleCode": "403",
-			"assessmentName": null
+			"ruleCode": {
+				"assmtRequirementCode": "403",
+				"label": null,
+				"description": "Literacy 10 Assessment",
+				"effectiveDate": 1624147200000,
+				"expiryDate": 946598400000
+			}
 		},
 		{
 			"assessmentRequirementId": "b29a121c-ee4a-d1f0-e053-98e9228ef4a6",
 			"assessmentCode": "LTE12",
-			"ruleCode": "404",
-			"assessmentName": null
+			"ruleCode": {
+				"assmtRequirementCode": "404",
+				"label": null,
+				"description": "Literacy 12 Assessment",
+				"effectiveDate": 1624147200000,
+				"expiryDate": 946598400000
+			}
 		}
 	],
 	"assessmentList": [
 		{
 			"assessmentCode": "LTE10",
 			"assessmentName": "LITERACY ASSESSMENT 10",
-			"language": null,
+			"language": "E",
 			"startDate": 1567296000000,
 			"endDate": null
 		},
 		{
 			"assessmentCode": "LTE12",
 			"assessmentName": "LITERACY ASSESSMENT 12",
-			"language": null,
+			"language": "E",
 			"startDate": 1598918400000,
 			"endDate": null
 		},
@@ -2700,14 +3275,14 @@
 		{
 			"assessmentCode": "NME",
 			"assessmentName": "NUMERACY ASSESSMENT",
-			"language": null,
+			"language": "E",
 			"startDate": 1535760000000,
 			"endDate": 1567296000000
 		},
 		{
 			"assessmentCode": "NME10",
 			"assessmentName": "NUMERACY ASSESSMENT 10",
-			"language": null,
+			"language": "E",
 			"startDate": 1567296000000,
 			"endDate": null
 		},
@@ -2724,172 +3299,6 @@
 			"language": "F",
 			"startDate": 1567296000000,
 			"endDate": null
-		}
-	],
-	"gradLetterGradeList": [
-		{
-			"letterGrade": "A",
-			"gpaMarkValue": "4",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "B",
-			"gpaMarkValue": "3",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "C+",
-			"gpaMarkValue": "2.5",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "C",
-			"gpaMarkValue": "2",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "C-",
-			"gpaMarkValue": "1",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "RM",
-			"gpaMarkValue": "0",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "F",
-			"gpaMarkValue": "0",
-			"passFlag": "N",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "NM",
-			"gpaMarkValue": "0",
-			"passFlag": "N",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "WR",
-			"gpaMarkValue": "0",
-			"passFlag": "N",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "SG",
-			"gpaMarkValue": "0",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "TS",
-			"gpaMarkValue": "0",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "I",
-			"gpaMarkValue": "0",
-			"passFlag": "N",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		},
-		{
-			"letterGrade": "P",
-			"gpaMarkValue": "1",
-			"passFlag": "Y",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1612828800000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1612828800000
-		}
-	],
-	"gradSpecialCaseList": [
-		{
-			"specialCase": "A",
-			"passFlag": "Y",
-			"description": "Aegrotat",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1604534400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1604534400000
-		},
-		{
-			"specialCase": "Q",
-			"passFlag": "N",
-			"description": "Disqualified",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1604534400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1604534400000
-		},
-		{
-			"specialCase": "E",
-			"passFlag": "Y",
-			"description": "Exempt",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1604534400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1604534400000
-		},
-		{
-			"specialCase": "X",
-			"passFlag": "N",
-			"description": "Not Completed",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1604534400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1604534400000
-		},
-		{
-			"specialCase": "M",
-			"passFlag": "Y",
-			"description": "Met",
-			"createdBy": "GRADUATION",
-			"createdTimestamp": 1622678400000,
-			"updatedBy": "GRADUATION",
-			"updatedTimestamp": 1622678400000
 		}
 	],
 	"nonGradReasons": null,
@@ -2910,11 +3319,11 @@
 	"gradSpecialProgramStatus": null,
 	"school": null,
 	"graduated": false,
-	"projected": true,
+	"projected": false,
 	"specialProgramInternationalBaccalaureateGraduatedBC": false,
 	"specialProgramInternationalBaccalaureateGraduatedBD": false,
 	"specialProgramFrenchImmersionGraduated": false,
-	"specialProgramAdvancedPlacementGraduated": false,
 	"specialProgramDualDogwoodGraduated": false,
+	"specialProgramAdvancedPlacementGraduated": false,
 	"specialProgramCareerProgramGraduated": false
 }

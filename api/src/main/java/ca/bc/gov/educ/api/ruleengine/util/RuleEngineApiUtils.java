@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +17,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.bc.gov.educ.api.ruleengine.dto.GradProgramRule;
-import ca.bc.gov.educ.api.ruleengine.dto.GradSpecialProgramRule;
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 
@@ -144,26 +144,26 @@ public class RuleEngineApiUtils {
 		
     }
     
-    public static List<GradProgramRule> getCloneProgramRule(List<GradProgramRule> rules) {
+    public static List<ProgramRequirement> getCloneProgramRule(List<ProgramRequirement> gradProgramRulesMatch) {
     	ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 
 		try {
-			json = mapper.writeValueAsString(rules);
-			return mapper.readValue(json, new TypeReference<List<GradProgramRule>>(){});
+			json = mapper.writeValueAsString(gradProgramRulesMatch);
+			return mapper.readValue(json, new TypeReference<List<ProgramRequirement>>(){});
 		} catch (JsonProcessingException e) {
 			logger.info(ERROR_MSG+e.getMessage());
 		}
 		return Collections.emptyList();
 		
     }
-    public static List<GradSpecialProgramRule> getCloneSpecialProgramRule(List<GradSpecialProgramRule> rules) {
+    public static List<OptionalProgramRequirement> getCloneSpecialProgramRule(List<OptionalProgramRequirement> rules) {
     	ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 
 		try {
 			json = mapper.writeValueAsString(rules);
-			return mapper.readValue(json, new TypeReference<List<GradSpecialProgramRule>>(){});
+			return mapper.readValue(json, new TypeReference<List<OptionalProgramRequirement>>(){});
 		} catch (JsonProcessingException e) {
 			logger.info(ERROR_MSG+e.getMessage());
 		}

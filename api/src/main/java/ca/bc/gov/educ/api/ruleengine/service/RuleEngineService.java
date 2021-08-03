@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import ca.bc.gov.educ.api.ruleengine.dto.GradAlgorithmRules;
+import ca.bc.gov.educ.api.ruleengine.dto.ProgramAlgorithmRule;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.rule.Rule;
 import ca.bc.gov.educ.api.ruleengine.rule.RuleFactory;
@@ -26,12 +26,12 @@ public class RuleEngineService {
     public RuleProcessorData processGradAlgorithmRules(RuleProcessorData ruleProcessorData) {
 
         logger.debug("In Service ProcessGradAlgorithmRules");
-
+        
         RuleProcessorData originalData = RuleProcessorRuleUtils.cloneObject(ruleProcessorData);
         ruleProcessorData.setGraduated(true);
 
-        for (GradAlgorithmRules gradAlgorithmRule : originalData.getGradAlgorithmRules()) {
-        	Rule rule = RuleFactory.createRule(gradAlgorithmRule.getRuleImplementation(), ruleProcessorData);
+        for (ProgramAlgorithmRule gradAlgorithmRule : originalData.getAlgorithmRules()) {
+        	Rule rule = RuleFactory.createRule(gradAlgorithmRule.getAlgorithmRuleCode().getRuleImplementation(), ruleProcessorData);
             rule.setInputData(ruleProcessorData);
             ruleProcessorData = (RuleProcessorData)rule.fire();
         }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.GradSpecialProgramRule;
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRequirement;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
@@ -42,11 +42,11 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     	List<GradRequirement> requirementsMet = new ArrayList<>();
         
         List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForFrenchImmersion();
-        List<GradSpecialProgramRule> gradSpecialProgramMinCreditElectiveRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
+        List<OptionalProgramRequirement> gradSpecialProgramMinCreditElectiveRulesMatch = ruleProcessorData.getGradSpecialProgramRulesFrenchImmersion()
                 .stream()
-                .filter(gradSpecialProgramRule -> "MCE".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
-                		&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
-                		&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
+                .filter(gradSpecialProgramRule -> "MCE".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+                		&& "Y".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
+                		&& "C".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
        
         logger.debug("#### French Immersion Min Credit Elective Special Program Rule size: " + gradSpecialProgramMinCreditElectiveRulesMatch.size());
@@ -71,9 +71,9 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             
         	StudentCourse sc = studentCourseIterator.next();
         	if(!requirementAchieved) {
-	        	for(GradSpecialProgramRule pR:gradSpecialProgramMinCreditElectiveRulesMatch) {            	
-	        		if((pR.getRequiredLevel() == null || pR.getRequiredLevel().trim().compareTo("") == 0) && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F")) {
-	        			requiredCredits = Integer.parseInt(pR.getRequiredCredits());
+	        	for(OptionalProgramRequirement pR:gradSpecialProgramMinCreditElectiveRulesMatch) {            	
+	        		if((pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F")) {
+	        			requiredCredits = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
 	        			totalCredits = processCredits(pR,totalCredits,sc,requirementsMet);
 	        		}
 	            }
@@ -107,9 +107,9 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         while (studentCourseIterator2.hasNext()) {            
         	StudentCourse sc = studentCourseIterator2.next();
         	if(!requirementAchieved && sc.isUsed()) {
-        		for(GradSpecialProgramRule pR:gradSpecialProgramMinCreditElectiveRulesMatch) {            	
-        			if(pR.getRequiredLevel() != null && pR.getRequiredLevel().trim().compareTo("11 or 12") == 0 && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F") && (sc.getCourseLevel().trim().equalsIgnoreCase("11") || sc.getCourseLevel().trim().equalsIgnoreCase("12"))) {
-        				requiredCreditsGrad11or12 = Integer.parseInt(pR.getRequiredCredits());
+        		for(OptionalProgramRequirement pR:gradSpecialProgramMinCreditElectiveRulesMatch) {            	
+        			if(pR.getOptionalProgramRequirementCode().getRequiredLevel() != null && pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("11 or 12") == 0 && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F") && (sc.getCourseLevel().trim().equalsIgnoreCase("11") || sc.getCourseLevel().trim().equalsIgnoreCase("12"))) {
+        				requiredCreditsGrad11or12 = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
         				totalCreditsGrade11or12 = processCredits(pR,totalCreditsGrade11or12,sc,requirementsMet);
         			}         		
         		}
@@ -138,14 +138,14 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         ruleProcessorData.setRequirementsMetSpecialProgramsFrenchImmersion(reqsMet);
         finalCourseList2.addAll(matchedList);
         ruleProcessorData.setStudentCoursesForFrenchImmersion(RuleEngineApiUtils.getClone(finalCourseList2));
-        List<GradSpecialProgramRule> failedRules = gradSpecialProgramMinCreditElectiveRulesMatch.stream()
-                .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
+        List<OptionalProgramRequirement> failedRules = gradSpecialProgramMinCreditElectiveRulesMatch.stream()
+                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the Min Elective Credit rules met!");
         } else {
-            for (GradSpecialProgramRule failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
+            for (OptionalProgramRequirement failedRule : failedRules) {
+                requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
             }
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsFrenchImmersion();
 
@@ -160,9 +160,9 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         return ruleProcessorData;
     }
     
-    public int processCredits(GradSpecialProgramRule pR, int totalCredits, StudentCourse sc, List<GradRequirement> requirementsMet) {
+    public int processCredits(OptionalProgramRequirement pR, int totalCredits, StudentCourse sc, List<GradRequirement> requirementsMet) {
     	
-		int requiredCredits = Integer.parseInt(pR.getRequiredCredits());
+		int requiredCredits = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
 		if (totalCredits + sc.getCredits() <= requiredCredits) {
 			totalCredits += sc.getCredits();  
             sc.setCreditsUsedForGrad(sc.getCredits());
@@ -174,18 +174,18 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         }
 		
 		if (totalCredits == requiredCredits) {
-			requirementsMet.add(new GradRequirement(pR.getRuleCode(), pR.getRequirementName()));
-			pR.setPassed(true);
+			requirementsMet.add(new GradRequirement(pR.getOptionalProgramRequirementCode().getOptProReqCode(), pR.getOptionalProgramRequirementCode().getLabel()));
+			pR.getOptionalProgramRequirementCode().setPassed(true);
 		}
 		sc.setUsed(true);
 		if (sc.getGradReqMet().length() > 0) {
 
-            sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getRuleCode());
-            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getRuleCode()
-                    + " - " + pR.getRequirementName());
+            sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getOptionalProgramRequirementCode().getOptProReqCode());
+            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getOptionalProgramRequirementCode().getOptProReqCode()
+                    + " - " + pR.getOptionalProgramRequirementCode().getLabel());
         } else {
-            sc.setGradReqMet(pR.getRuleCode());
-            sc.setGradReqMetDetail(pR.getRuleCode() + " - " + pR.getRequirementName());
+            sc.setGradReqMet(pR.getOptionalProgramRequirementCode().getOptProReqCode());
+            sc.setGradReqMetDetail(pR.getOptionalProgramRequirementCode().getOptProReqCode() + " - " + pR.getOptionalProgramRequirementCode().getLabel());
         }	            		
     	
     	return totalCredits;
