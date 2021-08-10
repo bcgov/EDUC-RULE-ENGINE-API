@@ -821,7 +821,16 @@
 	"gradSpecialProgramRulesCareerProgram": [
 		{
 			"optionalProgramRequirementID": "c732d2c0-b97c-3487-e053-98e9228e24f2",
-			"optionalProgramID": "c71ba15e-1cbc-ccce-e053-98e9228e1b71",
+			"optionalProgramID": {
+				"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+				"optProgramCode": "CP",
+				"optionalProgramName": "2018 Graduation Program French Immersion",
+				"description": "2018 Graduation Program French Immersion",
+				"displayOrder": 60,
+				"effectiveDate": 1623456000000,
+				"expiryDate": 1623456000000,
+				"graduationProgramCode": "2018-EN"
+			},
 			"optionalProgramRequirementCode": {
 				"optProReqCode": "600",
 				"label": "Work Experience Course - Career Program",
