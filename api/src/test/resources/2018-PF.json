@@ -809,7 +809,16 @@
 	"gradSpecialProgramRulesDualDogwood": [
 		{
 			"optionalProgramRequirementID": "c732d2c0-b977-3487-e053-98e9228e24f2",
-			"optionalProgramID": "c71ba15e-1cb7-ccce-e053-98e9228e1b71",
+			"optionalProgramID": {
+				"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+				"optProgramCode": "DD",
+				"optionalProgramName": "2018 Graduation Program French Immersion",
+				"description": "2018 Graduation Program French Immersion",
+				"displayOrder": 60,
+				"effectiveDate": 1623456000000,
+				"expiryDate": 1623456000000,
+				"graduationProgramCode": "2018-EN"
+			},
 			"optionalProgramRequirementCode": {
 				"optProReqCode": "400",
 				"label": "Language Arts 10 - English",
@@ -833,7 +842,16 @@
 		},
 		{
 			"optionalProgramRequirementID": "c732d2c0-b978-3487-e053-98e9228e24f2",
-			"optionalProgramID": "c71ba15e-1cb7-ccce-e053-98e9228e1b71",
+			"optionalProgramID": {
+				"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+				"optProgramCode": "DD",
+				"optionalProgramName": "2018 Graduation Program French Immersion",
+				"description": "2018 Graduation Program French Immersion",
+				"displayOrder": 60,
+				"effectiveDate": 1623456000000,
+				"expiryDate": 1623456000000,
+				"graduationProgramCode": "2018-EN"
+			},
 			"optionalProgramRequirementCode": {
 				"optProReqCode": "401",
 				"label": "Language Arts 11 - English",
@@ -857,7 +875,16 @@
 		},
 		{
 			"optionalProgramRequirementID": "c732d2c0-b979-3487-e053-98e9228e24f2",
-			"optionalProgramID": "c71ba15e-1cb7-ccce-e053-98e9228e1b71",
+			"optionalProgramID": {
+				"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+				"optProgramCode": "DD",
+				"optionalProgramName": "2018 Graduation Program French Immersion",
+				"description": "2018 Graduation Program French Immersion",
+				"displayOrder": 60,
+				"effectiveDate": 1623456000000,
+				"expiryDate": 1623456000000,
+				"graduationProgramCode": "2018-EN"
+			},
 			"optionalProgramRequirementCode": {
 				"optProReqCode": "402",
 				"label": "Language Arts 12 - English",
@@ -881,7 +908,16 @@
 		},
 		{
 			"optionalProgramRequirementID": "c732d2c0-b97a-3487-e053-98e9228e24f2",
-			"optionalProgramID": "c71ba15e-1cb7-ccce-e053-98e9228e1b71",
+			"optionalProgramID": {
+				"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+				"optProgramCode": "DD",
+				"optionalProgramName": "2018 Graduation Program French Immersion",
+				"description": "2018 Graduation Program French Immersion",
+				"displayOrder": 60,
+				"effectiveDate": 1623456000000,
+				"expiryDate": 1623456000000,
+				"graduationProgramCode": "2018-EN"
+			},
 			"optionalProgramRequirementCode": {
 				"optProReqCode": "403",
 				"label": "Literacy 10 Assessment",
@@ -905,7 +941,16 @@
 		},
 		{
 			"optionalProgramRequirementID": "c732d2c0-b97b-3487-e053-98e9228e24f2",
-			"optionalProgramID": "c71ba15e-1cb7-ccce-e053-98e9228e1b71",
+			"optionalProgramID": {
+				"optionalProgramID": "c71ba15e-1cb8-ccce-e053-98e9228e1b71",
+				"optProgramCode": "DD",
+				"optionalProgramName": "2018 Graduation Program French Immersion",
+				"description": "2018 Graduation Program French Immersion",
+				"displayOrder": 60,
+				"effectiveDate": 1623456000000,
+				"expiryDate": 1623456000000,
+				"graduationProgramCode": "2018-EN"
+			},
 			"optionalProgramRequirementCode": {
 				"optProReqCode": "404",
 				"label": "Literacy 12 Assessment",
