@@ -11,6 +11,6 @@ import lombok.Data;
 public class OptionalProgramRequirement {
 
 	private UUID optionalProgramRequirementID; 
-	private UUID optionalProgramID; 
+	private OptionalProgram optionalProgramID; 
 	private OptionalProgramRequirementCode optionalProgramRequirementCode;
 }
