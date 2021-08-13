@@ -90,6 +90,16 @@ public class MinAdultCoursesRule implements Rule {
 				int age = calculateAge(dobOfStudent,RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
 				if(age >= 18 && (totalCredits + sc.getCredits()) <= requiredCredits) {
 						totalCredits += sc.getCredits();
+						if (sc.getGradReqMet().length() > 0) {							
+							sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode());
+							sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode() + " - "
+									+ gradProgramRule.getProgramRequirementCode().getLabel());
+						} else {
+							sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getProReqCode());
+							sc.setGradReqMetDetail(
+									gradProgramRule.getProgramRequirementCode().getProReqCode() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+						}
+						sc.setUsed(true);
 				}
 				if (totalCredits == requiredCredits) {
 					break;
