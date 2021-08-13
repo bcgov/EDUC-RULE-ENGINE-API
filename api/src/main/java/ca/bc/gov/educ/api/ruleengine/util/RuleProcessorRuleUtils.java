@@ -1,7 +1,11 @@
 package ca.bc.gov.educ.api.ruleengine.util;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,6 +101,31 @@ public class RuleProcessorRuleUtils {
                         || sc.isFailed()
                         || (!projected && sc.isProjected()))
                 .collect(Collectors.toList());
+    }
+    
+    public static String getGradDate(List<StudentCourse> studentCourses) {
+
+        Date gradDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+        try {
+            gradDate = dateFormat.parse("1700/01/01");
+        } catch (ParseException e) {
+            e.getMessage();
+        }
+
+        for (StudentCourse studentCourse : studentCourses) {
+            try {
+                if (dateFormat.parse(studentCourse.getSessionDate() + "/01").compareTo(gradDate) > 0) {
+                    gradDate = dateFormat.parse(studentCourse.getSessionDate() + "/01");
+                }
+            } catch (ParseException e) {
+                e.getMessage();
+            }
+        }
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        return dateFormat.format(gradDate);
     }
 
 }
