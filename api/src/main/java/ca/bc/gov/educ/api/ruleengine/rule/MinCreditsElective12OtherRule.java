@@ -67,7 +67,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 			}
 			int courseFound = 0;
 			for (StudentCourse sc : tempStudentCourseList) {
-				if(sc.getCourseLevel().contains("12")) {
+				if(sc.getCourseLevel().contains("12") && !sc.isNotEligibleForElective()) {
 					courseFound++;
 					if (totalCredits + sc.getCredits() <= requiredCredits) {
 						totalCredits += sc.getCredits();
@@ -121,7 +121,8 @@ public class MinCreditsElective12OtherRule implements Rule {
 					reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
 					ruleProcessorData.setRequirementsMet(reqsMet);
 					List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
-					delReqsMet.removeIf(e -> e.getRule().compareTo("502") == 0);	
+					if(delReqsMet != null)
+						delReqsMet.removeIf(e -> e.getRule().compareTo("502") == 0);	
 				}else {
 					ruleProcessorData.setGraduated(false);
 					

@@ -68,28 +68,30 @@ public class MinCreditsElective12Rule implements Rule {
 			}
 
 			for (StudentCourse sc : tempStudentCourseList) {
-				if (totalCredits + sc.getCredits() <= requiredCredits) {
-					totalCredits += sc.getCredits();
-					sc.setCreditsUsedForGrad(sc.getCredits());
-				} else {
-					int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-					totalCredits = requiredCredits;
-					sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
-				}
-				if (sc.getGradReqMet().length() > 0) {
-
-					sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode());
-					sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode() + " - "
-							+ gradProgramRule.getProgramRequirementCode().getLabel());
-				} else {
-					sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getProReqCode());
-					sc.setGradReqMetDetail(
-							gradProgramRule.getProgramRequirementCode().getProReqCode() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-				}
-				sc.setUsed(true);
-
-				if (totalCredits == requiredCredits) {
-					break;
+				if(!sc.isNotEligibleForElective()) {
+					if (totalCredits + sc.getCredits() <= requiredCredits) {
+						totalCredits += sc.getCredits();
+						sc.setCreditsUsedForGrad(sc.getCredits());
+					} else {
+						int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+						totalCredits = requiredCredits;
+						sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+					}
+					if (sc.getGradReqMet().length() > 0) {
+	
+						sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode());
+						sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode() + " - "
+								+ gradProgramRule.getProgramRequirementCode().getLabel());
+					} else {
+						sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getProReqCode());
+						sc.setGradReqMetDetail(
+								gradProgramRule.getProgramRequirementCode().getProReqCode() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+					}
+					sc.setUsed(true);
+	
+					if (totalCredits == requiredCredits) {
+						break;
+					}
 				}
 			}
 

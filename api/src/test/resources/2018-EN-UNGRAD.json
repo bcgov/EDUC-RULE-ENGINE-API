@@ -856,7 +856,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -895,7 +895,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -934,7 +934,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -973,7 +973,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1012,7 +1012,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1051,7 +1051,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1090,7 +1090,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1129,7 +1129,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1168,7 +1168,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1207,7 +1207,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1246,7 +1246,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1285,7 +1285,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1324,7 +1324,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1363,7 +1363,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1402,7 +1402,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1441,7 +1441,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1480,7 +1480,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1519,7 +1519,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1558,7 +1558,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1597,7 +1597,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1636,7 +1636,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1675,7 +1675,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1714,7 +1714,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1753,7 +1753,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		},
@@ -1792,7 +1792,7 @@
 			"locallyDeveloped": false,
 			"notCompleted": false,
 			"duplicate": false,
-			"workExpCourse": false,
+			"notEligibleForElective": false,
 			"boardAuthorityAuthorized": false,
 			"independentDirectedStudies": false
 		}

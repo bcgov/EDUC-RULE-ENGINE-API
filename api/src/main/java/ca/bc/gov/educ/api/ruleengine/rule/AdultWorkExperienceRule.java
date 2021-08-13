@@ -19,6 +19,7 @@ import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,6 +46,11 @@ public class AdultWorkExperienceRule implements Rule {
 
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
+		String gradDate = RuleProcessorRuleUtils.getGradDate(studentCourses);
+		int diff = RuleEngineApiUtils.getDifferenceInMonths(gradDate, "2014-09-01");
+		if(diff < 0) {
+			return ruleProcessorData;
+		}
 		List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
 		
 		logger.debug("Unique Courses: " + studentCourses.size());
@@ -56,7 +62,7 @@ public class AdultWorkExperienceRule implements Rule {
 		logger.debug(gradProgramRules.toString());
 		List<StudentCourse> finalCourseList = new ArrayList<>();
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
-			
+			int numberOfWExCourses = 0;
 	        ListIterator<StudentCourse> courseIterator = studentCourses.listIterator();
 	        StudentCourse tempSC;
 	        ObjectMapper objectMapper = new ObjectMapper();
@@ -87,7 +93,10 @@ public class AdultWorkExperienceRule implements Rule {
 	            }
 	            
 	            if(tempCourseRequirement != null && tempProgramRule != null) {
-	            	tempCourse.setWorkExpCourse(true);
+	            	numberOfWExCourses++;
+	            	if(numberOfWExCourses > 1) {
+	            		tempCourse.setNotEligibleForElective(true);
+	            	}
 	            }
 	            tempSC = new StudentCourse();
 	            try {
@@ -99,11 +108,8 @@ public class AdultWorkExperienceRule implements Rule {
 	            }
 	        }
 	        
-	        long numberOfWExCourses = finalCourseList.stream().filter(sc -> sc.isWorkExpCourse()).count();
 	        if(numberOfWExCourses > 1L) {
 	        	gradProgramRule.getProgramRequirementCode().setPassed(false);
-	        	ruleProcessorData.setGraduated(false);
-
 				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
 
 				if (nonGradReasons == null)
@@ -111,16 +117,6 @@ public class AdultWorkExperienceRule implements Rule {
 
 				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
-	        }else {
-	        	gradProgramRule.getProgramRequirementCode().setPassed(true);
-
-				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
-
-				if (reqsMet == null)
-					reqsMet = new ArrayList<>();
-
-				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
-				ruleProcessorData.setRequirementsMet(reqsMet);
 	        }
 		}
 		ruleProcessorData.setStudentCourses(finalCourseList);
