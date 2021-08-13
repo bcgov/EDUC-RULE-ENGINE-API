@@ -29,15 +29,15 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MinAdultCoursesRule implements Rule {
+public class MinAdultCourses19Rule implements Rule {
 
-	private static Logger logger = LoggerFactory.getLogger(MinAdultCoursesRule.class);
+	private static Logger logger = LoggerFactory.getLogger(MinAdultCourses19Rule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
 
 	public RuleData fire() {
-		logger.debug("Min Adult Courses 18 Rule");
+		logger.debug("Min Adult Courses 19 Rule");
 
 		int totalCredits = 0;
 		int requiredCredits = 0;
@@ -49,16 +49,16 @@ public class MinAdultCoursesRule implements Rule {
 
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-		
 		String gradDate = RuleProcessorRuleUtils.getGradDate(studentCourses);
 		int diff = RuleEngineApiUtils.getDifferenceInMonths(gradDate, "2012-07-01");
-		if(diff > 0) {
+		if(diff < 0) {
 			return ruleProcessorData;
 		}
+
 		logger.debug("Unique Courses: " + studentCourses.size());
 		String dobOfStudent = ruleProcessorData.getGradStudent().getDob();
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
-				.getGradProgramRules().stream().filter(gpr -> "MAC18".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+				.getGradProgramRules().stream().filter(gpr -> "MAC19".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 
@@ -88,7 +88,7 @@ public class MinAdultCoursesRule implements Rule {
 					e.getMessage();
 				}
 				int age = calculateAge(dobOfStudent,RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
-				if(age >= 18 && (totalCredits + sc.getCredits()) <= requiredCredits) {
+				if(age >= 19 && (totalCredits + sc.getCredits()) <= requiredCredits) {
 						totalCredits += sc.getCredits();
 				}
 				if (totalCredits == requiredCredits) {
@@ -121,15 +121,6 @@ public class MinAdultCoursesRule implements Rule {
 				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
-			
-			List<GradRequirement> reqMetList = ruleProcessorData.getRequirementsMet().stream().filter(gpr -> "503".compareTo(gpr.getRule()) == 0
-					|| "505".compareTo(gpr.getRule()) == 0)
-			.collect(Collectors.toList());
-			if(reqMetList.size() == 2) {
-				List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
-				if(delNonGradReason != null)
-					delNonGradReason.removeIf(e -> e.getRule().compareTo("506") == 0);
-			}
 
 			logger.info("Min Adult Courses -> Required:" + requiredCredits + " Has:" + totalCredits);
 		}
@@ -147,7 +138,7 @@ public class MinAdultCoursesRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinAdultCoursesRule: Rule Processor Data set.");
+		logger.info("MinAdultCourses19Rule: Rule Processor Data set.");
 	}
 
 }
