@@ -49,7 +49,7 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 				ruleProcessorData.getStudentAssessmentsForDualDogwood(), ruleProcessorData.isProjected());
 		List<OptionalProgramRequirement> gradSpecialProgramRulesMatch = ruleProcessorData
 				.getGradSpecialProgramRulesDualDogwood().stream()
-				.filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode()) == 0
+				.filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
 						&& "A".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
