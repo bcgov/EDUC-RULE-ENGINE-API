@@ -354,6 +354,19 @@
 			}
 		},
 		{
+			"programAlgoRuleID": "c70b587f-af4a-d11b-e053-9ae9228eda21",
+			"graduationProgramCode": "2018-EN",
+			"sortOrder": 111,
+			"algorithmRuleCode": {
+				"algoRuleCode": "ASSMT_FI_MATCH_CREDITS_RULE",
+				"ruleImplementation": "AssessmentFrenchImmersionMatchCreditsRule",
+				"label": "Assessments French Immersion Match Credits rule",
+				"description": "Student must meet a minimum of 4-credits from each of the specified French immersion non-elective subject areas",
+				"displayOrder": 0,
+				"isActiveRule": "Y"
+			}
+		},
+		{
 			"programAlgoRuleID": "c70b587f-af4b-d11b-e053-9ae9228eda21",
 			"graduationProgramCode": "2018-EN",
 			"sortOrder": 120,
@@ -2335,6 +2348,7 @@
 			"duplicate": false
 		}
 	],
+	"studentAssessmentsForFrenchImmersion": null,
 	"studentAssessmentsForDualDogwood": null,
 	"courseRequirements": [
 		{
