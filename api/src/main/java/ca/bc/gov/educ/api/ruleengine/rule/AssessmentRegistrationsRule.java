@@ -80,6 +80,8 @@ public class AssessmentRegistrationsRule implements Rule {
     	List<StudentAssessment> listAssessments = ruleProcessorData.getStudentAssessments();        
         if(ruleProcessorData.isHasSpecialProgramDualDogwood())
         	ruleProcessorData.setStudentAssessmentsForDualDogwood(RuleEngineApiUtils.getAssessmentClone(listAssessments));
+        if(ruleProcessorData.isHasSpecialProgramFrenchImmersion())
+        	ruleProcessorData.setStudentAssessmentsForFrenchImmersion(RuleEngineApiUtils.getAssessmentClone(listAssessments));
     }
 
 	@Override
