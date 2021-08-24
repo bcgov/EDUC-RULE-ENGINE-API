@@ -17,10 +17,10 @@ pipeline{
             alwaysPullImage: false
             workingDir: /tmp
             ttyEnabled: false
-            resourceRequestCpu: 3
+            resourceRequestCpu: 500m
             resourceRequestMemory: 2Gi
-            resourceLimitCpu: 3
-            resourceLimitMemory: 2Gi
+            resourceLimitCpu: 100m
+            resourceLimitMemory: 3Gi
             volumeMounts:
             - mountPath: '/home/jenkins/.m2'
               name: pvc
