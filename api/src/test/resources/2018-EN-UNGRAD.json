@@ -30,6 +30,14 @@
 		"studentGrade": "11",
 		"studentStatus": "T"
 	},
+	"gradProgram": {
+        "programCode": "2018-EN",
+        "programName": "Graduation Program 2018",
+        "description": "British Columbia Certificate of Graduation (current graduation program), students must earn a minimum of 80 credits and write the Grade 10 Numeracy Assessment and Grades 10 and 12 Literacy Assessments.",
+        "displayOrder": 20,
+        "effectiveDate": 1623456000000,
+        "expiryDate": 1623456000000
+    },
 	"letterGradeList": [
 		{
 			"grade": "A",
