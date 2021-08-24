@@ -63,6 +63,7 @@ public class RuleProcessorData implements RuleData {
     private boolean hasSpecialProgramDualDogwood;
     private GradAlgorithmGraduationStatus gradStatus;
     private SpecialGradAlgorithmGraduationStatus gradSpecialProgramStatus;
+    private GraduationProgramCode gradProgram;
     private School school;
     private boolean isProjected;
 }
