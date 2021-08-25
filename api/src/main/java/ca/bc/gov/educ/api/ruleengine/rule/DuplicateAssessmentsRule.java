@@ -44,8 +44,8 @@ public class DuplicateAssessmentsRule implements Rule {
 			for (int j = i + 1; j < studentAssessmentList.size(); j++) {
 				if (studentAssessmentList.get(i).getAssessmentCode()
 						.equals(studentAssessmentList.get(j).getAssessmentCode())
-						&& studentAssessmentList.get(i).isDuplicate() 
-						&& studentAssessmentList.get(j).isDuplicate()) {
+						&& !studentAssessmentList.get(i).isDuplicate() 
+						&& !studentAssessmentList.get(j).isDuplicate()) {
 					Double proficiencyScore1 = studentAssessmentList.get(i).getProficiencyScore() != null
 							? studentAssessmentList.get(i).getProficiencyScore()
 							: Double.valueOf("0.0");
