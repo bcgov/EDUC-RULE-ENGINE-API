@@ -127,5 +127,16 @@ public class RuleProcessorRuleUtils {
 
         return dateFormat.format(gradDate);
     }
+    
+    public static String getCurrentDate() {
 
+        Date gradDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(gradDate);
+    }
+    
+    public static String getProgramCompletionDate(Date pcd) {
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(pcd);
+    }
 }
