@@ -116,6 +116,13 @@ public class RuleEngineApiUtils {
         return monthsYear + months;
     }
     
+    public static int getDifferenceInDays(String date1, String date2) {
+    	Period diff = Period.between(
+                LocalDate.parse(date1).withDayOfMonth(1),
+                LocalDate.parse(date2).withDayOfMonth(1));
+    	return diff.getDays();
+    }
+    
     public static List<StudentCourse> getClone(List<StudentCourse> listCourses) {
     	ObjectMapper mapper = new ObjectMapper();
 		String json = "";
