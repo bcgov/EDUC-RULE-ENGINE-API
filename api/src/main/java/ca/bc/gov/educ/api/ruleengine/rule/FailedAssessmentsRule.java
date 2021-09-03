@@ -43,7 +43,13 @@ public class FailedAssessmentsRule implements Rule {
 
 			if (failed)
 				studentAssessment.setFailed(true);
-			if ("Y".compareTo(studentAssessment.getExceededWriteFlag().trim()) == 0) {
+			String exceededWriteFlag = "";
+            if(studentAssessment.getExceededWriteFlag() == null) {
+            	exceededWriteFlag = "";
+            }else {
+            	exceededWriteFlag = studentAssessment.getExceededWriteFlag();
+            }
+			if ("Y".compareTo(exceededWriteFlag.trim()) == 0) {
 				studentAssessment.setFailed(true);
 			}
 		}
