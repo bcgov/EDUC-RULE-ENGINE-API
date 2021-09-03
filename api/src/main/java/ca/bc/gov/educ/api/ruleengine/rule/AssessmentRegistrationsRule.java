@@ -61,8 +61,15 @@ public class AssessmentRegistrationsRule implements Rule {
 			} else {
 				specialCase = studentAssessment.getSpecialCase();
 			}
+			String exceededWriteFlag = "";
+            if(studentAssessment.getExceededWriteFlag() == null) {
+            	exceededWriteFlag = "";
+            }else {
+            	exceededWriteFlag = studentAssessment.getExceededWriteFlag();
+            }
+	            
 			if ("".compareTo(specialCase.trim()) == 0
-					&& "".compareTo(studentAssessment.getExceededWriteFlag().trim()) == 0
+					&& "".compareTo(exceededWriteFlag.trim()) == 0
 					&& "0.0".compareTo(proficiencyScore) == 0 && diff <= 1) {
 				studentAssessment.setProjected(true);
 			}
