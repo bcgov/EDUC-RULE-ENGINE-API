@@ -31,6 +31,11 @@ public class AssessmentsMatchCreditsRule implements Rule {
     private RuleProcessorData ruleProcessorData;
 
     public RuleData fire() {
+    	
+    	if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty() || ruleProcessorData.getStudentAssessments() == null || ruleProcessorData.getStudentAssessments().isEmpty()) {
+            logger.warn("!!!Empty list sent to Assessment Match Rule for processing");
+            return ruleProcessorData;
+        }
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
