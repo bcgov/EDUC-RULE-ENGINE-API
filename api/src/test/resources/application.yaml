@@ -1,0 +1,57 @@
+#DB Properties
+spring:
+  jmx:
+    enabled: false
+  datasource:
+    hikari:
+      pool-name: ruleengine-api-cp
+      maximum-pool-size: 1
+      connection-timeout: 6000
+      max-lifetime: 600000
+    url: jdbc:oracle:thin:@//oltp-scan01-dt.educ.gov.bc.ca:1521/oltpd.world
+    username: graduation
+    password: lightb4lb$
+    driver-class: oracle.jdbc.driver.OracleDriver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    generate-ddl: true
+  mvc:
+    log-request-details: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+
+#Logging properties
+logging:
+  file:
+    max-history: 1
+    clean-history-on-start: true
+    max-size: 20MB
+    name: /logs/app.log
+  #pattern:
+  #  file: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
+  #  console: %d | [${HOSTNAME}] | %clr(%5p) | [%t]   | %logger{36}:%L | %msg%n
+  level:
+    ca:
+      bc:
+        gov:
+          educ:
+            api:
+              graduation: INFO
+    org:
+      springframework:
+        web: INFO
+        security: INFO
+        boot:
+          autoconfigure:
+            logging: INFO
+
+#API Documentation
+springdoc:
+  api-docs:
+    path: /api/v1/api-docs
+  swagger-ui:
+    path: /api/v1/api-docs-ui.html
+    operationsSorter: alpha

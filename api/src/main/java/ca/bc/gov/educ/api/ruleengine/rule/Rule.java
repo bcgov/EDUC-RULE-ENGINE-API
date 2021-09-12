@@ -1,7 +1,8 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
 import org.springframework.stereotype.Component;
+
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 
 @Component
 public interface Rule {

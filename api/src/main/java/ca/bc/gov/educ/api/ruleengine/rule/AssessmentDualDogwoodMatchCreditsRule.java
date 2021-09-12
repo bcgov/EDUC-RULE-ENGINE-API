@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.bc.gov.educ.api.ruleengine.struct.AssessmentRequirement;
-import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.dto.AssessmentRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
@@ -47,11 +47,11 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 
 		List<StudentAssessment> assessmentList = RuleProcessorRuleUtils.getUniqueStudentAssessments(
 				ruleProcessorData.getStudentAssessmentsForDualDogwood(), ruleProcessorData.isProjected());
-		List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData
+		List<OptionalProgramRequirement> gradSpecialProgramRulesMatch = ruleProcessorData
 				.getGradSpecialProgramRulesDualDogwood().stream()
-				.filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
-						&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
-						&& "A".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
+				.filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+						&& "Y".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
+						&& "A".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 		List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
 
@@ -60,9 +60,9 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 		ListIterator<StudentAssessment> assessmentIterator = assessmentList.listIterator();
 
 		List<StudentAssessment> finalAssessmentList = new ArrayList<>();
-		List<GradSpecialProgramRule> finalSpecialProgramRulesList = new ArrayList<>();
+		List<OptionalProgramRequirement> finalSpecialProgramRulesList = new ArrayList<>();
 		StudentAssessment tempSC;
-		GradSpecialProgramRule tempSPR;
+		OptionalProgramRequirement tempSPR;
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		while (assessmentIterator.hasNext()) {
@@ -77,12 +77,12 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 
             logger.debug("Temp Assessment Requirement: " + tempAssessmentRequirement);
 
-            GradSpecialProgramRule tempSpecialProgramRule = null;
+            OptionalProgramRequirement tempSpecialProgramRule = null;
             if (!tempAssessmentRequirement.isEmpty()) {
                 for(AssessmentRequirement ar:tempAssessmentRequirement) {
                 	if(tempSpecialProgramRule == null) {
                 		tempSpecialProgramRule = gradSpecialProgramRulesMatch.stream()
-                        .filter(pr -> pr.getRuleCode().compareTo(ar.getRuleCode()) == 0)
+                        .filter(pr -> pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo(ar.getRuleCode().getAssmtRequirementCode()) == 0)
                         .findAny()
                         .orElse(null);
                 	}
@@ -93,34 +93,34 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 
 			if (!tempAssessmentRequirement.isEmpty() && tempSpecialProgramRule != null) {
 
-				GradSpecialProgramRule finalTempProgramRule = tempSpecialProgramRule;
-				if (requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getRuleCode())).findAny()
+				OptionalProgramRequirement finalTempProgramRule = tempSpecialProgramRule;
+				if (requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getOptionalProgramRequirementCode().getOptProReqCode())).findAny()
 						.orElse(null) == null) {
 					tempAssessment.setUsed(true);
 
 					if (tempAssessment.getGradReqMet().length() > 0) {
 
 						tempAssessment.setGradReqMet(
-								tempAssessment.getGradReqMet() + ", " + tempSpecialProgramRule.getRuleCode());
+								tempAssessment.getGradReqMet() + ", " + tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode());
 						tempAssessment.setGradReqMetDetail(
-								tempAssessment.getGradReqMetDetail() + ", " + tempSpecialProgramRule.getRuleCode() + " - "
-										+ tempSpecialProgramRule.getRequirementName());
+								tempAssessment.getGradReqMetDetail() + ", " + tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode() + " - "
+										+ tempSpecialProgramRule.getOptionalProgramRequirementCode().getLabel());
 					} else {
-						tempAssessment.setGradReqMet(tempSpecialProgramRule.getRuleCode());
-						tempAssessment.setGradReqMetDetail(tempSpecialProgramRule.getRuleCode() + " - "
-								+ tempSpecialProgramRule.getRequirementName());
+						tempAssessment.setGradReqMet(tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode());
+						tempAssessment.setGradReqMetDetail(tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode() + " - "
+								+ tempSpecialProgramRule.getOptionalProgramRequirementCode().getLabel());
 					}
 
-					tempSpecialProgramRule.setPassed(true);
-					requirementsMet.add(new GradRequirement(tempSpecialProgramRule.getRuleCode(),
-							tempSpecialProgramRule.getRequirementName()));
+					tempSpecialProgramRule.getOptionalProgramRequirementCode().setPassed(true);
+					requirementsMet.add(new GradRequirement(tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(),
+							tempSpecialProgramRule.getOptionalProgramRequirementCode().getLabel()));
 				} else {
 					logger.debug("!!! Program Rule met Already: " + tempSpecialProgramRule);
 				}
 			}
 
 			tempSC = new StudentAssessment();
-			tempSPR = new GradSpecialProgramRule();
+			tempSPR = new OptionalProgramRequirement();
 			try {
 				tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempAssessment), StudentAssessment.class);
 				if (tempSC != null)
@@ -128,7 +128,7 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 				logger.debug("TempSC: " + tempSC);
 				logger.debug("Final Assessment List size: : " + finalAssessmentList.size());
 				tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(tempSpecialProgramRule),
-						GradSpecialProgramRule.class);
+						OptionalProgramRequirement.class);
 				if (tempSPR != null)
 					finalSpecialProgramRulesList.add(tempSPR);
 				logger.debug("TempPR: " + tempSPR);
@@ -140,21 +140,21 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 
 		ruleProcessorData.setStudentAssessmentsForDualDogwood(finalAssessmentList);
 
-		List<GradSpecialProgramRule> unusedRules = null;
+		List<OptionalProgramRequirement> unusedRules = null;
 		if(gradSpecialProgramRulesMatch.size() != finalSpecialProgramRulesList.size()) {
     		unusedRules = RuleEngineApiUtils.getCloneSpecialProgramRule(gradSpecialProgramRulesMatch);
     		unusedRules.removeAll(finalSpecialProgramRulesList);
     		finalSpecialProgramRulesList.addAll(unusedRules);
     	}
 		
-		List<GradSpecialProgramRule> failedRules = finalSpecialProgramRulesList.stream().filter(pr -> !pr.isPassed())
+		List<OptionalProgramRequirement> failedRules = finalSpecialProgramRulesList.stream().filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed())
 				.collect(Collectors.toList());
 
 		if (failedRules.isEmpty()) {
 			logger.debug("All the match rules met!");
 		} else {
-			for (GradSpecialProgramRule failedRule : failedRules) {
-				requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
+			for (OptionalProgramRequirement failedRule : failedRules) {
+				requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
 			}
 			ruleProcessorData.setSpecialProgramDualDogwoodGraduated(false);
 

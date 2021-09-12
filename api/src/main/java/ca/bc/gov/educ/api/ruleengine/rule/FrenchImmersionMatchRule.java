@@ -13,13 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.bc.gov.educ.api.ruleengine.struct.CourseRequirement;
-import ca.bc.gov.educ.api.ruleengine.struct.GradProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.dto.CourseRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
@@ -48,11 +47,11 @@ public class FrenchImmersionMatchRule implements Rule {
 
 		List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
 				ruleProcessorData.getStudentCoursesForFrenchImmersion(), ruleProcessorData.isProjected());
-		List<GradSpecialProgramRule> gradSpecialProgramRulesMatch = ruleProcessorData
+		List<OptionalProgramRequirement> gradSpecialProgramRulesMatch = ruleProcessorData
 				.getGradSpecialProgramRulesFrenchImmersion().stream()
-				.filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0
-						&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
-						&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
+				.filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+						&& "Y".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
+						&& "C".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 		List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
 
@@ -61,9 +60,9 @@ public class FrenchImmersionMatchRule implements Rule {
 		ListIterator<StudentCourse> courseIterator = courseList.listIterator();
 
 		List<StudentCourse> finalCourseList = new ArrayList<>();
-		List<GradSpecialProgramRule> finalSpecialProgramRulesList = new ArrayList<>();
+		List<OptionalProgramRequirement> finalSpecialProgramRulesList = new ArrayList<>();
 		StudentCourse tempSC;
-		GradSpecialProgramRule tempSPR;
+		OptionalProgramRequirement tempSPR;
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		while (courseIterator.hasNext()) {
@@ -80,13 +79,13 @@ public class FrenchImmersionMatchRule implements Rule {
 
 			logger.debug("Temp Course Requirement: " + tempCourseRequirement);
 
-			GradSpecialProgramRule tempSpecialProgramRule = null;
+			OptionalProgramRequirement tempSpecialProgramRule = null;
 
 			if (!tempCourseRequirement.isEmpty()) {
                 for(CourseRequirement cr:tempCourseRequirement) {
                 	if(tempSpecialProgramRule == null) {
 						tempSpecialProgramRule = gradSpecialProgramRulesMatch.stream()
-								.filter(pr -> pr.getRuleCode().compareTo(cr.getRuleCode()) == 0).findAny()
+								.filter(pr -> pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo(cr.getRuleCode().getCourseRequirementCode()) == 0).findAny()
 								.orElse(null);
                 	}
                 }
@@ -95,8 +94,8 @@ public class FrenchImmersionMatchRule implements Rule {
 
 			if (!tempCourseRequirement.isEmpty() && tempSpecialProgramRule != null) {
 
-				GradSpecialProgramRule finalTempProgramRule = tempSpecialProgramRule;
-				if (requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getRuleCode())).findAny()
+				OptionalProgramRequirement finalTempProgramRule = tempSpecialProgramRule;
+				if (requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getOptionalProgramRequirementCode().getOptProReqCode())).findAny()
 						.orElse(null) == null) {
 					tempCourse.setUsed(true);
 					tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
@@ -104,26 +103,26 @@ public class FrenchImmersionMatchRule implements Rule {
 					if (tempCourse.getGradReqMet().length() > 0) {
 
 						tempCourse.setGradReqMet(
-								tempCourse.getGradReqMet() + ", " + tempSpecialProgramRule.getRuleCode());
+								tempCourse.getGradReqMet() + ", " + tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode());
 						tempCourse.setGradReqMetDetail(
-								tempCourse.getGradReqMetDetail() + ", " + tempSpecialProgramRule.getRuleCode() + " - "
-										+ tempSpecialProgramRule.getRequirementName());
+								tempCourse.getGradReqMetDetail() + ", " + tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode() + " - "
+										+ tempSpecialProgramRule.getOptionalProgramRequirementCode().getLabel());
 					} else {
-						tempCourse.setGradReqMet(tempSpecialProgramRule.getRuleCode());
-						tempCourse.setGradReqMetDetail(tempSpecialProgramRule.getRuleCode() + " - "
-								+ tempSpecialProgramRule.getRequirementName());
+						tempCourse.setGradReqMet(tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode());
+						tempCourse.setGradReqMetDetail(tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode() + " - "
+								+ tempSpecialProgramRule.getOptionalProgramRequirementCode().getLabel());
 					}
 
-					tempSpecialProgramRule.setPassed(true);
-					requirementsMet.add(new GradRequirement(tempSpecialProgramRule.getRuleCode(),
-							tempSpecialProgramRule.getRequirementName()));
+					tempSpecialProgramRule.getOptionalProgramRequirementCode().setPassed(true);
+					requirementsMet.add(new GradRequirement(tempSpecialProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(),
+							tempSpecialProgramRule.getOptionalProgramRequirementCode().getLabel()));
 				} else {
 					logger.debug("!!! Program Rule met Already: " + tempSpecialProgramRule);
 				}
 			}
 
 			tempSC = new StudentCourse();
-			tempSPR = new GradSpecialProgramRule();
+			tempSPR = new OptionalProgramRequirement();
 			try {
 				tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
 				if (tempSC != null)
@@ -131,7 +130,7 @@ public class FrenchImmersionMatchRule implements Rule {
 				logger.debug("TempSC: " + tempSC);
 				logger.debug("Final course List size: : " + finalCourseList.size());
 				tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(tempSpecialProgramRule),
-						GradSpecialProgramRule.class);
+						OptionalProgramRequirement.class);
 				if (tempSPR != null)
 					finalSpecialProgramRulesList.add(tempSPR);
 				logger.debug("TempPR: " + tempSPR);
@@ -143,20 +142,20 @@ public class FrenchImmersionMatchRule implements Rule {
 
 		ruleProcessorData.setStudentCoursesForFrenchImmersion(finalCourseList);
 		
-		List<GradSpecialProgramRule> unusedRules = null;
+		List<OptionalProgramRequirement> unusedRules = null;
 		if(gradSpecialProgramRulesMatch.size() != finalSpecialProgramRulesList.size()) {
     		unusedRules = RuleEngineApiUtils.getCloneSpecialProgramRule(gradSpecialProgramRulesMatch);
     		unusedRules.removeAll(finalSpecialProgramRulesList);
     		finalSpecialProgramRulesList.addAll(unusedRules);
     	}
-		List<GradSpecialProgramRule> failedRules = finalSpecialProgramRulesList.stream().filter(pr -> !pr.isPassed())
+		List<OptionalProgramRequirement> failedRules = finalSpecialProgramRulesList.stream().filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed())
 				.collect(Collectors.toList());
 
 		if (failedRules.isEmpty()) {
 			logger.debug("All the match rules met!");
 		} else {
-			for (GradSpecialProgramRule failedRule : failedRules) {
-				requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
+			for (OptionalProgramRequirement failedRule : failedRules) {
+				requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
 			}
 			ruleProcessorData.setSpecialProgramFrenchImmersionGraduated(false);
 

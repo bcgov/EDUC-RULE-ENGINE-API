@@ -1,6 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.struct.*;
+import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 
@@ -31,6 +31,11 @@ public class AssessmentsMatchCreditsRule implements Rule {
     private RuleProcessorData ruleProcessorData;
 
     public RuleData fire() {
+    	
+    	if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty() || ruleProcessorData.getStudentAssessments() == null || ruleProcessorData.getStudentAssessments().isEmpty()) {
+            logger.warn("!!!Empty list sent to Assessment Match Rule for processing");
+            return ruleProcessorData;
+        }
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
@@ -42,11 +47,11 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
         ruleProcessorData.setExcludedAssessments(excludedAssessments);
 
-        List<GradProgramRule> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
+        List<ProgramRequirement> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) == 0
-                        && "Y".compareTo(gradProgramRule.getIsActive()) == 0
-                        && "A".compareTo(gradProgramRule.getRuleCategory()) == 0)
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+                        && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
+                        && "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
 
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
@@ -55,9 +60,9 @@ public class AssessmentsMatchCreditsRule implements Rule {
         logger.debug(String.format("#### Match Program Rule size: %s",gradProgramRulesMatch.size()));
 
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
-        List<GradProgramRule> finalProgramRulesList = new ArrayList<>();
+        List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
         StudentAssessment tempSA;
-        GradProgramRule tempPR;
+        ProgramRequirement tempPR;
         ObjectMapper objectMapper = new ObjectMapper();
 
         ListIterator<StudentAssessment> assessmentIterator = assessmentList.listIterator();
@@ -74,13 +79,13 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
             logger.debug("Temp Assessment Requirement: " + tempAssessmentRequirement);
 
-            GradProgramRule tempProgramRule = null;
+            ProgramRequirement tempProgramRule = null;
 
             if (!tempAssessmentRequirement.isEmpty()) {
                 for(AssessmentRequirement ar:tempAssessmentRequirement) {
                 	if(tempProgramRule == null) {
                 	tempProgramRule = gradProgramRulesMatch.stream()
-                        .filter(pr -> pr.getRuleCode().compareTo(ar.getRuleCode()) == 0)
+                        .filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo(ar.getRuleCode().getAssmtRequirementCode()) == 0)
                         .findAny()
                         .orElse(null);
                 	}
@@ -90,38 +95,38 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
             if (!tempAssessmentRequirement.isEmpty() && tempProgramRule != null) {
 
-                GradProgramRule finalTempProgramRule = tempProgramRule;
+            	ProgramRequirement finalTempProgramRule = tempProgramRule;
                 if (requirementsMet.stream()
-                        .filter(rm -> rm.getRule().equals(finalTempProgramRule.getRuleCode()))
+                        .filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode()))
                         .findAny().orElse(null) == null) {
                     tempAssessment.setUsed(true);
 
                     if (tempAssessment.getGradReqMet().length() > 0) {
 
-                    	tempAssessment.setGradReqMet(tempAssessment.getGradReqMet() + ", " + tempProgramRule.getRuleCode());
-                    	tempAssessment.setGradReqMetDetail(tempAssessment.getGradReqMetDetail() + ", " + tempProgramRule.getRuleCode()
-                                + " - " + tempProgramRule.getRequirementName());
+                    	tempAssessment.setGradReqMet(tempAssessment.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getProReqCode());
+                    	tempAssessment.setGradReqMetDetail(tempAssessment.getGradReqMetDetail() + ", " + tempProgramRule.getProgramRequirementCode().getProReqCode()
+                                + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
                     } else {
-                    	tempAssessment.setGradReqMet(tempProgramRule.getRuleCode());
-                    	tempAssessment.setGradReqMetDetail(tempProgramRule.getRuleCode() + " - " + tempProgramRule.getRequirementName());
+                    	tempAssessment.setGradReqMet(tempProgramRule.getProgramRequirementCode().getProReqCode());
+                    	tempAssessment.setGradReqMetDetail(tempProgramRule.getProgramRequirementCode().getProReqCode() + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
                     }
 
-                    tempProgramRule.setPassed(true);
-                    requirementsMet.add(new GradRequirement(tempProgramRule.getRuleCode(), tempProgramRule.getRequirementName()));
+                    tempProgramRule.getProgramRequirementCode().setPassed(true);
+                    requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getProReqCode(), tempProgramRule.getProgramRequirementCode().getLabel()));
                 } else {
                     logger.debug("!!! Program Rule met Already: " + tempProgramRule);
                 }
             }
 
             tempSA = new StudentAssessment();
-            tempPR = new GradProgramRule();
+            tempPR = new ProgramRequirement();
             try {
             	tempSA = objectMapper.readValue(objectMapper.writeValueAsString(tempAssessment), StudentAssessment.class);
                 if (tempSA != null)
                     finalAssessmentList.add(tempSA);
                 logger.debug("TempSC: " + tempSA);
                 logger.debug("Final Assessment List size: : " + finalAssessmentList.size());
-                tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), GradProgramRule.class);
+                tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), ProgramRequirement.class);
                 if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
                     finalProgramRulesList.add(tempPR);
                 }
@@ -133,15 +138,15 @@ public class AssessmentsMatchCreditsRule implements Rule {
         }
 
         logger.debug("Final Program rules list: " + finalProgramRulesList);
-        List<GradProgramRule> unusedRules = null;
+        List<ProgramRequirement> unusedRules = null;
 		if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
     		unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
     		unusedRules.removeAll(finalProgramRulesList);
     		finalProgramRulesList.addAll(unusedRules);
     	}
 		
-		for(GradProgramRule pr:finalProgramRulesList) {
-			if(!pr.isPassed() && pr.getRuleCode().compareTo("116")==0) {
+		for(ProgramRequirement pr:finalProgramRulesList) {
+			if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("116")==0) {
 				for(StudentCourse sc:courseList) {
 					if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("NME10") ||
 							sc.getMetLitNumRequirement().equalsIgnoreCase("NME") ||
@@ -152,14 +157,14 @@ public class AssessmentsMatchCreditsRule implements Rule {
 				}
 			}
 		}
-        List<GradProgramRule> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
+        List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
         } else {
-            for (GradProgramRule failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
+            for (ProgramRequirement failedRule : failedRules) {
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getProReqCode(), failedRule.getProgramRequirementCode().getNotMetDesc()));
             }
 
             logger.info("One or more Match rules not met!");
@@ -177,7 +182,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
         //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
         finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getRequirementType()) != 0)
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0)
                 .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: " + finalProgramRulesList.size());
@@ -197,7 +202,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
         return ruleProcessorData;
     }
 
-    private void createAssessmentRecord(List<StudentAssessment> finalAssessmentList, String aCode, List<Assessment> assmList, GradProgramRule pr,String pen, List<GradRequirement> requirementsMet) {
+    private void createAssessmentRecord(List<StudentAssessment> finalAssessmentList, String aCode, List<Assessment> assmList, ProgramRequirement pr,String pen, List<GradRequirement> requirementsMet) {
     	StudentAssessment sA = new StudentAssessment();
     	sA.setAssessmentCode(aCode);
     	sA.setPen(pen);
@@ -208,12 +213,12 @@ public class AssessmentsMatchCreditsRule implements Rule {
     	if(asmt != null) {
     		sA.setAssessmentName(asmt.getAssessmentName());
     	}
-    	sA.setGradReqMet(pr.getRuleCode());
-        sA.setGradReqMetDetail(pr.getRuleCode() + " - " + pr.getRequirementName());
+    	sA.setGradReqMet(pr.getProgramRequirementCode().getProReqCode());
+        sA.setGradReqMetDetail(pr.getProgramRequirementCode().getProReqCode() + " - " + pr.getProgramRequirementCode().getLabel());
         sA.setSpecialCase("M");
         finalAssessmentList.add(sA);
-        pr.setPassed(true);
-        requirementsMet.add(new GradRequirement(pr.getRuleCode(), pr.getRequirementName()));
+        pr.getProgramRequirementCode().setPassed(true);
+        requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getProReqCode(), pr.getProgramRequirementCode().getLabel()));
         	
 	}
 

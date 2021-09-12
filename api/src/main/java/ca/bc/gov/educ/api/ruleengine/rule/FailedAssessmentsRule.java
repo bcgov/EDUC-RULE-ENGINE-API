@@ -7,9 +7,9 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,8 +34,8 @@ public class FailedAssessmentsRule implements Rule {
 
 		for (StudentAssessment studentAssessment : studentAssessmentList) {
 
-			boolean failed = ruleProcessorData.getGradSpecialCaseList().stream()
-					.anyMatch(lg -> lg.getSpecialCase()
+			boolean failed = ruleProcessorData.getSpecialCaseList().stream()
+					.anyMatch(lg -> lg.getSpCase()
 							.compareTo(studentAssessment.getSpecialCase() != null
 									? studentAssessment.getSpecialCase().trim()
 									: "") == 0
@@ -43,7 +43,13 @@ public class FailedAssessmentsRule implements Rule {
 
 			if (failed)
 				studentAssessment.setFailed(true);
-			if ("Y".compareTo(studentAssessment.getExceededWriteFlag().trim()) == 0) {
+			String exceededWriteFlag = "";
+            if(studentAssessment.getExceededWriteFlag() == null) {
+            	exceededWriteFlag = "";
+            }else {
+            	exceededWriteFlag = studentAssessment.getExceededWriteFlag();
+            }
+			if ("Y".compareTo(exceededWriteFlag.trim()) == 0) {
 				studentAssessment.setFailed(true);
 			}
 		}

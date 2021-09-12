@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.bc.gov.educ.api.ruleengine.struct.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.struct.GradSpecialProgramRule;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
@@ -46,11 +46,11 @@ public class CareerProgramMatchRule implements Rule {
 
         List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
         		ruleProcessorData.getStudentCoursesForCareerProgram(), ruleProcessorData.isProjected());
-        List<GradSpecialProgramRule> careerProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesCareerProgram()
+        List<OptionalProgramRequirement> careerProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesCareerProgram()
                 .stream()
-                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getRequirementType()) == 0 
-                		&& "Y".compareTo(gradSpecialProgramRule.getIsActive()) == 0
-                		&& "C".compareTo(gradSpecialProgramRule.getRuleCategory()) == 0)
+                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0 
+                		&& "Y".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
+                		&& "C".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
        
         logger.debug("#### Career Program Rule size: " + careerProgramRulesMatch.size());
@@ -63,10 +63,10 @@ public class CareerProgramMatchRule implements Rule {
         while (studentCourseIterator.hasNext()) {
             
         	StudentCourse sc = studentCourseIterator.next();
-        	for(GradSpecialProgramRule pR:careerProgramRulesMatch) {            	
-            	if((pR.getRequiredLevel() == null || pR.getRequiredLevel().trim().compareTo("") == 0)) {
+        	for(OptionalProgramRequirement pR:careerProgramRulesMatch) {            	
+            	if((pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0)) {
             		if(sc.getWorkExpFlag() != null && sc.getWorkExpFlag().equalsIgnoreCase("Y")) {
-	            		requiredCredits = Integer.parseInt(pR.getRequiredCredits());
+	            		requiredCredits = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
 	            		if (totalCredits + sc.getCredits() <= requiredCredits) {
 	    	                totalCredits += sc.getCredits();  
 	    	                sc.setCreditsUsedForGrad(sc.getCredits());
@@ -78,9 +78,19 @@ public class CareerProgramMatchRule implements Rule {
 	    	            }
 	            		
 	            		if (totalCredits >= requiredCredits) {
-	            			requirementsMet.add(new GradRequirement(pR.getRuleCode(), pR.getRequirementName()));
-	            			pR.setPassed(true);
+	            			requirementsMet.add(new GradRequirement(pR.getOptionalProgramRequirementCode().getOptProReqCode(), pR.getOptionalProgramRequirementCode().getLabel()));
+	            			pR.getOptionalProgramRequirementCode().setPassed(true);
 	            		}
+	            		if (sc.getGradReqMet().length() > 0) {
+
+	    					sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getOptionalProgramRequirementCode().getOptProReqCode());
+	    					sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getOptionalProgramRequirementCode().getOptProReqCode() + " - "
+	    							+ pR.getOptionalProgramRequirementCode().getLabel());
+	    				} else {
+	    					sc.setGradReqMet(pR.getOptionalProgramRequirementCode().getOptProReqCode());
+	    					sc.setGradReqMetDetail(
+	    							pR.getOptionalProgramRequirementCode().getOptProReqCode() + " - " + pR.getOptionalProgramRequirementCode().getLabel());
+	    				}
 	            		sc.setUsed(true);
             		}
             	}
@@ -109,14 +119,14 @@ public class CareerProgramMatchRule implements Rule {
 
         ruleProcessorData.setRequirementsMetSpecialProgramsCareerProgram(reqsMet);        
         
-        List<GradSpecialProgramRule> failedRules = careerProgramRulesMatch.stream()
-                .filter(pr -> !pr.isPassed()).collect(Collectors.toList());
+        List<OptionalProgramRequirement> failedRules = careerProgramRulesMatch.stream()
+                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the Career Program Match rules met!");
         } else {
-            for (GradSpecialProgramRule failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getRuleCode(), failedRule.getNotMetDesc()));
+            for (OptionalProgramRequirement failedRule : failedRules) {
+                requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
             }
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsCareerProgram();
 

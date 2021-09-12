@@ -1,18 +1,18 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentCourse;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Component
@@ -28,16 +28,15 @@ public class FailedCoursesRule implements Rule {
 	@Override
 	public RuleData fire() {
 
-		List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
-		studentCourseList = ruleProcessorData.getStudentCourses();
+		List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
 		logger.log(Level.INFO, "###################### Finding FAILED courses ######################");
 
 		for (StudentCourse studentCourse : studentCourseList) {
 			String finalLetterGrade = studentCourse.getCompletedCourseLetterGrade();
 			if(finalLetterGrade != null) {
-			boolean failed = ruleProcessorData.getGradLetterGradeList().stream()
-					.anyMatch(lg -> lg.getLetterGrade().compareTo(finalLetterGrade) == 0
+			boolean failed = ruleProcessorData.getLetterGradeList().stream()
+					.anyMatch(lg -> lg.getGrade().compareTo(finalLetterGrade) == 0
 							&& lg.getPassFlag().compareTo("N") == 0);
 
 			if (failed)

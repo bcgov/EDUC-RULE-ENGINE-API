@@ -9,9 +9,9 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -61,9 +61,16 @@ public class AssessmentRegistrationsRule implements Rule {
 			} else {
 				specialCase = studentAssessment.getSpecialCase();
 			}
+			String exceededWriteFlag = "";
+            if(studentAssessment.getExceededWriteFlag() == null) {
+            	exceededWriteFlag = "";
+            }else {
+            	exceededWriteFlag = studentAssessment.getExceededWriteFlag();
+            }
+	            
 			if ("".compareTo(specialCase.trim()) == 0
-					&& "".compareTo(studentAssessment.getExceededWriteFlag().trim()) == 0
-					&& "0.0".compareTo(proficiencyScore) == 0 && diff < 1) {
+					&& "".compareTo(exceededWriteFlag.trim()) == 0
+					&& "0.0".compareTo(proficiencyScore) == 0 && diff <= 1) {
 				studentAssessment.setProjected(true);
 			}
 		}
@@ -80,6 +87,8 @@ public class AssessmentRegistrationsRule implements Rule {
     	List<StudentAssessment> listAssessments = ruleProcessorData.getStudentAssessments();        
         if(ruleProcessorData.isHasSpecialProgramDualDogwood())
         	ruleProcessorData.setStudentAssessmentsForDualDogwood(RuleEngineApiUtils.getAssessmentClone(listAssessments));
+        if(ruleProcessorData.isHasSpecialProgramFrenchImmersion())
+        	ruleProcessorData.setStudentAssessmentsForFrenchImmersion(RuleEngineApiUtils.getAssessmentClone(listAssessments));
     }
 
 	@Override

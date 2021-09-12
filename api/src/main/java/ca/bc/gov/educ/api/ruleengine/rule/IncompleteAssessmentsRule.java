@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.struct.RuleData;
-import ca.bc.gov.educ.api.ruleengine.struct.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.struct.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -61,10 +61,16 @@ public class IncompleteAssessmentsRule implements Rule {
             }else {
             	specialCase = studentAssessment.getSpecialCase();
             }
+            String exceededWriteFlag = "";
+            if(studentAssessment.getExceededWriteFlag() == null) {
+            	exceededWriteFlag = "";
+            }else {
+            	exceededWriteFlag = studentAssessment.getExceededWriteFlag();
+            }
             if ("".compareTo(specialCase.trim()) == 0 
-            		&& "".compareTo(studentAssessment.getExceededWriteFlag().trim()) == 0
+            		&& "".compareTo(exceededWriteFlag.trim()) == 0
             		&& "0.0".compareTo(proficiencyScore) == 0
-                    && diff >= 1) {
+                    && diff > 1) {
             	studentAssessment.setNotCompleted(true);
             }
         }
