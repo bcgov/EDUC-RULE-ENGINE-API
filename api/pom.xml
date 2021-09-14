@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.bc.gov.educ</groupId>
-	<artifactId>rule-engine-api</artifactId>
+	<artifactId>educ-grad-rule-engine-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rule-engine-api</name>
+	<name>educ-grad-rule-engine-api</name>
 	<description>Rule Engine API for GRAD team</description>
 
 	<properties>
