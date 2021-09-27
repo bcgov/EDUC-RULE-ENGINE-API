@@ -9,7 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api/v1/api-docs-ui.html", "/api/v1/swagger-ui/**", "/api/v1/api-docs/**");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/api/v1/api-docs-ui.html",
+                "/api/v1/swagger-ui/**", "/api/v1/api-docs/**",
+                "/actuator/health","/actuator/prometheus", "/health");
     }
 }
