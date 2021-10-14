@@ -19,4 +19,5 @@ public class ProgramRequirementCode {
 	private String activeRequirement;
 	private String requirementCategory;	
 	private boolean passed;
+	private boolean tempFailed;
 }
