@@ -2,6 +2,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import java.util.List;
 
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class DuplicateCoursesRule implements Rule {
     public RuleData fire() {
 
         logger.info("###################### Finding DUPLICATE courses ######################");
-        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
         for (int i = 0; i < studentCourseList.size() - 1; i++) {
 
