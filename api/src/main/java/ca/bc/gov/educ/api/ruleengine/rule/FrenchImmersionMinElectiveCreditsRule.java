@@ -1,9 +1,7 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -63,6 +61,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         		.stream()
                 .filter(sc -> !sc.isUsed())
                 .collect(Collectors.toList());
+        Collections.sort(modifiedList, Comparator.comparing(StudentCourse::getCourseLevel).reversed());
         ListIterator<StudentCourse> studentCourseIterator = modifiedList.listIterator();
         int totalCredits = 0;        
         int requiredCredits = 0;
