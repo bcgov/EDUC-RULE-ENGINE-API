@@ -59,10 +59,10 @@ public class MinElectiveCreditsRule implements Rule {
 
 			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
 					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).collect(Collectors.toList());
+				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsedInMatchRule()).collect(Collectors.toList());
 			} else {
 				tempStudentCourseList = studentCourses.stream()
-						.filter(sc -> !sc.isUsed()
+						.filter(sc -> !sc.isUsedInMatchRule()
 								&& sc.getCourseLevel().compareTo(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) == 0)
 						.collect(Collectors.toList());
 			}

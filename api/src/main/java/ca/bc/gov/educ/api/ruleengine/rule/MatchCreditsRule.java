@@ -192,6 +192,7 @@ public class MatchCreditsRule implements Rule {
     
     public void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch, String exceptionalCase,Map<String,Integer> courseCreditException) {
     	tempCourse.setUsed(true);
+        tempCourse.setUsedInMatchRule(true);
         tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
 
         if (tempCourse.getGradReqMet().length() > 0) {
