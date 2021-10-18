@@ -50,6 +50,7 @@ public class StudentCourse {
     private boolean isUsed;
     private boolean isRestricted;
     private boolean isNotEligibleForElective;
+    private boolean isUsedInMatchRule;
 
     public Integer getCreditsUsedForGrad() {
         if (creditsUsedForGrad == null)
