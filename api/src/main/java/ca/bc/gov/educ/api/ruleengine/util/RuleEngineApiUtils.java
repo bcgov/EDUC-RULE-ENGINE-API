@@ -16,7 +16,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.bc.gov.educ.api.ruleengine.dto.GradProgramRule;
 import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRequirement;
 import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
@@ -164,7 +163,7 @@ public class RuleEngineApiUtils {
 		return Collections.emptyList();
 		
     }
-    public static List<OptionalProgramRequirement> getCloneSpecialProgramRule(List<OptionalProgramRequirement> rules) {
+    public static List<OptionalProgramRequirement> getCloneOptionalProgramRule(List<OptionalProgramRequirement> rules) {
     	ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 

@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -8,16 +9,15 @@ import lombok.Data;
 
 @Data
 @Component
-public class StudentOptionalProgram {
+public class OptionalGradAlgorithmGraduationStatus {
 
-	private UUID id;
-    private String pen;
+	private String pen;
     private UUID optionalProgramID;
     private String studentOptionalProgramData;
     private String optionalProgramCompletionDate;
-    private String optionalProgramName;
-    private String optionalProgramCode;
-    private String programCode;
+    private StudentCourses optionalStudentCourses;
+    private boolean isOptionalGraduated;
+    private List<GradRequirement> optionalNonGradReasons;
+    private List<GradRequirement> optionalRequirementsMet;
     private UUID studentID;
-				
 }
