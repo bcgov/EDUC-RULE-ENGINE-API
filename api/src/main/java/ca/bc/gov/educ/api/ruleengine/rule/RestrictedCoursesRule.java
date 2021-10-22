@@ -65,7 +65,7 @@ public class RestrictedCoursesRule implements Rule {
         	
         }
         ruleProcessorData.setStudentCourses(studentCourses);
-        prepareCoursesForSpecialPrograms();
+        prepareCoursesForOptionalPrograms();
         logger.log(Level.INFO, "Restricted Courses: {0} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
         return ruleProcessorData;
     }
@@ -108,15 +108,15 @@ public class RestrictedCoursesRule implements Rule {
         	studentCourses.get(i).setRestricted(true);
         }
     }
-    private void prepareCoursesForSpecialPrograms() {
+    private void prepareCoursesForOptionalPrograms() {
     	List<StudentCourse> listCourses = ruleProcessorData.getStudentCourses();
-        if(ruleProcessorData.isHasSpecialProgramFrenchImmersion()) 
+        if(ruleProcessorData.isHasOptionalProgramFrenchImmersion()) 
         	ruleProcessorData.setStudentCoursesForFrenchImmersion(RuleEngineApiUtils.getClone(listCourses));
         
-        if(ruleProcessorData.isHasSpecialProgramCareerProgram())
+        if(ruleProcessorData.isHasOptionalProgramCareerProgram())
         	ruleProcessorData.setStudentCoursesForCareerProgram(RuleEngineApiUtils.getClone(listCourses));
         
-        if(ruleProcessorData.isHasSpecialProgramDualDogwood())
+        if(ruleProcessorData.isHasOptionalProgramDualDogwood())
         	ruleProcessorData.setStudentCoursesForDualDogwood(RuleEngineApiUtils.getClone(listCourses));
     }
     
