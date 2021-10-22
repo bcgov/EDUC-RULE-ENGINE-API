@@ -135,7 +135,7 @@ public class DuplicateAssessmentsRule implements Rule {
 
 	public void compareSpecialCases(char specialCase1, char specialCase2, List<StudentAssessment> studentAssessmentList,
 			int i, int j) {
-		if (Character.compare(specialCase1, specialCase2) > 0) {
+		if (specialCase1 > specialCase2) {
 			studentAssessmentList.get(i).setDuplicate(false);
 			studentAssessmentList.get(j).setDuplicate(true);
 		} else {

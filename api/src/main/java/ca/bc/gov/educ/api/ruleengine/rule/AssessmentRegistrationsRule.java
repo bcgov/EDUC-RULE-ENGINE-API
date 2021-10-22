@@ -79,15 +79,15 @@ public class AssessmentRegistrationsRule implements Rule {
 
 		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
-		prepareAssessmentForSpecialPrograms();
+		prepareAssessmentForOptionalPrograms();
 		return ruleProcessorData;
 	}
 	
-	private void prepareAssessmentForSpecialPrograms() {
+	private void prepareAssessmentForOptionalPrograms() {
     	List<StudentAssessment> listAssessments = ruleProcessorData.getStudentAssessments();        
-        if(ruleProcessorData.isHasSpecialProgramDualDogwood())
+        if(ruleProcessorData.isHasOptionalProgramDualDogwood())
         	ruleProcessorData.setStudentAssessmentsForDualDogwood(RuleEngineApiUtils.getAssessmentClone(listAssessments));
-        if(ruleProcessorData.isHasSpecialProgramFrenchImmersion())
+        if(ruleProcessorData.isHasOptionalProgramFrenchImmersion())
         	ruleProcessorData.setStudentAssessmentsForFrenchImmersion(RuleEngineApiUtils.getAssessmentClone(listAssessments));
     }
 

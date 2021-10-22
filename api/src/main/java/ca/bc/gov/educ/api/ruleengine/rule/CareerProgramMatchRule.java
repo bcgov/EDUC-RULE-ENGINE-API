@@ -37,20 +37,20 @@ public class CareerProgramMatchRule implements Rule {
 
     public RuleData fire() {
 
-    	if(!ruleProcessorData.isHasSpecialProgramCareerProgram()) {
+    	if(!ruleProcessorData.isHasOptionalProgramCareerProgram()) {
     		return ruleProcessorData;
     	}
-    	ruleProcessorData.setSpecialProgramCareerProgramGraduated(true);
+    	ruleProcessorData.setOptionalProgramCareerProgramGraduated(true);
     	List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
         List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
         		ruleProcessorData.getStudentCoursesForCareerProgram(), ruleProcessorData.isProjected());
-        List<OptionalProgramRequirement> careerProgramRulesMatch = ruleProcessorData.getGradSpecialProgramRulesCareerProgram()
+        List<OptionalProgramRequirement> careerProgramRulesMatch = ruleProcessorData.getGradOptionalProgramRulesCareerProgram()
                 .stream()
-                .filter(gradSpecialProgramRule -> "M".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0 
-                		&& "Y".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
-                		&& "C".compareTo(gradSpecialProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
+                .filter(gradOptionalProgramRule -> "M".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0 
+                		&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
+                		&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
        
         logger.debug("#### Career Program Rule size: " + careerProgramRulesMatch.size());
@@ -110,14 +110,14 @@ public class CareerProgramMatchRule implements Rule {
         }
         
         ruleProcessorData.setStudentCoursesForCareerProgram(RuleEngineApiUtils.getClone(finalCourseList));
-        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetSpecialProgramsCareerProgram();
+        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetOptionalProgramsCareerProgram();
 
         if (reqsMet == null)
             reqsMet = new ArrayList<>();
 
         reqsMet.addAll(requirementsMet);
 
-        ruleProcessorData.setRequirementsMetSpecialProgramsCareerProgram(reqsMet);        
+        ruleProcessorData.setRequirementsMetOptionalProgramsCareerProgram(reqsMet);        
         
         List<OptionalProgramRequirement> failedRules = careerProgramRulesMatch.stream()
                 .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
@@ -128,14 +128,14 @@ public class CareerProgramMatchRule implements Rule {
             for (OptionalProgramRequirement failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
             }
-            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsSpecialProgramsCareerProgram();
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsOptionalProgramsCareerProgram();
 
             if (nonGradReasons == null)
                 nonGradReasons = new ArrayList<>();
 
             nonGradReasons.addAll(requirementsNotMet);
-            ruleProcessorData.setNonGradReasonsSpecialProgramsCareerProgram(nonGradReasons);
-            ruleProcessorData.setSpecialProgramCareerProgramGraduated(false);
+            ruleProcessorData.setNonGradReasonsOptionalProgramsCareerProgram(nonGradReasons);
+            ruleProcessorData.setOptionalProgramCareerProgramGraduated(false);
             logger.debug("One or more Career Program rules not met!");
         }        
         return ruleProcessorData;
