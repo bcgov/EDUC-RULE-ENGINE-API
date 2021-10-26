@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import ca.bc.gov.educ.api.ruleengine.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,14 +29,17 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     private RuleProcessorData ruleProcessorData;
 
     public RuleProcessorData fire() {
-    	    	
-    	if(!ruleProcessorData.isHasOptionalProgramFrenchImmersion()) {
+
+        Map<String,OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
+        OptionalProgramRuleProcessor obj = mapOptional.get("FI");
+
+    	if(obj == null || !obj.isHasOptionalProgram()) {
     		return ruleProcessorData;
     	}
     	List<GradRequirement> requirementsMet = new ArrayList<>();
         
-        List<StudentCourse> courseList = ruleProcessorData.getStudentCoursesForFrenchImmersion();
-        List<OptionalProgramRequirement> gradOptionalProgramMinCreditElectiveRulesMatch = ruleProcessorData.getGradOptionalProgramRulesFrenchImmersion()
+        List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
+        List<OptionalProgramRequirement> gradOptionalProgramMinCreditElectiveRulesMatch = obj.getOptionalProgramRules()
                 .stream()
                 .filter(gradOptionalProgramRule -> "MCE".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                 		&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
@@ -54,14 +53,10 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         ObjectMapper objectMapper = new ObjectMapper();
         List<StudentCourse> matchedList = courseList
         		.stream()
-        		.filter(sc -> (sc.isUsed()))
+        		.filter(StudentCourse::isUsed)
         		.collect(Collectors.toList());
-        
-        List<StudentCourse> modifiedList = courseList
-        		.stream()
-                .filter(sc -> !sc.isUsed())
-                .collect(Collectors.toList());
-        Collections.sort(modifiedList, Comparator.comparing(StudentCourse::getCourseLevel).reversed());
+
+        List<StudentCourse> modifiedList = courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).collect(Collectors.toList());
         ListIterator<StudentCourse> studentCourseIterator = modifiedList.listIterator();
         int totalCredits = 0;        
         int requiredCredits = 0;
@@ -77,7 +72,6 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
 	        		}
 	            }
         	}
-        	tempSC = new StudentCourse();
             try {
                 tempSC = objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
                 if (tempSC != null)
@@ -89,14 +83,14 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             	requirementAchieved = true;
             }
         }
-        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetOptionalProgramsFrenchImmersion();
+        List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
 
-        if (reqsMet == null)
-            reqsMet = new ArrayList<>();
+        if (resMet == null)
+            resMet = new ArrayList<>();
 
-        reqsMet.addAll(requirementsMet);
+        resMet.addAll(requirementsMet);
 
-        ruleProcessorData.setRequirementsMetOptionalProgramsFrenchImmersion(reqsMet);
+        obj.setRequirementsMetOptionalProgram(resMet);
         requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
         ListIterator<StudentCourse> studentCourseIterator2 = finalCourseList.listIterator();
@@ -113,8 +107,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         			}         		
         		}
         	}
-        	
-        	tempSC = new StudentCourse();
+
             try {
                 tempSC = objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
                 if (tempSC != null)
@@ -127,16 +120,16 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             	requirementAchieved = true;
             }            
         }            
-        reqsMet = ruleProcessorData.getRequirementsMetOptionalProgramsFrenchImmersion();
+        resMet = obj.getRequirementsMetOptionalProgram();
 
-        if (reqsMet == null)
-            reqsMet = new ArrayList<>();
+        if (resMet == null)
+            resMet = new ArrayList<>();
 
-        reqsMet.addAll(requirementsMet);
+        resMet.addAll(requirementsMet);
 
-        ruleProcessorData.setRequirementsMetOptionalProgramsFrenchImmersion(reqsMet);
+        obj.setRequirementsMetOptionalProgram(resMet);
         finalCourseList2.addAll(matchedList);
-        ruleProcessorData.setStudentCoursesForFrenchImmersion(RuleEngineApiUtils.getClone(finalCourseList2));
+        obj.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(finalCourseList2));
         List<OptionalProgramRequirement> failedRules = gradOptionalProgramMinCreditElectiveRulesMatch.stream()
                 .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
@@ -146,16 +139,18 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
             for (OptionalProgramRequirement failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
             }
-            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsOptionalProgramsFrenchImmersion();
+            List<GradRequirement> nonGradReasons = obj.getNonGradReasonsOptionalProgram();
 
             if (nonGradReasons == null)
                 nonGradReasons = new ArrayList<>();
 
             nonGradReasons.addAll(requirementsNotMet);
-            ruleProcessorData.setNonGradReasonsOptionalProgramsFrenchImmersion(nonGradReasons);
-            ruleProcessorData.setOptionalProgramFrenchImmersionGraduated(false);
+            obj.setNonGradReasonsOptionalProgram(nonGradReasons);
+            obj.setOptionalProgramGraduated(false);
             logger.debug("One or more Min Elective Credit rules not met!");
-        }        
+        }
+        mapOptional.put("FI",obj);
+        ruleProcessorData.setMapOptional(mapOptional);
         return ruleProcessorData;
     }
     
