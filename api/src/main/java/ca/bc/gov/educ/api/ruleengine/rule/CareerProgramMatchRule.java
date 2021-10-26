@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import ca.bc.gov.educ.api.ruleengine.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,6 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
@@ -36,17 +33,18 @@ public class CareerProgramMatchRule implements Rule {
     private RuleProcessorData ruleProcessorData;
 
     public RuleData fire() {
-
-    	if(!ruleProcessorData.isHasOptionalProgramCareerProgram()) {
+        Map<String,OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
+        OptionalProgramRuleProcessor obj = mapOptional.get("CP");
+    	if(obj == null || !obj.isHasOptionalProgram()) {
     		return ruleProcessorData;
     	}
-    	ruleProcessorData.setOptionalProgramCareerProgramGraduated(true);
+        obj.setOptionalProgramGraduated(true);
     	List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
         List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
-        		ruleProcessorData.getStudentCoursesForCareerProgram(), ruleProcessorData.isProjected());
-        List<OptionalProgramRequirement> careerProgramRulesMatch = ruleProcessorData.getGradOptionalProgramRulesCareerProgram()
+        		obj.getStudentCoursesOptionalProgram(), ruleProcessorData.isProjected());
+        List<OptionalProgramRequirement> careerProgramRulesMatch = obj.getOptionalProgramRules()
                 .stream()
                 .filter(gradOptionalProgramRule -> "M".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0 
                 		&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
@@ -58,7 +56,7 @@ public class CareerProgramMatchRule implements Rule {
         ListIterator<StudentCourse> studentCourseIterator = courseList.listIterator();
         int totalCredits = 0;        
         int requiredCredits = 0;     
-        List<StudentCourse> finalCourseList = new ArrayList<StudentCourse>();
+        List<StudentCourse> finalCourseList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         while (studentCourseIterator.hasNext()) {
             
@@ -95,9 +93,8 @@ public class CareerProgramMatchRule implements Rule {
             		}
             	}
             }
-        	StudentCourse tempSC = new StudentCourse();
             try {
-                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
+                StudentCourse tempSC= objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
                 if (tempSC != null)
                     finalCourseList.add(tempSC);
             } catch (IOException e) {
@@ -109,15 +106,15 @@ public class CareerProgramMatchRule implements Rule {
             }
         }
         
-        ruleProcessorData.setStudentCoursesForCareerProgram(RuleEngineApiUtils.getClone(finalCourseList));
-        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMetOptionalProgramsCareerProgram();
+        obj.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(finalCourseList));
+        List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
 
-        if (reqsMet == null)
-            reqsMet = new ArrayList<>();
+        if (resMet == null)
+            resMet = new ArrayList<>();
 
-        reqsMet.addAll(requirementsMet);
+        resMet.addAll(requirementsMet);
 
-        ruleProcessorData.setRequirementsMetOptionalProgramsCareerProgram(reqsMet);        
+        obj.setRequirementsMetOptionalProgram(resMet);
         
         List<OptionalProgramRequirement> failedRules = careerProgramRulesMatch.stream()
                 .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
@@ -128,16 +125,18 @@ public class CareerProgramMatchRule implements Rule {
             for (OptionalProgramRequirement failedRule : failedRules) {
                 requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
             }
-            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasonsOptionalProgramsCareerProgram();
+            List<GradRequirement> nonGradReasons = obj.getNonGradReasonsOptionalProgram();
 
             if (nonGradReasons == null)
                 nonGradReasons = new ArrayList<>();
 
             nonGradReasons.addAll(requirementsNotMet);
-            ruleProcessorData.setNonGradReasonsOptionalProgramsCareerProgram(nonGradReasons);
-            ruleProcessorData.setOptionalProgramCareerProgramGraduated(false);
+            obj.setNonGradReasonsOptionalProgram(nonGradReasons);
+            obj.setOptionalProgramGraduated(false);
             logger.debug("One or more Career Program rules not met!");
-        }        
+        }
+        mapOptional.put("CP",obj);
+        ruleProcessorData.setMapOptional(mapOptional);
         return ruleProcessorData;
     }
     
