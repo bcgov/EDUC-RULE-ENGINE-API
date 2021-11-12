@@ -139,8 +139,6 @@ public class MinCreditsElective12OtherRule implements Rule {
 				if (totalCredits >= requiredCredits) {
 					logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
 					gradProgramRule.getProgramRequirementCode().setPassed(true);
-					ruleProcessorData.setGraduated(true);
-	
 					List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 	
 					if (reqsMet == null)
