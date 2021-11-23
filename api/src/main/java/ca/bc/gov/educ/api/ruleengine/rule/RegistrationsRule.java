@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,18 +29,16 @@ public class RegistrationsRule implements Rule {
 
     @Override
     public RuleData fire() {
-        List<StudentCourse> studentCourseList = new ArrayList<>();
-        studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         logger.debug("###################### Finding PROJECTED courses (For Projected GRAD) ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
             String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
             String sessionDate = studentCourse.getSessionDate() + "/01";
-            Date temp = new Date();
 
             try {
-                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
+                Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
                 logger.error("ERROR: " + pe.getMessage());

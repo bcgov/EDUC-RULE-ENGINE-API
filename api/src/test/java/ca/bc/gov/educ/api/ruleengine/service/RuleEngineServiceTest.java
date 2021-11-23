@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
@@ -25,8 +22,7 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 @ActiveProfiles("test")
 public class RuleEngineServiceTest {
 
-	@Autowired
-	private RuleEngineService ruleEngineService;
+	@Autowired RuleEngineService ruleEngineService;
 	
 	@Test
 	public void testProcessGradAlgorithmRules() {
@@ -122,7 +118,8 @@ public class RuleEngineServiceTest {
 	//
 	@Test
 	public void testProcessGradAlgorithmRules_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN");	
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -130,7 +127,8 @@ public class RuleEngineServiceTest {
 	
 	@Test
 	public void testProcessGradAlgorithmRules_2018EN_FI_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("FI");	
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("FI");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -139,6 +137,7 @@ public class RuleEngineServiceTest {
 	@Test
 	public void testProcessGradAlgorithmRules_2018PF_DD_projectedfalse() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("DD");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -147,6 +146,7 @@ public class RuleEngineServiceTest {
 	@Test
 	public void testProcessGradAlgorithmRules_1950EN_projectedfalse() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -155,6 +155,7 @@ public class RuleEngineServiceTest {
 	@Test
 	public void testProcessGradAlgorithmRules_1950EN_2_projectedfalse() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-2");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -162,7 +163,8 @@ public class RuleEngineServiceTest {
 	
 	@Test
 	public void testProcessGradAlgorithmRules_1950EN_3_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-3");	
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-3");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -171,6 +173,7 @@ public class RuleEngineServiceTest {
 	@Test
 	public void testProcessGradAlgorithmRules_1950EN_4_projectedfalse() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-4");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -178,7 +181,8 @@ public class RuleEngineServiceTest {
 	
 	@Test
 	public void testProcessGradAlgorithmRules_2018EN_CP_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("CP");	
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("CP");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -186,7 +190,8 @@ public class RuleEngineServiceTest {
 	
 	@Test
 	public void testProcessGradAlgorithmRules_2018PF_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-PF");	
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-PF");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -194,7 +199,8 @@ public class RuleEngineServiceTest {
 	
 	@Test
 	public void testProcessGradAlgorithmRules_2018EN_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-UNGRAD");	
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-UNGRAD");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -203,6 +209,7 @@ public class RuleEngineServiceTest {
 	@Test
 	public void testProcessGradAlgorithmRules_2018EN_Dup_Asmt_projectedfalse() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-DUP-ASSMT");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -210,7 +217,8 @@ public class RuleEngineServiceTest {
 	
 	@Test
 	public void testProcessGradAlgorithmRules_2018PF_DD_Fail_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("DD-FAIL");	
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("DD-FAIL");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -218,7 +226,8 @@ public class RuleEngineServiceTest {
 	
 	@Test
 	public void testProcessGradAlgorithmRules_2018EN_MINCREDITS_Fail_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-MIN-CREDIT-FAIL");	
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-MIN-CREDIT-FAIL");
+		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
@@ -227,32 +236,46 @@ public class RuleEngineServiceTest {
 	
 	private RuleProcessorData getRuleProcessorData(String category) {
 		File file = null;
-		if(category.equals("2018-EN")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN.json")).getFile());
-		}else if(category.equals("FI")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("FI.json")).getFile());
-		}else if(category.equals("DD")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("DD.json")).getFile());
-		}else if(category.equals("1950-EN")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN.json")).getFile());
-		}else if(category.equals("1950-EN-2")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-2.json")).getFile());
-		}else if(category.equals("CP")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("CP.json")).getFile());
-		}else if(category.equals("2018-PF")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-PF.json")).getFile());
-		}else if(category.equals("2018-EN-UNGRAD")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-UNGRAD.json")).getFile());
-		}else if(category.equals("2018-EN-DUP-ASSMT")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-DUP-ASSMT.json")).getFile());
-		}else if(category.equals("DD-FAIL")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("DD-FAIL.json")).getFile());
-		}else if(category.equals("1950-EN-3")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-3.json")).getFile());
-		}else if(category.equals("1950-EN-4")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-4.json")).getFile());
-		}else if(category.equals("2018-EN-MIN-CREDIT-FAIL")) {
-			file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-MIN-CREDIT-FAIL.json")).getFile());
+		switch (category) {
+			case "2018-EN":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN.json")).getFile());
+				break;
+			case "FI":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("FI.json")).getFile());
+				break;
+			case "DD":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("DD.json")).getFile());
+				break;
+			case "1950-EN":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN.json")).getFile());
+				break;
+			case "1950-EN-2":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-2.json")).getFile());
+				break;
+			case "CP":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("CP.json")).getFile());
+				break;
+			case "2018-PF":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-PF.json")).getFile());
+				break;
+			case "2018-EN-UNGRAD":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-UNGRAD.json")).getFile());
+				break;
+			case "2018-EN-DUP-ASSMT":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-DUP-ASSMT.json")).getFile());
+				break;
+			case "DD-FAIL":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("DD-FAIL.json")).getFile());
+				break;
+			case "1950-EN-3":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-3.json")).getFile());
+				break;
+			case "1950-EN-4":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-4.json")).getFile());
+				break;
+			case "2018-EN-MIN-CREDIT-FAIL":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-MIN-CREDIT-FAIL.json")).getFile());
+				break;
 		}
 		RuleProcessorData data;
 		try {
