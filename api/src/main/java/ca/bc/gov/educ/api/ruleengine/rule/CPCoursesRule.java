@@ -12,7 +12,6 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,8 +28,7 @@ public class CPCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        List<StudentCourse> studentCourseList = new ArrayList<>();
-        studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         logger.debug("###################### Finding CAREER PROGRAM courses ######################");
 

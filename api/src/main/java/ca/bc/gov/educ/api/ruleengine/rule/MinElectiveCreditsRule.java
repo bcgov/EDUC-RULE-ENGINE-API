@@ -32,7 +32,7 @@ public class MinElectiveCreditsRule implements Rule {
 
 	public RuleData fire() {
 		int totalCredits = 0;
-		int requiredCredits = 0;
+		int requiredCredits;
 		logger.debug("Min Elective Credits Rule");
 
 		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
@@ -55,7 +55,7 @@ public class MinElectiveCreditsRule implements Rule {
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 
-			List<StudentCourse> tempStudentCourseList = null;
+			List<StudentCourse> tempStudentCourseList;
 
 			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
 					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
@@ -120,8 +120,6 @@ public class MinElectiveCreditsRule implements Rule {
 			}
 
 			logger.info("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
-
-			requiredCredits = 0;
 			totalCredits = 0;
 		}
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());

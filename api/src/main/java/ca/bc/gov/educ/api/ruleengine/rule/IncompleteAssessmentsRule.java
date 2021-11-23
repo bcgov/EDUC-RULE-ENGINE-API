@@ -1,7 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,38 +29,34 @@ public class IncompleteAssessmentsRule implements Rule {
 
     public RuleData fire() {
 
-        List<StudentAssessment> studentAssessmentList = new ArrayList<StudentAssessment>();
-        studentAssessmentList = ((RuleProcessorData) ruleProcessorData).getStudentAssessments();
+        List<StudentAssessment> studentAssessmentList =  ruleProcessorData.getStudentAssessments();
 
         logger.debug("###################### Finding INCOMPLETE Assessments ######################");
 
         for (StudentAssessment studentAssessment : studentAssessmentList) {
             String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
             String sessionDate = studentAssessment.getSessionDate() + "/01";
-            Date temp = new Date();
-
             try {
-                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
+                Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
                 logger.error("ERROR: " + pe.getMessage());
             }
 
             int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
-            String proficiencyScore = null;
-            
+            String proficiencyScore;
             if(studentAssessment.getProficiencyScore() == null) {
             	proficiencyScore = "0.0";
             }else {
             	proficiencyScore = studentAssessment.getProficiencyScore().toString();
             }
-            String specialCase = "";
+            String specialCase;
             if(studentAssessment.getSpecialCase() == null) {
             	specialCase = "";
             }else {
             	specialCase = studentAssessment.getSpecialCase();
             }
-            String exceededWriteFlag = "";
+            String exceededWriteFlag;
             if(studentAssessment.getExceededWriteFlag() == null) {
             	exceededWriteFlag = "";
             }else {

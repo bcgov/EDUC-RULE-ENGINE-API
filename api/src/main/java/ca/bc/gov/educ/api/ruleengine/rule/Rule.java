@@ -7,9 +7,7 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 @Component
 public interface Rule {
 
-    RuleType ruleType = null;
-
     RuleData fire();
 
-    public void setInputData(RuleData inputData);
+    void setInputData(RuleData inputData);
 }
