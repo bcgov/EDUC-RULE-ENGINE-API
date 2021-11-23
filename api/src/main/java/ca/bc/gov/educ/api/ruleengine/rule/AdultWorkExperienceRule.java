@@ -64,7 +64,6 @@ public class AdultWorkExperienceRule implements Rule {
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			int numberOfWExCourses = 0;
 	        ListIterator<StudentCourse> courseIterator = studentCourses.listIterator();
-	        StudentCourse tempSC;
 	        ObjectMapper objectMapper = new ObjectMapper();
 	        while (courseIterator.hasNext()) {
 	            StudentCourse tempCourse = courseIterator.next();
@@ -98,9 +97,9 @@ public class AdultWorkExperienceRule implements Rule {
 	            		tempCourse.setNotEligibleForElective(true);
 	            	}
 	            }
-	            tempSC = new StudentCourse();
+
 	            try {
-	                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
+					StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
 	                if (tempSC != null)
 	                    finalCourseList.add(tempSC);
 	            } catch (IOException e) {

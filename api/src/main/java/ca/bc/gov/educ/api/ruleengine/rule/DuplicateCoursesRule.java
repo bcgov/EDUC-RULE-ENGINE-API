@@ -55,9 +55,8 @@ public class DuplicateCoursesRule implements Rule {
                     } else if (studentCourseList.get(i).getCompletedCoursePercentage().equals(studentCourseList.get(j).getCompletedCoursePercentage())) {
                     	compareSessionDates(studentCourseList,i,j);                        
                     }
-                } else {
-                    //Do Nothing
-                }
+                }  //Do Nothing
+
             }
         }
 

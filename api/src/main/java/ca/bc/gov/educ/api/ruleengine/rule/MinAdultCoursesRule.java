@@ -40,7 +40,7 @@ public class MinAdultCoursesRule implements Rule {
 		logger.debug("Min Adult Courses 18 Rule");
 
 		int totalCredits = 0;
-		int requiredCredits = 0;
+		int requiredCredits;
 		
 		if (ruleProcessorData.getStudentCourses().isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Adult Courses Rule for processing");
@@ -67,11 +67,11 @@ public class MinAdultCoursesRule implements Rule {
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 
-			List<StudentCourse> tempStudentCourseList = null;
+			List<StudentCourse> tempStudentCourseList;
 
 			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
 					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(sc -> sc.isUsed()).collect(Collectors.toList());
+				tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).collect(Collectors.toList());
 			} else {
 				tempStudentCourseList = studentCourses.stream()
 						.filter(sc -> sc.isUsed()
@@ -85,7 +85,7 @@ public class MinAdultCoursesRule implements Rule {
 				try {
 					temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
 				} catch (ParseException e) {
-					e.getMessage();
+					logger.debug(e.getMessage());
 				}
 				int age = calculateAge(dobOfStudent,RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
 				if(age >= 18 && (totalCredits + sc.getCredits()) <= requiredCredits) {
