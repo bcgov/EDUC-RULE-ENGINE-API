@@ -122,7 +122,7 @@ public class MatchCreditsRule implements Rule {
         			|| tempCourse.getFineArtsAppliedSkills().compareTo("F") == 0
         			|| tempCourse.getFineArtsAppliedSkills().compareTo("A") == 0)) {
         		tempProgramRule = gradProgramRulesMatch.stream()
-                        .filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo("111") == 0 && !pr.getProgramRequirementCode().isPassed())
+                        .filter(pr -> (pr.getProgramRequirementCode().getProReqCode().compareTo("111") == 0 || pr.getProgramRequirementCode().getProReqCode().compareTo("712") == 0) && !pr.getProgramRequirementCode().isPassed())
                         .findAny()
                         .orElse(null);
         		if(tempProgramRule != null) {
