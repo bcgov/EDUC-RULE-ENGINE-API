@@ -32,7 +32,8 @@ public class RuleProcessorRuleUtils {
                         && !sc.isLocallyDeveloped()
                         && !sc.isRestricted()
                         && !sc.isBoardAuthorityAuthorized()
-                        && !sc.isIndependentDirectedStudies())
+                        && !sc.isIndependentDirectedStudies()
+                        && !sc.isLessCreditCourse())
                 .collect(Collectors.toList());
 
         if (!projected) {
@@ -58,6 +59,7 @@ public class RuleProcessorRuleUtils {
                         || sc.isRestricted()
                         || sc.isBoardAuthorityAuthorized()
                         || sc.isIndependentDirectedStudies()
+                        || sc.isLessCreditCourse()
                         || (!projected && sc.isProjected()))
                 .collect(Collectors.toList());
     }
