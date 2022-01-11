@@ -1,6 +1,3 @@
-# EDUC-RULE-ENGINE-API
-Rule Engine API to process rules
-
 [![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md) &nbsp;
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bcgov/educ-rule-engine-api/Build) &nbsp; 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-RULE-ENGINE-API&metric=bugs)](https://sonarcloud.io/summary/new_code?id=bcgov_EDUC-RULE-ENGINE-API) &nbsp;
@@ -15,3 +12,7 @@ Rule Engine API to process rules
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-RULE-ENGINE-API&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=bcgov_EDUC-RULE-ENGINE-API) &nbsp;
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-RULE-ENGINE-API&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=bcgov_EDUC-RULE-ENGINE-API) &nbsp;
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-RULE-ENGINE-API&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=bcgov_EDUC-RULE-ENGINE-API) &nbsp;
+
+# EDUC-RULE-ENGINE-API
+Rule Engine API to process rules
+
