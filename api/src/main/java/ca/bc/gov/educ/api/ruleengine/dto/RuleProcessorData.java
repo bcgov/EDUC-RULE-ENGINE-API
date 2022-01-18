@@ -23,6 +23,7 @@ public class RuleProcessorData implements RuleData {
     private List<ProgramAlgorithmRule> algorithmRules;
     private List<ProgramRequirement> gradProgramRules;
     private Map<String,OptionalProgramRuleProcessor> mapOptional;
+    private Map<String,Integer> map1996Crse;
     private List<StudentCourse> studentCourses;
     private List<StudentCourse> excludedCourses;
     private List<StudentAssessment> excludedAssessments;
