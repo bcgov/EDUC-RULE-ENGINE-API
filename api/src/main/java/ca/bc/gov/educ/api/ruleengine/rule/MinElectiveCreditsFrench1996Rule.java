@@ -56,7 +56,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
 
                List<StudentCourse> tempStudentCourseList;
                tempStudentCourseList = studentCourses.stream()
-                           .filter(sc -> !sc.isUsed()
+                           .filter(sc -> !sc.isUsedInMatchRule()
                                    && (sc.getCourseLevel().contains("11")
                                    || sc.getCourseLevel().contains("12"))
                                    && sc.getLanguage() != null && sc.getLanguage().trim().compareTo("F")==0)
