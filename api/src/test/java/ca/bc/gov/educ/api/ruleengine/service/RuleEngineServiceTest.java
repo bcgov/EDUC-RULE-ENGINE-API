@@ -1298,7 +1298,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertTrue(ruleProcessorData.isGraduated());
 	}
 
 	@Test

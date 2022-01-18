@@ -24,6 +24,12 @@ import java.util.stream.Collectors;
 public class MatchCredit1996Rule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MatchCredit1996Rule.class);
+    private static final String RULE_CODE_732 = "732";
+    private static final String RULE_CODE_726 = "726";
+    private static final String RULE_CODE_727 = "727";
+    private static final String FINE_ARTS = "F";
+    private static final String APPLIED_SCIENCES = "A";
+    private static final String FINE_ARTS_APPLIED_SCIENCES = "B";
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -125,28 +131,28 @@ public class MatchCredit1996Rule implements Rule {
         boolean reqmtSatisfied = false;
         int counter = 0; //counter to keep track of fine arts and applied science rule codes
         for(GradRequirement gR:requirementsMet) {
-            if(gR.getRule().compareTo("732") == 0) {
+            if(gR.getRule().compareTo(RULE_CODE_732) == 0) {
                 reqmtSatisfied= true;
                 if(nonGradReasons != null) {
-                    nonGradReasons.removeIf(e -> e.getRule().compareTo("726") == 0);
-                    nonGradReasons.removeIf(e -> e.getRule().compareTo("727") == 0);
+                    nonGradReasons.removeIf(e -> e.getRule().compareTo(RULE_CODE_726) == 0);
+                    nonGradReasons.removeIf(e -> e.getRule().compareTo(RULE_CODE_727) == 0);
                 }
             }
-            if(gR.getRule().compareTo("726")==0 || gR.getRule().compareTo("727")==0) {
+            if(gR.getRule().compareTo(RULE_CODE_726)==0 || gR.getRule().compareTo(RULE_CODE_727)==0) {
                 counter++;
             }
         }
         if(counter ==2) {
             if(nonGradReasons != null)
-                nonGradReasons.removeIf(e -> e.getRule().compareTo("732") == 0);
+                nonGradReasons.removeIf(e -> e.getRule().compareTo(RULE_CODE_732) == 0);
         }
 
         if(reqmtSatisfied) {
-            requirementsMet.removeIf(e -> e.getRule().compareTo("727") == 0);
-            requirementsMet.removeIf(e -> e.getRule().compareTo("726") == 0);
+            requirementsMet.removeIf(e -> e.getRule().compareTo(RULE_CODE_727) == 0);
+            requirementsMet.removeIf(e -> e.getRule().compareTo(RULE_CODE_726) == 0);
 
             for(StudentCourse sc:studentCourses) {
-                if(sc.getGradReqMet().compareTo("727")==0 || sc.getGradReqMet().compareTo("726")==0){
+                if(sc.getGradReqMet().compareTo(RULE_CODE_727)==0 || sc.getGradReqMet().compareTo(RULE_CODE_726)==0){
                     sc.setGradReqMet("");
                     sc.setGradReqMetDetail("");
                     sc.setUsed(false);
@@ -177,12 +183,12 @@ public class MatchCredit1996Rule implements Rule {
         }else {
             String ruleCode = "";
             if(tempCourse.getFineArtsAppliedSkills() != null) {
-                if (tempCourse.getFineArtsAppliedSkills().compareTo("B") == 0) {
-                    ruleCode = "732";
-                } else if (tempCourse.getFineArtsAppliedSkills().compareTo("F") == 0) {
-                    ruleCode = "726";
-                } else if (tempCourse.getFineArtsAppliedSkills().compareTo("A") == 0) {
-                    ruleCode = "727";
+                if (tempCourse.getFineArtsAppliedSkills().compareTo(FINE_ARTS_APPLIED_SCIENCES) == 0) {
+                    ruleCode = RULE_CODE_732;
+                } else if (tempCourse.getFineArtsAppliedSkills().compareTo(FINE_ARTS) == 0) {
+                    ruleCode = RULE_CODE_726;
+                } else if (tempCourse.getFineArtsAppliedSkills().compareTo(APPLIED_SCIENCES) == 0) {
+                    ruleCode = RULE_CODE_727;
                 }
             }
             if(StringUtils.isNotBlank(ruleCode)) {
