@@ -53,6 +53,9 @@ public class StudentCourse {
     private boolean isNotEligibleForElective;
     private boolean isUsedInMatchRule;
     private boolean isLessCreditCourse;
+    private boolean isValidationCourse;
+    private boolean isCutOffCourse;
+    private boolean isGrade10Course;
 
     public Integer getCreditsUsedForGrad() {
         if (creditsUsedForGrad == null)
