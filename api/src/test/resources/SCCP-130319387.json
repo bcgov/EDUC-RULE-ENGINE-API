@@ -1,0 +1,2388 @@
+{
+  "gradStudent": {
+    "studentID": "ac339d70-7649-1a2e-8176-4a3b9cd1170e",
+    "pen": "130319387",
+    "legalFirstName": "SADIE",
+    "legalMiddleNames": null,
+    "legalLastName": "BOOTSMAN",
+    "dob": "2004-11-19",
+    "sexCode": "F",
+    "genderCode": "F",
+    "usualFirstName": "SADIE",
+    "usualMiddleNames": null,
+    "usualLastName": "BOOTSMAN",
+    "email": null,
+    "emailVerified": "Y",
+    "deceasedDate": null,
+    "postalCode": "V3G1T1",
+    "mincode": "01010004",
+    "localID": null,
+    "gradeCode": "05",
+    "gradeYear": "0",
+    "demogCode": "A",
+    "statusCode": "A",
+    "memo": null,
+    "trueStudentID": null,
+    "program": "SCCP",
+    "schoolOfRecord": "01919003",
+    "schoolOfRecordName": "REVELSTOKE SECONDARY",
+    "schoolOfRecordindependentAffiliation": "",
+    "studentGrade": "11",
+    "studentStatus": "CUR"
+  },
+  "letterGradeList": [
+    {
+      "grade": "W",
+      "gpaMarkValue": "0",
+      "passFlag": "N"
+    },
+    {
+      "grade": "WF",
+      "gpaMarkValue": "0",
+      "passFlag": "N"
+    },
+    {
+      "grade": "IP",
+      "gpaMarkValue": "0",
+      "passFlag": "N"
+    },
+    {
+      "grade": "A",
+      "gpaMarkValue": "4",
+      "passFlag": "Y"
+    },
+    {
+      "grade": "B",
+      "gpaMarkValue": "3",
+      "passFlag": "Y"
+    },
+    {
+      "grade": "C+",
+      "gpaMarkValue": "2.5",
+      "passFlag": "Y"
+    },
+    {
+      "grade": "C",
+      "gpaMarkValue": "2",
+      "passFlag": "Y"
+    },
+    {
+      "grade": "C-",
+      "gpaMarkValue": "1",
+      "passFlag": "Y"
+    },
+    {
+      "grade": "RM",
+      "gpaMarkValue": "0",
+      "passFlag": "Y"
+    },
+    {
+      "grade": "F",
+      "gpaMarkValue": "0",
+      "passFlag": "N"
+    },
+    {
+      "grade": "NM",
+      "gpaMarkValue": "0",
+      "passFlag": "N"
+    },
+    {
+      "grade": "WR",
+      "gpaMarkValue": "0",
+      "passFlag": "N"
+    },
+    {
+      "grade": "SG",
+      "gpaMarkValue": "0",
+      "passFlag": "Y"
+    },
+    {
+      "grade": "TS",
+      "gpaMarkValue": "0",
+      "passFlag": "Y"
+    },
+    {
+      "grade": "I",
+      "gpaMarkValue": "0",
+      "passFlag": "N"
+    },
+    {
+      "grade": "P",
+      "gpaMarkValue": "1",
+      "passFlag": "Y"
+    }
+  ],
+  "specialCaseList": [
+    {
+      "spCase": "X",
+      "label": "NC",
+      "displayOrder": 10,
+      "description": "Not Completed",
+      "passFlag": "N",
+      "effectiveDate": 1623456000000,
+      "expiryDate": null
+    },
+    {
+      "spCase": "Q",
+      "label": "DSQ",
+      "displayOrder": 20,
+      "description": "Disqualified",
+      "passFlag": "N",
+      "effectiveDate": 1623456000000,
+      "expiryDate": null
+    },
+    {
+      "spCase": "M",
+      "label": "MET",
+      "displayOrder": 30,
+      "description": "Met",
+      "passFlag": "Y",
+      "effectiveDate": 1623456000000,
+      "expiryDate": null
+    },
+    {
+      "spCase": "E",
+      "label": "XMT",
+      "displayOrder": 40,
+      "description": "Exempt",
+      "passFlag": "Y",
+      "effectiveDate": 1623456000000,
+      "expiryDate": null
+    },
+    {
+      "spCase": "A",
+      "label": "AEG",
+      "displayOrder": 50,
+      "description": "Aegrotat",
+      "passFlag": "Y",
+      "effectiveDate": 1623456000000,
+      "expiryDate": null
+    }
+  ],
+  "algorithmRules": [
+    {
+      "programAlgoRuleID": "c70b587f-af7f-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 10,
+      "algorithmRuleCode": {
+        "algoRuleCode": "INCOMPLETE_CRSE_RULE",
+        "ruleImplementation": "IncompleteCoursesRule",
+        "label": "Incomplete Courses rule",
+        "description": "The student achievement record session date is earlier than a month ago and the achievement was not written or given a special case",
+        "displayOrder": 10,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "c70b587f-af80-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 11,
+      "algorithmRuleCode": {
+        "algoRuleCode": "INCOMPLETE_ASSMT_RULE",
+        "ruleImplementation": "IncompleteAssessmentsRule",
+        "label": "Incomplete Assessments rule",
+        "description": "The student achievement record session date is earlier than a month ago and the achievement was not written or given a special case",
+        "displayOrder": 20,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "c70b587f-af81-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 20,
+      "algorithmRuleCode": {
+        "algoRuleCode": "CRSE_REGISTRATION_RULE",
+        "ruleImplementation": "RegistrationsRule",
+        "label": "Course Registrations rule",
+        "description": "The student achievement record session date is from a month ago or later and the achievement was not written or given a special case",
+        "displayOrder": 30,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "c70b587f-af82-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 21,
+      "algorithmRuleCode": {
+        "algoRuleCode": "ASSMT_REGISTRATION_RULE",
+        "ruleImplementation": "AssessmentRegistrationsRule",
+        "label": "Assessment Registrations rule",
+        "description": "The student achievement record session date is from a month ago or later and the achievement was not written or given a special case",
+        "displayOrder": 40,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "c70b587f-af83-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 30,
+      "algorithmRuleCode": {
+        "algoRuleCode": "FAILED_CRSE_RULE",
+        "ruleImplementation": "FailedCoursesRule",
+        "label": "Failed Courses rule",
+        "description": "Based on letter grade table or special case table showing which letter grades or special case are deemed a pass vs fail",
+        "displayOrder": 50,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "c70b587f-af84-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 31,
+      "algorithmRuleCode": {
+        "algoRuleCode": "FAILED_ASSMT_RULE",
+        "ruleImplementation": "FailedAssessmentsRule",
+        "label": "Failed Assessments rule",
+        "description": "Based on letter grade table or special case table showing which letter grades or special case are deemed a pass vs fail",
+        "displayOrder": 60,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "c70b587f-af85-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 40,
+      "algorithmRuleCode": {
+        "algoRuleCode": "DUPLICATE_CRSE_RULE",
+        "ruleImplementation": "DuplicateCoursesRule",
+        "label": "Duplicate Courses rule",
+        "description": "If duplicate course code and course level the course with the highest number of credits, highest final %, earliest session date is used",
+        "displayOrder": 70,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "c70b587f-af86-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 41,
+      "algorithmRuleCode": {
+        "algoRuleCode": "DUPLICATE_ASSMT_RULE",
+        "ruleImplementation": "DuplicateAssessmentsRule",
+        "label": "Duplicate Assessments rule",
+        "description": "If duplicate assessment code and the assessment with the highest proficiency score, highest special case,earliest ssion date is used",
+        "displayOrder": 80,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "cd071f00-4db9-31e7-e053-9ae9228efcfc",
+      "graduationProgramCode": "SCCP",
+      "sortOrder": 50,
+      "algorithmRuleCode": {
+        "algoRuleCode": "PRG_COMP_DATE_RULE",
+        "ruleImplementation": "ProgramCompletionDateRule",
+        "label": "Program Completion Date Rule",
+        "description": "For a student to graduation, there should be a program completion date.",
+        "displayOrder": 290,
+        "isActiveRule": "Y"
+      }
+    }
+  ],
+  "gradProgramRules": [
+    {
+      "programRequirementID": "ca6a6b30-3cbc-ac78-e053-9ae9228e2ada",
+      "graduationProgramCode": "SCCP",
+      "programRequirementCode": {
+        "proReqCode": "650",
+        "label": "Program Completion",
+        "description": "If the Student has program completion date, then only he can graduate",
+        "requirementTypeCode": {
+          "reqTypeCode": "PCD",
+          "label": "Program Completion Date",
+          "displayOrder": 90,
+          "description": "Algorithm identifies if the student has a program completion date",
+          "effectiveDate": 1623654000000,
+          "expiryDate": null
+        },
+        "requiredCredits": "0",
+        "notMetDesc": "No Program Completion date or date is in the future",
+        "requiredLevel": null,
+        "languageOfInstruction": null,
+        "activeRequirement": "Y",
+        "requirementCategory": null,
+        "passed": false,
+        "tempFailed": false
+      }
+    }
+  ],
+  "mapOptional": {},
+  "map1996Crse": null,
+  "studentCourses": [
+    {
+      "pen": "130319387",
+      "courseCode": "CMPS",
+      "courseName": "COMPOSITION 10",
+      "courseLevel": "10",
+      "sessionDate": "2020/06",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 96.0,
+      "completedCourseLetterGrade": "A",
+      "interimPercent": 96.0,
+      "interimLetterGrade": "A",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 2,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "NMD",
+      "courseName": "NEW MEDIA 10",
+      "courseLevel": "10",
+      "sessionDate": "2020/06",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 96.0,
+      "completedCourseLetterGrade": "A",
+      "interimPercent": 96.0,
+      "interimLetterGrade": "A",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 2,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "CLEA",
+      "courseName": "CAREER-LIFE EDUCATION A",
+      "courseLevel": "",
+      "sessionDate": "2020/06",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 86.0,
+      "completedCourseLetterGrade": "A",
+      "interimPercent": 86.0,
+      "interimLetterGrade": "A",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 2,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "PRMA",
+      "courseName": "APPRENTICESHIP MATHEMATICS 12",
+      "courseLevel": "12",
+      "sessionDate": "2020/11",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 86.0,
+      "completedCourseLetterGrade": "A",
+      "interimPercent": 86.0,
+      "interimLetterGrade": "A",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "TMET",
+      "courseName": "METALWORK 10",
+      "courseLevel": "10",
+      "sessionDate": "2020/01",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 83.0,
+      "completedCourseLetterGrade": "B",
+      "interimPercent": 83.0,
+      "interimLetterGrade": "B",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "TSITA",
+      "courseName": "EXPLORE: TRADES SAMPLER (ITA) 12B",
+      "courseLevel": "12B",
+      "sessionDate": "2020/11",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 80.0,
+      "completedCourseLetterGrade": "B",
+      "interimPercent": 80.0,
+      "interimLetterGrade": "B",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "SC",
+      "courseName": "SCIENCE 10",
+      "courseLevel": "10",
+      "sessionDate": "2020/06",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 80.0,
+      "completedCourseLetterGrade": "B",
+      "interimPercent": 80.0,
+      "interimLetterGrade": "B",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "TPOW",
+      "courseName": "POWER TECHNOLOGY 10",
+      "courseLevel": "10",
+      "sessionDate": "2020/01",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 80.0,
+      "completedCourseLetterGrade": "B",
+      "interimPercent": 80.0,
+      "interimLetterGrade": "B",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "WPM",
+      "courseName": "WORKPLACE MATHEMATICS 10",
+      "courseLevel": "10",
+      "sessionDate": "2020/01",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 74.0,
+      "completedCourseLetterGrade": "B",
+      "interimPercent": 74.0,
+      "interimLetterGrade": "B",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "SS",
+      "courseName": "SOCIAL STUDIES 10",
+      "courseLevel": "10",
+      "sessionDate": "2020/06",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 65.0,
+      "completedCourseLetterGrade": "C",
+      "interimPercent": 65.0,
+      "interimLetterGrade": "C",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "CLEB",
+      "courseName": "CAREER-LIFE EDUCATION B",
+      "courseLevel": "",
+      "sessionDate": "2021/04",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 0.0,
+      "completedCourseLetterGrade": "",
+      "interimPercent": 0.0,
+      "interimLetterGrade": "",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 2,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "TSITA",
+      "courseName": "EXPLORE: TRADES SAMPLER (ITA) 12C",
+      "courseLevel": "12C",
+      "sessionDate": "2021/04",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 0.0,
+      "completedCourseLetterGrade": "",
+      "interimPercent": 0.0,
+      "interimLetterGrade": "",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "TSITA",
+      "courseName": "EXPLORE: TRADES SAMPLER (ITA) 12A",
+      "courseLevel": "12A",
+      "sessionDate": "2021/02",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 0.0,
+      "completedCourseLetterGrade": "",
+      "interimPercent": 0.0,
+      "interimLetterGrade": "",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "WEX",
+      "courseName": "WORK EXPERIENCE 12A",
+      "courseLevel": "12A",
+      "sessionDate": "2021/06",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 0.0,
+      "completedCourseLetterGrade": "",
+      "interimPercent": 0.0,
+      "interimLetterGrade": "",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": "Y",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "LST",
+      "courseName": "LAW STUDIES 12",
+      "courseLevel": "12",
+      "sessionDate": "2021/06",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 0.0,
+      "completedCourseLetterGrade": "",
+      "interimPercent": 0.0,
+      "interimLetterGrade": "",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "ESC",
+      "courseName": "EARTH SCIENCES 11",
+      "courseLevel": "11",
+      "sessionDate": "2021/02",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 0.0,
+      "completedCourseLetterGrade": "",
+      "interimPercent": 0.0,
+      "interimLetterGrade": "",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "NMD",
+      "courseName": "NEW MEDIA 11 (2018)",
+      "courseLevel": "11",
+      "sessionDate": "2021/04",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 0.0,
+      "completedCourseLetterGrade": "",
+      "interimPercent": 0.0,
+      "interimLetterGrade": "",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "courseCode": "PHED",
+      "courseName": "PHYSICAL AND HEALTH EDUCATION 10",
+      "courseLevel": "10",
+      "sessionDate": "2020/06",
+      "customizedCourseName": "",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "completedCoursePercentage": 0.0,
+      "completedCourseLetterGrade": "SG",
+      "interimPercent": 0.0,
+      "interimLetterGrade": "",
+      "bestSchoolPercent": null,
+      "bestExamPercent": null,
+      "equivOrChallenge": "",
+      "fineArtsAppliedSkills": "",
+      "metLitNumRequirement": null,
+      "credits": 4,
+      "creditsUsedForGrad": 0,
+      "relatedCourse": "",
+      "relatedCourseName": null,
+      "relatedLevel": "",
+      "hasRelatedCourse": "N",
+      "genericCourseType": "",
+      "language": "",
+      "workExpFlag": " ",
+      "provExamCourse": "N",
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "independentDirectedStudies": false,
+      "notEligibleForElective": false,
+      "lessCreditCourse": false,
+      "validationCourse": false,
+      "usedInMatchRule": false,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "careerPrep": false,
+      "used": false,
+      "cutOffCourse": false,
+      "grade10Course": false,
+      "restricted": false,
+      "projected": false
+    }
+  ],
+  "excludedCourses": null,
+  "excludedAssessments": null,
+  "studentAssessments": [
+    {
+      "pen": "130319387",
+      "assessmentCode": "LTE10",
+      "assessmentName": "Literacy 10 Assessment",
+      "sessionDate": "2019/11",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "specialCase": " ",
+      "exceededWriteFlag": " ",
+      "proficiencyScore": 0.0,
+      "wroteFlag": null,
+      "rawScore": null,
+      "percentComplete": null,
+      "irtScore": null,
+      "equivalentCode": null,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "used": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "assessmentCode": "LTE10",
+      "assessmentName": "Literacy 10 Assessment",
+      "sessionDate": "2020/04",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "specialCase": " ",
+      "exceededWriteFlag": " ",
+      "proficiencyScore": null,
+      "wroteFlag": null,
+      "rawScore": null,
+      "percentComplete": null,
+      "irtScore": null,
+      "equivalentCode": null,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "used": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "assessmentCode": "LTE10",
+      "assessmentName": "Literacy 10 Assessment",
+      "sessionDate": "2021/01",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "specialCase": " ",
+      "exceededWriteFlag": " ",
+      "proficiencyScore": null,
+      "wroteFlag": null,
+      "rawScore": null,
+      "percentComplete": null,
+      "irtScore": null,
+      "equivalentCode": null,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "used": false,
+      "projected": false
+    },
+    {
+      "pen": "130319387",
+      "assessmentCode": "NME10",
+      "assessmentName": "Numeracy 10 Assessment",
+      "sessionDate": "2019/11",
+      "gradReqMet": "",
+      "gradReqMetDetail": "",
+      "specialCase": " ",
+      "exceededWriteFlag": " ",
+      "proficiencyScore": 1.0,
+      "wroteFlag": null,
+      "rawScore": null,
+      "percentComplete": null,
+      "irtScore": null,
+      "equivalentCode": null,
+      "notCompleted": false,
+      "failed": false,
+      "duplicate": false,
+      "used": false,
+      "projected": false
+    }
+  ],
+  "courseRequirements": [
+    {
+      "courseRequirementId": "71db0aaa-b40a-469d-b173-2d9195e97d67",
+      "courseCode": "WEX",
+      "courseLevel": "12A",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "7e3cb28d-d022-4239-b427-1413710e713b",
+      "courseCode": "WEX",
+      "courseLevel": "12B",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "b8033d97-bd3c-4814-aef8-00246fa14cbd",
+      "courseCode": "TSITA",
+      "courseLevel": "12A",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "8b9d1df5-c554-40c8-bd12-518416a89292",
+      "courseCode": "TSITA",
+      "courseLevel": "12B",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "574ca0ef-15ca-41df-af16-56f64c131388",
+      "courseCode": "TSITA",
+      "courseLevel": "12C",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "81d8ce13-2404-4345-9061-a790539662f7",
+      "courseCode": "TSITA",
+      "courseLevel": "12A",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "69d1ec0f-67b7-4e5f-bf02-0b931f3accda",
+      "courseCode": "TSITA",
+      "courseLevel": "12B",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "1734dcf2-7bd0-4938-abfe-93ad61ee8b98",
+      "courseCode": "TSITA",
+      "courseLevel": "12C",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "b47f281c-1108-4040-94e7-7bac86d115a5",
+      "courseCode": "ESC",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "709",
+        "label": "Science 11 or 12",
+        "description": "Credits must be earned in the Science 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "cdaea27c-c8e7-4994-9cdc-4f1d65f76c88",
+      "courseCode": "SC",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "708",
+        "label": "Science 10",
+        "description": "Credits must be earned in the Science 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "a4f761a6-f233-477b-8c05-46dbbde51622",
+      "courseCode": "SS",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "704",
+        "label": "Social Studies 10",
+        "description": "Credits must be earned in the Social Studies 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "835ce47e-3e74-44bb-a752-396d5d4d6b07",
+      "courseCode": "SS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "705",
+        "label": "Social Studies 11, Civic Studies 11 or BC First Nations Studies 12",
+        "description": "Credits must be earned in the Social Studies 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "95e53d22-2517-4803-b843-9e2354cdcfba",
+      "courseCode": "TMET",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "f3b2181f-dea1-43d4-a2c9-f1089231bc67",
+      "courseCode": "TMET",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "58e55350-93e0-438d-89c8-90c473e6976d",
+      "courseCode": "TMET",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "e1111656-3f39-4981-9f28-20d324fe4053",
+      "courseCode": "TMET",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "52213a07-ac56-4beb-a6f9-4f188e10a521",
+      "courseCode": "TMET",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "616b597f-47d5-4ea0-8fdb-b00a3aa7b39a",
+      "courseCode": "TMET",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "92a398cd-1ba0-4fd2-b256-6cd04765c008",
+      "courseCode": "TPOW",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "623337f4-7a8f-4555-af68-806f52370367",
+      "courseCode": "TPOW",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "6f0436ab-fb7e-4983-b69f-5458148f23c6",
+      "courseCode": "CMPS",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "701",
+        "label": "Language Arts 10",
+        "description": "Credits must be earned in the Language Arts 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "1df1c5b6-e288-4389-8c4a-13c72fdec230",
+      "courseCode": "CMPS",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "850",
+        "label": "Language Arts 10 - English",
+        "description": "Student must meet a Language Arts 10 requirement in English",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "f1ff3478-c536-4a39-a541-b4443313dd2a",
+      "courseCode": "CMPS",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "101",
+        "label": "Language Arts 10",
+        "description": "Language Arts 10",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "178d4c1c-a715-4ead-a7c5-b3b8660a13a9",
+      "courseCode": "CMPS",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "400",
+        "label": "Language Arts 10 - English",
+        "description": "Language Arts 10 - English",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "9f2cb8df-8489-410c-a611-209f3e5dc03e",
+      "courseCode": "CMPS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "702",
+        "label": "Language Arts 11",
+        "description": "Credits must be earned in the Language Arts 11 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "276ad1fe-441b-41c1-ad53-57ed455b1caf",
+      "courseCode": "CMPS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "851",
+        "label": "Language Arts 11 - English",
+        "description": "Student must meet a Language Arts 11 requirement in English",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "e94a2ae7-f0f5-4200-9597-04d47a0de431",
+      "courseCode": "CMPS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "102",
+        "label": "Language Arts 11",
+        "description": "Language Arts 11",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "914b7c29-6a59-4f60-910c-e764a0031bc8",
+      "courseCode": "CMPS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "401",
+        "label": "Language Arts 11 - English",
+        "description": "Language Arts 11 - English",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "93abda89-a3b2-4631-98c8-45e908946485",
+      "courseCode": "LST",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "705",
+        "label": "Social Studies 11, Civic Studies 11 or BC First Nations Studies 12",
+        "description": "Credits must be earned in the Social Studies 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "1985f733-b58e-4dd3-a419-a722a3ec0a69",
+      "courseCode": "LST",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "105",
+        "label": "Social Studies 11 or 12",
+        "description": "Social Studies 11 or 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "38ffba59-4eec-4973-8af1-2b82dfe3b834",
+      "courseCode": "WPM",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "707",
+        "label": "Mathematics 11 or 12",
+        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "ddef2bb8-a004-4b6d-808d-ec0daa794868",
+      "courseCode": "WPM",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "107",
+        "label": "Mathematics 11 or 12",
+        "description": "Mathematics 11 or 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "5b147a16-9268-4fd6-8f45-77b6dd9fc4d7",
+      "courseCode": "WPM",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "706",
+        "label": "Mathematics 10",
+        "description": "Credits must be earned in the Mathematics 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "2129e565-aef9-4094-bc24-be624a9335b6",
+      "courseCode": "WPM",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "106",
+        "label": "Mathematics 10",
+        "description": "Mathematics 10",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "7253e5f6-23f1-4e11-8f74-ffc72cd65036",
+      "courseCode": "PHED",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "110",
+        "label": "Physical and Health Education 10",
+        "description": "Physical and Health Education 10",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "3948ccc0-fa6a-4dc8-9da2-d9868c1fa3a3",
+      "courseCode": "PRMA",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "707",
+        "label": "Mathematics 11 or 12",
+        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "56ddc321-600f-4c39-82bc-ccc34dea3cc5",
+      "courseCode": "PRMA",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "107",
+        "label": "Mathematics 11 or 12",
+        "description": "Mathematics 11 or 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "0f2d2a96-1abf-4427-9839-9b8a1fde85a7",
+      "courseCode": "CLEA",
+      "courseLevel": "",
+      "ruleCode": {
+        "courseRequirementCode": "112",
+        "label": "Career Life Education",
+        "description": "Career Life Education",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "c99485dc-5903-433f-9f34-b4de6668c075",
+      "courseCode": "CLEB",
+      "courseLevel": "",
+      "ruleCode": {
+        "courseRequirementCode": "112",
+        "label": "Career Life Education",
+        "description": "Career Life Education",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "3ece3d85-c73c-4868-8fcf-4a9cb1d579e6",
+      "courseCode": "NMD",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "701",
+        "label": "Language Arts 10",
+        "description": "Credits must be earned in the Language Arts 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "72b59816-002b-406e-982b-7ca733a58c31",
+      "courseCode": "NMD",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "850",
+        "label": "Language Arts 10 - English",
+        "description": "Student must meet a Language Arts 10 requirement in English",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "7ecd391b-1086-4a63-bda3-4b5a0ee8af2e",
+      "courseCode": "NMD",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "101",
+        "label": "Language Arts 10",
+        "description": "Language Arts 10",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "f4f492bf-ff0e-4469-81fc-7f109b3aecd1",
+      "courseCode": "NMD",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "400",
+        "label": "Language Arts 10 - English",
+        "description": "Language Arts 10 - English",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "784c03e6-7361-48af-94ba-f9edbf4163bc",
+      "courseCode": "NMD",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "702",
+        "label": "Language Arts 11",
+        "description": "Credits must be earned in the Language Arts 11 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "91f69dfe-2e00-424d-ac24-17cc3f8e24d7",
+      "courseCode": "NMD",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "851",
+        "label": "Language Arts 11 - English",
+        "description": "Student must meet a Language Arts 11 requirement in English",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "1dbc130e-e7a6-45f2-9296-c6d69694cf51",
+      "courseCode": "NMD",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "102",
+        "label": "Language Arts 11",
+        "description": "Language Arts 11",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "8b23a273-b1fa-4fe2-a5bf-523bbc21b56a",
+      "courseCode": "NMD",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "401",
+        "label": "Language Arts 11 - English",
+        "description": "Language Arts 11 - English",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "3c36389c-beb1-4df1-88c7-2935a842233d",
+      "courseCode": "WEX",
+      "courseLevel": "12A",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "6e6dcba0-2c59-4d46-a0db-3fc82d5c20b2",
+      "courseCode": "WEX",
+      "courseLevel": "12B",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "8041b5a4-a935-4648-a32d-76691450bca5",
+      "courseCode": "SC",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "108",
+        "label": "Science 10",
+        "description": "Science 10",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "414b57b0-f676-4f6e-8001-6a77912fc4ca",
+      "courseCode": "ESC",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "109",
+        "label": "Science 11 or 12",
+        "description": "Science 11 or 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "c1e9f897-1a5f-40ed-a3cb-16130622a4fb",
+      "courseCode": "SS",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "104",
+        "label": "Social Studies 10",
+        "description": "Social Studies 10",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "8144911c-a829-40e4-9b72-611ae87eaf1e",
+      "courseCode": "SS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "105",
+        "label": "Social Studies 11 or 12",
+        "description": "Social Studies 11 or 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "734a7e98-f2b0-4aad-b0a0-c3146dfa7e91",
+      "courseCode": "ESC",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "725",
+        "label": "Science 11 or 12",
+        "description": "Credits must be earned in the Science 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "7185d34b-fd59-4f43-855f-8653dba6d01e",
+      "courseCode": "SS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "723",
+        "label": "Social Studies 11 or 12",
+        "description": "Credits must be earned in the Social Studies 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "76821068-4db1-49dc-b914-34185a7fdf11",
+      "courseCode": "WEX",
+      "courseLevel": "12A",
+      "ruleCode": {
+        "courseRequirementCode": "506",
+        "label": "Work Experience Course",
+        "description": "Work Experience Course",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "09bab6c4-b9cf-4086-b0ea-c3294fd3bcef",
+      "courseCode": "WEX",
+      "courseLevel": "12B",
+      "ruleCode": {
+        "courseRequirementCode": "506",
+        "label": "Work Experience Course",
+        "description": "Work Experience Course",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "9ff915a8-0333-4e34-b3cd-18c4d29d32fa",
+      "courseCode": "WEX",
+      "courseLevel": "12A",
+      "ruleCode": {
+        "courseRequirementCode": "600",
+        "label": "Work Experience Course - Career Program",
+        "description": "Work Experience Course - Career Program",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "3672cb4a-fef4-4050-a71a-c8c280967d69",
+      "courseCode": "WEX",
+      "courseLevel": "12B",
+      "ruleCode": {
+        "courseRequirementCode": "600",
+        "label": "Work Experience Course - Career Program",
+        "description": "Work Experience Course - Career Program",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "3f2c41cf-e508-4784-9adf-97a28dd32bad",
+      "courseCode": "PRMA",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "501",
+        "label": "Mathematics 11 or 12",
+        "description": "Mathematics 11 or 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "4cde2265-f9cc-4c4e-8b43-cb9d3048bd58",
+      "courseCode": "SS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "502",
+        "label": "Social Studies 11 or 12",
+        "description": "Social Studies 11 or 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "3a3e9dd3-e493-4672-94a1-8caf8f989e93",
+      "courseCode": "WPM",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "501",
+        "label": "Mathematics 11 or 12",
+        "description": "Mathematics 11 or 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "d53ddcf5-85d5-4cbd-b4f5-cb26b374c940",
+      "courseCode": "ESC",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "744",
+        "label": "Science 11 or 12",
+        "description": "Credits must be earned in the Science 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "b0a2837e-65a7-465d-9d29-a9eac946d286",
+      "courseCode": "SS",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "742",
+        "label": "Social Studies 11 or 12",
+        "description": "Credits must be earned in the Social Studies 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    }
+  ],
+  "courseRestrictions": [
+    {
+      "courseRestrictionId": "eae6b3dd-42d1-418b-a586-92d3dc3b465e",
+      "mainCourse": "WPM",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "WPMF",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "95c01b4b-8d6f-4e0e-9ba5-ae58d3af3224",
+      "mainCourse": "PHED",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "PHEDF",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "1dcadc17-285b-4255-8c31-1dbbb6714280",
+      "mainCourse": "PRMA",
+      "mainCourseLevel": "12",
+      "restrictedCourse": "PRMAF",
+      "restrictedCourseLevel": "12",
+      "restrictionStartDate": "2019/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "82645cfc-bef2-481a-a1b2-8351f6e1d9fd",
+      "mainCourse": "CLEA",
+      "mainCourseLevel": " ",
+      "restrictedCourse": "CLE",
+      "restrictedCourseLevel": " ",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "60e18233-58f1-424b-88d4-2b92e2dbfa3e",
+      "mainCourse": "CLEA",
+      "mainCourseLevel": " ",
+      "restrictedCourse": "CLEF",
+      "restrictedCourseLevel": " ",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "c83da99a-624e-472c-bcb5-317244413357",
+      "mainCourse": "CLEA",
+      "mainCourseLevel": " ",
+      "restrictedCourse": "CLEAF",
+      "restrictedCourseLevel": " ",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "47a47679-05ea-4239-92cf-11a24b73efde",
+      "mainCourse": "CLEB",
+      "mainCourseLevel": " ",
+      "restrictedCourse": "CLE",
+      "restrictedCourseLevel": " ",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "f39e30ee-c237-40b9-a0e8-76240b4af728",
+      "mainCourse": "CLEB",
+      "mainCourseLevel": " ",
+      "restrictedCourse": "CLEF",
+      "restrictedCourseLevel": " ",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "7a232794-f62b-47f5-9266-5cd2ec07b96b",
+      "mainCourse": "CLEB",
+      "mainCourseLevel": " ",
+      "restrictedCourse": "CLEBF",
+      "restrictedCourseLevel": " ",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "03547d57-0ba0-4d0c-8e40-6225ca66a75c",
+      "mainCourse": "TMET",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "TMETF",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "ad02a88b-1a21-488b-852c-3fda895d9362",
+      "mainCourse": "TMET",
+      "mainCourseLevel": "11",
+      "restrictedCourse": "TMETF",
+      "restrictedCourseLevel": "11",
+      "restrictionStartDate": "2019/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "bbca8f93-198d-493c-90ff-4b8940644c51",
+      "mainCourse": "TMET",
+      "mainCourseLevel": "12",
+      "restrictedCourse": "TMETF",
+      "restrictedCourseLevel": "12",
+      "restrictionStartDate": "2019/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "23612416-be1f-448d-8a0d-3b5b4e73065b",
+      "mainCourse": "TPOW",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "TPOWF",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "cf60eee8-a9db-48b1-9d86-226ff2ff5127",
+      "mainCourse": "LST",
+      "mainCourseLevel": "12",
+      "restrictedCourse": "LSTF",
+      "restrictedCourseLevel": "12",
+      "restrictionStartDate": "2019/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "799759f0-27a4-4257-aa80-8a563840f4f2",
+      "mainCourse": "ESC",
+      "mainCourseLevel": "11",
+      "restrictedCourse": "ESCF",
+      "restrictedCourseLevel": "11",
+      "restrictionStartDate": "1980/01",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "228e8e1a-2c9a-441c-9ab2-90a37da27e91",
+      "mainCourse": "SS",
+      "mainCourseLevel": "11",
+      "restrictedCourse": "SCH",
+      "restrictedCourseLevel": "11",
+      "restrictionStartDate": "1995/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "40c50c20-523d-4fbc-ba33-9018d03b2696",
+      "mainCourse": "SS",
+      "mainCourseLevel": "11",
+      "restrictedCourse": "UABES",
+      "restrictedCourseLevel": "11",
+      "restrictionStartDate": "1995/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "5f0c005f-7988-4636-9821-2bc80fd06277",
+      "mainCourse": "SS",
+      "mainCourseLevel": "11",
+      "restrictedCourse": "QSS",
+      "restrictedCourseLevel": "11",
+      "restrictionStartDate": "1995/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "a8422982-bf0a-4463-8738-1de52de2931a",
+      "mainCourse": "SC",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "QSCF",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2015/01",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "932ffb57-c1d4-49be-8ad2-ab9723b36ab3",
+      "mainCourse": "SC",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "QSC",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2015/01",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "60ef0886-c5a0-4dfd-9b0f-f95e0561ca71",
+      "mainCourse": "SC",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "SCF",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2015/01",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "72e2d07f-72ba-4915-a0a5-d22abf5dac9e",
+      "mainCourse": "SS",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "SCH",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "03743b55-581b-479c-b860-9c738a30392c",
+      "mainCourse": "WEX",
+      "mainCourseLevel": "12B",
+      "restrictedCourse": "WEXF",
+      "restrictedCourseLevel": "12B",
+      "restrictionStartDate": "2005/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "1cf0d337-a4a3-4ca8-b459-a8ad9accd124",
+      "mainCourse": "WEX",
+      "mainCourseLevel": "12A",
+      "restrictedCourse": "WEXF",
+      "restrictedCourseLevel": "12A",
+      "restrictionStartDate": "2005/09",
+      "restrictionEndDate": null
+    }
+  ],
+  "assessmentRequirements": [
+    {
+      "assessmentRequirementId": "b247fbd2-3d5e-fd0e-e053-98e9228e3dbe",
+      "assessmentCode": "NME10",
+      "ruleCode": {
+        "assmtRequirementCode": "116",
+        "label": "Numeracy 10 Assessment",
+        "description": "Numeracy 10 Assessment",
+        "effectiveDate": 1624147200000,
+        "expiryDate": null
+      }
+    },
+    {
+      "assessmentRequirementId": "b247fbd2-3d61-fd0e-e053-98e9228e3dbe",
+      "assessmentCode": "LTE10",
+      "ruleCode": {
+        "assmtRequirementCode": "115",
+        "label": "Literacy 10 Assessment",
+        "description": "Literacy 10 Assessment",
+        "effectiveDate": 1624147200000,
+        "expiryDate": null
+      }
+    },
+    {
+      "assessmentRequirementId": "b29a121c-ee49-d1f0-e053-98e9228ef4a6",
+      "assessmentCode": "LTE10",
+      "ruleCode": {
+        "assmtRequirementCode": "403",
+        "label": "Literacy 10 Assessment",
+        "description": "Literacy 10 Assessment",
+        "effectiveDate": 1624147200000,
+        "expiryDate": null
+      }
+    }
+  ],
+  "assessmentList": [
+    {
+      "assessmentCode": "LTE10",
+      "assessmentName": "Literacy 10 Assessment",
+      "language": "E",
+      "startDate": 1567296000000,
+      "endDate": null
+    },
+    {
+      "assessmentCode": "LTE12",
+      "assessmentName": "Literacy 12 Assessment",
+      "language": "E",
+      "startDate": 1598918400000,
+      "endDate": null
+    },
+    {
+      "assessmentCode": "LTF12",
+      "assessmentName": "Evaluation de Litteratie 12 - Immersion - French Immersion",
+      "language": "F",
+      "startDate": 1598918400000,
+      "endDate": null
+    },
+    {
+      "assessmentCode": "LTP10",
+      "assessmentName": "Evaluation de Litteratie  10 - Premiere - Programme francophone",
+      "language": "F",
+      "startDate": 1567296000000,
+      "endDate": null
+    },
+    {
+      "assessmentCode": "LTP12",
+      "assessmentName": "Evaluation de Litteratie  12 - Premiere - Programme francophone",
+      "language": "F",
+      "startDate": 1598918400000,
+      "endDate": null
+    },
+    {
+      "assessmentCode": "NME",
+      "assessmentName": "Numeracy Assessment",
+      "language": "E",
+      "startDate": 1535760000000,
+      "endDate": 1567296000000
+    },
+    {
+      "assessmentCode": "NME10",
+      "assessmentName": "Numeracy 10 Assessment",
+      "language": "E",
+      "startDate": 1567296000000,
+      "endDate": null
+    },
+    {
+      "assessmentCode": "NMF",
+      "assessmentName": "Evaluation de Numeratie",
+      "language": "F",
+      "startDate": 1535760000000,
+      "endDate": 1567296000000
+    },
+    {
+      "assessmentCode": "NMF10",
+      "assessmentName": "Evaluation de Numeratie 10",
+      "language": "F",
+      "startDate": 1567296000000,
+      "endDate": null
+    }
+  ],
+  "nonGradReasons": null,
+  "requirementsMet": null,
+  "gradStatus": {
+    "pen": null,
+    "program": "SCCP",
+    "programCompletionDate": null,
+    "gpa": null,
+    "honoursStanding": null,
+    "recalculateGradStatus": null,
+    "schoolOfRecord": "01919003",
+    "studentGrade": "11",
+    "studentStatus": "CUR",
+    "studentID": "ac339d70-7649-1a2e-8176-4a3b9cd1170e"
+  },
+  "gradOptionalProgramStatus": null,
+  "gradProgram": {
+    "programCode": "SCCP",
+    "programName": "Student Completion Certificate Program",
+    "description": "The School Completion “Evergreen” Certificate program. Recognizes the accomplishments of students with special needs and an Individual Education Plan who have met the goals of their education program. It is not a graduation credential.",
+    "displayOrder": 40,
+    "effectiveDate": 1151737200000,
+    "expiryDate": null
+  },
+  "school": null,
+  "graduated": false,
+  "projected": false
+}
