@@ -40,6 +40,8 @@ public class StudentCourse {
     private String genericCourseType;
     private String language;
     private String workExpFlag;
+    private String specialCase;
+    private String toWriteFlag;
     private String provExamCourse;
     private boolean isProjected;
     private boolean isFailed;
