@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
@@ -38,7 +37,7 @@ public class DuplicateAssessmentsRule implements Rule {
 		List<StudentAssessment> originalList = ruleProcessorData.getStudentAssessments();
 		List<StudentAssessment> studentAssessmentList = originalList.stream().filter(sc -> !sc.isNotCompleted() && !sc.isFailed())
 				.collect(Collectors.toList());
-		studentAssessmentList = getModifiedAndSortedData(studentAssessmentList);
+		getModifiedAndSortedData(studentAssessmentList);
 
 		for (int i = 0; i < studentAssessmentList.size() - 1; i++) {
 			for (int j = i + 1; j < studentAssessmentList.size(); j++) {
@@ -67,7 +66,7 @@ public class DuplicateAssessmentsRule implements Rule {
 									studentAssessmentList.get(j).getSessionDate(), studentAssessmentList, i, j);
 						}
 					} else if (proficiencyScore1 == 0.0 && proficiencyScore2 == 0.0) {
-						if (Character.compare(specialCase1, specialCase2) == 0) {
+						if (specialCase1 == specialCase2) {
 							compareSessionDates(studentAssessmentList.get(i).getSessionDate(),
 									studentAssessmentList.get(j).getSessionDate(), studentAssessmentList, i, j);
 						} else {
@@ -86,7 +85,7 @@ public class DuplicateAssessmentsRule implements Rule {
 		return ruleProcessorData;
 	}
 
-	private List<StudentAssessment> getModifiedAndSortedData(List<StudentAssessment> studentAssessmentList) {
+	private void getModifiedAndSortedData(List<StudentAssessment> studentAssessmentList) {
 		studentAssessmentList.forEach(sA -> {
 			if (sA.getAssessmentCode().equalsIgnoreCase("NME10") || sA.getAssessmentCode().equalsIgnoreCase("NME")) {
 				sA.setEquivalentCode("NME");
@@ -103,12 +102,10 @@ public class DuplicateAssessmentsRule implements Rule {
 				sA.setSpecialCase("");
 			}
 		});
-		Collections.sort(studentAssessmentList,
-				Comparator.comparing(StudentAssessment::getPen).thenComparing(StudentAssessment::getEquivalentCode)
-						.reversed().thenComparing(StudentAssessment::getProficiencyScore).reversed()
-						.thenComparing(StudentAssessment::getSpecialCase)
-						.thenComparing(StudentAssessment::getSessionDate));
-		return studentAssessmentList;
+		studentAssessmentList.sort(Comparator.comparing(StudentAssessment::getPen).thenComparing(StudentAssessment::getEquivalentCode)
+				.reversed().thenComparing(StudentAssessment::getProficiencyScore).reversed()
+				.thenComparing(StudentAssessment::getSpecialCase)
+				.thenComparing(StudentAssessment::getSessionDate));
 	}
 
 	public void compareSessionDates(String sessionDate1, String sessionDate2,
@@ -135,7 +132,7 @@ public class DuplicateAssessmentsRule implements Rule {
 
 	public void compareSpecialCases(char specialCase1, char specialCase2, List<StudentAssessment> studentAssessmentList,
 			int i, int j) {
-		if (Character.compare(specialCase1, specialCase2) > 0) {
+		if (specialCase1 > specialCase2) {
 			studentAssessmentList.get(i).setDuplicate(false);
 			studentAssessmentList.get(j).setDuplicate(true);
 		} else {

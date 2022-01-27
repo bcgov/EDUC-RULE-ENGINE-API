@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,8 +27,7 @@ public class LDCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        List<StudentCourse> studentCourseList = new ArrayList<StudentCourse>();
-        studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         logger.debug("###################### Finding LOCALLY DEVELOPED courses ######################");
 

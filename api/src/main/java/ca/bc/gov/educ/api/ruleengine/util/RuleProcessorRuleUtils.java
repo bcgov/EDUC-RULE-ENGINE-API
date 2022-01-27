@@ -32,7 +32,11 @@ public class RuleProcessorRuleUtils {
                         && !sc.isLocallyDeveloped()
                         && !sc.isRestricted()
                         && !sc.isBoardAuthorityAuthorized()
-                        && !sc.isIndependentDirectedStudies())
+                        && !sc.isIndependentDirectedStudies()
+                        && !sc.isLessCreditCourse()
+                        && !sc.isValidationCourse()
+                        && !sc.isCutOffCourse()
+                        && !sc.isGrade10Course())
                 .collect(Collectors.toList());
 
         if (!projected) {
@@ -58,6 +62,10 @@ public class RuleProcessorRuleUtils {
                         || sc.isRestricted()
                         || sc.isBoardAuthorityAuthorized()
                         || sc.isIndependentDirectedStudies()
+                        || sc.isLessCreditCourse()
+                        || sc.isValidationCourse()
+                        || sc.isCutOffCourse()
+                        || sc.isGrade10Course()
                         || (!projected && sc.isProjected()))
                 .collect(Collectors.toList());
     }

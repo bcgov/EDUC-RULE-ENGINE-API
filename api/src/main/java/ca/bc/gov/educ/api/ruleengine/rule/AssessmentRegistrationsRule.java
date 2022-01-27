@@ -3,9 +3,11 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRuleProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,29 +41,27 @@ public class AssessmentRegistrationsRule implements Rule {
 		for (StudentAssessment studentAssessment : studentAssessmentList) {
 			String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
 			String sessionDate = studentAssessment.getSessionDate() + "/01";
-			Date temp = new Date();
-
 			try {
-				temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
+				Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
 				sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
 			} catch (ParseException pe) {
 				logger.log(Level.SEVERE, "ERROR: {0}", pe.getMessage());
 			}
 
 			int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate, today);
-			String proficiencyScore = null;
+			String proficiencyScore;
 			if (studentAssessment.getProficiencyScore() == null) {
 				proficiencyScore = "0.0";
 			} else {
 				proficiencyScore = studentAssessment.getProficiencyScore().toString();
 			}
-			String specialCase = "";
+			String specialCase;
 			if (studentAssessment.getSpecialCase() == null) {
 				specialCase = "";
 			} else {
 				specialCase = studentAssessment.getSpecialCase();
 			}
-			String exceededWriteFlag = "";
+			String exceededWriteFlag;
             if(studentAssessment.getExceededWriteFlag() == null) {
             	exceededWriteFlag = "";
             }else {
@@ -79,17 +79,15 @@ public class AssessmentRegistrationsRule implements Rule {
 
 		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
-		prepareAssessmentForSpecialPrograms();
+		prepareAssessmentForOptionalPrograms();
 		return ruleProcessorData;
 	}
-	
-	private void prepareAssessmentForSpecialPrograms() {
-    	List<StudentAssessment> listAssessments = ruleProcessorData.getStudentAssessments();        
-        if(ruleProcessorData.isHasSpecialProgramDualDogwood())
-        	ruleProcessorData.setStudentAssessmentsForDualDogwood(RuleEngineApiUtils.getAssessmentClone(listAssessments));
-        if(ruleProcessorData.isHasSpecialProgramFrenchImmersion())
-        	ruleProcessorData.setStudentAssessmentsForFrenchImmersion(RuleEngineApiUtils.getAssessmentClone(listAssessments));
-    }
+
+	private void prepareAssessmentForOptionalPrograms() {
+    	List<StudentAssessment> listAssessments = ruleProcessorData.getStudentAssessments();
+		Map<String,OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
+		mapOptional.forEach((k,v)-> v.setStudentAssessmentsOptionalProgram(RuleEngineApiUtils.getAssessmentClone(listAssessments)));
+	}
 
 	@Override
 	public void setInputData(RuleData inputData) {

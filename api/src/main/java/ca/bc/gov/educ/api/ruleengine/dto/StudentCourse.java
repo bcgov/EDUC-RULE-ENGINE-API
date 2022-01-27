@@ -40,6 +40,9 @@ public class StudentCourse {
     private String genericCourseType;
     private String language;
     private String workExpFlag;
+    private String specialCase;
+    private String toWriteFlag;
+    private String provExamCourse;
     private boolean isProjected;
     private boolean isFailed;
     private boolean isDuplicate;
@@ -50,6 +53,11 @@ public class StudentCourse {
     private boolean isUsed;
     private boolean isRestricted;
     private boolean isNotEligibleForElective;
+    private boolean isUsedInMatchRule;
+    private boolean isLessCreditCourse;
+    private boolean isValidationCourse;
+    private boolean isCutOffCourse;
+    private boolean isGrade10Course;
 
     public Integer getCreditsUsedForGrad() {
         if (creditsUsedForGrad == null)

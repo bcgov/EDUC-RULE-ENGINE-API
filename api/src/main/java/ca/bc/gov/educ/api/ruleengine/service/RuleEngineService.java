@@ -1,14 +1,8 @@
 package ca.bc.gov.educ.api.ruleengine.service;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ca.bc.gov.educ.api.ruleengine.dto.ProgramAlgorithmRule;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.rule.Rule;
@@ -40,6 +34,8 @@ public class RuleEngineService {
             rule.setInputData(ruleProcessorData);
             ruleProcessorData = (RuleProcessorData)rule.fire();
         }
+        if(ruleProcessorData.getNonGradReasons() != null && ruleProcessorData.getNonGradReasons().isEmpty())
+            ruleProcessorData.setGraduated(true);
         return ruleProcessorData;
     }
 

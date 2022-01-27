@@ -36,10 +36,9 @@ public class IncompleteCoursesRule implements Rule {
         for (StudentCourse studentCourse : studentCourseList) {
             String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
             String sessionDate = studentCourse.getSessionDate() + "/01";
-            Date temp = new Date();
 
             try {
-                temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
+                Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
                 logger.error("ERROR: " + pe.getMessage());
