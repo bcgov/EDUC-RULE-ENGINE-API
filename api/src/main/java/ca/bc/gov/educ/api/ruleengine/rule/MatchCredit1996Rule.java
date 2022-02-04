@@ -39,6 +39,10 @@ public class MatchCredit1996Rule implements Rule {
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
         Map<String,Integer> map1996 = new HashMap();
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
+            return ruleProcessorData;
+        }
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         Collections.sort(courseList, Comparator.comparing(StudentCourse::getCourseLevel).reversed()
