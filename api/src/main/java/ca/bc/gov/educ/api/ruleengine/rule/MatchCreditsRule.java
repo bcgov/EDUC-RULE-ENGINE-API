@@ -33,7 +33,10 @@ public class MatchCreditsRule implements Rule {
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
         List<StudentCourse> courseList = ruleProcessorData.getStudentCourses();
-
+        if (courseList == null || courseList.isEmpty()) {
+            logger.warn("!!!Empty list sent to Match Credits Rule for processing");
+            return ruleProcessorData;
+        }
         List<ProgramRequirement> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
@@ -42,6 +45,9 @@ public class MatchCreditsRule implements Rule {
                 .collect(Collectors.toList());
 
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
+        if(courseRequirements == null) {
+            courseRequirements = new ArrayList<>();
+        }
         List<CourseRequirement> originalCourseRequirements = new ArrayList<>(courseRequirements);
 
         logger.debug("#### Match Program Rule size: " + gradProgramRulesMatch.size());

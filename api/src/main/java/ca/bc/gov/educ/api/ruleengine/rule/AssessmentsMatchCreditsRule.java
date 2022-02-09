@@ -54,6 +54,9 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 .collect(Collectors.toList());
 
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
+        if(assessmentRequirements == null) {
+            assessmentRequirements = new ArrayList<>();
+        }
         List<AssessmentRequirement> originalAssessmentRequirements = new ArrayList<>(assessmentRequirements);
 
         logger.debug(String.format("#### Match Program Rule size: %s",gradProgramRulesMatch.size()));
