@@ -36,30 +36,32 @@ public class RestrictedCoursesRule implements Rule {
         List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<CourseRestriction> restrictedCourses = ruleProcessorData.getCourseRestrictions();
-        for (int i = 0; i < studentCourses.size(); i++) {
-        	StudentCourse sCourse =  studentCourses.get(i);
-        	String courseCode = studentCourses.get(i).getCourseCode();
-        	String courseLevel = studentCourses.get(i).getCourseLevel();
-        	List<CourseRestriction> shortenedList = getMinimizedRestrictedCourses(restrictedCourses,courseLevel,courseCode);
-        	
-        	if(!shortenedList.isEmpty()) {
-				for (CourseRestriction courseRestriction : shortenedList) {
-					String restrictedCourse = courseRestriction.getRestrictedCourse();
-					StudentCourse tempCourseRestriction = studentCourses.stream()
-							.filter(sc -> restrictedCourse.compareTo(sc.getCourseCode()) == 0)
-							.findAny()
-							.orElse(null);
-					if (tempCourseRestriction != null
-							&& !tempCourseRestriction.isRestricted()
-							&& !sCourse.isRestricted()
-							&& !courseCode.equalsIgnoreCase(restrictedCourse)) {
+        if(restrictedCourses != null && !restrictedCourses.isEmpty()) {
+			for (int i = 0; i < studentCourses.size(); i++) {
+				StudentCourse sCourse = studentCourses.get(i);
+				String courseCode = studentCourses.get(i).getCourseCode();
+				String courseLevel = studentCourses.get(i).getCourseLevel();
+				List<CourseRestriction> shortenedList = getMinimizedRestrictedCourses(restrictedCourses, courseLevel, courseCode);
 
-						compareCredits(sCourse, tempCourseRestriction, studentCourses, i);
+				if (!shortenedList.isEmpty()) {
+					for (CourseRestriction courseRestriction : shortenedList) {
+						String restrictedCourse = courseRestriction.getRestrictedCourse();
+						StudentCourse tempCourseRestriction = studentCourses.stream()
+								.filter(sc -> restrictedCourse.compareTo(sc.getCourseCode()) == 0)
+								.findAny()
+								.orElse(null);
+						if (tempCourseRestriction != null
+								&& !tempCourseRestriction.isRestricted()
+								&& !sCourse.isRestricted()
+								&& !courseCode.equalsIgnoreCase(restrictedCourse)) {
+
+							compareCredits(sCourse, tempCourseRestriction, studentCourses, i);
+						}
 					}
 				}
-        	}
-        	
-        }
+
+			}
+		}
         ruleProcessorData.setStudentCourses(studentCourses);
 		List<StudentCourse> excludedCourses = RuleProcessorRuleUtils.getExcludedStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 		ruleProcessorData.setExcludedCourses(excludedCourses);

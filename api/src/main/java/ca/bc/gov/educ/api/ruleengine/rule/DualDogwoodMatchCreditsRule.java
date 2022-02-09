@@ -51,7 +51,9 @@ public class DualDogwoodMatchCreditsRule implements Rule {
 						&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 		List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
-
+		if(courseRequirements == null) {
+			courseRequirements = new ArrayList<>();
+		}
 		logger.debug("#### Match Optional Program Rule size: " + gradOptionalProgramRulesMatch.size());
 
 		ListIterator<StudentCourse> courseIterator = courseList.listIterator();

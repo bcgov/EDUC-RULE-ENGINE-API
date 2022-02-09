@@ -40,7 +40,7 @@ public class MatchCredit1996Rule implements Rule {
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
         Map<String,Integer> map1996 = new HashMap();
         if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
+            logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
             return ruleProcessorData;
         }
         List<StudentCourse> courseList = RuleProcessorRuleUtils
@@ -56,6 +56,9 @@ public class MatchCredit1996Rule implements Rule {
                 .collect(Collectors.toList());
 
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
+        if(courseRequirements == null) {
+            courseRequirements = new ArrayList<>();
+        }
         List<CourseRequirement> originalCourseRequirements = new ArrayList<>(courseRequirements);
 
         logger.debug("#### Match Program Rule size: " + gradProgramRulesMatch.size());

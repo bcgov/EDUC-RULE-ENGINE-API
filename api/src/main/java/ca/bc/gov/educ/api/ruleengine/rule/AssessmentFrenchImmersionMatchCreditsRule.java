@@ -52,7 +52,9 @@ public class AssessmentFrenchImmersionMatchCreditsRule implements Rule {
 						&& "A".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 		List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
-
+		if(assessmentRequirements == null) {
+			assessmentRequirements = new ArrayList<>();
+		}
 		logger.debug("#### Match Optional Program Rule size: " + gradOptionalProgramRulesMatch.size());
 
 		ListIterator<StudentAssessment> assessmentIterator = assessmentList.listIterator();
