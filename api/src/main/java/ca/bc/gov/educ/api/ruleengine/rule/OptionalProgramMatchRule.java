@@ -80,25 +80,7 @@ public class OptionalProgramMatchRule {
         }
 
         obj.setStudentAssessmentsOptionalProgram(finalAssessmentList);
-        if(gradOptionalProgramRulesMatch.size() != finalOptionalProgramRulesList.size()) {
-            List<OptionalProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneOptionalProgramRule(gradOptionalProgramRulesMatch);
-            unusedRules.removeAll(finalOptionalProgramRulesList);
-            finalOptionalProgramRulesList.addAll(unusedRules);
-        }
-
-        List<OptionalProgramRequirement> failedRules = finalOptionalProgramRulesList.stream().filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed())
-                .collect(Collectors.toList());
-
-        handleFailedRules(failedRules,requirementsNotMet,obj);
-
-        List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
-
-        if (resMet == null)
-            resMet = new ArrayList<>();
-
-        resMet.addAll(requirementsMet);
-
-        obj.setRequirementsMetOptionalProgram(resMet);
+        handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet);
 
     }
     public static void handleFailedRules(List<OptionalProgramRequirement> failedRules, List<GradRequirement> requirementsNotMet, OptionalProgramRuleProcessor obj) {
@@ -249,6 +231,7 @@ public class OptionalProgramMatchRule {
             OptionalProgramRequirement tempOptionalProgramRule = null;
 
             handleOptionalProgramCourseMatchRule(tempCourseRequirement,tempOptionalProgramRule,requirementsMet,tempCourse,gradOptionalProgramRulesMatch);
+
             try {
                 tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
                 if (tempSC != null)
@@ -265,8 +248,10 @@ public class OptionalProgramMatchRule {
                 logger.error("ERROR:{}", e.getMessage());
             }
         }
-
         obj.setStudentCoursesOptionalProgram(finalCourseList);
+        handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet);
+    }
+    public static void handleRule(List<OptionalProgramRequirement> gradOptionalProgramRulesMatch, List<OptionalProgramRequirement> finalOptionalProgramRulesList, List<GradRequirement> requirementsNotMet, OptionalProgramRuleProcessor obj, List<GradRequirement> requirementsMet) {
         if(gradOptionalProgramRulesMatch.size() != finalOptionalProgramRulesList.size()) {
             List<OptionalProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneOptionalProgramRule(gradOptionalProgramRulesMatch);
             unusedRules.removeAll(finalOptionalProgramRulesList);
