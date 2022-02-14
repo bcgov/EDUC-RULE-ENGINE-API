@@ -44,7 +44,7 @@ public class ProgramCompletionDateRule implements Rule {
 	    		 Date pCD = RuleEngineApiUtils.parsingTraxDate(programCompletionDate);
 	    		 int diff = RuleEngineApiUtils.getDifferenceInDays(RuleProcessorRuleUtils.getProgramCompletionDate(pCD), RuleProcessorRuleUtils.getCurrentDate());
 	    		 if(diff >= 0) {
-	    			logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
+	    			logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
 	 				gradProgramRule.getProgramRequirementCode().setPassed(true);
 	 				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 	 				if (reqsMet == null)
@@ -54,7 +54,7 @@ public class ProgramCompletionDateRule implements Rule {
 	 				return ruleProcessorData;
 	    		 }
 	    	}
-    		logger.info(gradProgramRule.getProgramRequirementCode().getDescription() + " Failed!");
+    		logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
 			ruleProcessorData.setGraduated(false);
 			List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
 			if (nonGradReasons == null)

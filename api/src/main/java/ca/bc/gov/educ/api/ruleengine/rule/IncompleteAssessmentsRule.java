@@ -40,7 +40,7 @@ public class IncompleteAssessmentsRule implements Rule {
                 Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
-                logger.error("ERROR: " + pe.getMessage());
+                logger.error("ERROR: {}", pe.getMessage());
             }
 
             int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
@@ -72,11 +72,7 @@ public class IncompleteAssessmentsRule implements Rule {
 
         ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-        logger.info("Not Completed Assessments: " +
-                (int) studentAssessmentList
-                        .stream()
-                        .filter(StudentAssessment::isNotCompleted)
-                        .count());
+        logger.info("Not Completed Assessments: {}",(int) studentAssessmentList.stream().filter(StudentAssessment::isNotCompleted).count());
 
         return ruleProcessorData;
     }

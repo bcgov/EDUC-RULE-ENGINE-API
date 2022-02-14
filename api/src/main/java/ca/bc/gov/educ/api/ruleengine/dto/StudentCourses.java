@@ -12,7 +12,7 @@ public class StudentCourses {
 
     @Override
     public String toString() {
-        StringBuffer output = new StringBuffer("");
+        StringBuilder output = new StringBuilder("");
 
         for (StudentCourse sc : studentCourseList) {
             output.append(sc.toString())

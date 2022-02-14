@@ -50,7 +50,7 @@ public class MatchCreditsRule implements Rule {
         }
         List<CourseRequirement> originalCourseRequirements = new ArrayList<>(courseRequirements);
 
-        logger.debug("#### Match Program Rule size: " + gradProgramRulesMatch.size());
+        logger.debug("#### Match Program Rule size: {}", gradProgramRulesMatch.size());
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
@@ -61,15 +61,15 @@ public class MatchCreditsRule implements Rule {
         while (courseIterator.hasNext()) {
             StudentCourse tempCourse = courseIterator.next();
 
-            logger.debug("Processing Course: Code=" + tempCourse.getCourseCode() + " Level=" + tempCourse.getCourseLevel());
-            logger.debug("Course Requirements size: " + courseRequirements.size());
+            logger.debug("Processing Course: Code= {} Level {}",tempCourse.getCourseCode(),tempCourse.getCourseLevel());
+            logger.debug("Course Requirements size: {}", courseRequirements.size());
 
             List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
                     .collect(Collectors.toList());
 
-            logger.debug("Temp Course Requirement: " + tempCourseRequirement);
+            logger.debug("Temp Course Requirement: {}",tempCourseRequirement);
 
             ProgramRequirement tempProgramRule = null;
 
@@ -83,27 +83,27 @@ public class MatchCreditsRule implements Rule {
                 	}
                 }
             }
-            logger.debug("Temp Program Rule: " + tempProgramRule);
+            logger.debug("Temp Program Rule: {}",tempProgramRule);
             processCourse(tempCourse,tempCourseRequirement,tempProgramRule,requirementsMet,gradProgramRulesMatch,courseCreditException);
 
             try {
                 StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
                 if (tempSC != null)
                     finalCourseList.add(tempSC);
-                logger.debug("TempSC: " + tempSC);
-                logger.debug("Final course List size: : " + finalCourseList.size());
+                logger.debug("TempSC: {}",tempSC);
+                logger.debug("Final course List size: {}: ",finalCourseList.size());
                 ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), ProgramRequirement.class);
                 if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
                     finalProgramRulesList.add(tempPR);
                 }
-                logger.debug("TempPR: " + tempPR);
-                logger.debug("Final Program rules list size: " + finalProgramRulesList.size());
+                logger.debug("TempPR: {}",tempPR);
+                logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
             } catch (IOException e) {
-                logger.error("ERROR:" + e.getMessage());
+                logger.error("ERROR: {}",e.getMessage());
             }
         }
 
-        logger.debug("Final Program rules list: " + finalProgramRulesList);
+        logger.debug("Final Program rules list: {}",finalProgramRulesList);
         processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);        
 
         return ruleProcessorData;
@@ -119,7 +119,7 @@ public class MatchCreditsRule implements Rule {
                     .orElse(null) == null) {
             	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet,gradProgramRulesMatch,null,courseCreditException);
             } else {
-                logger.debug("!!! Program Rule met Already: " + tempProgramRule);
+                logger.debug("!!! Program Rule met Already: {}",tempProgramRule);
             }
         }else {
         	if(tempCourse.getCourseCode().startsWith("Y") 
@@ -175,7 +175,7 @@ public class MatchCreditsRule implements Rule {
                 .collect(Collectors.toList()));
        
 
-        logger.debug("Final Program rules list size 2: " + finalProgramRulesList.size());
+        logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
 
         ruleProcessorData.setStudentCourses(finalCourseList);
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);

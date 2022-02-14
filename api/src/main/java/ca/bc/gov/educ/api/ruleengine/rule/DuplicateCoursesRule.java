@@ -42,9 +42,7 @@ public class DuplicateCoursesRule implements Rule {
                         && studentCourseList.get(i).getCourseLevel().equals(studentCourseList.get(j).getCourseLevel())
                         && !studentCourseList.get(j).isDuplicate()) {
 
-                	logger.debug("comparing " + studentCourseList.get(i).getCourseCode() + " with "
-                            + studentCourseList.get(j).getCourseCode() + " -> Duplicate FOUND - CourseID:"
-                            + studentCourseList.get(i).getCourseCode() + "-" + studentCourseList.get(i).getCourseLevel());
+                	logger.debug("comparing {} with {}  -> Duplicate FOUND - CourseID: {}-{}",studentCourseList.get(i).getCourseCode(),studentCourseList.get(j).getCourseCode(),studentCourseList.get(i).getCourseCode(),studentCourseList.get(i).getCourseLevel());
 
                     if (studentCourseList.get(i).getCompletedCoursePercentage() > studentCourseList.get(j).getCompletedCoursePercentage()) {
                         studentCourseList.get(i).setDuplicate(false);
@@ -60,7 +58,7 @@ public class DuplicateCoursesRule implements Rule {
             }
         }
 
-        logger.info("Duplicate Courses: "+(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
+        logger.info("Duplicate Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
         return ruleProcessorData;
     }
     

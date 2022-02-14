@@ -40,11 +40,7 @@ public class CPCoursesRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Career Program Courses: " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isCareerPrep)
-                        .count());
+        logger.info("Career Program Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isCareerPrep).count());
 
         return ruleProcessorData;
     }

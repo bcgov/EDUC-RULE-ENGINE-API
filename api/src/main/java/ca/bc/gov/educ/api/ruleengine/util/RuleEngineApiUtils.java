@@ -24,7 +24,7 @@ import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 public class RuleEngineApiUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleEngineApiUtils.class);
-    private static final String ERROR_MSG = "Error : ";
+    private static final String ERROR_MSG = "Error : {}";
     private static final String DATE_FORMAT = "yyyyMM";
 
     private RuleEngineApiUtils() {}
@@ -52,7 +52,7 @@ public class RuleEngineApiUtils {
         try {
             date = simpleDateFormat.parse(dateString);
         } catch (ParseException e) {
-            logger.info(ERROR_MSG+e.getMessage());
+            logger.info(ERROR_MSG,e.getMessage());
         }
 
         return date;
@@ -65,7 +65,7 @@ public class RuleEngineApiUtils {
         try {
             date = simpleDateFormat.parse(dateString);
         } catch (ParseException e) {
-            logger.info(ERROR_MSG+e.getMessage());
+            logger.info(ERROR_MSG,e.getMessage());
         }
 
         return date;
@@ -84,7 +84,7 @@ public class RuleEngineApiUtils {
             return localDate.getYear() + "/" + String.format("%02d", localDate.getMonthValue());
 
         } catch (ParseException e) {
-            logger.info(ERROR_MSG+e.getMessage());
+            logger.info(ERROR_MSG,e.getMessage());
             return null;
         }
     }
@@ -98,7 +98,7 @@ public class RuleEngineApiUtils {
             String sDates = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             sDate = RuleEngineApiUtils.parseDate(sDates, "yyyy-MM-dd");
          } catch (ParseException pe) {
-            logger.error("ERROR: " + pe.getMessage());
+            logger.error(ERROR_MSG,pe.getMessage());
          }
          return sDate;
     }
@@ -130,7 +130,7 @@ public class RuleEngineApiUtils {
 			json = mapper.writeValueAsString(listCourses);
 			return mapper.readValue(json, new TypeReference<List<StudentCourse>>(){});
 		} catch (JsonProcessingException e) {
-			logger.info(ERROR_MSG+e.getMessage());
+			logger.info(ERROR_MSG,e.getMessage());
 		}
 		return Collections.emptyList();
 		
@@ -144,7 +144,7 @@ public class RuleEngineApiUtils {
 			json = mapper.writeValueAsString(listAssessments);
 			return mapper.readValue(json, new TypeReference<List<StudentAssessment>>(){});
 		} catch (JsonProcessingException e) {
-			logger.info(ERROR_MSG+e.getMessage());
+			logger.info(ERROR_MSG,e.getMessage());
 		}
 		return Collections.emptyList();
 		
@@ -158,7 +158,7 @@ public class RuleEngineApiUtils {
 			json = mapper.writeValueAsString(gradProgramRulesMatch);
 			return mapper.readValue(json, new TypeReference<List<ProgramRequirement>>(){});
 		} catch (JsonProcessingException e) {
-			logger.info(ERROR_MSG+e.getMessage());
+			logger.info(ERROR_MSG,e.getMessage());
 		}
 		return Collections.emptyList();
 		
@@ -171,7 +171,7 @@ public class RuleEngineApiUtils {
 			json = mapper.writeValueAsString(rules);
 			return mapper.readValue(json, new TypeReference<List<OptionalProgramRequirement>>(){});
 		} catch (JsonProcessingException e) {
-			logger.info(ERROR_MSG+e.getMessage());
+			logger.info(ERROR_MSG,e.getMessage());
 		}
 		return Collections.emptyList();
 		

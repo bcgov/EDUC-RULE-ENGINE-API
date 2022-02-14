@@ -38,11 +38,7 @@ public class LDCoursesRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Locally Developed Courses: " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isLocallyDeveloped)
-                        .count());
+        logger.info("Locally Developed Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isLocallyDeveloped) .count());
 
         return ruleProcessorData;
     }
