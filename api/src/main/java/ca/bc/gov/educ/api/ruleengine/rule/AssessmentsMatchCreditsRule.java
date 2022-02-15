@@ -191,7 +191,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
         reqsMet.addAll(requirementsMet);
         ruleProcessorData.setRequirementsMet(reqsMet);
-
+        ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
         return ruleProcessorData;
     }
 
