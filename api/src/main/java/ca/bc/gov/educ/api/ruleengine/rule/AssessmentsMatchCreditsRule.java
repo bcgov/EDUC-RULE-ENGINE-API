@@ -203,6 +203,8 @@ public class AssessmentsMatchCreditsRule implements Rule {
         sA.setGradReqMet(pr.getProgramRequirementCode().getProReqCode());
         sA.setGradReqMetDetail(pr.getProgramRequirementCode().getProReqCode() + " - " + pr.getProgramRequirementCode().getLabel());
         sA.setSpecialCase("M");
+        sA.setUsed(true);
+        sA.setProficiencyScore(Double.valueOf("0"));
         finalAssessmentList.add(sA);
         pr.getProgramRequirementCode().setPassed(true);
         requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getProReqCode(), pr.getProgramRequirementCode().getLabel()));
