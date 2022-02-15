@@ -53,13 +53,12 @@ public class AdultWorkExperienceRule implements Rule {
 		}
 		List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
 		
-		logger.debug("Unique Courses: " + studentCourses.size());
+		logger.debug("Unique Courses: {}",studentCourses.size());
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MWEX".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 
-		logger.debug(gradProgramRules.toString());
 		List<StudentCourse> finalCourseList = new ArrayList<>();
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			int numberOfWExCourses = 0;
@@ -68,15 +67,15 @@ public class AdultWorkExperienceRule implements Rule {
 	        while (courseIterator.hasNext()) {
 	            StudentCourse tempCourse = courseIterator.next();
 
-	            logger.debug("Processing Course: Code=" + tempCourse.getCourseCode() + " Level=" + tempCourse.getCourseLevel());
-	            logger.debug("Course Requirements size: " + courseRequirements.size());
+	            logger.debug("Processing Course: Code= {} Level= {}",tempCourse.getCourseCode(),tempCourse.getCourseLevel());
+	            logger.debug("Course Requirements size: {}",courseRequirements.size());
 
 	            List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
 	                    .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
 	                            && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
 	                    .collect(Collectors.toList());
 
-	            logger.debug("Temp Course Requirement: " + tempCourseRequirement);
+	            logger.debug("Temp Course Requirement: {}",tempCourseRequirement);
 
 	            ProgramRequirement tempProgramRule = null;
 
@@ -103,7 +102,7 @@ public class AdultWorkExperienceRule implements Rule {
 	                if (tempSC != null)
 	                    finalCourseList.add(tempSC);
 	            } catch (IOException e) {
-	                logger.error("ERROR:" + e.getMessage());
+	                logger.error("ERROR: {}",e.getMessage());
 	            }
 	        }
 	        

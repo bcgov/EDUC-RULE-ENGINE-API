@@ -41,7 +41,7 @@ public class IncompleteCoursesRule implements Rule {
                 Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
-                logger.error("ERROR: " + pe.getMessage());
+                logger.error("ERROR: {}" , pe.getMessage());
             }
 
             int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
@@ -57,11 +57,7 @@ public class IncompleteCoursesRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Not Completed Courses: " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isNotCompleted)
-                        .count());
+        logger.info("Not Completed Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isNotCompleted).count());
 
         return ruleProcessorData;
     }

@@ -46,7 +46,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 		&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
        
-        logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: " + gradOptionalProgramMinCreditElectiveRulesMatch.size());
+        logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<StudentCourse> finalCourseList2 = new ArrayList<>();
         StudentCourse tempSC;
@@ -77,7 +77,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 if (tempSC != null)
                     finalCourseList.add(tempSC);
             } catch (IOException e) {
-                logger.error("ERROR:" + e.getMessage());
+                logger.error("ERROR: {}",e.getMessage());
             }
             if ((totalCredits == requiredCredits) && totalCredits != 0) {
             	requirementAchieved = true;
@@ -113,7 +113,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 if (tempSC != null)
                 	finalCourseList2.add(tempSC);
             } catch (IOException e) {
-                logger.error("ERROR:" + e.getMessage());
+                logger.error("ERROR: {}",e.getMessage());
             }
             
             if ((totalCreditsGrade11or12 == requiredCreditsGrad11or12) && totalCreditsGrade11or12 != 0) {

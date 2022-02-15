@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RegistrationsRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(LDCoursesRule.class);
+    private static Logger logger = LoggerFactory.getLogger(RegistrationsRule.class);
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -41,7 +41,7 @@ public class RegistrationsRule implements Rule {
                 Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
-                logger.error("ERROR: " + pe.getMessage());
+                logger.error("ERROR: {}",pe.getMessage());
             }
 
             int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
@@ -58,11 +58,7 @@ public class RegistrationsRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Projected Courses (Registrations): " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isProjected)
-                        .count());
+        logger.info("Projected Courses (Registrations): {}",(int) studentCourseList.stream().filter(StudentCourse::isProjected).count());
 
         return ruleProcessorData;
     }

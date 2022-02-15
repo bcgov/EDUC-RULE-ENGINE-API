@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Component
-public class CourseRequirementCode {
+public class CourseRequirementCodeDTO {
     private String courseRequirementCode;
     private String label;
     private String description;

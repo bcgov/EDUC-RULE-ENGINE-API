@@ -37,6 +37,8 @@ public class RuleEngineService {
         if(ruleProcessorData.getNonGradReasons() == null || ruleProcessorData.getNonGradReasons().isEmpty()) {
             if(ruleProcessorData.getRequirementsMet() != null && !ruleProcessorData.getRequirementsMet().isEmpty()) {
                 ruleProcessorData.setGraduated(true);
+            }else {
+                ruleProcessorData.setGraduated(false);
             }
         }else {
             ruleProcessorData.setGraduated(false);

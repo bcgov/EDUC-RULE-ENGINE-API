@@ -39,11 +39,7 @@ public class ExcludeGrade10LevelRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Grade Level 10 Courses: " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isGrade10Course)
-                        .count());
+        logger.info("Grade Level 10 Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isGrade10Course).count());
 
         return ruleProcessorData;
     }

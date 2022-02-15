@@ -51,7 +51,7 @@ public class CareerProgramMatchRule implements Rule {
                 		&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
        
-        logger.debug("#### Career Program Rule size: " + careerProgramRulesMatch.size());
+        logger.debug("#### Career Program Rule size: {}", careerProgramRulesMatch.size());
 
         ListIterator<StudentCourse> studentCourseIterator = courseList.listIterator();
         int totalCredits = 0;        
@@ -62,43 +62,41 @@ public class CareerProgramMatchRule implements Rule {
             
         	StudentCourse sc = studentCourseIterator.next();
         	for(OptionalProgramRequirement pR:careerProgramRulesMatch) {            	
-            	if((pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0)) {
-            		if(sc.getWorkExpFlag() != null && sc.getWorkExpFlag().equalsIgnoreCase("Y")) {
-	            		requiredCredits = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
-	            		if (totalCredits + sc.getCredits() <= requiredCredits) {
-	    	                totalCredits += sc.getCredits();  
-	    	                sc.setCreditsUsedForGrad(sc.getCredits());
-	    	            }
-	    	            else {
-	    	                int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-	    	                totalCredits = requiredCredits;
-	    	                sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
-	    	            }
-	            		
-	            		if (totalCredits >= requiredCredits) {
-	            			requirementsMet.add(new GradRequirement(pR.getOptionalProgramRequirementCode().getOptProReqCode(), pR.getOptionalProgramRequirementCode().getLabel()));
-	            			pR.getOptionalProgramRequirementCode().setPassed(true);
-	            		}
-	            		if (sc.getGradReqMet().length() > 0) {
+            	if((pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) && (sc.getWorkExpFlag() != null && sc.getWorkExpFlag().equalsIgnoreCase("Y"))) {
+                    requiredCredits = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
+                    if (totalCredits + sc.getCredits() <= requiredCredits) {
+                        totalCredits += sc.getCredits();
+                        sc.setCreditsUsedForGrad(sc.getCredits());
+                    }
+                    else {
+                        int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+                        totalCredits = requiredCredits;
+                        sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+                    }
 
-	    					sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getOptionalProgramRequirementCode().getOptProReqCode());
-	    					sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getOptionalProgramRequirementCode().getOptProReqCode() + " - "
-	    							+ pR.getOptionalProgramRequirementCode().getLabel());
-	    				} else {
-	    					sc.setGradReqMet(pR.getOptionalProgramRequirementCode().getOptProReqCode());
-	    					sc.setGradReqMetDetail(
-	    							pR.getOptionalProgramRequirementCode().getOptProReqCode() + " - " + pR.getOptionalProgramRequirementCode().getLabel());
-	    				}
-	            		sc.setUsed(true);
-            		}
-            	}
+                    if (totalCredits >= requiredCredits) {
+                        requirementsMet.add(new GradRequirement(pR.getOptionalProgramRequirementCode().getOptProReqCode(), pR.getOptionalProgramRequirementCode().getLabel()));
+                        pR.getOptionalProgramRequirementCode().setPassed(true);
+                    }
+                    if (sc.getGradReqMet().length() > 0) {
+
+                        sc.setGradReqMet(sc.getGradReqMet() + ", " + pR.getOptionalProgramRequirementCode().getOptProReqCode());
+                        sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + pR.getOptionalProgramRequirementCode().getOptProReqCode() + " - "
+                                + pR.getOptionalProgramRequirementCode().getLabel());
+                    } else {
+                        sc.setGradReqMet(pR.getOptionalProgramRequirementCode().getOptProReqCode());
+                        sc.setGradReqMetDetail(
+                                pR.getOptionalProgramRequirementCode().getOptProReqCode() + " - " + pR.getOptionalProgramRequirementCode().getLabel());
+                    }
+                    sc.setUsed(true);
+                }
             }
             try {
                 StudentCourse tempSC= objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
                 if (tempSC != null)
                     finalCourseList.add(tempSC);
             } catch (IOException e) {
-                logger.error("ERROR:" + e.getMessage());
+                logger.error("ERROR: {}",e.getMessage());
             }
 	       
             if ((totalCredits >= requiredCredits) && totalCredits != 0) {
