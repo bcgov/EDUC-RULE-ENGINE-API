@@ -52,43 +52,34 @@ public class MinElectiveCreditsRule implements Rule {
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
-
-			List<StudentCourse> tempStudentCourseList;
-
-			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
-					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsedInMatchRule()).collect(Collectors.toList());
-			} else {
-				tempStudentCourseList = studentCourses.stream()
-						.filter(sc -> !sc.isUsedInMatchRule()
-								&& sc.getCourseLevel().compareTo(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) == 0)
-						.collect(Collectors.toList());
-			}
-
-			for (StudentCourse sc : tempStudentCourseList) {
-				if (totalCredits + sc.getCredits() <= requiredCredits) {
-					totalCredits += sc.getCredits();
-					sc.setCreditsUsedForGrad(sc.getCredits());
-				} else {
-					int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-					totalCredits = requiredCredits;
-					sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+			for (StudentCourse sc : studentCourses) {
+				if(sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null) {
+					if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
+						totalCredits += sc.getLeftOverCredits();
+						sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
+					} else {
+						int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
+						totalCredits = requiredCredits;
+						sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
+					}
+					setGradReqMet(sc,gradProgramRule);
 				}
-				if (sc.getGradReqMet().length() > 0) {
 
-					sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode());
-					sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode() + " - "
-							+ gradProgramRule.getProgramRequirementCode().getLabel());
-				} else {
-					sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getProReqCode());
-					sc.setGradReqMetDetail(
-							gradProgramRule.getProgramRequirementCode().getProReqCode() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+				if(!sc.isUsedInMatchRule()){
+					if (totalCredits + sc.getCredits() <= requiredCredits) {
+						totalCredits += sc.getCredits();
+						sc.setCreditsUsedForGrad(sc.getCredits());
+					} else {
+						int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+						totalCredits = requiredCredits;
+						sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+					}
+					setGradReqMet(sc,gradProgramRule);
 				}
-				sc.setUsed(true);
-
 				if (totalCredits == requiredCredits) {
 					break;
 				}
+
 			}
 
 			if (totalCredits >= requiredCredits) {
@@ -122,6 +113,21 @@ public class MinElectiveCreditsRule implements Rule {
 		}
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
+	}
+
+	private void setGradReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
+		if (sc.getGradReqMet().length() > 0) {
+
+			sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode());
+			sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode() + " - "
+					+ gradProgramRule.getProgramRequirementCode().getLabel());
+		} else {
+			sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getProReqCode());
+			sc.setGradReqMetDetail(
+					gradProgramRule.getProgramRequirementCode().getProReqCode() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+		}
+		sc.setUsed(true);
+
 	}
 
 	@Override
