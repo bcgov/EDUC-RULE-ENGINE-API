@@ -59,6 +59,7 @@ public class StudentCourse {
     private boolean isValidationCourse;
     private boolean isCutOffCourse;
     private boolean isGrade10Course;
+    private Integer leftOverCredits;
 
     public Integer getCreditsUsedForGrad() {
         if (creditsUsedForGrad == null)

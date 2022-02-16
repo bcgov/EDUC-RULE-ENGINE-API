@@ -193,7 +193,13 @@ public class MatchCreditsRule implements Rule {
     public void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch, String exceptionalCase,Map<String,Integer> courseCreditException) {
     	tempCourse.setUsed(true);
         tempCourse.setUsedInMatchRule(true);
-        tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
+        if(courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
+            tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
+        }else {
+            int leftOverCredits = tempCourse.getCredits() - courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode());
+            tempCourse.setCreditsUsedForGrad(leftOverCredits != 0?leftOverCredits:tempCourse.getCredits());
+            tempCourse.setLeftOverCredits(leftOverCredits);
+        }
 
         if (tempCourse.getGradReqMet().length() > 0) {
 
@@ -206,6 +212,7 @@ public class MatchCreditsRule implements Rule {
         }
         if(tempCourse.getCreditsUsedForGrad() == 2) {
             tempProgramRule.getProgramRequirementCode().setTempFailed(true);
+
             courseCreditException.merge(tempProgramRule.getProgramRequirementCode().getProReqCode(), 2, Integer::sum);
         }
         if(exceptionalCase != null)
