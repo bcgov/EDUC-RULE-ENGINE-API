@@ -177,4 +177,18 @@ public class RuleEngineApiUtils {
 		
     }
 
+    public static boolean checkDateForRestrictedCourses(String startDate,String endDate,String currentSessionDate) {
+        try {
+            Date sDate = parseDate(startDate+"/01","yyyy/MM/dd");
+            if(endDate != null) {
+                Date eDate = parseDate(endDate + "/01", "yyyy/MM/dd");
+                return parseDate(currentSessionDate + "/01", "yyyy/MM/dd").after(sDate) && parseDate(currentSessionDate + "/01", "yyyy/MM/dd").before(eDate);
+            }else {
+                return parseDate(currentSessionDate + "/01", "yyyy/MM/dd").after(sDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
