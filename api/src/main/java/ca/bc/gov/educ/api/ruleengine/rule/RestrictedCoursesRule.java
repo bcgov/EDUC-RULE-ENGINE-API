@@ -1,22 +1,21 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import ca.bc.gov.educ.api.ruleengine.dto.*;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Component
@@ -44,20 +43,20 @@ public class RestrictedCoursesRule implements Rule {
 			StudentCourse sCourse = studentCourses.get(i);
 			String courseCode = studentCourses.get(i).getCourseCode();
 			String courseLevel = studentCourses.get(i).getCourseLevel();
-			List<CourseRestriction> shortenedList = getMinimizedRestrictedCourses(restrictedCourses, courseLevel, courseCode);
+			String sessionDate = studentCourses.get(i).getSessionDate();
+			List<CourseRestriction> shortenedList = getMinimizedRestrictedCourses(restrictedCourses, courseLevel, courseCode,sessionDate);
 
 			if (!shortenedList.isEmpty()) {
 				for (CourseRestriction courseRestriction : shortenedList) {
 					String restrictedCourse = courseRestriction.getRestrictedCourse();
 					StudentCourse tempCourseRestriction = studentCourses.stream()
-							.filter(sc -> restrictedCourse.compareTo(sc.getCourseCode()) == 0)
-							.findAny()
-							.orElse(null);
+								.filter(sc -> restrictedCourse.compareTo(sc.getCourseCode()) == 0 )
+								.findAny()
+								.orElse(null);
 					if (tempCourseRestriction != null
 							&& !tempCourseRestriction.isRestricted()
 							&& !sCourse.isRestricted()
 							&& !courseCode.equalsIgnoreCase(restrictedCourse)) {
-
 						compareCredits(sCourse, tempCourseRestriction, studentCourses, i);
 					}
 				}
@@ -72,16 +71,16 @@ public class RestrictedCoursesRule implements Rule {
         return ruleProcessorData;
     }
     
-    private List<CourseRestriction> getMinimizedRestrictedCourses(List<CourseRestriction> restrictedCourses, String courseLevel, String courseCode) {
+    private List<CourseRestriction> getMinimizedRestrictedCourses(List<CourseRestriction> restrictedCourses, String courseLevel, String courseCode,String sessionDate) {
     	List<CourseRestriction> shortenedList;
     	if(StringUtils.isNotBlank(courseLevel)) {
         	shortenedList = restrictedCourses.stream()
         			.filter(cR -> courseCode.compareTo(cR.getMainCourse()) == 0
-        			&& courseLevel.compareTo(cR.getMainCourseLevel()) == 0)
+        			&& courseLevel.compareTo(cR.getMainCourseLevel()) == 0 && RuleEngineApiUtils.checkDateForRestrictedCourses(cR.getRestrictionStartDate(),cR.getRestrictionEndDate(),sessionDate))
         			.collect(Collectors.toList());
     	}else {
     		shortenedList = restrictedCourses.stream()
-        			.filter(cR -> courseCode.compareTo(cR.getMainCourse()) == 0)
+        			.filter(cR -> courseCode.compareTo(cR.getMainCourse()) == 0 && RuleEngineApiUtils.checkDateForRestrictedCourses(cR.getRestrictionStartDate(),cR.getRestrictionEndDate(),sessionDate))
         			.collect(Collectors.toList());
     	}
     	return shortenedList;

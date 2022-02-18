@@ -15,6 +15,7 @@ public class RuleEngineApiConstants {
     public static final String REQUIREMENT_CODE_ATTRIBUTE = "requirementCode";
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_FORMAT = "yyyy/MM/dd";
 
     //Default Attribute value constants
     public static final String DEFAULT_CREATED_BY = "RuleEngineAPI";
