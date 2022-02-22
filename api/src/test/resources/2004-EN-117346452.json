@@ -292,7 +292,7 @@
     },
     {
       "programAlgoRuleID": "d3262fbc-9b82-9c4f-e053-98e9228e9bb7",
-      "graduationProgramCode": "1996-EN",
+      "graduationProgramCode": "2004-EN",
       "sortOrder": 61,
       "algorithmRuleCode": {
         "algoRuleCode": "EXCL_AFT_PRG_CUTOFF_RULE",
