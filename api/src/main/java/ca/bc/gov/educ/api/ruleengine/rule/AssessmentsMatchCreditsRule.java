@@ -179,7 +179,6 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
-        finalAssessmentList.addAll(ruleProcessorData.getExcludedAssessments());
         ruleProcessorData.setStudentAssessments(finalAssessmentList);
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);
         ruleProcessorData.setAssessmentRequirements(originalAssessmentRequirements);
