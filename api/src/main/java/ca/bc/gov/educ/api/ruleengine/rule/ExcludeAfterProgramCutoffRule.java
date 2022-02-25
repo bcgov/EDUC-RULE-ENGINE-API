@@ -31,7 +31,7 @@ public class ExcludeAfterProgramCutoffRule implements Rule {
          List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         logger.debug("###################### Finding Course Taken after program cutoff courses ######################");
-        String cutoffDate = "2011-06-01";
+        String cutoffDate = RuleEngineApiUtils.formatDate(ruleProcessorData.getGradProgram().getExpiryDate(), "yyyy-MM-dd");
         for (StudentCourse studentCourse : studentCourseList) {
 
             String sessionDate = studentCourse.getSessionDate() + "/01";

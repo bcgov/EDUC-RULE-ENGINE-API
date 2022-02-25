@@ -3,6 +3,9 @@ package ca.bc.gov.educ.api.ruleengine.util;
 import java.util.Date;
 
 public class RuleEngineApiConstants {
+
+    private RuleEngineApiConstants () {}
+
     //API end-point Mapping constants
     public static final String API_ROOT_MAPPING = "";
     public static final String API_VERSION = "v1";
@@ -10,6 +13,9 @@ public class RuleEngineApiConstants {
 
     //Attribute Constants
     public static final String REQUIREMENT_CODE_ATTRIBUTE = "requirementCode";
+
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_FORMAT = "yyyy/MM/dd";
 
     //Default Attribute value constants
     public static final String DEFAULT_CREATED_BY = "RuleEngineAPI";

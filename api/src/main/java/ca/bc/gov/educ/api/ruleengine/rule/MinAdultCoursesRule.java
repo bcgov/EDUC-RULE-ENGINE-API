@@ -55,7 +55,7 @@ public class MinAdultCoursesRule implements Rule {
 		if(diff > 0) {
 			return ruleProcessorData;
 		}
-		logger.debug("Unique Courses: " + studentCourses.size());
+		logger.debug("Unique Courses: {}",studentCourses.size());
 		String dobOfStudent = ruleProcessorData.getGradStudent().getDob();
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MAC18".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
@@ -107,7 +107,7 @@ public class MinAdultCoursesRule implements Rule {
 			}
 
 			if (totalCredits >= requiredCredits) {
-				logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
+				logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
 				gradProgramRule.getProgramRequirementCode().setPassed(true);
 
 				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
@@ -117,10 +117,10 @@ public class MinAdultCoursesRule implements Rule {
 
 				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
-				logger.debug("Min Adult Courses : Total-" + totalCredits + " Required-" + requiredCredits);
+				logger.debug("Min Adult Courses : Total- {} Required {}",totalCredits,requiredCredits);
 
 			} else {
-				logger.info(gradProgramRule.getProgramRequirementCode().getDescription() + " Failed!");
+				logger.info("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
 				ruleProcessorData.setGraduated(false);
 
 				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -141,7 +141,7 @@ public class MinAdultCoursesRule implements Rule {
 					delNonGradReason.removeIf(e -> e.getRule().compareTo("506") == 0);
 			}
 
-			logger.info("Min Adult Courses -> Required:" + requiredCredits + " Has:" + totalCredits);
+			logger.info("Min Adult Courses -> Required: {} Has: {}",requiredCredits,totalCredits);
 		}
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;

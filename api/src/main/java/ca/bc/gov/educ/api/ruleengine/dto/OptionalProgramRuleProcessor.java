@@ -15,5 +15,6 @@ public class OptionalProgramRuleProcessor {
 	private List<GradRequirement> nonGradReasonsOptionalProgram;
 	private List<GradRequirement> requirementsMetOptionalProgram;
 	private boolean isOptionalProgramGraduated;
+	private String optionalProgramName;
 	private boolean hasOptionalProgram;
 }

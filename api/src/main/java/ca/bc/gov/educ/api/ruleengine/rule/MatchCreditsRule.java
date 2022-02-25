@@ -33,7 +33,10 @@ public class MatchCreditsRule implements Rule {
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
         List<StudentCourse> courseList = ruleProcessorData.getStudentCourses();
-
+        if (courseList == null || courseList.isEmpty()) {
+            logger.warn("!!!Empty list sent to Match Credits Rule for processing");
+            return ruleProcessorData;
+        }
         List<ProgramRequirement> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
@@ -42,9 +45,12 @@ public class MatchCreditsRule implements Rule {
                 .collect(Collectors.toList());
 
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
+        if(courseRequirements == null) {
+            courseRequirements = new ArrayList<>();
+        }
         List<CourseRequirement> originalCourseRequirements = new ArrayList<>(courseRequirements);
 
-        logger.debug("#### Match Program Rule size: " + gradProgramRulesMatch.size());
+        logger.debug("#### Match Program Rule size: {}", gradProgramRulesMatch.size());
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
@@ -55,15 +61,15 @@ public class MatchCreditsRule implements Rule {
         while (courseIterator.hasNext()) {
             StudentCourse tempCourse = courseIterator.next();
 
-            logger.debug("Processing Course: Code=" + tempCourse.getCourseCode() + " Level=" + tempCourse.getCourseLevel());
-            logger.debug("Course Requirements size: " + courseRequirements.size());
+            logger.debug("Processing Course: Code= {} Level {}",tempCourse.getCourseCode(),tempCourse.getCourseLevel());
+            logger.debug("Course Requirements size: {}", courseRequirements.size());
 
             List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
                     .collect(Collectors.toList());
 
-            logger.debug("Temp Course Requirement: " + tempCourseRequirement);
+            logger.debug("Temp Course Requirement: {}",tempCourseRequirement);
 
             ProgramRequirement tempProgramRule = null;
 
@@ -77,27 +83,27 @@ public class MatchCreditsRule implements Rule {
                 	}
                 }
             }
-            logger.debug("Temp Program Rule: " + tempProgramRule);
+            logger.debug("Temp Program Rule: {}",tempProgramRule);
             processCourse(tempCourse,tempCourseRequirement,tempProgramRule,requirementsMet,gradProgramRulesMatch,courseCreditException);
 
             try {
                 StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
                 if (tempSC != null)
                     finalCourseList.add(tempSC);
-                logger.debug("TempSC: " + tempSC);
-                logger.debug("Final course List size: : " + finalCourseList.size());
+                logger.debug("TempSC: {}",tempSC);
+                logger.debug("Final course List size: {}: ",finalCourseList.size());
                 ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), ProgramRequirement.class);
                 if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
                     finalProgramRulesList.add(tempPR);
                 }
-                logger.debug("TempPR: " + tempPR);
-                logger.debug("Final Program rules list size: " + finalProgramRulesList.size());
+                logger.debug("TempPR: {}",tempPR);
+                logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
             } catch (IOException e) {
-                logger.error("ERROR:" + e.getMessage());
+                logger.error("ERROR: {}",e.getMessage());
             }
         }
 
-        logger.debug("Final Program rules list: " + finalProgramRulesList);
+        logger.debug("Final Program rules list: {}",finalProgramRulesList);
         processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);        
 
         return ruleProcessorData;
@@ -113,7 +119,7 @@ public class MatchCreditsRule implements Rule {
                     .orElse(null) == null) {
             	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet,gradProgramRulesMatch,null,courseCreditException);
             } else {
-                logger.debug("!!! Program Rule met Already: " + tempProgramRule);
+                logger.debug("!!! Program Rule met Already: {}",tempProgramRule);
             }
         }else {
         	if(tempCourse.getCourseCode().startsWith("Y") 
@@ -169,7 +175,7 @@ public class MatchCreditsRule implements Rule {
                 .collect(Collectors.toList()));
        
 
-        logger.debug("Final Program rules list size 2: " + finalProgramRulesList.size());
+        logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
 
         ruleProcessorData.setStudentCourses(finalCourseList);
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);
@@ -187,7 +193,13 @@ public class MatchCreditsRule implements Rule {
     public void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch, String exceptionalCase,Map<String,Integer> courseCreditException) {
     	tempCourse.setUsed(true);
         tempCourse.setUsedInMatchRule(true);
-        tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
+        if(courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
+            tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
+        }else {
+            int leftOverCredits = tempCourse.getCredits() - courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode());
+            tempCourse.setCreditsUsedForGrad(leftOverCredits != 0?leftOverCredits:tempCourse.getCredits());
+            tempCourse.setLeftOverCredits(leftOverCredits);
+        }
 
         if (tempCourse.getGradReqMet().length() > 0) {
 
@@ -200,6 +212,7 @@ public class MatchCreditsRule implements Rule {
         }
         if(tempCourse.getCreditsUsedForGrad() == 2) {
             tempProgramRule.getProgramRequirementCode().setTempFailed(true);
+
             courseCreditException.merge(tempProgramRule.getProgramRequirementCode().getProReqCode(), 2, Integer::sum);
         }
         if(exceptionalCase != null)

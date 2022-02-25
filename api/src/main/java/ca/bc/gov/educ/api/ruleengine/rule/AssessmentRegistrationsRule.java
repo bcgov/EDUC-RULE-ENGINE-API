@@ -7,13 +7,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRuleProcessor;
+import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -69,7 +67,7 @@ public class AssessmentRegistrationsRule implements Rule {
             }
 	            
 			if ("".compareTo(specialCase.trim()) == 0
-					&& "".compareTo(exceededWriteFlag.trim()) == 0
+					&& "Y".compareTo(exceededWriteFlag.trim()) != 0
 					&& "0.0".compareTo(proficiencyScore) == 0 && diff <= 1) {
 				studentAssessment.setProjected(true);
 			}
@@ -77,8 +75,9 @@ public class AssessmentRegistrationsRule implements Rule {
 
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",
-				(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
+		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
+		List<StudentAssessment> excludedAssessments = RuleProcessorRuleUtils.getExcludedStudentAssessments(ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
+		ruleProcessorData.setExcludedAssessments(excludedAssessments);
 		prepareAssessmentForOptionalPrograms();
 		return ruleProcessorData;
 	}

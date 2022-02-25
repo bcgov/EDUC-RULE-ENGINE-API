@@ -34,9 +34,7 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
     	if(obj == null || !obj.isHasOptionalProgram()) {
     		return ruleProcessorData;
     	}
-    	List<GradRequirement> requirementsMet = new ArrayList<>();
-        
-        List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
+    	List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
         List<OptionalProgramRequirement> gradOptionalProgramMinCreditElectiveRulesMatch = obj.getOptionalProgramRules()
                 .stream()
                 .filter(gradOptionalProgramRule -> "MCE".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
@@ -44,16 +42,13 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
                 		&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
        
-        logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: " + gradOptionalProgramMinCreditElectiveRulesMatch.size());
-        List<StudentCourse> finalCourseList = new ArrayList<>();
+        logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
         StudentCourse tempSC;
         ObjectMapper objectMapper = new ObjectMapper();
 
         List<StudentCourse> modifiedList = courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).collect(Collectors.toList());
-        ListIterator<StudentCourse> studentCourseIterator = modifiedList.listIterator();
-        List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
 
-        requirementsMet = new ArrayList<>();
+        List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
         List<StudentCourse> finalCourseList2 = new ArrayList<>();
         ListIterator<StudentCourse> studentCourseIterator2 = modifiedList.listIterator();
@@ -72,14 +67,14 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
                 if (tempSC != null)
                 	finalCourseList2.add(tempSC);
             } catch (IOException e) {
-                logger.error("ERROR:" + e.getMessage());
+                logger.error("ERROR: {}",e.getMessage());
             }
             
             if ((totalCreditsGrade11or12 == requiredCreditsGrad11or12) && totalCreditsGrade11or12 != 0) {
             	break;
             }            
         }            
-        resMet = obj.getRequirementsMetOptionalProgram();
+        List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
 
         if (resMet == null)
             resMet = new ArrayList<>();
@@ -87,7 +82,7 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
         resMet.addAll(requirementsMet);
 
         obj.setRequirementsMetOptionalProgram(resMet);
-        finalCourseList2.addAll(courseList.stream().filter(sc -> sc.isUsed()).collect(Collectors.toList()));
+        finalCourseList2.addAll(courseList.stream().filter(StudentCourse::isUsed).collect(Collectors.toList()));
         obj.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(finalCourseList2));
         List<OptionalProgramRequirement> failedRules = gradOptionalProgramMinCreditElectiveRulesMatch.stream()
                 .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());

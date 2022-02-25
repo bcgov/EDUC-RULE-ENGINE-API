@@ -29,7 +29,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 		int requiredCredits;
 		logger.debug("Min Elective Credits Rule");
 
-		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().size() == 0) {
+		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
 			return ruleProcessorData;
 		}
@@ -39,20 +39,16 @@ public class MinElectiveCredits1996Rule implements Rule {
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 		Collections.sort(studentCourses, Comparator.comparing(StudentCourse::getCourseLevel).reversed()
 				.thenComparing(StudentCourse::getCompletedCoursePercentage).reversed());
-		logger.debug("Unique Courses: " + studentCourses.size());
+		logger.debug("Unique Courses: {}",studentCourses.size());
 
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 
-		logger.debug(gradProgramRules.toString());
-
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			if(gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null) {
 				requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
-
-				List<StudentCourse> tempStudentCourseList;
 
 				for (StudentCourse sc : studentCourses) {
 					if (map1996.get(sc.getCourseCode()) != null) {
@@ -137,7 +133,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 					}
 				}
 				if (totalCredits >= requiredCredits) {
-					logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
+					logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
 					gradProgramRule.getProgramRequirementCode().setPassed(true);
 
 					List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
@@ -147,10 +143,10 @@ public class MinElectiveCredits1996Rule implements Rule {
 
 					reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
 					ruleProcessorData.setRequirementsMet(reqsMet);
-					logger.debug("Min Elective Credits Rule: Total-" + totalCredits + " Required-" + requiredCredits);
+					logger.debug("Min Elective Credits Rule: Total-{} Required- {}",totalCredits,requiredCredits);
 
 				} else {
-					logger.info(gradProgramRule.getProgramRequirementCode().getDescription() + " Failed!");
+					logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
 					ruleProcessorData.setGraduated(false);
 
 					List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -162,7 +158,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 					ruleProcessorData.setNonGradReasons(nonGradReasons);
 				}
 
-				logger.info("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
+				logger.info("Min Elective Credits -> Required: {} Has : {}",requiredCredits,totalCredits);
 				totalCredits = 0;
 			}
 		}
