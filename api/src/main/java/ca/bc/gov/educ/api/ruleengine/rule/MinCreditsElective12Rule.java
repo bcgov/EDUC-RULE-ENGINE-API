@@ -43,7 +43,7 @@ public class MinCreditsElective12Rule implements Rule {
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
-		logger.debug("Unique Courses: " + studentCourses.size());
+		logger.debug("Unique Courses: {}",studentCourses.size());
 
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE12".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
@@ -96,7 +96,7 @@ public class MinCreditsElective12Rule implements Rule {
 			}
 
 			if (totalCredits >= requiredCredits) {
-				logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
+				logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
 				gradProgramRule.getProgramRequirementCode().setPassed(true);
 
 				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
@@ -106,10 +106,10 @@ public class MinCreditsElective12Rule implements Rule {
 
 				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
-				logger.debug("Min Credits Elective 12 Rule: Total-" + totalCredits + " Required-" + requiredCredits);
+				logger.debug("Min Credits Elective 12 Rule: Total-{} Required- {}",totalCredits,requiredCredits);
 
 			} else {
-				logger.info(gradProgramRule.getProgramRequirementCode().getDescription() + " Failed!");
+				logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
 				ruleProcessorData.setGraduated(false);
 
 				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -124,7 +124,7 @@ public class MinCreditsElective12Rule implements Rule {
 			List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
 			if(delNonGradReason != null)
 				delNonGradReason.removeIf(e -> e.getRule().compareTo("502") == 0);
-			logger.info("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
+			logger.info("Min Elective Credits -> Required:{} Has: {}",requiredCredits,totalCredits);
 			totalCredits = 0;
 		}
 		ruleProcessorData.setStudentCourses(studentCourses);

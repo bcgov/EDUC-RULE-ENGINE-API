@@ -40,7 +40,7 @@ public class IncompleteAssessmentsRule implements Rule {
                 Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
-                logger.error("ERROR: " + pe.getMessage());
+                logger.error("ERROR: {}", pe.getMessage());
             }
 
             int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate,today);
@@ -63,7 +63,7 @@ public class IncompleteAssessmentsRule implements Rule {
             	exceededWriteFlag = studentAssessment.getExceededWriteFlag();
             }
             if ("".compareTo(specialCase.trim()) == 0 
-            		&& "".compareTo(exceededWriteFlag.trim()) == 0
+            		&& "Y".compareTo(exceededWriteFlag.trim()) != 0
             		&& "0.0".compareTo(proficiencyScore) == 0
                     && diff > 1) {
             	studentAssessment.setNotCompleted(true);
@@ -72,11 +72,7 @@ public class IncompleteAssessmentsRule implements Rule {
 
         ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-        logger.info("Not Completed Assessments: " +
-                (int) studentAssessmentList
-                        .stream()
-                        .filter(StudentAssessment::isNotCompleted)
-                        .count());
+        logger.info("Not Completed Assessments: {}",(int) studentAssessmentList.stream().filter(StudentAssessment::isNotCompleted).count());
 
         return ruleProcessorData;
     }

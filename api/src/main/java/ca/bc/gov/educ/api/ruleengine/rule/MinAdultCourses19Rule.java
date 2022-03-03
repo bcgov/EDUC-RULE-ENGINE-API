@@ -55,14 +55,12 @@ public class MinAdultCourses19Rule implements Rule {
 			return ruleProcessorData;
 		}
 
-		logger.debug("Unique Courses: " + studentCourses.size());
+		logger.debug("Unique Courses: {}",studentCourses.size());
 		String dobOfStudent = ruleProcessorData.getGradStudent().getDob();
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MAC19".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
-
-		logger.debug(gradProgramRules.toString());
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
@@ -107,7 +105,7 @@ public class MinAdultCourses19Rule implements Rule {
 			}
 
 			if (totalCredits >= requiredCredits) {
-				logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
+				logger.info("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
 				gradProgramRule.getProgramRequirementCode().setPassed(true);
 
 				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
@@ -117,10 +115,10 @@ public class MinAdultCourses19Rule implements Rule {
 
 				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
-				logger.debug("Min Adult Courses : Total-" + totalCredits + " Required-" + requiredCredits);
+				logger.debug("Min Adult Courses : Total- {} Required-{}",totalCredits,requiredCredits);
 
 			} else {
-				logger.info(gradProgramRule.getProgramRequirementCode().getDescription() + " Failed!");
+				logger.info("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
 				ruleProcessorData.setGraduated(false);
 
 				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -132,7 +130,7 @@ public class MinAdultCourses19Rule implements Rule {
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
 
-			logger.info("Min Adult Courses -> Required:" + requiredCredits + " Has:" + totalCredits);
+			logger.info("Min Adult Courses -> Required: {} has {}",requiredCredits,totalCredits);
 		}
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;

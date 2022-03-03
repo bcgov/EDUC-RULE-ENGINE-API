@@ -5,7 +5,6 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
@@ -39,7 +37,7 @@ public class MinCredit1996Rule implements Rule {
         List<StudentCourse> tempStudentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule()).collect(Collectors.toList());
-        logger.debug("Unique Courses: " + studentCourses.size());
+        logger.debug("Unique Courses: {}",studentCourses.size());
 
         List<ProgramRequirement> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
@@ -64,7 +62,7 @@ public class MinCredit1996Rule implements Rule {
             setCoursesReqMet(studentCourses,gradProgramRule,requiredCredits);
 
             if (totalCredits >= requiredCredits) {
-                logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
+                logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
                 gradProgramRule.getProgramRequirementCode().setPassed(true);
 
                 List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
@@ -76,7 +74,7 @@ public class MinCredit1996Rule implements Rule {
                         gradProgramRule.getProgramRequirementCode().getLabel()));
                 ruleProcessorData.setRequirementsMet(reqsMet);
             } else {
-                logger.info(gradProgramRule.getProgramRequirementCode().getDescription() + " Failed!");
+                logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
                 ruleProcessorData.setGraduated(false);
 
                 List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -89,11 +87,10 @@ public class MinCredit1996Rule implements Rule {
                 ruleProcessorData.setNonGradReasons(nonGradReasons);
             }
 
-            logger.info("Min Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
+            logger.info("Min Credits -> Required: {} Has : {}",requiredCredits,totalCredits);
         }
 
-        logger.debug(ruleProcessorData.toString());
-        studentCourses.addAll(tempStudentCourseList.stream().filter(sc -> sc.isUsedInMatchRule()).collect(Collectors.toList()));
+        studentCourses.addAll(tempStudentCourseList.stream().filter(StudentCourse::isUsedInMatchRule).collect(Collectors.toList()));
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }

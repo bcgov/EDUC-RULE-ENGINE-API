@@ -1,9 +1,7 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -41,14 +39,12 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
         List<StudentCourse> studentCourses = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
-        logger.debug("Unique Courses: " + studentCourses.size());
+        logger.debug("Unique Courses: {}",studentCourses.size());
 
         List<ProgramRequirement> gradProgramRules = ruleProcessorData
                 .getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
-
-        logger.debug(gradProgramRules.toString());
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
            if(gradProgramRule.getProgramRequirementCode().getRequiredLevel() != null && gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("11 or 12") == 0 ) {
@@ -91,7 +87,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                }
 
                if (totalCredits >= requiredCredits) {
-                   logger.info(gradProgramRule.getProgramRequirementCode().getLabel() + " Passed");
+                   logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
                    gradProgramRule.getProgramRequirementCode().setPassed(true);
 
                    List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
@@ -101,10 +97,10 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
 
                    reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
                    ruleProcessorData.setRequirementsMet(reqsMet);
-                   logger.debug("Min Credits Elective 12 Rule: Total-" + totalCredits + " Required-" + requiredCredits);
+                   logger.debug("Min Credits Elective 12 Rule: Total-{} Requried: {}",totalCredits,requiredCredits);
 
                } else {
-                   logger.info(gradProgramRule.getProgramRequirementCode().getDescription() + " Failed!");
+                   logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
                    ruleProcessorData.setGraduated(false);
 
                    List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -115,7 +111,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                    nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
                    ruleProcessorData.setNonGradReasons(nonGradReasons);
                }
-               logger.info("Min Elective Credits -> Required:" + requiredCredits + " Has:" + totalCredits);
+               logger.info("Min Elective Credits -> Required:{} Has:{}",requiredCredits,totalCredits);
                totalCredits = 0;
            }
         }

@@ -34,8 +34,15 @@ public class RuleEngineService {
             rule.setInputData(ruleProcessorData);
             ruleProcessorData = (RuleProcessorData)rule.fire();
         }
-        if(ruleProcessorData.getNonGradReasons() != null && ruleProcessorData.getNonGradReasons().isEmpty())
-            ruleProcessorData.setGraduated(true);
+        if(ruleProcessorData.getNonGradReasons() == null || ruleProcessorData.getNonGradReasons().isEmpty()) {
+            if(ruleProcessorData.getRequirementsMet() != null && !ruleProcessorData.getRequirementsMet().isEmpty()) {
+                ruleProcessorData.setGraduated(true);
+            }else {
+                ruleProcessorData.setGraduated(false);
+            }
+        }else {
+            ruleProcessorData.setGraduated(false);
+        }
         return ruleProcessorData;
     }
 

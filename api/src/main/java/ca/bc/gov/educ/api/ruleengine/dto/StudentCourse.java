@@ -16,6 +16,7 @@ public class StudentCourse {
     private String pen;
     private String courseCode;
     private String courseName;
+    private Integer originalCredits;
     private String courseLevel;
     private String sessionDate;
     private String customizedCourseName;
@@ -58,6 +59,7 @@ public class StudentCourse {
     private boolean isValidationCourse;
     private boolean isCutOffCourse;
     private boolean isGrade10Course;
+    private Integer leftOverCredits;
 
     public Integer getCreditsUsedForGrad() {
         if (creditsUsedForGrad == null)

@@ -40,11 +40,7 @@ public class BAACoursesRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Board/Authority Authorized: " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isBoardAuthorityAuthorized)
-                        .count());
+        logger.info("Board/Authority Authorized: {}",(int) studentCourseList.stream().filter(StudentCourse::isBoardAuthorityAuthorized).count());
 
         return ruleProcessorData;
     }

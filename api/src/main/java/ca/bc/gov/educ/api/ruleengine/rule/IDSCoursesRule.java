@@ -40,11 +40,7 @@ public class IDSCoursesRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Independent Directed Studies Courses: " +
-                (int) studentCourseList
-                        .stream()
-                        .filter(StudentCourse::isIndependentDirectedStudies)
-                        .count());
+        logger.info("Independent Directed Studies Courses: {}", (int) studentCourseList.stream().filter(StudentCourse::isIndependentDirectedStudies).count());
 
         return ruleProcessorData;
     }

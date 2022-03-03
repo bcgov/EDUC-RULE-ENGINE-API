@@ -1,23 +1,22 @@
 package ca.bc.gov.educ.api.ruleengine.util;
 
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-
 public class RuleProcessorRuleUtils {
+
+    private RuleProcessorRuleUtils() {}
 
     private static final Logger logger = LoggerFactory.getLogger(RuleProcessorRuleUtils.class);
 
@@ -131,7 +130,7 @@ public class RuleProcessorRuleUtils {
                 e.getMessage();
             }
         }
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat = new SimpleDateFormat(RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
 
         return dateFormat.format(gradDate);
     }
@@ -139,12 +138,12 @@ public class RuleProcessorRuleUtils {
     public static String getCurrentDate() {
 
         Date gradDate = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat(RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
         return dateFormat.format(gradDate);
     }
     
     public static String getProgramCompletionDate(Date pcd) {
-    	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	DateFormat dateFormat = new SimpleDateFormat(RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
         return dateFormat.format(pcd);
     }
 }
