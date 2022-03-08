@@ -68,7 +68,7 @@ public class AssessmentRegistrationsRule implements Rule {
 	            
 			if ("".compareTo(specialCase.trim()) == 0
 					&& "Y".compareTo(exceededWriteFlag.trim()) != 0
-					&& "0.0".compareTo(proficiencyScore) == 0 && diff <= 1) {
+					&& "0.0".compareTo(proficiencyScore) == 0 && diff <= 0) {
 				studentAssessment.setProjected(true);
 			}
 		}
