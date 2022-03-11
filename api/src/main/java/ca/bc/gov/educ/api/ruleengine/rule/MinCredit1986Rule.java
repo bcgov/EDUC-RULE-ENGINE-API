@@ -128,6 +128,6 @@ public class MinCredit1986Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MinCredit1996Rule: Rule Processor Data set.");
+        logger.info("MinCredit1986Rule: Rule Processor Data set.");
     }
 }

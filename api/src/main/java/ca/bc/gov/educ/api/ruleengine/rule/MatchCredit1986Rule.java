@@ -201,7 +201,7 @@ public class MatchCredit1986Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("Match4Credit1996Rule: Rule Processor Data set.");
+        logger.info("MatchCredit1986Rule: Rule Processor Data set.");
     }
 
 }
