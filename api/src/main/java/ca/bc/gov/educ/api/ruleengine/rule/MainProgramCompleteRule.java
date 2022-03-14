@@ -47,40 +47,42 @@ public class MainProgramCompleteRule implements Rule {
 				.filter(gradOptionalProgramRule -> "SR".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0)
 				.collect(Collectors.toList());
-		OptionalProgramRequirement opReq = optionalProgramNoRule.get(1);
+		for(OptionalProgramRequirement opReq:optionalProgramNoRule) {
+			if(opReq.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("957")==0) {
+				if (nonGradReasons == null || nonGradReasons.size() == 0) {
+					logger.debug("{} Passed", opReq.getOptionalProgramRequirementCode().getLabel());
+					opReq.getOptionalProgramRequirementCode().setPassed(true);
+				} else {
+					logger.debug("{} Failed", opReq.getOptionalProgramRequirementCode().getLabel());
+					opReq.getOptionalProgramRequirementCode().setPassed(false);
+				}
+				List<OptionalProgramRequirement> failedRules = obj.getOptionalProgramRules().stream()
+						.filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
-		if(nonGradReasons == null || nonGradReasons.size() == 0) {
-			logger.debug("{} Passed",opReq.getOptionalProgramRequirementCode().getLabel());
-			opReq.getOptionalProgramRequirementCode().setPassed(true);
-		}else {
-			logger.debug("{} Failed",opReq.getOptionalProgramRequirementCode().getLabel());
-			opReq.getOptionalProgramRequirementCode().setPassed(false);
-		}
-		List<OptionalProgramRequirement> failedRules = obj.getOptionalProgramRules().stream()
-				.filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
+				if (failedRules.isEmpty()) {
+					logger.debug("All the match rules met!");
+					List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
 
-		if (failedRules.isEmpty()) {
-			logger.debug("All the match rules met!");
-			List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
+					if (resMet == null)
+						resMet = new ArrayList<>();
 
-			if (resMet == null)
-				resMet = new ArrayList<>();
+					resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel()));
+					obj.setRequirementsMetOptionalProgram(resMet);
+				} else {
+					List<GradRequirement> requirementsNotMet = new ArrayList<>();
+					for (OptionalProgramRequirement failedRule : failedRules) {
+						requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
+					}
+					obj.setOptionalProgramGraduated(false);
+					List<GradRequirement> nonGReasons = obj.getNonGradReasonsOptionalProgram();
 
-			resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel()));
-			obj.setRequirementsMetOptionalProgram(resMet);
-		} else {
-			List<GradRequirement> requirementsNotMet = new ArrayList<>();
-			for (OptionalProgramRequirement failedRule : failedRules) {
-				requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
+					if (nonGReasons == null)
+						nonGReasons = new ArrayList<>();
+
+					nonGReasons.addAll(requirementsNotMet);
+					obj.setNonGradReasonsOptionalProgram(nonGReasons);
+				}
 			}
-			obj.setOptionalProgramGraduated(false);
-			List<GradRequirement> nonGReasons = obj.getNonGradReasonsOptionalProgram();
-
-			if (nonGReasons == null)
-				nonGReasons = new ArrayList<>();
-
-			nonGReasons.addAll(requirementsNotMet);
-			obj.setNonGradReasonsOptionalProgram(nonGReasons);
 		}
 	}
     @Override
