@@ -83,18 +83,21 @@ public class OptionalProgramNoRule implements Rule {
 				.filter(gradOptionalProgramRule -> "SR".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0)
 				.collect(Collectors.toList());
-		OptionalProgramRequirement opReq = optionalProgramNoRule.get(0);
-		logger.debug("{} Passed",opReq.getOptionalProgramRequirementCode().getLabel());
-		if(obj != null && obj.isHasOptionalProgram()) {
-			opReq.getOptionalProgramRequirementCode().setPassed(true);
-			List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
+		for(OptionalProgramRequirement opReq:optionalProgramNoRule) {
+			if (opReq.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("957") != 0) {
+				logger.debug("{} Passed", opReq.getOptionalProgramRequirementCode().getLabel());
+				if (obj != null && obj.isHasOptionalProgram()) {
+					opReq.getOptionalProgramRequirementCode().setPassed(true);
+					List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
 
-			if (resMet == null)
-				resMet = new ArrayList<>();
-			resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel()));
-			obj.setRequirementsMetOptionalProgram(resMet);
+					if (resMet == null)
+						resMet = new ArrayList<>();
+					resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel()));
+					obj.setRequirementsMetOptionalProgram(resMet);
+				}
+				mapOptional.put(opPrgCode, obj);
+			}
 		}
-		mapOptional.put(opPrgCode,obj);
 	}
     @Override
     public void setInputData(RuleData inputData) {
