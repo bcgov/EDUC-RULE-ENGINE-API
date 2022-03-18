@@ -51,9 +51,16 @@ public class OptionalProgramNoRule implements Rule {
 				obj = mapOptional.get("BD");
 				processOptionalProgramNoRules("BD",obj,mapOptional);
 			}
-		}else if(program.compareTo("SCCP")==0 && mapOptional.get("FR") != null) {
-			obj = mapOptional.get("FR");
-			processOptionalProgramNoRules("FR",obj,mapOptional);
+		}else if(program.compareTo("SCCP")==0) {
+			if (mapOptional.get("FR") != null) {
+				obj = mapOptional.get("FR");
+				processOptionalProgramNoRules("FR", obj, mapOptional);
+			}
+			if (mapOptional.get("CP") != null) {
+				obj = mapOptional.get("CP");
+				processOptionalProgramNoRules("CP", obj, mapOptional);
+			}
+
 		}
 		else if(program.compareTo("1950")==0) {
 			if(mapOptional.get("AD") != null) {
