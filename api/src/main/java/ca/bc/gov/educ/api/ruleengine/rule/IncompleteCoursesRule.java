@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class IncompleteCoursesRule implements Rule {
 
     public RuleData fire() {
 
-         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
         logger.debug("###################### Finding INCOMPLETE courses ######################");
 
@@ -55,10 +56,9 @@ public class IncompleteCoursesRule implements Rule {
             }
         }
 
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
-
         logger.info("Not Completed Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isNotCompleted).count());
-
         return ruleProcessorData;
     }
 

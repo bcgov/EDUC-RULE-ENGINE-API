@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class LDCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
         logger.debug("###################### Finding LOCALLY DEVELOPED courses ######################");
 
@@ -36,6 +37,7 @@ public class LDCoursesRule implements Rule {
                 studentCourse.setLocallyDeveloped(true);
         }
 
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
         logger.info("Locally Developed Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isLocallyDeveloped) .count());
