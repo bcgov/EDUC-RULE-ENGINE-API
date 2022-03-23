@@ -57,7 +57,8 @@ public class DuplicateCoursesRule implements Rule {
 
             }
         }
-
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
+        ruleProcessorData.setStudentCourses(studentCourseList);
         logger.info("Duplicate Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
         return ruleProcessorData;
     }

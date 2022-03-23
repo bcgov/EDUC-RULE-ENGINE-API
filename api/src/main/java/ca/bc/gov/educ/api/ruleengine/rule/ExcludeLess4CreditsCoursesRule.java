@@ -40,6 +40,7 @@ public class ExcludeLess4CreditsCoursesRule implements Rule {
             }
         }
 
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
         logger.log(Level.INFO, "Removed 2 Credit Courses: {0} ",

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,7 +78,27 @@ public class RuleProcessorRuleUtils {
         return (T) objectMapper
                 .readValue(objectMapper.writeValueAsString(input), input.getClass());
     }
-    
+
+    public static List<StudentCourse> maintainExcludedCourses(List<StudentCourse> currentList,List<StudentCourse> existingExcludedList, boolean projected) {
+        List<StudentCourse> exclList = getExcludedStudentCourses(currentList, projected);
+        if(existingExcludedList == null)
+            existingExcludedList = new ArrayList<>();
+
+        existingExcludedList.addAll(exclList);
+        return existingExcludedList;
+
+    }
+
+    public static List<StudentAssessment> maintainExcludedAssessments(List<StudentAssessment> currentList,List<StudentAssessment> existingExcludedList, boolean projected) {
+        List<StudentAssessment> exclList = getExcludedStudentAssessments(currentList, projected);
+        if(existingExcludedList == null)
+            existingExcludedList = new ArrayList<>();
+
+        existingExcludedList.addAll(exclList);
+        return existingExcludedList;
+
+    }
+
     public static List<StudentAssessment> getUniqueStudentAssessments(List<StudentAssessment> studentAssessments,
 			boolean projected) {
         

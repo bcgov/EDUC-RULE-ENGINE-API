@@ -35,7 +35,6 @@ public class DuplicateAssessmentsRule implements Rule {
 
 		logger.log(Level.INFO, "###################### Finding DUPLICATE Assessments ######################");
 
-		List<StudentAssessment> originalList = ruleProcessorData.getStudentAssessments();
 		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 		getModifiedAndSortedData(studentAssessmentList);
 
@@ -78,6 +77,9 @@ public class DuplicateAssessmentsRule implements Rule {
 				}
 			}
 		}
+
+		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
+		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
 		logger.log(Level.INFO, "Duplicate Assessments: {0}",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isDuplicate).count());
