@@ -7,20 +7,20 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Data
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExcludeGrade10LevelRule implements Rule {
+public class ExcludeLess4CreditsCoursesRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(ExcludeGrade10LevelRule.class);
+    private static Logger logger = Logger.getLogger(ExcludeLess4CreditsCoursesRule.class.getName());
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -28,21 +28,23 @@ public class ExcludeGrade10LevelRule implements Rule {
     @Override
     public RuleData fire() {
 
+        logger.log(Level.INFO, "###################### Finding 2 Credit Courses ######################");
+
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
-        logger.debug("###################### Finding CAREER PROGRAM courses ######################");
-
         for (StudentCourse studentCourse : studentCourseList) {
-            if (studentCourse.getCourseLevel().compareTo("10")==0) {
-                studentCourse.setGrade10Course(true);
+            Integer credits = studentCourse.getCredits();
+            if(credits < 4) {
+                studentCourse.setLessCreditCourse(true);
             }
         }
 
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Grade Level 10 Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isGrade10Course).count());
+        logger.log(Level.INFO, "Removed 2 Credit Courses: {0} ",
+                (int) studentCourseList.stream().filter(StudentCourse::isLessCreditCourse).count());
 
         return ruleProcessorData;
     }
@@ -50,6 +52,6 @@ public class ExcludeGrade10LevelRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("ExcludeGrade10LevelRule: Rule Processor Data set.");
+        logger.info("ExcludeLess4CreditsCoursesRule: Rule Processor Data set.");
     }
 }

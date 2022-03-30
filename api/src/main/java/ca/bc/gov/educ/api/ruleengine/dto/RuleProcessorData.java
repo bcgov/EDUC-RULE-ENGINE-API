@@ -40,5 +40,6 @@ public class RuleProcessorData implements RuleData {
     private GraduationProgramCode gradProgram;
     private School school;
     private boolean isProjected;
+    private Integer ldCounter=0;
     private List<StudentCareerProgram> cpList;
 }

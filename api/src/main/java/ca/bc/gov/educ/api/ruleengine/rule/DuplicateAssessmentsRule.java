@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,15 +35,13 @@ public class DuplicateAssessmentsRule implements Rule {
 
 		logger.log(Level.INFO, "###################### Finding DUPLICATE Assessments ######################");
 
-		List<StudentAssessment> originalList = ruleProcessorData.getStudentAssessments();
-		List<StudentAssessment> studentAssessmentList = originalList.stream().filter(sc -> !sc.isNotCompleted() && !sc.isFailed())
-				.collect(Collectors.toList());
+		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 		getModifiedAndSortedData(studentAssessmentList);
 
 		for (int i = 0; i < studentAssessmentList.size() - 1; i++) {
 			for (int j = i + 1; j < studentAssessmentList.size(); j++) {
-				if (studentAssessmentList.get(i).getAssessmentCode()
-						.equals(studentAssessmentList.get(j).getAssessmentCode())
+				if (studentAssessmentList.get(i).getEquivalentCode()
+						.equals(studentAssessmentList.get(j).getEquivalentCode())
 						&& !studentAssessmentList.get(i).isDuplicate() 
 						&& !studentAssessmentList.get(j).isDuplicate()) {
 					Double proficiencyScore1 = studentAssessmentList.get(i).getProficiencyScore() != null
@@ -78,6 +77,9 @@ public class DuplicateAssessmentsRule implements Rule {
 				}
 			}
 		}
+
+		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
+		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
 		logger.log(Level.INFO, "Duplicate Assessments: {0}",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isDuplicate).count());

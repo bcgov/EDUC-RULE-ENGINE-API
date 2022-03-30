@@ -4,6 +4,7 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ public class RegistrationsRule implements Rule {
 
     @Override
     public RuleData fire() {
-        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
         logger.debug("###################### Finding PROJECTED courses (For Projected GRAD) ######################");
 
@@ -51,11 +52,12 @@ public class RegistrationsRule implements Rule {
             	completedCourseLetterGrade = studentCourse.getCompletedCourseLetterGrade();
             }
             if ("".compareTo(completedCourseLetterGrade.trim()) == 0
-                    && diff <= 1) {
+                    && diff <= 0) {
                 studentCourse.setProjected(true);
             }
         }
 
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
         logger.info("Projected Courses (Registrations): {}",(int) studentCourseList.stream().filter(StudentCourse::isProjected).count());

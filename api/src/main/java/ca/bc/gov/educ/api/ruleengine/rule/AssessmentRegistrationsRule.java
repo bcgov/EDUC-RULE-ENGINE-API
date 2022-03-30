@@ -31,7 +31,7 @@ public class AssessmentRegistrationsRule implements Rule {
 	@Override
 	public RuleData fire() {
 
-		List<StudentAssessment> studentAssessmentList = ruleProcessorData.getStudentAssessments();
+		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 
 		logger.log(Level.INFO,
 				"###################### Finding PROJECTED assessments (For Projected GRAD) ######################");
@@ -68,16 +68,15 @@ public class AssessmentRegistrationsRule implements Rule {
 	            
 			if ("".compareTo(specialCase.trim()) == 0
 					&& "Y".compareTo(exceededWriteFlag.trim()) != 0
-					&& "0.0".compareTo(proficiencyScore) == 0 && diff <= 1) {
+					&& "0.0".compareTo(proficiencyScore) == 0 && diff <= 0) {
 				studentAssessment.setProjected(true);
 			}
 		}
 
+		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
 		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
-		List<StudentAssessment> excludedAssessments = RuleProcessorRuleUtils.getExcludedStudentAssessments(ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
-		ruleProcessorData.setExcludedAssessments(excludedAssessments);
 		prepareAssessmentForOptionalPrograms();
 		return ruleProcessorData;
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,7 @@ public class FailedCoursesRule implements Rule {
 	@Override
 	public RuleData fire() {
 
-		List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
+		List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
 		logger.log(Level.INFO, "###################### Finding FAILED courses ######################");
 
@@ -43,7 +44,7 @@ public class FailedCoursesRule implements Rule {
 				studentCourse.setFailed(true);
 			}
 		}
-
+		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentCourses(studentCourseList);
 
 		logger.log(Level.INFO, "Failed Courses: {0} ",
