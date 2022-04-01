@@ -63,6 +63,7 @@ public class RestrictedCoursesRule implements Rule {
 			}
 
 		}
+		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourses,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentCourses(studentCourses);
         prepareCoursesForOptionalPrograms();
         logger.log(Level.INFO, "Restricted Courses: {0} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
