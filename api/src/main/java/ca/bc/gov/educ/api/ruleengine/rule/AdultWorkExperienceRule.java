@@ -113,7 +113,7 @@ public class AdultWorkExperienceRule implements Rule {
 				if (nonGradReasons == null)
 					nonGradReasons = new ArrayList<>();
 
-				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 	        }
 		}

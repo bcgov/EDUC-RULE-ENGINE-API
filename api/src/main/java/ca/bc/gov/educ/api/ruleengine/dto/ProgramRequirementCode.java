@@ -17,7 +17,8 @@ public class ProgramRequirementCode {
 	private String requiredLevel;
 	private String languageOfInstruction;
 	private String activeRequirement;
-	private String requirementCategory;	
+	private String requirementCategory;
+	private String traxReqNumber;
 	private boolean passed;
 	private boolean tempFailed;
 }
