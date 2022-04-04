@@ -18,5 +18,6 @@ public class OptionalProgramRequirementCode {
 	private String languageOfInstruction;
 	private String activeRequirement;
 	private String requirementCategory;
+	private String traxReqNumber;
 	private boolean passed;
 }

@@ -93,22 +93,22 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
                 ProgramRequirement finalTempProgramRule = tempProgramRule;
                 if (requirementsMet.stream()
-                        .filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode()))
+                        .filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
                         .findAny().orElse(null) == null) {
                     tempAssessment.setUsed(true);
 
                     if (tempAssessment.getGradReqMet().length() > 0) {
 
-                        tempAssessment.setGradReqMet(tempAssessment.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getProReqCode());
-                        tempAssessment.setGradReqMetDetail(tempAssessment.getGradReqMetDetail() + ", " + tempProgramRule.getProgramRequirementCode().getProReqCode()
+                        tempAssessment.setGradReqMet(tempAssessment.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
+                        tempAssessment.setGradReqMetDetail(tempAssessment.getGradReqMetDetail() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber()
                                 + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
                     } else {
-                        tempAssessment.setGradReqMet(tempProgramRule.getProgramRequirementCode().getProReqCode());
-                        tempAssessment.setGradReqMetDetail(tempProgramRule.getProgramRequirementCode().getProReqCode() + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
+                        tempAssessment.setGradReqMet(tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
+                        tempAssessment.setGradReqMetDetail(tempProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
                     }
 
                     tempProgramRule.getProgramRequirementCode().setPassed(true);
-                    requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getProReqCode(), tempProgramRule.getProgramRequirementCode().getLabel()));
+                    requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel()));
                 } else {
                     logger.debug("!!! Program Rule met Already: {}",tempProgramRule);
                 }
@@ -157,7 +157,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getProReqCode(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
             }
 
             logger.info("One or more Match rules not met!");
@@ -199,14 +199,14 @@ public class AssessmentsMatchCreditsRule implements Rule {
     	sA.setAssessmentCode(aCode);
     	sA.setPen(pen);
         assmList.stream().filter(amt -> aCode.equals(amt.getAssessmentCode())).findAny().ifPresent(asmt -> sA.setAssessmentName(asmt.getAssessmentName()));
-        sA.setGradReqMet(pr.getProgramRequirementCode().getProReqCode());
-        sA.setGradReqMetDetail(pr.getProgramRequirementCode().getProReqCode() + " - " + pr.getProgramRequirementCode().getLabel());
+        sA.setGradReqMet(pr.getProgramRequirementCode().getTraxReqNumber());
+        sA.setGradReqMetDetail(pr.getProgramRequirementCode().getTraxReqNumber() + " - " + pr.getProgramRequirementCode().getLabel());
         sA.setSpecialCase("M");
         sA.setUsed(true);
         sA.setProficiencyScore(Double.valueOf("0"));
         finalAssessmentList.add(sA);
         pr.getProgramRequirementCode().setPassed(true);
-        requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getProReqCode(), pr.getProgramRequirementCode().getLabel()));
+        requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel()));
         	
 	}
 

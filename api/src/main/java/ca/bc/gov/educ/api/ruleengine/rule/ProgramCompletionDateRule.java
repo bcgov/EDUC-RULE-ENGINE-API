@@ -49,7 +49,7 @@ public class ProgramCompletionDateRule implements Rule {
 	 				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
 	 				if (reqsMet == null)
 	 					reqsMet = new ArrayList<>();
-	 				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
+	 				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
 	 				ruleProcessorData.setRequirementsMet(reqsMet);
 	 				return ruleProcessorData;
 	    		 }
@@ -59,7 +59,7 @@ public class ProgramCompletionDateRule implements Rule {
 			List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
 			if (nonGradReasons == null)
 				nonGradReasons = new ArrayList<>();
-			nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+			nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
 			ruleProcessorData.setNonGradReasons(nonGradReasons);
 	    	
     	}

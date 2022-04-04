@@ -92,7 +92,7 @@ public class MatchCredit1996Rule implements Rule {
 
                         if(tempProgramRule != null) {
                             ProgramRequirement finalTempProgramRule = tempProgramRule;
-                            GradRequirement req = requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode())).findAny().orElse(null);
+                            GradRequirement req = requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber())).findAny().orElse(null);
                             if (req != null) {
                                 tempProgramRule = null;
                             }
@@ -177,7 +177,7 @@ public class MatchCredit1996Rule implements Rule {
     	if (!tempCourseRequirement.isEmpty() && tempProgramRule != null) {
             ProgramRequirement finalTempProgramRule = tempProgramRule;
             if (requirementsMet.stream()
-                    .filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode()))
+                    .filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
                     .findAny()
                     .orElse(null) == null) {
             	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet);
@@ -226,7 +226,7 @@ public class MatchCredit1996Rule implements Rule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getProReqCode(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
             }
 
             logger.info("One or more Match rules not met!");
@@ -269,15 +269,15 @@ public class MatchCredit1996Rule implements Rule {
         tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
         if (tempCourse.getGradReqMet().length() > 0) {
 
-            tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getProReqCode());
-            tempCourse.setGradReqMetDetail(tempCourse.getGradReqMetDetail() + ", " + tempProgramRule.getProgramRequirementCode().getProReqCode()
+            tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
+            tempCourse.setGradReqMetDetail(tempCourse.getGradReqMetDetail() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber()
                     + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
         } else {
-            tempCourse.setGradReqMet(tempProgramRule.getProgramRequirementCode().getProReqCode());
-            tempCourse.setGradReqMetDetail(tempProgramRule.getProgramRequirementCode().getProReqCode() + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
+            tempCourse.setGradReqMet(tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
+            tempCourse.setGradReqMetDetail(tempProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
         }
         tempProgramRule.getProgramRequirementCode().setPassed(true);
-        requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getProReqCode(), tempProgramRule.getProgramRequirementCode().getLabel()));
+        requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel()));
     }
 
     @Override
