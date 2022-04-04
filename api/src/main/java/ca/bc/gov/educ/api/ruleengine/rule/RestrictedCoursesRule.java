@@ -49,6 +49,7 @@ public class RestrictedCoursesRule implements Rule {
 			if (!shortenedList.isEmpty()) {
 				for (CourseRestriction courseRestriction : shortenedList) {
 					String restrictedCourse = courseRestriction.getRestrictedCourse();
+					String restrictedLevel = courseRestriction.getRestrictedCourseLevel();
 					StudentCourse tempCourseRestriction = studentCourses.stream()
 								.filter(sc -> restrictedCourse.compareTo(sc.getCourseCode()) == 0 )
 								.findAny()
@@ -56,7 +57,7 @@ public class RestrictedCoursesRule implements Rule {
 					if (tempCourseRestriction != null
 							&& !tempCourseRestriction.isRestricted()
 							&& !sCourse.isRestricted()
-							&& !courseCode.equalsIgnoreCase(restrictedCourse)) {
+							&& (!courseCode.equalsIgnoreCase(restrictedCourse) || (courseCode.equalsIgnoreCase(restrictedCourse) && !courseLevel.equalsIgnoreCase(restrictedLevel)))) {
 						compareCredits(sCourse, tempCourseRestriction, studentCourses, i);
 					}
 				}
