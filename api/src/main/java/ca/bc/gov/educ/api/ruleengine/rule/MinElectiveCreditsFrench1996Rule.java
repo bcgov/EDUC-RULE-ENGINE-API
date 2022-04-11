@@ -115,7 +115,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                totalCredits = 0;
            }
         }
-        ruleProcessorData.setStudentCourses(studentCourses);
+        ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
         return ruleProcessorData;
     }
     
