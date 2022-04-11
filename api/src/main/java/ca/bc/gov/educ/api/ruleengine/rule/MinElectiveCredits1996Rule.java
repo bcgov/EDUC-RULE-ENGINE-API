@@ -163,7 +163,8 @@ public class MinElectiveCredits1996Rule implements Rule {
 			}
 		}
 
-		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
+		if(ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1996-EN"))
+			ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
 	}
 
