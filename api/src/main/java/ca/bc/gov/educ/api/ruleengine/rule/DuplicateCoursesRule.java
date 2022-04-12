@@ -31,7 +31,7 @@ public class DuplicateCoursesRule implements Rule {
     public RuleData fire() {
 
         logger.info("###################### Finding DUPLICATE courses ######################");
-        List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
+        List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         for (int i = 0; i < studentCourseList.size() - 1; i++) {
 
