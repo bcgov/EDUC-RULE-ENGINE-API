@@ -54,7 +54,6 @@ public class ExcludeAfterProgramCutoffRule implements Rule {
             }
         }
 
-        //ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
         logger.info("Cut-off Courses: {}",
