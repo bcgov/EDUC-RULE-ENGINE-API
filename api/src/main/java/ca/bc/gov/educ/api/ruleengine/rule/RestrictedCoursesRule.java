@@ -51,7 +51,7 @@ public class RestrictedCoursesRule implements Rule {
 					String restrictedCourse = courseRestriction.getRestrictedCourse();
 					String restrictedLevel = courseRestriction.getRestrictedCourseLevel();
 					StudentCourse tempCourseRestriction = studentCourses.stream()
-								.filter(sc -> restrictedCourse.compareTo(sc.getCourseCode()) == 0 )
+								.filter(sc -> restrictedCourse.compareTo(sc.getCourseCode()) == 0 && restrictedLevel.compareTo(sc.getCourseLevel())==0 )
 								.findAny()
 								.orElse(null);
 					if (tempCourseRestriction != null
