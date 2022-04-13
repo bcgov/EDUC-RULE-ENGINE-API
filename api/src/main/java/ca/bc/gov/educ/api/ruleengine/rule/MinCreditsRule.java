@@ -32,10 +32,7 @@ public class MinCreditsRule implements Rule {
         int requiredCredits;
         logger.debug("Min Credits Rule");
 
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
-            return ruleProcessorData;
-        }
+
 
         List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
@@ -48,6 +45,13 @@ public class MinCreditsRule implements Rule {
                             && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0
                             && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
+
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
+            List<GradRequirement> requirementsNotMet = new ArrayList<>();
+            AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,gradProgramRules,requirementsNotMet);
+            return ruleProcessorData;
+        }
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
             requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim());
@@ -100,7 +104,7 @@ public class MinCreditsRule implements Rule {
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }
-    
+
     private void setCoursesReqMet(List<StudentCourse> studentCourses, ProgramRequirement gradProgramRule, int requiredCredits) {
     	//setting those course who have met this rule
         int tC=0;

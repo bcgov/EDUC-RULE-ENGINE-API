@@ -32,10 +32,7 @@ public class MatchCredit1986Rule implements Rule {
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-            logger.warn("!!!Empty list sent to Match Credit 1986 Rule for processing");
-            return ruleProcessorData;
-        }
+
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         Collections.sort(courseList, Comparator.comparing(StudentCourse::getCourseLevel).reversed()
@@ -47,6 +44,12 @@ public class MatchCredit1986Rule implements Rule {
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
+
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+            logger.warn("!!!Empty list sent to Match Credit 1986 Rule for processing");
+            AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,gradProgramRulesMatch,requirementsNotMet);
+            return ruleProcessorData;
+        }
 
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
         if(courseRequirements == null) {

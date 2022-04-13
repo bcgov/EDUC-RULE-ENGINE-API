@@ -31,10 +31,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
     public RuleData fire() {
     	
-    	if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty() || ruleProcessorData.getStudentAssessments() == null || ruleProcessorData.getStudentAssessments().isEmpty()) {
-            logger.warn("!!!Empty list sent to Assessment Match Rule for processing");
-            return ruleProcessorData;
-        }
+
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
@@ -52,6 +49,12 @@ public class AssessmentsMatchCreditsRule implements Rule {
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
+
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty() || ruleProcessorData.getStudentAssessments() == null || ruleProcessorData.getStudentAssessments().isEmpty()) {
+            logger.warn("!!!Empty list sent to Assessment Match Rule for processing");
+            AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,gradProgramRulesMatch,requirementsNotMet);
+            return ruleProcessorData;
+        }
 
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
         if(assessmentRequirements == null) {
