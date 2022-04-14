@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -45,6 +48,19 @@ public class RegistrationsDuplicateRule implements Rule {
                     if (studentCourseList.get(i).getInterimPercent() > studentCourseList.get(j).getInterimPercent()) {
                         studentCourseList.get(i).setDuplicate(false);
                         studentCourseList.get(j).setDuplicate(true);
+                    }
+                    else if(studentCourseList.get(i).getInterimPercent() < studentCourseList.get(j).getInterimPercent()) {
+                        studentCourseList.get(i).setDuplicate(true);
+                        studentCourseList.get(j).setDuplicate(false);
+                    }else {
+                        boolean decision = RuleEngineApiUtils.compareCourseSessionDates(studentCourseList.get(i).getSessionDate(),studentCourseList.get(j).getSessionDate());
+                        if(decision) {
+                            studentCourseList.get(i).setDuplicate(false);
+                            studentCourseList.get(j).setDuplicate(true);
+                        }else{
+                            studentCourseList.get(i).setDuplicate(true);
+                            studentCourseList.get(j).setDuplicate(false);
+                        }
                     }
                 }  //Do Nothing
 
