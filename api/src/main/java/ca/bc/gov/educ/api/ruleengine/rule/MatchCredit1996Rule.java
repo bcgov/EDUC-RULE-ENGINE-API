@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 public class MatchCredit1996Rule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MatchCredit1996Rule.class);
-    private static final String RULE_CODE_732 = "732";
-    private static final String RULE_CODE_726 = "726";
-    private static final String RULE_CODE_727 = "727";
+    private static final String RULE_CODE_732 = "10";
+    private static final String RULE_CODE_726 = "8";
+    private static final String RULE_CODE_727 = "9";
     private static final String FINE_ARTS = "F";
     private static final String APPLIED_SCIENCES = "A";
     private static final String FINE_ARTS_APPLIED_SCIENCES = "B";

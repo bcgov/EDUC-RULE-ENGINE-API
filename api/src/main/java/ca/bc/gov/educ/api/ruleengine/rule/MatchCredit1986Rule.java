@@ -137,7 +137,7 @@ public class MatchCredit1986Rule implements Rule {
     		finalProgramRulesList.addAll(unusedRules);
     	}
         finalProgramRulesList.stream().forEach(pr-> {
-            if(pr.getProgramRequirementCode().getProReqCode().compareTo("745")==0 && !pr.getProgramRequirementCode().isPassed() && ruleProcessorData.getGradStatus().getConsumerEducationRequirementMet().compareTo("Y")==0) {
+            if(pr.getProgramRequirementCode().getProReqCode().compareTo("745")==0 && !pr.getProgramRequirementCode().isPassed() && ruleProcessorData.getGradStatus().getConsumerEducationRequirementMet() != null && ruleProcessorData.getGradStatus().getConsumerEducationRequirementMet().compareTo("Y")==0) {
                 pr.getProgramRequirementCode().setPassed(true);
                 requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel()));
             }
