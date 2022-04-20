@@ -53,7 +53,7 @@ public class MinElectiveCreditsRule implements Rule {
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 			for (StudentCourse sc : studentCourses) {
-				if(sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null) {
+				if(sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0) {
 					if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
 						totalCredits += sc.getLeftOverCredits();
 						sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
