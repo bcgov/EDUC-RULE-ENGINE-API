@@ -381,7 +381,7 @@ public class RuleEngineServiceTest {
 			logger.info("Course : "+k+", Error : "+v);
 		});
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertTrue(ruleProcessorData.isGraduated());
 		assertTrue(errors.size()==0);
 	}
 
@@ -555,7 +555,7 @@ public class RuleEngineServiceTest {
 			logger.info("Course : "+k+", Error : "+v);
 		});
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertTrue(ruleProcessorData.isGraduated());
 		assertTrue(errors.size()==0);
 	}
 
@@ -730,8 +730,8 @@ public class RuleEngineServiceTest {
 			logger.info("Course : "+k+", Error : "+v);
 		});
 
-		assertTrue(!ruleProcessorData.isGraduated());
-		assertTrue(errors.size()!=0);
+		assertTrue(ruleProcessorData.isGraduated());
+		assertTrue(errors.size()==0);
 	}
 
 	@Test
@@ -905,7 +905,7 @@ public class RuleEngineServiceTest {
 			logger.info("Course : "+k+", Error : "+v);
 		});
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertTrue(ruleProcessorData.isGraduated());
 		assertTrue(errors.size()==0);
 	}
 
@@ -1257,7 +1257,7 @@ public class RuleEngineServiceTest {
 		});
 
 		assertTrue(!ruleProcessorData.isGraduated());
-		assertTrue(errors.size()==0);
+		assertTrue(errors.size()!=0);
 	}
 
 	@Test
@@ -1268,7 +1268,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertTrue(ruleProcessorData.isGraduated());
 	}
 
 	@Test

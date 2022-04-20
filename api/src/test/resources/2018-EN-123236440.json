@@ -1803,29 +1803,7 @@
   ],
   "excludedCourses": null,
   "excludedAssessments": null,
-  "studentAssessments": [
-    {
-      "pen": "123236440",
-      "assessmentCode": "LTE10",
-      "assessmentName": "Literacy 10 Assessment",
-      "sessionDate": "2019/06",
-      "gradReqMet": "",
-      "gradReqMetDetail": "",
-      "specialCase": "E",
-      "exceededWriteFlag": " ",
-      "proficiencyScore": 0.0,
-      "wroteFlag": null,
-      "rawScore": null,
-      "percentComplete": null,
-      "irtScore": null,
-      "equivalentCode": null,
-      "projected": false,
-      "notCompleted": false,
-      "used": false,
-      "duplicate": false,
-      "failed": false
-    }
-  ],
+  "studentAssessments": [],
   "courseRequirements": [
     {
       "courseRequirementId": "02a1fe1d-866b-4779-9445-3a50202ae1c0",
