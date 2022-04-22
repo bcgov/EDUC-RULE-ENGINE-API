@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Collections;
 import java.util.Date;
@@ -70,10 +72,11 @@ public class RuleEngineApiUtils {
     }
     
     public static int getDifferenceInDays(String date1, String date2) {
-    	Period diff = Period.between(
-                LocalDate.parse(date1).withDayOfMonth(1),
-                LocalDate.parse(date2).withDayOfMonth(1));
-    	return diff.getDays();
+    	date1 = "2022-06-22";
+        Period diff = Period.between(
+                LocalDate.parse(date1),
+                LocalDate.parse(date2));
+    	return diff.getDays() + diff.getMonths()*30;
     }
     
     public static List<StudentCourse> getClone(List<StudentCourse> listCourses) {
