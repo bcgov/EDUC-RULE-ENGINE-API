@@ -70,10 +70,10 @@ public class RuleEngineApiUtils {
     }
     
     public static int getDifferenceInDays(String date1, String date2) {
-    	Period diff = Period.between(
-                LocalDate.parse(date1).withDayOfMonth(1),
-                LocalDate.parse(date2).withDayOfMonth(1));
-    	return diff.getDays();
+        Period diff = Period.between(
+                LocalDate.parse(date1),
+                LocalDate.parse(date2));
+    	return diff.getDays() + diff.getMonths()*30;
     }
     
     public static List<StudentCourse> getClone(List<StudentCourse> listCourses) {
