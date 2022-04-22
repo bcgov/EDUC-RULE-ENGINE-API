@@ -70,7 +70,6 @@ public class RuleEngineApiUtils {
     }
     
     public static int getDifferenceInDays(String date1, String date2) {
-    	date1 = "2022-06-22";
         Period diff = Period.between(
                 LocalDate.parse(date1),
                 LocalDate.parse(date2));
