@@ -6,14 +6,14 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 
 @Component
-public class RequestInterceptor implements HandlerInterceptor {
+public class RequestInterceptor implements AsyncHandlerInterceptor {
 
 	@Autowired
 	RuleEngineApiConstants constants;
