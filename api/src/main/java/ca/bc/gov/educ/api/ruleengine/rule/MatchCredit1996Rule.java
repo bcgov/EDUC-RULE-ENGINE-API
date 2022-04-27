@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 public class MatchCredit1996Rule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MatchCredit1996Rule.class);
-    private static final String RULE_CODE_732 = "732";
-    private static final String RULE_CODE_726 = "726";
-    private static final String RULE_CODE_727 = "727";
+    private static final String RULE_CODE_732 = "10";
+    private static final String RULE_CODE_726 = "8";
+    private static final String RULE_CODE_727 = "9";
     private static final String FINE_ARTS = "F";
     private static final String APPLIED_SCIENCES = "A";
     private static final String FINE_ARTS_APPLIED_SCIENCES = "B";
@@ -39,10 +39,7 @@ public class MatchCredit1996Rule implements Rule {
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
         Map<String,Integer> map1996 = new HashMap<>();
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-            logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
-            return ruleProcessorData;
-        }
+
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         Collections.sort(courseList, Comparator.comparing(StudentCourse::getCourseLevel).reversed()
@@ -54,6 +51,12 @@ public class MatchCredit1996Rule implements Rule {
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
+
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+            logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
+            AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,gradProgramRulesMatch,requirementsNotMet);
+            return ruleProcessorData;
+        }
 
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
         if(courseRequirements == null) {
@@ -92,7 +95,7 @@ public class MatchCredit1996Rule implements Rule {
 
                         if(tempProgramRule != null) {
                             ProgramRequirement finalTempProgramRule = tempProgramRule;
-                            GradRequirement req = requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode())).findAny().orElse(null);
+                            GradRequirement req = requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber())).findAny().orElse(null);
                             if (req != null) {
                                 tempProgramRule = null;
                             }
@@ -177,7 +180,7 @@ public class MatchCredit1996Rule implements Rule {
     	if (!tempCourseRequirement.isEmpty() && tempProgramRule != null) {
             ProgramRequirement finalTempProgramRule = tempProgramRule;
             if (requirementsMet.stream()
-                    .filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode()))
+                    .filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
                     .findAny()
                     .orElse(null) == null) {
             	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet);
@@ -226,7 +229,7 @@ public class MatchCredit1996Rule implements Rule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getProReqCode(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
             }
 
             logger.info("One or more Match rules not met!");
@@ -269,15 +272,15 @@ public class MatchCredit1996Rule implements Rule {
         tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
         if (tempCourse.getGradReqMet().length() > 0) {
 
-            tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getProReqCode());
-            tempCourse.setGradReqMetDetail(tempCourse.getGradReqMetDetail() + ", " + tempProgramRule.getProgramRequirementCode().getProReqCode()
+            tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
+            tempCourse.setGradReqMetDetail(tempCourse.getGradReqMetDetail() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber()
                     + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
         } else {
-            tempCourse.setGradReqMet(tempProgramRule.getProgramRequirementCode().getProReqCode());
-            tempCourse.setGradReqMetDetail(tempProgramRule.getProgramRequirementCode().getProReqCode() + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
+            tempCourse.setGradReqMet(tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
+            tempCourse.setGradReqMetDetail(tempProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
         }
         tempProgramRule.getProgramRequirementCode().setPassed(true);
-        requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getProReqCode(), tempProgramRule.getProgramRequirementCode().getLabel()));
+        requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel()));
     }
 
     @Override

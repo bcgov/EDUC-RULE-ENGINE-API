@@ -5,8 +5,6 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +18,9 @@ import java.util.stream.Collectors;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MinCreditsRule implements Rule {
+public class MinCredit1986Rule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(MinCreditsRule.class);
+    private static Logger logger = LoggerFactory.getLogger(MinCredit1986Rule.class);
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -32,11 +30,13 @@ public class MinCreditsRule implements Rule {
         int requiredCredits;
         logger.debug("Min Credits Rule");
 
-
-
-        List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
+        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
+            return ruleProcessorData;
+        }
+        List<StudentCourse> tempStudentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-
+        List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule()).collect(Collectors.toList());
         logger.debug("Unique Courses: {}",studentCourses.size());
 
         List<ProgramRequirement> gradProgramRules = ruleProcessorData.getGradProgramRules()
@@ -46,26 +46,16 @@ public class MinCreditsRule implements Rule {
                             && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
 
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
-            List<GradRequirement> requirementsNotMet = new ArrayList<>();
-            AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,gradProgramRules,requirementsNotMet);
-            return ruleProcessorData;
-        }
+        logger.debug(gradProgramRules.toString());
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
             requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim());
-            totalCredits = studentCourses
-                    .stream()
-                    .mapToInt(StudentCourse::getCredits)
-                    .sum();
-
+            totalCredits = 0;
             if (gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") != 0) {
                 String requiredLevel = gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim();
                 totalCredits = studentCourses
                         .stream()
-                        .filter(sc -> sc.getCourseLevel().contains(requiredLevel)
-                        		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel())))
+                        .filter(sc -> sc.getCourseLevel().contains(requiredLevel) && !sc.getCourseCode().startsWith("X"))
                         .mapToInt(StudentCourse::getCredits)
                         .sum();
             }
@@ -84,7 +74,7 @@ public class MinCreditsRule implements Rule {
                         gradProgramRule.getProgramRequirementCode().getLabel()));
                 ruleProcessorData.setRequirementsMet(reqsMet);
             } else {
-                logger.info("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
+                logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
                 ruleProcessorData.setGraduated(false);
 
                 List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -97,28 +87,26 @@ public class MinCreditsRule implements Rule {
                 ruleProcessorData.setNonGradReasons(nonGradReasons);
             }
 
-            logger.debug("Min Credits -> Required:{} Has : {}",requiredCredits,totalCredits);
+            logger.info("Min Credits -> Required: {} Has : {}",requiredCredits,totalCredits);
         }
 
-        logger.debug(ruleProcessorData.toString());
+        studentCourses.addAll(tempStudentCourseList.stream().filter(StudentCourse::isUsedInMatchRule).collect(Collectors.toList()));
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }
-
+    
     private void setCoursesReqMet(List<StudentCourse> studentCourses, ProgramRequirement gradProgramRule, int requiredCredits) {
     	//setting those course who have met this rule
         int tC=0;
         for(StudentCourse sc:studentCourses) {
-        	if(sc.getCourseLevel().contains(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim())
-            		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel()))) {
+            if(sc.getCourseLevel().contains(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) && !sc.getCourseCode().startsWith("X")) {
         		tC += sc.getCredits();
-        		if(tC<=requiredCredits) {
-        			processReqMet(sc,gradProgramRule);
-        		}else {
-        			break;
-        		}
-        		
-        	}
+                processReqMet(sc,gradProgramRule);
+                if (tC > requiredCredits) {
+                    break;
+                }
+
+            }
         }		
 	}
 
@@ -140,6 +128,6 @@ public class MinCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MinCreditsRule: Rule Processor Data set.");
+        logger.info("MinCredit1986Rule: Rule Processor Data set.");
     }
 }

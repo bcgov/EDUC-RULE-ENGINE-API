@@ -168,7 +168,7 @@
         "algoRuleCode": "INCOMPLETE_CRSE_RULE",
         "ruleImplementation": "IncompleteCoursesRule",
         "label": "Incomplete Courses rule",
-        "description": "The student achievement record session date is earlier than a month ago and the achievement was not written or given a special case",
+        "description": "Checks if the student achievement record (e.g., course) session date has passed (e.g. earlier than today - YYYYMM)  and no final result or special case exists.",
         "displayOrder": 10,
         "isActiveRule": "Y"
       }
@@ -181,7 +181,7 @@
         "algoRuleCode": "CRSE_REGISTRATION_RULE",
         "ruleImplementation": "RegistrationsRule",
         "label": "Course Registrations rule",
-        "description": "The student achievement record session date is from a month ago or later and the achievement was not written or given a special case",
+        "description": "Checks if the student achievement record (e.g., course) session date is still current or future dated (e.g. from today YYYYMM) or later) and no final result or special case exists.",
         "displayOrder": 30,
         "isActiveRule": "Y"
       }
@@ -232,8 +232,8 @@
       "algorithmRuleCode": {
         "algoRuleCode": "EXCL_AFT_PRG_CUTOFF_RULE",
         "ruleImplementation": "ExcludeAfterProgramCutoffRule",
-        "label": "Excluded courses after 1995 program cut off rule",
-        "description": "Exclude any courses taken after 201106",
+        "label": "Excluded courses after Program Expiry Date rule",
+        "description": "Exclude any courses taken after the program has expired",
         "displayOrder": 310,
         "isActiveRule": "Y"
       }
@@ -328,6 +328,32 @@
         "displayOrder": 180,
         "isActiveRule": "Y"
       }
+    },
+    {
+      "programAlgoRuleID": "d96f0fa5-b8fb-3ebc-e053-9ae9228ee9b1",
+      "graduationProgramCode": "1996-PF",
+      "sortOrder": 130,
+      "algorithmRuleCode": {
+        "algoRuleCode": "OPTIONAL_PROGRAM_NO_RULE",
+        "ruleImplementation": "OptionalProgramNoRule",
+        "label": "No Rule for Optional Programs",
+        "description": "Graduate Student's Optional Program without rules",
+        "displayOrder": 390,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "d9e5fc31-4db7-d2dd-e053-98e9228e2646",
+      "graduationProgramCode": "1996-PF",
+      "sortOrder": 140,
+      "algorithmRuleCode": {
+        "algoRuleCode": "MAIN_PRGM_COMPLETE_RULE",
+        "ruleImplementation": "MainProgramCompleteRule",
+        "label": "Main Program Complete Rule",
+        "description": "Checks if the main program of the student is complete or not",
+        "displayOrder": 470,
+        "isActiveRule": "Y"
+      }
     }
   ],
   "gradProgramRules": [
@@ -352,6 +378,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "720",
         "passed": false,
         "tempFailed": false
       }
@@ -377,6 +404,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "1",
         "passed": false,
         "tempFailed": false
       }
@@ -402,6 +430,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "2",
         "passed": false,
         "tempFailed": false
       }
@@ -427,6 +456,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "3",
         "passed": false,
         "tempFailed": false
       }
@@ -452,6 +482,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "4",
         "passed": false,
         "tempFailed": false
       }
@@ -477,6 +508,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "5",
         "passed": false,
         "tempFailed": false
       }
@@ -502,6 +534,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "8",
         "passed": false,
         "tempFailed": false
       }
@@ -527,6 +560,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "9",
         "passed": false,
         "tempFailed": false
       }
@@ -552,6 +586,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "6",
         "passed": false,
         "tempFailed": false
       }
@@ -577,6 +612,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "7",
         "passed": false,
         "tempFailed": false
       }
@@ -602,31 +638,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
-        "passed": false,
-        "tempFailed": false
-      }
-    },
-    {
-      "programRequirementID": "d3526bc4-921c-fd33-e053-9ae9228e4cb6",
-      "graduationProgramCode": "1996-PF",
-      "programRequirementCode": {
-        "proReqCode": "731",
-        "label": "8 Credit Maximum for LD Courses",
-        "description": "Students are only allowed to take 8 credits of LD Courses",
-        "requirementTypeCode": {
-          "reqTypeCode": "ALDC",
-          "label": "Allowable LD Courses",
-          "displayOrder": 100,
-          "description": "Algorithm identifies LD Courses",
-          "effectiveDate": 1623654000000,
-          "expiryDate": null
-        },
-        "requiredCredits": "0",
-        "notMetDesc": "More than 8 credits found for LD courses",
-        "requiredLevel": null,
-        "languageOfInstruction": null,
-        "activeRequirement": "Y",
-        "requirementCategory": null,
+        "traxReqNumber": "730",
         "passed": false,
         "tempFailed": false
       }
@@ -652,6 +664,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "820",
         "passed": false,
         "tempFailed": false
       }
@@ -677,6 +690,7 @@
         "languageOfInstruction": null,
         "activeRequirement": "Y",
         "requirementCategory": "C",
+        "traxReqNumber": "10",
         "passed": false,
         "tempFailed": false
       }
@@ -684,11 +698,82 @@
   ],
   "mapOptional": {
     "DD": {
-      "optionalProgramRules": [],
+      "optionalProgramRules": [
+        {
+          "optionalProgramRequirementID": "d96d1d14-a05c-703b-e053-98e9228e1813",
+          "optionalProgramID": {
+            "optionalProgramID": "d35256d0-1ac1-aa12-e053-9ae9228eb9b0",
+            "optProgramCode": "DD",
+            "optionalProgramName": "Dual Dogwood",
+            "description": "Students enrolled in Programme francophone on the 1996 Diplôme de fin d'études secondaires en Colombie-Britannique program, who were also working towards the B.C. Certificate of Graduation (Dual Dogwood).",
+            "displayOrder": 10,
+            "effectiveDate": 836204400000,
+            "expiryDate": 1309417200000,
+            "graduationProgramCode": "1996-PF"
+          },
+          "optionalProgramRequirementCode": {
+            "optProReqCode": "955",
+            "label": "Student on 1996 Programme Francophone receives a dual dogwood automatically",
+            "description": "Student on 1996 Programme Francophone receives a dual dogwood automatically",
+            "requirementTypeCode": {
+              "reqTypeCode": "SR",
+              "label": "School Reported",
+              "displayOrder": 110,
+              "description": "School Reported Programs",
+              "effectiveDate": 1623654000000,
+              "expiryDate": null
+            },
+            "requiredCredits": null,
+            "notMetDesc": "Not Reported by School",
+            "requiredLevel": null,
+            "languageOfInstruction": null,
+            "activeRequirement": "Y",
+            "requirementCategory": null,
+            "traxReqNumber": "955",
+            "passed": false
+          }
+        },
+        {
+          "optionalProgramRequirementID": "d9e58b4f-4804-dfc7-e053-98e9228e0d71",
+          "optionalProgramID": {
+            "optionalProgramID": "d35256d0-1ac1-aa12-e053-9ae9228eb9b0",
+            "optProgramCode": "DD",
+            "optionalProgramName": "Dual Dogwood",
+            "description": "Students enrolled in Programme francophone on the 1996 Diplôme de fin d'études secondaires en Colombie-Britannique program, who were also working towards the B.C. Certificate of Graduation (Dual Dogwood).",
+            "displayOrder": 10,
+            "effectiveDate": 836204400000,
+            "expiryDate": 1309417200000,
+            "graduationProgramCode": "1996-PF"
+          },
+          "optionalProgramRequirementCode": {
+            "optProReqCode": "957",
+            "label": "Student has completed their main program",
+            "description": "Student has completed their main program",
+            "requirementTypeCode": {
+              "reqTypeCode": "SR",
+              "label": "School Reported",
+              "displayOrder": 110,
+              "description": "School Reported Programs",
+              "effectiveDate": 1623654000000,
+              "expiryDate": null
+            },
+            "requiredCredits": null,
+            "notMetDesc": "Student has not completed their main program",
+            "requiredLevel": null,
+            "languageOfInstruction": null,
+            "activeRequirement": "Y",
+            "requirementCategory": null,
+            "traxReqNumber": "957",
+            "passed": false
+          }
+        }
+      ],
       "studentCoursesOptionalProgram": null,
       "studentAssessmentsOptionalProgram": null,
       "nonGradReasonsOptionalProgram": null,
       "requirementsMetOptionalProgram": null,
+      "studentOptionalProgramData": "{\"pen\":null,\"optionalProgramID\":\"d35256d0-1ac1-aa12-e053-9ae9228eb9b0\",\"studentOptionalProgramData\":null,\"optionalProgramCompletionDate\":\"2000-06-01\",\"optionalStudentCourses\":{\"studentCourseList\":[{\"pen\":\"104573159\",\"courseCode\":\"EPH\",\"courseName\":\"EDUCATION PHYSIQUE 11\",\"originalCredits\":4,\"courseLevel\":\"11\",\"sessionDate\":\"1999/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":92.0,\"completedCourseLetterGrade\":\"A\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"F\",\"workExpFlag\":\" \",\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"EPH\",\"courseName\":\"EDUCATION PHYSIQUE 12\",\"originalCredits\":4,\"courseLevel\":\"12\",\"sessionDate\":\"2000/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":91.0,\"completedCourseLetterGrade\":\"A\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"F\",\"workExpFlag\":\" \",\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"FNAF\",\"courseName\":\"BEAUX-ARTS 11\",\"originalCredits\":2,\"courseLevel\":\"11\",\"sessionDate\":\"1999/01\",\"customizedCourseName\":\"BEAUX ARTS 11\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":85.0,\"completedCourseLetterGrade\":\"B\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":2,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"Y\",\"genericCourseType\":\"G\",\"language\":\"F\",\"workExpFlag\":\" \",\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"GM\",\"courseName\":\"GENERAL MECHANICS 11C\",\"originalCredits\":4,\"courseLevel\":\"11C\",\"sessionDate\":\"1999/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":82.0,\"completedCourseLetterGrade\":\"B\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"GM\",\"courseName\":\"GENERAL MECHANICS 11A\",\"originalCredits\":4,\"courseLevel\":\"11A\",\"sessionDate\":\"1999/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":82.0,\"completedCourseLetterGrade\":\"B\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"CAPPF\",\"courseName\":\"PLANIFICATION PROF. ET PERSONNELLE 12\",\"originalCredits\":2,\"courseLevel\":\"12\",\"sessionDate\":\"2000/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":80.0,\"completedCourseLetterGrade\":\"B\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":2,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":\" \",\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"GM\",\"courseName\":\"GENERAL MECHANICS 11B\",\"originalCredits\":4,\"courseLevel\":\"11B\",\"sessionDate\":\"1999/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":80.0,\"completedCourseLetterGrade\":\"B\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"XLSF\",\"courseName\":\"LD STRATEGIES D'APPRENTISSAGE 11\",\"originalCredits\":4,\"courseLevel\":\"11\",\"sessionDate\":\"1999/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":80.0,\"completedCourseLetterGrade\":\"B\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"F\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"INTF\",\"courseName\":\"TECHNOLOGIE DE L'INFORMATION 12\",\"originalCredits\":4,\"courseLevel\":\"12\",\"sessionDate\":\"2000/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":78.0,\"completedCourseLetterGrade\":\"B\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"A\",\"language\":\"F\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"CAPPF\",\"courseName\":\"PLANIFICATION PROF. ET PERSONNELLE 11\",\"originalCredits\":2,\"courseLevel\":\"11\",\"sessionDate\":\"2000/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":70.0,\"completedCourseLetterGrade\":\"C+\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":2,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"F\",\"workExpFlag\":\" \",\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"GM\",\"courseName\":\"GENERAL MECHANICS 12C\",\"originalCredits\":4,\"courseLevel\":\"12C\",\"sessionDate\":\"2000/01\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":70.0,\"completedCourseLetterGrade\":\"C+\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"GM\",\"courseName\":\"GENERAL MECHANICS 12B\",\"originalCredits\":4,\"courseLevel\":\"12B\",\"sessionDate\":\"2000/01\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":70.0,\"completedCourseLetterGrade\":\"C+\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"SCH\",\"courseName\":\"SCIENCES HUMAINES 11\",\"originalCredits\":4,\"courseLevel\":\"11\",\"sessionDate\":\"2000/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":67.0,\"completedCourseLetterGrade\":\"C+\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"F\",\"workExpFlag\":\" \",\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"EN\",\"courseName\":\"ENGLISH 11\",\"originalCredits\":4,\"courseLevel\":\"11\",\"sessionDate\":\"1999/07\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":61.0,\"completedCourseLetterGrade\":\"C\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":\" \",\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"FRALP\",\"courseName\":\"FRANCAIS LANGUE PREMIERE 11\",\"originalCredits\":4,\"courseLevel\":\"11\",\"sessionDate\":\"1999/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":59.0,\"completedCourseLetterGrade\":\"C-\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"F\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"GM\",\"courseName\":\"GENERAL MECHANICS 12A\",\"originalCredits\":4,\"courseLevel\":\"12A\",\"sessionDate\":\"2000/01\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":58.0,\"completedCourseLetterGrade\":\"C-\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"EN\",\"courseName\":\"ENGLISH 12\",\"originalCredits\":4,\"courseLevel\":\"12\",\"sessionDate\":\"2000/06\",\"customizedCourseName\":null,\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":57.0,\"completedCourseLetterGrade\":\"C-\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":58.0,\"bestExamPercent\":56.0,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":null,\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":null,\"relatedCourseName\":null,\"relatedLevel\":null,\"hasRelatedCourse\":\"Y\",\"genericCourseType\":\"\",\"language\":\"\",\"workExpFlag\":\" \",\"specialCase\":\"N\",\"toWriteFlag\":null,\"provExamCourse\":\"Y\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"FRALP\",\"courseName\":\"FRANCAIS LANGUE PREMIERE 12\",\"originalCredits\":4,\"courseLevel\":\"12\",\"sessionDate\":\"2000/06\",\"customizedCourseName\":null,\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":57.0,\"completedCourseLetterGrade\":\"C-\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":56.0,\"bestExamPercent\":58.0,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":null,\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":null,\"relatedCourseName\":null,\"relatedLevel\":null,\"hasRelatedCourse\":\"Y\",\"genericCourseType\":\"\",\"language\":\"F\",\"workExpFlag\":null,\"specialCase\":\"N\",\"toWriteFlag\":null,\"provExamCourse\":\"Y\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false},{\"pen\":\"104573159\",\"courseCode\":\"MTH\",\"courseName\":\"PRINCIPES DE MATHEMATIQUES 11\",\"originalCredits\":4,\"courseLevel\":\"11\",\"sessionDate\":\"1999/06\",\"customizedCourseName\":\"\",\"gradReqMet\":\"\",\"gradReqMetDetail\":\"\",\"completedCoursePercentage\":54.0,\"completedCourseLetterGrade\":\"C-\",\"interimPercent\":0.0,\"interimLetterGrade\":\"\",\"bestSchoolPercent\":null,\"bestExamPercent\":null,\"equivOrChallenge\":\"\",\"fineArtsAppliedSkills\":\"\",\"metLitNumRequirement\":null,\"credits\":4,\"creditsUsedForGrad\":0,\"relatedCourse\":\"\",\"relatedCourseName\":null,\"relatedLevel\":\"\",\"hasRelatedCourse\":\"N\",\"genericCourseType\":\"\",\"language\":\"F\",\"workExpFlag\":null,\"specialCase\":null,\"toWriteFlag\":null,\"provExamCourse\":\"N\",\"projected\":false,\"restricted\":false,\"notEligibleForElective\":false,\"boardAuthorityAuthorized\":false,\"independentDirectedStudies\":false,\"lessCreditCourse\":false,\"validationCourse\":false,\"cutOffCourse\":false,\"grade10Course\":false,\"careerPrep\":false,\"locallyDeveloped\":false,\"used\":false,\"notCompleted\":false,\"failed\":false,\"duplicate\":false}]},\"optionalStudentAssessments\":{\"studentAssessmentList\":[]},\"optionalNonGradReasons\":[],\"optionalRequirementsMet\":[{\"rule\":\"955\",\"description\":\"Student on 1996 Programme Francophone receives a dual dogwood automatically\",\"projected\":false},{\"rule\":\"957\",\"description\":\"Student has completed their main program\",\"projected\":false}],\"studentID\":\"ac339d70-7649-1a2e-8176-4a066c576432\",\"optionalGraduated\":true}",
+      "optionalProgramName": "Dual Dogwood",
       "hasOptionalProgram": true,
       "optionalProgramGraduated": true
     }
@@ -699,6 +784,7 @@
       "pen": "104573159",
       "courseCode": "EPH",
       "courseName": "EDUCATION PHYSIQUE 11",
+      "originalCredits": 4,
       "courseLevel": "11",
       "sessionDate": "1999/06",
       "customizedCourseName": "",
@@ -722,28 +808,32 @@
       "genericCourseType": "",
       "language": "F",
       "workExpFlag": " ",
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "EPH",
       "courseName": "EDUCATION PHYSIQUE 12",
+      "originalCredits": 4,
       "courseLevel": "12",
       "sessionDate": "2000/06",
       "customizedCourseName": "",
@@ -767,28 +857,32 @@
       "genericCourseType": "",
       "language": "F",
       "workExpFlag": " ",
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "FNAF",
       "courseName": "BEAUX-ARTS 11",
+      "originalCredits": 2,
       "courseLevel": "11",
       "sessionDate": "1999/01",
       "customizedCourseName": "BEAUX ARTS 11",
@@ -812,28 +906,32 @@
       "genericCourseType": "G",
       "language": "F",
       "workExpFlag": " ",
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "GM",
       "courseName": "GENERAL MECHANICS 11C",
+      "originalCredits": 4,
       "courseLevel": "11C",
       "sessionDate": "1999/06",
       "customizedCourseName": "",
@@ -857,28 +955,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "GM",
       "courseName": "GENERAL MECHANICS 11A",
+      "originalCredits": 4,
       "courseLevel": "11A",
       "sessionDate": "1999/06",
       "customizedCourseName": "",
@@ -902,28 +1004,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "CAPPF",
       "courseName": "PLANIFICATION PROF. ET PERSONNELLE 12",
+      "originalCredits": 2,
       "courseLevel": "12",
       "sessionDate": "2000/06",
       "customizedCourseName": "",
@@ -947,28 +1053,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": " ",
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "GM",
       "courseName": "GENERAL MECHANICS 11B",
+      "originalCredits": 4,
       "courseLevel": "11B",
       "sessionDate": "1999/06",
       "customizedCourseName": "",
@@ -992,28 +1102,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "XLSF",
       "courseName": "LD STRATEGIES D'APPRENTISSAGE 11",
+      "originalCredits": 4,
       "courseLevel": "11",
       "sessionDate": "1999/06",
       "customizedCourseName": "",
@@ -1037,28 +1151,32 @@
       "genericCourseType": "",
       "language": "F",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "INTF",
       "courseName": "TECHNOLOGIE DE L'INFORMATION 12",
+      "originalCredits": 4,
       "courseLevel": "12",
       "sessionDate": "2000/06",
       "customizedCourseName": "",
@@ -1082,28 +1200,32 @@
       "genericCourseType": "A",
       "language": "F",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "CAPPF",
       "courseName": "PLANIFICATION PROF. ET PERSONNELLE 11",
+      "originalCredits": 2,
       "courseLevel": "11",
       "sessionDate": "2000/06",
       "customizedCourseName": "",
@@ -1127,28 +1249,32 @@
       "genericCourseType": "",
       "language": "F",
       "workExpFlag": " ",
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "GM",
       "courseName": "GENERAL MECHANICS 12C",
+      "originalCredits": 4,
       "courseLevel": "12C",
       "sessionDate": "2000/01",
       "customizedCourseName": "",
@@ -1172,28 +1298,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "GM",
       "courseName": "GENERAL MECHANICS 12B",
+      "originalCredits": 4,
       "courseLevel": "12B",
       "sessionDate": "2000/01",
       "customizedCourseName": "",
@@ -1217,28 +1347,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "SCH",
       "courseName": "SCIENCES HUMAINES 11",
+      "originalCredits": 4,
       "courseLevel": "11",
       "sessionDate": "2000/06",
       "customizedCourseName": "",
@@ -1262,28 +1396,32 @@
       "genericCourseType": "",
       "language": "F",
       "workExpFlag": " ",
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "EN",
       "courseName": "ENGLISH 11",
+      "originalCredits": 4,
       "courseLevel": "11",
       "sessionDate": "1999/07",
       "customizedCourseName": "",
@@ -1307,28 +1445,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": " ",
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "FRALP",
       "courseName": "FRANCAIS LANGUE PREMIERE 11",
+      "originalCredits": 4,
       "courseLevel": "11",
       "sessionDate": "1999/06",
       "customizedCourseName": "",
@@ -1352,28 +1494,32 @@
       "genericCourseType": "",
       "language": "F",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "GM",
       "courseName": "GENERAL MECHANICS 12A",
+      "originalCredits": 4,
       "courseLevel": "12A",
       "sessionDate": "2000/01",
       "customizedCourseName": "",
@@ -1397,28 +1543,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "EN",
       "courseName": "ENGLISH 12",
+      "originalCredits": 4,
       "courseLevel": "12",
       "sessionDate": "2000/06",
       "customizedCourseName": null,
@@ -1442,28 +1592,32 @@
       "genericCourseType": "",
       "language": "",
       "workExpFlag": " ",
+      "specialCase": "N",
+      "toWriteFlag": null,
       "provExamCourse": "Y",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "FRALP",
       "courseName": "FRANCAIS LANGUE PREMIERE 12",
+      "originalCredits": 4,
       "courseLevel": "12",
       "sessionDate": "2000/06",
       "customizedCourseName": null,
@@ -1487,28 +1641,32 @@
       "genericCourseType": "",
       "language": "F",
       "workExpFlag": null,
+      "specialCase": "N",
+      "toWriteFlag": null,
       "provExamCourse": "Y",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     },
     {
       "pen": "104573159",
       "courseCode": "MTH",
       "courseName": "PRINCIPES DE MATHEMATIQUES 11",
+      "originalCredits": 4,
       "courseLevel": "11",
       "sessionDate": "1999/06",
       "customizedCourseName": "",
@@ -1532,23 +1690,26 @@
       "genericCourseType": "",
       "language": "F",
       "workExpFlag": null,
+      "specialCase": null,
+      "toWriteFlag": null,
       "provExamCourse": "N",
+      "leftOverCredits": null,
+      "validationCourse": false,
+      "independentDirectedStudies": false,
+      "boardAuthorityAuthorized": false,
+      "locallyDeveloped": false,
+      "lessCreditCourse": false,
+      "notEligibleForElective": false,
       "projected": false,
-      "duplicate": false,
-      "notCompleted": false,
-      "used": false,
       "failed": false,
+      "duplicate": false,
+      "used": false,
+      "notCompleted": false,
       "careerPrep": false,
-      "grade10Course": false,
+      "usedInMatchRule": false,
       "restricted": false,
       "cutOffCourse": false,
-      "locallyDeveloped": false,
-      "validationCourse": false,
-      "usedInMatchRule": false,
-      "lessCreditCourse": false,
-      "boardAuthorityAuthorized": false,
-      "notEligibleForElective": false,
-      "independentDirectedStudies": false
+      "grade10Course": false
     }
   ],
   "excludedCourses": null,
@@ -1556,553 +1717,7 @@
   "studentAssessments": [],
   "courseRequirements": [
     {
-      "courseRequirementId": "b703961e-b684-430a-8b7f-093a53a5a96d",
-      "courseCode": "EN",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "103",
-        "label": "Language Arts 12",
-        "description": "Language Arts 12",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "16637f53-62fe-45fe-8eee-84e849d0818c",
-      "courseCode": "EN",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "402",
-        "label": "Language Arts 12 - English",
-        "description": "Language Arts 12 - English",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "5d31e118-435d-4859-a7e5-40ee988f6952",
-      "courseCode": "INTF",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "111",
-        "label": "Arts Education/ADST credits",
-        "description": "Arts Education/ADST credits",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "cf79a7fe-c3a6-4a63-9d71-b632419391cc",
-      "courseCode": "FRALP",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "101",
-        "label": "Language Arts 10",
-        "description": "Language Arts 10",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "73aef084-e528-447f-9073-4e8e37ea6139",
-      "courseCode": "FRALP",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "302",
-        "label": "Français langue première 10 - Programme francophone ",
-        "description": "Français langue première 10 - Programme francophone ",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "515eff13-1cf7-4e1d-85ff-85cc2ee9c5e7",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "102",
-        "label": "Language Arts 11",
-        "description": "Language Arts 11",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "b816ef71-947f-4917-913a-e8525e18d807",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "301",
-        "label": "Français langue première 11 - Programme francophone ",
-        "description": "Français langue première 11 - Programme francophone ",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "2e73afb7-2cd9-4e46-8f4d-ab0ba68b41a4",
-      "courseCode": "FRALP",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "103",
-        "label": "Language Arts 12",
-        "description": "Language Arts 12",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "30a95751-181c-40bd-9e4e-ffa988ed00be",
-      "courseCode": "FRALP",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "300",
-        "label": "Français langue première 12 - Programme francophone ",
-        "description": "Français langue première 12 - Programme francophone ",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "9337f141-ed79-4c0f-9308-8998396e2115",
-      "courseCode": "EN",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "701",
-        "label": "Language Arts 10",
-        "description": "Credits must be earned in the Language Arts 10 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "79bece99-05e0-4796-9a1d-28fbc77925e0",
-      "courseCode": "EN",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "850",
-        "label": "Language Arts 10 - English",
-        "description": "Student must meet a Language Arts 10 requirement in English",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "c2dfcf7e-5379-49fd-8a01-4d537f546f51",
-      "courseCode": "EN",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "702",
-        "label": "Language Arts 11",
-        "description": "Credits must be earned in the Language Arts 11 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "d6bd71b3-46b3-4f48-aed2-51bb62e10589",
-      "courseCode": "EN",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "851",
-        "label": "Language Arts 11 - English",
-        "description": "Student must meet a Language Arts 11 requirement in English",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "c55dda5f-4aa7-41c5-8570-c60bc65272b0",
-      "courseCode": "EN",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "703",
-        "label": "Language Arts 12",
-        "description": "Credits must be earned in the Language Arts 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "f984a1fb-9b12-4e6f-90de-c50c79ee9b2f",
-      "courseCode": "EN",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "852",
-        "label": "Language Arts 12 - English",
-        "description": "Student must meet a Language Arts 12 requirement in English",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "1a6c7cee-98c8-4c44-b1f0-29835fa9ccab",
-      "courseCode": "EPH",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "5ac2af07-b537-4ec6-a907-bbfc934266aa",
-      "courseCode": "EPH",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "701a21d8-d3d5-43de-a902-768fd4d59e9c",
-      "courseCode": "FNAF",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "92cfded1-6aba-4381-bced-510c496a92f7",
-      "courseCode": "FNAF",
-      "courseLevel": "11A",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "fd32ddaf-f447-4fe5-9f1f-ae98ba0b08e1",
-      "courseCode": "FNAF",
-      "courseLevel": "11B",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "fb301ae6-0971-418a-9a3c-dd3b500da7fd",
-      "courseCode": "FRALP",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "701",
-        "label": "Language Arts 10",
-        "description": "Credits must be earned in the Language Arts 10 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "1f8b5220-e13d-426c-8431-4c4111074e9b",
-      "courseCode": "FRALP",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "815",
-        "label": "Français langue première 10 - Programme francophone ",
-        "description": "Credits must be earned in the Language Arts 10 subject area in French",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "992a7907-6246-4917-aeb6-695c7900d93e",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "702",
-        "label": "Language Arts 11",
-        "description": "Credits must be earned in the Language Arts 11 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "803343bf-5b64-447a-b650-01c3add9b063",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "816",
-        "label": "Français langue première 11 - Programme francophone ",
-        "description": "Credits must be earned in the Language Arts 11 subject area in French",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "90b22b51-44aa-4227-906c-ecbd148d7edf",
-      "courseCode": "FRALP",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "703",
-        "label": "Language Arts 12",
-        "description": "Credits must be earned in the Language Arts 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "c5e429a3-d0a8-43da-b70e-9aefa279a366",
-      "courseCode": "FRALP",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "817",
-        "label": "Français langue première 12 - Programme francophone ",
-        "description": "Credits must be earned in the Language Arts 12 subject area in French",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "4577e019-f15c-444b-aa6d-e361987a2539",
-      "courseCode": "GM",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "707",
-        "label": "Mathematics 11 or 12",
-        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "298898a9-f865-4036-afa5-3d9549a4f3b9",
-      "courseCode": "GM",
-      "courseLevel": "11A",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "ddfdb585-6e30-40ba-ab12-40e5d76196f1",
-      "courseCode": "GM",
-      "courseLevel": "11B",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "b242096a-35ed-411a-ab36-0a19e552a496",
-      "courseCode": "GM",
-      "courseLevel": "11C",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "b6b96681-c239-425b-ad8c-e61f2ee3c0b1",
-      "courseCode": "GM",
-      "courseLevel": "12A",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "f523bfc7-5a7e-416b-aff1-ce5175c777ad",
-      "courseCode": "GM",
-      "courseLevel": "12B",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "68d7907c-6f00-4dc2-858e-39bc9a1cffb1",
-      "courseCode": "GM",
-      "courseLevel": "12C",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "7d4d188d-5aed-4b7b-803d-cca27ffaef38",
-      "courseCode": "MTH",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "707",
-        "label": "Mathematics 11 or 12",
-        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "55fe2ce1-ffa9-41b8-9976-bde1ad928d85",
-      "courseCode": "MTH",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "707",
-        "label": "Mathematics 11 or 12",
-        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "52aa1617-4186-4e24-a421-8a5f19745e86",
-      "courseCode": "SCH",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "705",
-        "label": "Social Studies 11, Civic Studies 11 or BC First Nations Studies 12",
-        "description": "Credits must be earned in the Social Studies 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "233c2b7f-948d-4f3c-be19-47ae1075ba06",
-      "courseCode": "EPH",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "711",
-        "label": "Physical Education 10",
-        "description": "Credits must be earned in the Physical Education 10 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "752a01c6-c709-4c3d-834c-2a606f097f91",
-      "courseCode": "MTH",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "706",
-        "label": "Mathematics 10",
-        "description": "Credits must be earned in the Mathematics 10 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "c489aad0-9784-4dc9-9d39-e22cb1963b6e",
-      "courseCode": "SCH",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "704",
-        "label": "Social Studies 10",
-        "description": "Credits must be earned in the Social Studies 10 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "47ed6ecf-b1b3-469c-b30c-9f282c58662d",
-      "courseCode": "INTF",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "712",
-        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
-        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "9a991ce4-d404-48ff-add4-6d62b86286c8",
-      "courseCode": "FRALP",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "910",
-        "label": "Français langue seconde-immersion 12 – French Immersion",
-        "description": "Credits must be earned in the Français langue seconde-immersion 12 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "09126237-b090-4358-909c-ddc429295c2a",
-      "courseCode": "FRALP",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "915",
-        "label": "Français langue seconde-immersion 12 – French Immersion",
-        "description": "Credits must be earned in the Français langue seconde-immersion 12 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "828babe4-f1ba-464d-b808-472699321843",
+      "courseRequirementId": "76bb8f38-be00-4dba-878d-7798c1e8f31e",
       "courseCode": "MTH",
       "courseLevel": "11",
       "ruleCode": {
@@ -2115,7 +1730,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "7c299b96-1678-4574-910e-112169ad2dd2",
+      "courseRequirementId": "234f5534-af3d-48c6-a29b-9c5402db31f0",
       "courseCode": "MTH",
       "courseLevel": "10",
       "ruleCode": {
@@ -2128,7 +1743,176 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "81a21e38-ee15-48cd-b095-099bc71ad4d5",
+      "courseRequirementId": "68d85dfc-e066-4c54-b5ce-5d659d0acb66",
+      "courseCode": "EPH",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "711",
+        "label": "Physical Education 10",
+        "description": "Credits must be earned in the Physical Education 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "315e19f6-b3af-436e-994f-b0d71b7f89bf",
+      "courseCode": "MTH",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "706",
+        "label": "Mathematics 10",
+        "description": "Credits must be earned in the Mathematics 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "1a9bb1c8-7dd2-4817-8831-62866943b35c",
+      "courseCode": "SCH",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "704",
+        "label": "Social Studies 10",
+        "description": "Credits must be earned in the Social Studies 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "ed48023b-4c4d-46cf-825b-d9400459a806",
+      "courseCode": "INTF",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "9a61ea6c-e604-49a9-8c32-6290b43db887",
+      "courseCode": "EN",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "103",
+        "label": "Language Arts 12",
+        "description": "Language Arts 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "44862a36-8e49-4bd5-84d1-8d3a061652c9",
+      "courseCode": "EN",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "402",
+        "label": "Language Arts 12 - English",
+        "description": "Language Arts 12 - English",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "b659cd61-74bd-4262-b768-618413f298d7",
+      "courseCode": "INTF",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "111",
+        "label": "Arts Education/ADST credits",
+        "description": "Arts Education/ADST credits",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "f85d790b-723d-495e-ac98-ef6e56da02ce",
+      "courseCode": "FRALP",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "101",
+        "label": "Language Arts 10",
+        "description": "Language Arts 10",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "8175e5e0-259d-4511-b46a-4a9360c4cdd8",
+      "courseCode": "FRALP",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "302",
+        "label": "Français langue première 10 - Programme francophone ",
+        "description": "Français langue première 10 - Programme francophone ",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "4acd8dc1-3cac-4108-96ff-555d028e8be7",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "102",
+        "label": "Language Arts 11",
+        "description": "Language Arts 11",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "b3f1610d-b8be-4309-8e1b-51f8d56e677a",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "301",
+        "label": "Français langue première 11 - Programme francophone ",
+        "description": "Français langue première 11 - Programme francophone ",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "f6d3bb22-7ddc-47e4-be87-43ea905626e3",
+      "courseCode": "FRALP",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "103",
+        "label": "Language Arts 12",
+        "description": "Language Arts 12",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "03f53323-a6d6-4aca-ab4d-8dbd571cff64",
+      "courseCode": "FRALP",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "300",
+        "label": "Français langue première 12 - Programme francophone ",
+        "description": "Français langue première 12 - Programme francophone ",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "63e318a9-a831-4aae-b282-755b48abbfc5",
       "courseCode": "EN",
       "courseLevel": "10",
       "ruleCode": {
@@ -2141,7 +1925,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "2833f8af-94ea-4ddd-9d92-2f05aad74515",
+      "courseRequirementId": "494f35dc-a1c9-486f-90d1-f42e4952b277",
       "courseCode": "EN",
       "courseLevel": "10",
       "ruleCode": {
@@ -2154,7 +1938,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "19273b87-b4d0-4df1-bb05-cd91edac8dd6",
+      "courseRequirementId": "c6ce1c2b-82b8-4611-a162-76d1a94bd665",
       "courseCode": "EN",
       "courseLevel": "11",
       "ruleCode": {
@@ -2167,7 +1951,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "ed5dbb4f-56bf-4390-a291-98867de46385",
+      "courseRequirementId": "2cced377-a5db-4b47-8f14-11b907464ee8",
       "courseCode": "EN",
       "courseLevel": "11",
       "ruleCode": {
@@ -2180,7 +1964,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "9281cbda-74e1-4ff1-9a5c-6d8e1a967332",
+      "courseRequirementId": "c303b885-01ae-4fb7-9c86-0bfc16792860",
       "courseCode": "GM",
       "courseLevel": "11",
       "ruleCode": {
@@ -2193,7 +1977,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "2bc8bae4-4283-4ea3-9156-9df73cc671c3",
+      "courseRequirementId": "61dc7e30-ec0f-4832-8b8d-5337ce1e0ade",
       "courseCode": "MTH",
       "courseLevel": "12",
       "ruleCode": {
@@ -2206,7 +1990,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "3adc60b7-c6d8-45c8-847d-2e0f93b0d5ad",
+      "courseRequirementId": "f90b2d2c-2b26-4303-b660-f4bedefa1190",
       "courseCode": "EPH",
       "courseLevel": "10",
       "ruleCode": {
@@ -2219,7 +2003,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "23198ebe-7d39-41ef-9fc0-6829441174e3",
+      "courseRequirementId": "6df29d6f-a40b-403c-832c-6aa0f20fea12",
       "courseCode": "SCH",
       "courseLevel": "10",
       "ruleCode": {
@@ -2232,7 +2016,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "c1710a6b-6056-4595-83fa-76c12785c202",
+      "courseRequirementId": "a29ac0ab-93a4-4066-9da4-e36f3cd5e65f",
       "courseCode": "SCH",
       "courseLevel": "11",
       "ruleCode": {
@@ -2245,7 +2029,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "cade7595-fd38-4fc2-9579-60bb2e33a807",
+      "courseRequirementId": "ea8274d8-f1cd-4df3-9b5f-e463fe73c832",
       "courseCode": "GM",
       "courseLevel": "11A",
       "ruleCode": {
@@ -2258,7 +2042,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "095500a6-a7e9-4d4d-9fb1-4d877a29d949",
+      "courseRequirementId": "7c4295cf-604b-4339-91dd-e975bab41562",
       "courseCode": "GM",
       "courseLevel": "11B",
       "ruleCode": {
@@ -2271,7 +2055,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "d9a4959d-f6d3-4cd8-9b37-a74b5bcff3b2",
+      "courseRequirementId": "97822518-fdde-4c2e-b806-d252e22da237",
       "courseCode": "GM",
       "courseLevel": "11C",
       "ruleCode": {
@@ -2284,7 +2068,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "94f2e2ef-6b9c-4093-aa66-3a73a3c95165",
+      "courseRequirementId": "bc10c645-cdc6-4040-9ab8-b966de8b5e8f",
       "courseCode": "GM",
       "courseLevel": "12A",
       "ruleCode": {
@@ -2297,7 +2081,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "d15e9304-f71a-4e4e-9d61-05d1667b24b7",
+      "courseRequirementId": "0217c908-6867-46e0-b040-d0b0cce04386",
       "courseCode": "GM",
       "courseLevel": "12B",
       "ruleCode": {
@@ -2310,7 +2094,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "45e37f62-bd70-4d1e-86a4-2504e5282e4a",
+      "courseRequirementId": "028c2fd6-3d16-45bf-a36e-32ac61623548",
       "courseCode": "GM",
       "courseLevel": "12C",
       "ruleCode": {
@@ -2323,7 +2107,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "54d44e8e-afab-40cc-9fa0-3306ff82962c",
+      "courseRequirementId": "7487ed31-d935-455a-8c0d-60790149b973",
       "courseCode": "FNAF",
       "courseLevel": "11",
       "ruleCode": {
@@ -2336,7 +2120,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "b73cdacc-56e9-4ef7-a97b-3c1d91ffeb36",
+      "courseRequirementId": "af18d891-1148-4f02-ae0a-5731b7f40f9e",
       "courseCode": "FNAF",
       "courseLevel": "11A",
       "ruleCode": {
@@ -2349,7 +2133,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "4277de3f-b1c7-4811-a768-31b7ca3ae1a5",
+      "courseRequirementId": "338b69f8-df61-430b-b030-082981b916d3",
       "courseCode": "FNAF",
       "courseLevel": "11B",
       "ruleCode": {
@@ -2362,384 +2146,46 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "2476e5c2-ab4c-4e06-bf6e-0c7f598fcc45",
-      "courseCode": "EN",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "721",
-        "label": "Language Arts 11",
-        "description": "Credits must be earned in the Language Arts 11 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "0e69caa0-37c9-4a38-9a7f-dfa61374eeee",
-      "courseCode": "EN",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "722",
-        "label": "Language Arts 12",
-        "description": "Credits must be earned in the Language Arts 12 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "163d5e81-53ad-47d8-8320-d7f38e6e5c6d",
-      "courseCode": "EPH",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "727",
-        "label": "Applied Skills",
-        "description": "Credits must be earned in the  Applied subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "0ef19276-6305-4d3d-bb95-126c97fb0fe2",
-      "courseCode": "EPH",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "727",
-        "label": "Applied Skills",
-        "description": "Credits must be earned in the  Applied subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "0a516458-7e85-49b5-8329-7558c93f65a4",
-      "courseCode": "FNAF",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "726",
-        "label": "Fine Arts",
-        "description": "Credits must be earned in the  Fine Arts subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "4cc5876e-c7f4-49b6-90ab-9f27e8530c6c",
-      "courseCode": "FNAF",
-      "courseLevel": "11A",
-      "ruleCode": {
-        "courseRequirementCode": "726",
-        "label": "Fine Arts",
-        "description": "Credits must be earned in the  Fine Arts subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "30e1482c-ebfc-4ef1-baa3-89165e27f906",
-      "courseCode": "FNAF",
-      "courseLevel": "11B",
-      "ruleCode": {
-        "courseRequirementCode": "726",
-        "label": "Fine Arts",
-        "description": "Credits must be earned in the  Fine Arts subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "0d24bfd2-ccb1-4cab-b01a-d625ef7f7c21",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "721",
-        "label": "Language Arts 11",
-        "description": "Credits must be earned in the Language Arts 11 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "59d0943d-46fc-497a-9d7d-551fce4a1057",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "818",
-        "label": "Français langue première 11",
-        "description": "Credits must be earned in the Language Arts 11 subject area in French",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "4d4af83b-6f6f-4b9c-bb20-12443c0fb93c",
-      "courseCode": "FRALP",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "722",
-        "label": "Language Arts 12",
-        "description": "Credits must be earned in the Language Arts 12 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "90095e02-ee33-41fa-9f84-0fd0dc9c4006",
-      "courseCode": "FRALP",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "819",
-        "label": "Français langue première 12",
-        "description": "Credits must be earned in the Language Arts 12 subject area in French",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "60161fd4-f7a2-4419-93d5-a940000fd3ca",
-      "courseCode": "GM",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "724",
-        "label": "Mathematics 11 or 12",
-        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "7da8b2be-ce9c-4377-9183-79377d3abbb7",
-      "courseCode": "GM",
-      "courseLevel": "11A",
-      "ruleCode": {
-        "courseRequirementCode": "727",
-        "label": "Applied Skills",
-        "description": "Credits must be earned in the  Applied subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "cb00a3a8-3c9b-4300-bc31-facff57cf0cb",
-      "courseCode": "GM",
-      "courseLevel": "11B",
-      "ruleCode": {
-        "courseRequirementCode": "727",
-        "label": "Applied Skills",
-        "description": "Credits must be earned in the  Applied subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "842cc22c-52fb-4768-866f-d6b96de0542f",
-      "courseCode": "GM",
-      "courseLevel": "11C",
-      "ruleCode": {
-        "courseRequirementCode": "727",
-        "label": "Applied Skills",
-        "description": "Credits must be earned in the  Applied subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "c578d1d8-6436-4f56-a6fb-b4d059e306c9",
-      "courseCode": "GM",
-      "courseLevel": "12A",
-      "ruleCode": {
-        "courseRequirementCode": "727",
-        "label": "Applied Skills",
-        "description": "Credits must be earned in the  Applied subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "fb242169-21cd-466e-a24c-851d7a89e0ba",
-      "courseCode": "GM",
-      "courseLevel": "12B",
-      "ruleCode": {
-        "courseRequirementCode": "727",
-        "label": "Applied Skills",
-        "description": "Credits must be earned in the  Applied subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "5b0082fb-9392-4f26-a4d3-cbe748203ef0",
-      "courseCode": "GM",
-      "courseLevel": "12C",
-      "ruleCode": {
-        "courseRequirementCode": "727",
-        "label": "Applied Skills",
-        "description": "Credits must be earned in the  Applied subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "239d766c-8d24-4bbe-ae3e-4d0b3efb57b9",
-      "courseCode": "INTF",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "725",
-        "label": "Science 11 or 12",
-        "description": "Credits must be earned in the Science 11 or 12 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "7f555308-7d52-4b55-a7bc-8e67806768d7",
-      "courseCode": "INTF",
-      "courseLevel": "12",
-      "ruleCode": {
-        "courseRequirementCode": "725",
-        "label": "Science 11 or 12",
-        "description": "Credits must be earned in the Science 11 or 12 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "e5b915fd-d072-45d5-8ab5-dfb1be611b4e",
+      "courseRequirementId": "fe1ad740-7bf8-4837-84ab-d689b8dd4206",
       "courseCode": "MTH",
       "courseLevel": "11",
       "ruleCode": {
-        "courseRequirementCode": "724",
+        "courseRequirementCode": "707",
         "label": "Mathematics 11 or 12",
         "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
-        "effectiveDate": 1626048000000,
+        "effectiveDate": 1626393600000,
         "expiryDate": null
       },
       "courseName": null
     },
     {
-      "courseRequirementId": "72adc3df-46bf-4bb2-8f5f-b5f30003c07d",
+      "courseRequirementId": "e0690885-6299-4533-a5d9-637543a80351",
       "courseCode": "MTH",
       "courseLevel": "12",
       "ruleCode": {
-        "courseRequirementCode": "724",
+        "courseRequirementCode": "707",
         "label": "Mathematics 11 or 12",
         "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
-        "effectiveDate": 1626048000000,
+        "effectiveDate": 1626393600000,
         "expiryDate": null
       },
       "courseName": null
     },
     {
-      "courseRequirementId": "95d02c49-f811-4b64-b413-e54ba3c0825a",
+      "courseRequirementId": "2644cb15-9c27-4f63-a441-868b118a3bd7",
       "courseCode": "SCH",
       "courseLevel": "11",
       "ruleCode": {
-        "courseRequirementCode": "723",
-        "label": "Social Studies 11 or 12",
+        "courseRequirementCode": "705",
+        "label": "Social Studies 11, Civic Studies 11 or BC First Nations Studies 12",
         "description": "Credits must be earned in the Social Studies 11 or 12 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "40b42e06-05dd-47d8-9225-1005fa9ce971",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "201",
-        "label": "Français langue seconde-immersion 11 - French Immersion ",
-        "description": "Français langue seconde-immersion 11 - French Immersion ",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "6d659f41-b50a-4ed2-984b-63a8add7c858",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "901",
-        "label": "Français langue seconde-immersion 11 - French Immersion ",
-        "description": "Credits must be earned in the Français langue seconde-immersion 11 subject area",
         "effectiveDate": 1626393600000,
         "expiryDate": null
       },
       "courseName": null
     },
     {
-      "courseRequirementId": "54905350-0811-4c32-9faa-a08f9cc42413",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "911",
-        "label": "Français langue seconde-immersion 11 – French Immersion",
-        "description": "Credits must be earned in the Français langue seconde-immersion 11 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "88745b64-bd6d-46f6-a00f-fd19377efdb4",
-      "courseCode": "FRALP",
-      "courseLevel": "11",
-      "ruleCode": {
-        "courseRequirementCode": "916",
-        "label": "Français langue seconde-immersion 11 – French Immersion",
-        "description": "Credits must be earned in the Français langue seconde-immersion 11 subject area",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "b6322965-c849-4f4a-80fa-8c530c2bc7ff",
-      "courseCode": "FRALP",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "202",
-        "label": "Français langue seconde-immersion 10 - French Immersion ",
-        "description": "Français langue seconde-immersion 10 - French Immersion ",
-        "effectiveDate": 1626048000000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "a7a17c6a-4ff9-40bc-a96e-87bce5df36a2",
-      "courseCode": "FRALP",
-      "courseLevel": "10",
-      "ruleCode": {
-        "courseRequirementCode": "902",
-        "label": "Français langue seconde-immersion 10 - French Immersion ",
-        "description": "Credits must be earned in the Français langue seconde-immersion 10 subject area",
-        "effectiveDate": 1626393600000,
-        "expiryDate": null
-      },
-      "courseName": null
-    },
-    {
-      "courseRequirementId": "160f89c1-0c80-4721-acea-f8295d8a72b3",
+      "courseRequirementId": "dce17f61-b43e-44fa-b564-ad164b4b8b22",
       "courseCode": "EN",
       "courseLevel": "12",
       "ruleCode": {
@@ -2752,7 +2198,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "cc977f86-7c98-4c18-868f-bfb71e7dc4e1",
+      "courseRequirementId": "6904d227-2ba6-4a5a-8d18-aec44cc54132",
       "courseCode": "FRALP",
       "courseLevel": "12",
       "ruleCode": {
@@ -2765,7 +2211,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "6f142eba-1be5-4078-856c-1a3d52dd3b66",
+      "courseRequirementId": "0872eaf2-cc0c-4fc0-a9eb-26641e963689",
       "courseCode": "GM",
       "courseLevel": "11",
       "ruleCode": {
@@ -2778,7 +2224,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "b50adb6d-8d67-4cbc-848f-70a5683d121a",
+      "courseRequirementId": "2f2d847f-ceb8-4064-8316-18eec7537d31",
       "courseCode": "MTH",
       "courseLevel": "11",
       "ruleCode": {
@@ -2791,7 +2237,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "58147a9d-a553-447b-b8a3-5659cbaeee94",
+      "courseRequirementId": "4a5b534b-61c9-4e0a-a1ea-466ef813b71e",
       "courseCode": "SCH",
       "courseLevel": "11",
       "ruleCode": {
@@ -2804,7 +2250,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "26948154-8c55-4927-bd91-bac806e3fdce",
+      "courseRequirementId": "53880967-ae47-4567-93da-8510f6396d24",
       "courseCode": "EN",
       "courseLevel": "11",
       "ruleCode": {
@@ -2817,7 +2263,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "0217548b-a22e-41a2-b8d1-258d2d8f75f1",
+      "courseRequirementId": "a8eb4469-4b98-4a43-90eb-32e172c4ceea",
       "courseCode": "EN",
       "courseLevel": "12",
       "ruleCode": {
@@ -2830,7 +2276,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "1d901c65-e076-4d87-b744-1f2f3b56bd17",
+      "courseRequirementId": "46caafc5-f776-49f2-8964-dcb85ed842f1",
       "courseCode": "GM",
       "courseLevel": "11",
       "ruleCode": {
@@ -2843,7 +2289,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "c9f673bb-a4db-4426-9b8a-293898d4105d",
+      "courseRequirementId": "0a01bf01-14ab-4ee2-a6ea-01e2ccae87a0",
       "courseCode": "INTF",
       "courseLevel": "11",
       "ruleCode": {
@@ -2856,7 +2302,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "6c792648-2c46-4898-8334-849a50c2fd5a",
+      "courseRequirementId": "55019e9b-991c-406b-88fe-09ac19287e28",
       "courseCode": "MTH",
       "courseLevel": "11",
       "ruleCode": {
@@ -2869,7 +2315,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "5dcd002d-1fec-491f-a5ff-283a14c387a2",
+      "courseRequirementId": "8984a837-40ba-40b8-937f-04d9e278e4c1",
       "courseCode": "SCH",
       "courseLevel": "11",
       "ruleCode": {
@@ -2882,7 +2328,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "1d4e7fe4-31b5-474f-b875-c6a6404b251e",
+      "courseRequirementId": "5f90b123-9bc3-45c5-9757-f591f07a25c7",
       "courseCode": "CAPPF",
       "courseLevel": "11",
       "ruleCode": {
@@ -2895,7 +2341,7 @@
       "courseName": null
     },
     {
-      "courseRequirementId": "6b511c5d-ee2a-4f0b-ad94-127378204229",
+      "courseRequirementId": "f4e5fe78-1696-49cd-824f-1e0f993611e6",
       "courseCode": "CAPPF",
       "courseLevel": "12",
       "ruleCode": {
@@ -2906,83 +2352,735 @@
         "expiryDate": null
       },
       "courseName": null
+    },
+    {
+      "courseRequirementId": "1d1a86c6-4993-4be1-91ec-bdfd0eb1b970",
+      "courseCode": "EN",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "721",
+        "label": "Language Arts 11",
+        "description": "Credits must be earned in the Language Arts 11 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "a435182c-f885-4c66-91c5-0e5ad13252cc",
+      "courseCode": "EN",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "722",
+        "label": "Language Arts 12",
+        "description": "Credits must be earned in the Language Arts 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "719a6b4f-90d5-47ef-a855-0649b4ee5b84",
+      "courseCode": "EPH",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "727",
+        "label": "Applied Skills",
+        "description": "Credits must be earned in the  Applied subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "d411f4db-dd6e-4e56-9914-b454b7a17cbb",
+      "courseCode": "EPH",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "727",
+        "label": "Applied Skills",
+        "description": "Credits must be earned in the  Applied subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "ba96691f-5e85-45d6-8749-201e2832219b",
+      "courseCode": "FNAF",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "726",
+        "label": "Fine Arts",
+        "description": "Credits must be earned in the  Fine Arts subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "7665664a-bed4-4bbe-b460-c1664f5fd06b",
+      "courseCode": "FNAF",
+      "courseLevel": "11A",
+      "ruleCode": {
+        "courseRequirementCode": "726",
+        "label": "Fine Arts",
+        "description": "Credits must be earned in the  Fine Arts subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "ee8d62db-d10f-44a3-a8a6-54d7a9c4fd4e",
+      "courseCode": "FNAF",
+      "courseLevel": "11B",
+      "ruleCode": {
+        "courseRequirementCode": "726",
+        "label": "Fine Arts",
+        "description": "Credits must be earned in the  Fine Arts subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "52836c1d-657d-452d-a3ae-bd5a0333cb42",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "721",
+        "label": "Language Arts 11",
+        "description": "Credits must be earned in the Language Arts 11 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "4178d937-f906-427f-8a79-27af617842ce",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "818",
+        "label": "Français langue première 11",
+        "description": "Credits must be earned in the Language Arts 11 subject area in French",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "cdbf8366-e52b-4c9b-a8b9-e601526925ba",
+      "courseCode": "FRALP",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "722",
+        "label": "Language Arts 12",
+        "description": "Credits must be earned in the Language Arts 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "518c768e-121c-4e30-90a6-90a179961d8d",
+      "courseCode": "FRALP",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "819",
+        "label": "Français langue première 12",
+        "description": "Credits must be earned in the Language Arts 12 subject area in French",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "d2f55fe3-fa43-458d-b46a-6ac5927cb3de",
+      "courseCode": "GM",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "724",
+        "label": "Mathematics 11 or 12",
+        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "836f77fe-aa95-4880-92de-e7f8ecced925",
+      "courseCode": "GM",
+      "courseLevel": "11A",
+      "ruleCode": {
+        "courseRequirementCode": "727",
+        "label": "Applied Skills",
+        "description": "Credits must be earned in the  Applied subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "2761d16c-ba16-4899-b7ba-89f9a8dd5e62",
+      "courseCode": "GM",
+      "courseLevel": "11B",
+      "ruleCode": {
+        "courseRequirementCode": "727",
+        "label": "Applied Skills",
+        "description": "Credits must be earned in the  Applied subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "b51053b5-af48-4847-9ce7-46e6a44b22da",
+      "courseCode": "GM",
+      "courseLevel": "11C",
+      "ruleCode": {
+        "courseRequirementCode": "727",
+        "label": "Applied Skills",
+        "description": "Credits must be earned in the  Applied subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "59194599-265e-49cb-89f8-05b58536959b",
+      "courseCode": "GM",
+      "courseLevel": "12A",
+      "ruleCode": {
+        "courseRequirementCode": "727",
+        "label": "Applied Skills",
+        "description": "Credits must be earned in the  Applied subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "0ef4d1e2-f912-4973-adf2-345a42a873a7",
+      "courseCode": "GM",
+      "courseLevel": "12B",
+      "ruleCode": {
+        "courseRequirementCode": "727",
+        "label": "Applied Skills",
+        "description": "Credits must be earned in the  Applied subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "9f43aea6-2d96-49c2-88fc-aa543b5659d3",
+      "courseCode": "GM",
+      "courseLevel": "12C",
+      "ruleCode": {
+        "courseRequirementCode": "727",
+        "label": "Applied Skills",
+        "description": "Credits must be earned in the  Applied subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "89749cea-46ff-49f4-95d9-fe110b2a6cbc",
+      "courseCode": "INTF",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "725",
+        "label": "Science 11 or 12",
+        "description": "Credits must be earned in the Science 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "a644d6e9-2893-43cc-a666-ff825e5be6d4",
+      "courseCode": "INTF",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "725",
+        "label": "Science 11 or 12",
+        "description": "Credits must be earned in the Science 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "a64e48db-64c1-46f0-a2d8-a81363fc8ceb",
+      "courseCode": "MTH",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "724",
+        "label": "Mathematics 11 or 12",
+        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "b972fdb0-8cfb-4f2a-aa4b-4dc3c0e658ba",
+      "courseCode": "MTH",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "724",
+        "label": "Mathematics 11 or 12",
+        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "57b1e88c-4a1e-4b5f-a85c-76f897f58788",
+      "courseCode": "SCH",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "723",
+        "label": "Social Studies 11 or 12",
+        "description": "Credits must be earned in the Social Studies 11 or 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "f340d7be-8f0c-424d-97c0-0210121e597e",
+      "courseCode": "EN",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "701",
+        "label": "Language Arts 10",
+        "description": "Credits must be earned in the Language Arts 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "2cd00a66-9b30-4ddd-b4fb-b6ef67fbef8f",
+      "courseCode": "EN",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "850",
+        "label": "Language Arts 10 - English",
+        "description": "Student must meet a Language Arts 10 requirement in English",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "a0987b95-8f3b-4771-97b8-1c20b89c649c",
+      "courseCode": "EN",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "702",
+        "label": "Language Arts 11",
+        "description": "Credits must be earned in the Language Arts 11 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "a1066cd3-796d-4d31-a10b-d2f86b338e9b",
+      "courseCode": "EN",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "851",
+        "label": "Language Arts 11 - English",
+        "description": "Student must meet a Language Arts 11 requirement in English",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "e329bb81-f7d2-4b6a-84e3-0fb129c33890",
+      "courseCode": "EN",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "703",
+        "label": "Language Arts 12",
+        "description": "Credits must be earned in the Language Arts 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "e48f2d3e-ddf3-446f-b837-41d3bbf3fe66",
+      "courseCode": "EN",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "852",
+        "label": "Language Arts 12 - English",
+        "description": "Student must meet a Language Arts 12 requirement in English",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "87b4b7f9-a8c6-4533-b846-a702fb0201c5",
+      "courseCode": "EPH",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "9a11c8e0-fe64-42ad-9a92-9de73bc3339d",
+      "courseCode": "EPH",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "0f300ec1-a664-4faf-aefe-bd98539d592e",
+      "courseCode": "FNAF",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "485912b3-9f61-4959-be37-fe0d65bdb221",
+      "courseCode": "FNAF",
+      "courseLevel": "11A",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "ffd36c6f-9a2c-4739-bc72-08be51cc4387",
+      "courseCode": "FNAF",
+      "courseLevel": "11B",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "33127beb-6967-49d4-b3bf-a5108c679ddf",
+      "courseCode": "FRALP",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "701",
+        "label": "Language Arts 10",
+        "description": "Credits must be earned in the Language Arts 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "7e180df8-ba38-42f0-a05a-edaa1d533e8a",
+      "courseCode": "FRALP",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "815",
+        "label": "Français langue première 10 - Programme francophone ",
+        "description": "Credits must be earned in the Language Arts 10 subject area in French",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "c2eb955b-c081-41ca-9ffa-ff0d025004e4",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "702",
+        "label": "Language Arts 11",
+        "description": "Credits must be earned in the Language Arts 11 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "b9d5acbb-a800-47c7-943a-f8a1c48a3fea",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "816",
+        "label": "Français langue première 11 - Programme francophone ",
+        "description": "Credits must be earned in the Language Arts 11 subject area in French",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "bc4334da-b328-4112-9a04-16ff01f2714b",
+      "courseCode": "FRALP",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "703",
+        "label": "Language Arts 12",
+        "description": "Credits must be earned in the Language Arts 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "717aa613-5b4e-4246-9c17-6fb07a5e744a",
+      "courseCode": "FRALP",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "817",
+        "label": "Français langue première 12 - Programme francophone ",
+        "description": "Credits must be earned in the Language Arts 12 subject area in French",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "edfd487f-f2b1-4a93-bcb2-a63623e1d158",
+      "courseCode": "GM",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "707",
+        "label": "Mathematics 11 or 12",
+        "description": "Credits must be earned in the Mathematics 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "89a3d631-4bf3-4493-83ca-79810e97f925",
+      "courseCode": "GM",
+      "courseLevel": "11A",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "95563b28-b93f-4fcd-9604-79cd974920a8",
+      "courseCode": "GM",
+      "courseLevel": "11B",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "76e0c7fa-aae3-4a8f-8cd1-ebb8f2e7c4aa",
+      "courseCode": "GM",
+      "courseLevel": "11C",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "790dd516-2d6a-4d34-a7e8-7243867e389a",
+      "courseCode": "GM",
+      "courseLevel": "12A",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "7135cdbb-47a2-42e7-ab8e-5902c7e0d974",
+      "courseCode": "GM",
+      "courseLevel": "12B",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "e4ab998a-eb1b-438c-8bec-eae5d6cc808c",
+      "courseCode": "GM",
+      "courseLevel": "12C",
+      "ruleCode": {
+        "courseRequirementCode": "712",
+        "label": "Fine Arts and/or Applied Skills 10, 11 or 12",
+        "description": "Credits must be earned in the Fine Arts and/or Applied Skills 10, 11 or 12 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "9109b6bd-6db5-4588-94a0-1f7e00c5efa2",
+      "courseCode": "FRALP",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "910",
+        "label": "Français langue seconde-immersion 12 – French Immersion",
+        "description": "Credits must be earned in the Français langue seconde-immersion 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "7e9fe0a9-509d-498d-8646-4a731d123bdf",
+      "courseCode": "FRALP",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "915",
+        "label": "Français langue seconde-immersion 12 – French Immersion",
+        "description": "Credits must be earned in the Français langue seconde-immersion 12 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "1ff0f7b5-e35c-4a2a-addf-32720accece7",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "201",
+        "label": "Français langue seconde-immersion 11 - French Immersion ",
+        "description": "Français langue seconde-immersion 11 - French Immersion ",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "e9f704a6-84af-4c6a-b060-1971a8480487",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "901",
+        "label": "Français langue seconde-immersion 11 - French Immersion ",
+        "description": "Credits must be earned in the Français langue seconde-immersion 11 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "0e7d656a-a9e5-4132-93a8-cc872c1dcad9",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "911",
+        "label": "Français langue seconde-immersion 11 – French Immersion",
+        "description": "Credits must be earned in the Français langue seconde-immersion 11 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "1438812b-e269-4735-b19f-ce6731c8073f",
+      "courseCode": "FRALP",
+      "courseLevel": "11",
+      "ruleCode": {
+        "courseRequirementCode": "916",
+        "label": "Français langue seconde-immersion 11 – French Immersion",
+        "description": "Credits must be earned in the Français langue seconde-immersion 11 subject area",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "c8021dc9-3d28-4216-9bdc-0960c99b6257",
+      "courseCode": "FRALP",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "202",
+        "label": "Français langue seconde-immersion 10 - French Immersion ",
+        "description": "Français langue seconde-immersion 10 - French Immersion ",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "aadab420-1e00-4ee2-9669-48706747932e",
+      "courseCode": "FRALP",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "902",
+        "label": "Français langue seconde-immersion 10 - French Immersion ",
+        "description": "Credits must be earned in the Français langue seconde-immersion 10 subject area",
+        "effectiveDate": 1626393600000,
+        "expiryDate": null
+      },
+      "courseName": null
     }
   ],
   "courseRestrictions": [
     {
-      "courseRestrictionId": "4201b70f-a5ce-4227-bac2-9307a4b0c6ae",
-      "mainCourse": "FRALP",
+      "courseRestrictionId": "1b0d416a-68ce-4bfd-842a-ca5804473f04",
+      "mainCourse": "FNAF",
       "mainCourseLevel": "11",
-      "restrictedCourse": "FRAL",
+      "restrictedCourse": "FNA",
       "restrictedCourseLevel": "11",
-      "restrictionStartDate": "1998/09",
-      "restrictionEndDate": "2019/06"
-    },
-    {
-      "courseRestrictionId": "c2abc25b-1049-4472-83ce-783b9b438d62",
-      "mainCourse": "FNAF",
-      "mainCourseLevel": "11A",
-      "restrictedCourse": "FNA",
-      "restrictedCourseLevel": "11A",
-      "restrictionStartDate": "1996/09",
+      "restrictionStartDate": "1995/09",
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "a246adeb-a378-48c4-82b0-75874fe8e58f",
-      "mainCourse": "FNAF",
-      "mainCourseLevel": "11B",
-      "restrictedCourse": "FNA",
-      "restrictedCourseLevel": "11B",
-      "restrictionStartDate": "1996/09",
-      "restrictionEndDate": null
-    },
-    {
-      "courseRestrictionId": "16ea968e-386d-4001-8f4d-6ddbc3bde644",
-      "mainCourse": "FRALP",
-      "mainCourseLevel": "12",
-      "restrictedCourse": "FRAL",
-      "restrictedCourseLevel": "12",
-      "restrictionStartDate": "1998/09",
-      "restrictionEndDate": null
-    },
-    {
-      "courseRestrictionId": "d346c23e-fa38-42a8-9aef-6529d74a919b",
-      "mainCourse": "FRALP",
-      "mainCourseLevel": "12",
-      "restrictedCourse": "QFRAP",
-      "restrictedCourseLevel": "12",
-      "restrictionStartDate": "1998/09",
-      "restrictionEndDate": null
-    },
-    {
-      "courseRestrictionId": "17db56f3-d1d8-4965-b472-d965cb444059",
-      "mainCourse": "FRALP",
-      "mainCourseLevel": "12",
-      "restrictedCourse": "QFRAL",
-      "restrictedCourseLevel": "12",
-      "restrictionStartDate": "1998/09",
-      "restrictionEndDate": null
-    },
-    {
-      "courseRestrictionId": "a6746a4c-cea3-4e00-bead-2430585aea95",
-      "mainCourse": "SCH",
-      "mainCourseLevel": "10",
-      "restrictedCourse": "SS",
-      "restrictedCourseLevel": "10",
-      "restrictionStartDate": "2018/07",
-      "restrictionEndDate": null
-    },
-    {
-      "courseRestrictionId": "7ec99919-b894-49a7-bd3e-dca60627883d",
-      "mainCourse": "FRALP",
-      "mainCourseLevel": "10",
-      "restrictedCourse": "QFRAP",
-      "restrictedCourseLevel": "10",
-      "restrictionStartDate": "2015/01",
-      "restrictionEndDate": null
-    },
-    {
-      "courseRestrictionId": "88f5c401-7d95-463f-aad7-a46cfe076d18",
+      "courseRestrictionId": "4b52b2ca-154e-4e23-a585-8f92340ff1f2",
       "mainCourse": "MTH",
       "mainCourseLevel": "11",
       "restrictedCourse": "MA",
@@ -2991,16 +3089,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "afa14f98-1e2e-4d20-8b1e-95949c207e88",
-      "mainCourse": "FNAF",
-      "mainCourseLevel": "11",
-      "restrictedCourse": "FNA",
-      "restrictedCourseLevel": "11",
-      "restrictionStartDate": "1995/09",
-      "restrictionEndDate": null
-    },
-    {
-      "courseRestrictionId": "bd74af77-769a-40b8-83c8-21d2efe7570e",
+      "courseRestrictionId": "16eb3165-5b8f-4cd5-8ed6-4f8871f27357",
       "mainCourse": "EN",
       "mainCourseLevel": "11",
       "restrictedCourse": "UABEE",
@@ -3009,7 +3098,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "775e5564-6cd0-41eb-ba39-02abddc6ed52",
+      "courseRestrictionId": "001c3349-1286-4839-8864-7aec446f9d75",
       "mainCourse": "EN",
       "mainCourseLevel": "12",
       "restrictedCourse": "UABEE",
@@ -3018,7 +3107,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "165398a3-6ee6-43f2-b122-8972676bff7b",
+      "courseRestrictionId": "77890086-543c-456b-8ecd-3b76453ca9a1",
       "mainCourse": "EN",
       "mainCourseLevel": "12",
       "restrictedCourse": "QEN",
@@ -3027,7 +3116,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "5ddeac76-9331-4e22-9139-3d4d9b522cd8",
+      "courseRestrictionId": "e1ecf383-e176-4c2f-847c-0df6f3f4164f",
       "mainCourse": "SCH",
       "mainCourseLevel": "11",
       "restrictedCourse": "SS",
@@ -3036,7 +3125,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "e8054cf8-59e5-41c6-a144-5c90b442048f",
+      "courseRestrictionId": "a2570cc4-45b8-4eda-ad2c-210c16184569",
       "mainCourse": "SCH",
       "mainCourseLevel": "11",
       "restrictedCourse": "UABES",
@@ -3045,7 +3134,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "5fe21950-daf2-4b20-bf82-a2651c7a2bbd",
+      "courseRestrictionId": "2dfbcb4b-aa7d-448a-83f4-707603d83c3b",
       "mainCourse": "SCH",
       "mainCourseLevel": "11",
       "restrictedCourse": "QSS",
@@ -3054,16 +3143,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "64819217-49fa-4fcd-85bc-03f799047c45",
-      "mainCourse": "EN",
-      "mainCourseLevel": "10",
-      "restrictedCourse": "QEN",
-      "restrictedCourseLevel": "10",
-      "restrictionStartDate": "2015/01",
-      "restrictionEndDate": null
-    },
-    {
-      "courseRestrictionId": "b2828318-3812-4cac-9db9-121a584af997",
+      "courseRestrictionId": "8c94c2a0-733a-41a2-a685-498af4b7c838",
       "mainCourse": "MTH",
       "mainCourseLevel": "12",
       "restrictedCourse": "MA",
@@ -3072,7 +3152,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "61443fd7-4831-41ec-9511-7766f9fbe2a9",
+      "courseRestrictionId": "f427ed8c-a927-4e96-8a80-805adf472fe2",
       "mainCourse": "MTH",
       "mainCourseLevel": "12",
       "restrictedCourse": "QMA",
@@ -3081,7 +3161,7 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "fac92a6f-a2f1-4c4b-bdbe-69159fb34f4e",
+      "courseRestrictionId": "abeb1229-a328-4734-86e8-38ba950e4da1",
       "mainCourse": "MTH",
       "mainCourseLevel": "12",
       "restrictedCourse": "QMTH",
@@ -3090,12 +3170,93 @@
       "restrictionEndDate": null
     },
     {
-      "courseRestrictionId": "bef6174e-34df-4ee9-9aa2-be5aaccfaeaf",
+      "courseRestrictionId": "1f4f8f1d-0ba3-406d-9af6-27b8413cb8f1",
+      "mainCourse": "EN",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "QEN",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2015/01",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "cb4230d8-fcaa-441f-b674-1340f59a05af",
       "mainCourse": "INTF",
       "mainCourseLevel": "12",
       "restrictedCourse": "INT",
       "restrictedCourseLevel": "12",
       "restrictionStartDate": "1997/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "d663fbca-bb55-4bf9-a264-1fe2635b1ab7",
+      "mainCourse": "FRALP",
+      "mainCourseLevel": "11",
+      "restrictedCourse": "FRAL",
+      "restrictedCourseLevel": "11",
+      "restrictionStartDate": "1998/09",
+      "restrictionEndDate": "2019/06"
+    },
+    {
+      "courseRestrictionId": "07ce3482-6306-4a12-8583-40cc7e4546ea",
+      "mainCourse": "FNAF",
+      "mainCourseLevel": "11A",
+      "restrictedCourse": "FNA",
+      "restrictedCourseLevel": "11A",
+      "restrictionStartDate": "1996/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "54ec8838-5f51-4d71-8001-7a1b8bdadaba",
+      "mainCourse": "FNAF",
+      "mainCourseLevel": "11B",
+      "restrictedCourse": "FNA",
+      "restrictedCourseLevel": "11B",
+      "restrictionStartDate": "1996/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "e2043523-226f-4f19-b9f2-1058f096e1e5",
+      "mainCourse": "FRALP",
+      "mainCourseLevel": "12",
+      "restrictedCourse": "FRAL",
+      "restrictedCourseLevel": "12",
+      "restrictionStartDate": "1998/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "f68285ed-62a6-47a4-a96d-1958d3dd0a20",
+      "mainCourse": "FRALP",
+      "mainCourseLevel": "12",
+      "restrictedCourse": "QFRAP",
+      "restrictedCourseLevel": "12",
+      "restrictionStartDate": "1998/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "05074f48-a2f9-4c6b-8a98-85581f209fce",
+      "mainCourse": "FRALP",
+      "mainCourseLevel": "12",
+      "restrictedCourse": "QFRAL",
+      "restrictedCourseLevel": "12",
+      "restrictionStartDate": "1998/09",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "05511118-76b6-46b3-9cbe-7a97c3d491f7",
+      "mainCourse": "SCH",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "SS",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2018/07",
+      "restrictionEndDate": null
+    },
+    {
+      "courseRestrictionId": "c2e6ab92-5f18-4520-a2c4-868ed04cea44",
+      "mainCourse": "FRALP",
+      "mainCourseLevel": "10",
+      "restrictedCourse": "QFRAP",
+      "restrictedCourseLevel": "10",
+      "restrictionStartDate": "2015/01",
       "restrictionEndDate": null
     }
   ],
@@ -3106,14 +3267,15 @@
   "gradStatus": {
     "pen": null,
     "program": "1996-PF",
-    "programCompletionDate": null,
-    "gpa": null,
-    "honoursStanding": null,
+    "programCompletionDate": "2000/06",
+    "gpa": "2.46",
+    "honoursStanding": "N",
     "recalculateGradStatus": null,
     "schoolOfRecord": "09361023",
     "studentGrade": "12",
     "studentStatus": "ARC",
-    "studentID": "ac339d70-7649-1a2e-8176-4a066c576432"
+    "studentID": "ac339d70-7649-1a2e-8176-4a066c576432",
+    "consumerEducationRequirementMet": null
   },
   "gradOptionalProgramStatus": null,
   "gradProgram": {
@@ -3125,6 +3287,8 @@
     "expiryDate": 1309417200000
   },
   "school": null,
+  "ldCounter": 0,
+  "cpList": [],
   "graduated": false,
   "projected": false
 }

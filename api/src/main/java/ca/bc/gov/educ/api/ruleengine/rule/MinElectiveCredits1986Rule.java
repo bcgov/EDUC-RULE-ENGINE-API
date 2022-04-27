@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MinElectiveCredits1996Rule implements Rule {
+public class MinElectiveCredits1986Rule implements Rule {
 
-	private static Logger logger = LoggerFactory.getLogger(MinElectiveCredits1996Rule.class);
+	private static Logger logger = LoggerFactory.getLogger(MinElectiveCredits1986Rule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
@@ -28,13 +28,11 @@ public class MinElectiveCredits1996Rule implements Rule {
 		int totalCredits = 0;
 		int requiredCredits;
 		logger.debug("Min Elective Credits Rule");
-
+		Integer ldCourseCounter = ruleProcessorData.getLdCounter();
 		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
 			return ruleProcessorData;
 		}
-		Map<String,Integer> map1996 = ruleProcessorData.getMap1996Crse();
-		int ldCourseCounter = 0;
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 		Collections.sort(studentCourses, Comparator.comparing(StudentCourse::getCourseLevel).reversed()
@@ -51,21 +49,41 @@ public class MinElectiveCredits1996Rule implements Rule {
 				requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 
 				for (StudentCourse sc : studentCourses) {
-					if (map1996.get(sc.getCourseCode()) != null) {
+					if (!sc.isUsedInMatchRule() && (sc.getCourseLevel().trim().contains("11") || sc.getCourseLevel().trim().contains("12"))) {
+						boolean extraCreditsUsed = false;
+						int extraCreditsLDcrses = 0;
 						if (sc.getCourseCode().startsWith("X")) {
 							if (ldCourseCounter < 8) {
-								ldCourseCounter += map1996.get(sc.getCourseCode());
+								if (ldCourseCounter + sc.getCredits() <= 8) {
+									ldCourseCounter += sc.getCredits();
+								} else {
+									int extraCredits = ldCourseCounter + sc.getCredits() - 8;
+									ldCourseCounter += extraCredits;
+									extraCreditsLDcrses = extraCredits;
+									extraCreditsUsed = true;
+								}
 							} else {
 								continue;
 							}
 						}
-						if (totalCredits + map1996.get(sc.getCourseCode()) <= requiredCredits) {
-							totalCredits += map1996.get(sc.getCourseCode());
-							sc.setCreditsUsedForGrad(map1996.get(sc.getCourseCode()));
+						if (extraCreditsUsed && extraCreditsLDcrses != 0) {
+							if (totalCredits + extraCreditsLDcrses <= requiredCredits) {
+								totalCredits += extraCreditsLDcrses;
+								sc.setCreditsUsedForGrad(extraCreditsLDcrses);
+							} else {
+								int extraCredits = totalCredits + extraCreditsLDcrses - requiredCredits;
+								totalCredits = requiredCredits;
+								sc.setCreditsUsedForGrad(extraCreditsLDcrses - extraCredits);
+							}
 						} else {
-							int extraCredits = totalCredits + map1996.get(sc.getCourseCode()) - requiredCredits;
-							totalCredits = requiredCredits;
-							sc.setCreditsUsedForGrad(map1996.get(sc.getCourseCode()) - extraCredits);
+							if (totalCredits + sc.getCredits() <= requiredCredits) {
+								totalCredits += sc.getCredits();
+								sc.setCreditsUsedForGrad(sc.getCredits());
+							} else {
+								int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+								totalCredits = requiredCredits;
+								sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+							}
 						}
 						if (sc.getGradReqMet().length() > 0) {
 
@@ -78,56 +96,8 @@ public class MinElectiveCredits1996Rule implements Rule {
 									gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
 						}
 						sc.setUsed(true);
-					} else {
-						if (!sc.isUsedInMatchRule()) {
-							boolean extraCreditsUsed = false;
-							int extraCreditsLDcrses = 0;
-							if (sc.getCourseCode().startsWith("X")) {
-								if (ldCourseCounter < 8) {
-									if (ldCourseCounter + sc.getCredits() <= 8) {
-										ldCourseCounter += sc.getCredits();
-									} else {
-										int extraCredits = ldCourseCounter + sc.getCredits() - 8;
-										ldCourseCounter += extraCredits;
-										extraCreditsLDcrses = extraCredits;
-										extraCreditsUsed = true;
-									}
-								} else {
-									continue;
-								}
-							}
-							if (extraCreditsUsed && extraCreditsLDcrses != 0) {
-								if (totalCredits + extraCreditsLDcrses <= requiredCredits) {
-									totalCredits += extraCreditsLDcrses;
-									sc.setCreditsUsedForGrad(extraCreditsLDcrses);
-								} else {
-									int extraCredits = totalCredits + extraCreditsLDcrses - requiredCredits;
-									totalCredits = requiredCredits;
-									sc.setCreditsUsedForGrad(extraCreditsLDcrses - extraCredits);
-								}
-							} else {
-								if (totalCredits + sc.getCredits() <= requiredCredits) {
-									totalCredits += sc.getCredits();
-									sc.setCreditsUsedForGrad(sc.getCredits());
-								} else {
-									int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-									totalCredits = requiredCredits;
-									sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
-								}
-							}
-							if (sc.getGradReqMet().length() > 0) {
-
-								sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-								sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
-										+ gradProgramRule.getProgramRequirementCode().getLabel());
-							} else {
-								sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-								sc.setGradReqMetDetail(
-										gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-							}
-							sc.setUsed(true);
-						}
 					}
+
 					if (totalCredits == requiredCredits) {
 						break;
 					}
@@ -163,8 +133,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 			}
 		}
 
-		if(ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1996-EN"))
-			ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
+		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
 	}
 
@@ -173,7 +142,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinElectiveCredits1996Rule: Rule Processor Data set.");
+		logger.info("MinElectiveCredits1986Rule: Rule Processor Data set.");
 	}
 
 }

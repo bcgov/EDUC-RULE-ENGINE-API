@@ -4,6 +4,7 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,13 @@ public class ExcludeAfterProgramCutoffRule implements Rule {
 
     public RuleData fire() {
 
-         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
+        List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
+                ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
         logger.debug("###################### Finding Course Taken after program cutoff courses ######################");
+        if(ruleProcessorData.getGradProgram().getExpiryDate() == null) {
+            return ruleProcessorData;
+        }
         String cutoffDate = RuleEngineApiUtils.formatDate(ruleProcessorData.getGradProgram().getExpiryDate(), "yyyy-MM-dd");
         for (StudentCourse studentCourse : studentCourseList) {
 
@@ -49,6 +54,7 @@ public class ExcludeAfterProgramCutoffRule implements Rule {
             }
         }
 
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
         logger.info("Cut-off Courses: {}",

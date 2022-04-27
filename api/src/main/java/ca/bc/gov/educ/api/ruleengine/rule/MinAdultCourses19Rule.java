@@ -89,13 +89,13 @@ public class MinAdultCourses19Rule implements Rule {
 				if(age >= 19 && (totalCredits + sc.getCredits()) <= requiredCredits) {
 						totalCredits += sc.getCredits();
 						if (sc.getGradReqMet().length() > 0) {							
-							sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode());
-							sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getProReqCode() + " - "
+							sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
+							sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
 									+ gradProgramRule.getProgramRequirementCode().getLabel());
 						} else {
-							sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getProReqCode());
+							sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
 							sc.setGradReqMetDetail(
-									gradProgramRule.getProgramRequirementCode().getProReqCode() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+									gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
 						}
 						sc.setUsed(true);
 				}
@@ -113,7 +113,7 @@ public class MinAdultCourses19Rule implements Rule {
 				if (reqsMet == null)
 					reqsMet = new ArrayList<>();
 
-				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getLabel()));
+				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
 				logger.debug("Min Adult Courses : Total- {} Required-{}",totalCredits,requiredCredits);
 
@@ -126,7 +126,7 @@ public class MinAdultCourses19Rule implements Rule {
 				if (nonGradReasons == null)
 					nonGradReasons = new ArrayList<>();
 
-				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getProReqCode(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
 

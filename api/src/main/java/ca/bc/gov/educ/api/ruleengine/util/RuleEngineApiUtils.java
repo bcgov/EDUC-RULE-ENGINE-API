@@ -70,10 +70,10 @@ public class RuleEngineApiUtils {
     }
     
     public static int getDifferenceInDays(String date1, String date2) {
-    	Period diff = Period.between(
-                LocalDate.parse(date1).withDayOfMonth(1),
-                LocalDate.parse(date2).withDayOfMonth(1));
-    	return diff.getDays();
+        Period diff = Period.between(
+                LocalDate.parse(date1),
+                LocalDate.parse(date2));
+    	return diff.getDays() + diff.getMonths()*30;
     }
     
     public static List<StudentCourse> getClone(List<StudentCourse> listCourses) {
@@ -137,5 +137,28 @@ public class RuleEngineApiUtils {
             logger.info(ERROR_MSG,e.getMessage());
         }
         return false;
+    }
+
+    public static boolean compareCourseSessionDates(String sessionDate1,String sessionDate2) {
+        String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
+        sessionDate1 = sessionDate1 + "/01";
+        sessionDate2 = sessionDate2 + "/01";
+
+        try {
+            Date temp1 = RuleEngineApiUtils.parseDate(sessionDate1, "yyyy/MM/dd");
+            sessionDate1 = RuleEngineApiUtils.formatDate(temp1, "yyyy-MM-dd");
+            Date temp2 = RuleEngineApiUtils.parseDate(sessionDate2, "yyyy/MM/dd");
+            sessionDate2 = RuleEngineApiUtils.formatDate(temp2, "yyyy-MM-dd");
+        } catch (ParseException pe) {
+            logger.error("ERROR: {}",pe.getMessage());
+        }
+
+        int diff1 = RuleEngineApiUtils.getDifferenceInMonths(sessionDate1,today);
+        int diff2 = RuleEngineApiUtils.getDifferenceInMonths(sessionDate2,today);
+        if(diff1 < diff2) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }

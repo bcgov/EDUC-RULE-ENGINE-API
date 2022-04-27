@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class IncompleteAssessmentsRule implements Rule {
 
     public RuleData fire() {
 
-        List<StudentAssessment> studentAssessmentList =  ruleProcessorData.getStudentAssessments();
+        List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 
         logger.debug("###################### Finding INCOMPLETE Assessments ######################");
 
@@ -65,11 +66,12 @@ public class IncompleteAssessmentsRule implements Rule {
             if ("".compareTo(specialCase.trim()) == 0 
             		&& "Y".compareTo(exceededWriteFlag.trim()) != 0
             		&& "0.0".compareTo(proficiencyScore) == 0
-                    && diff > 1) {
+                    && diff > 0) {
             	studentAssessment.setNotCompleted(true);
             }
         }
 
+        ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
         logger.info("Not Completed Assessments: {}",(int) studentAssessmentList.stream().filter(StudentAssessment::isNotCompleted).count());

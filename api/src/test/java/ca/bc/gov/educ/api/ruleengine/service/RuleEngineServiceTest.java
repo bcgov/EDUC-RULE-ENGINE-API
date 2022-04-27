@@ -44,12 +44,7 @@ public class RuleEngineServiceTest {
 		assertNotNull(ruleProcessorData);
 	}
 	
-	@Test
-	public void testProcessGradAlgorithmRules_2018PF_DD() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("DD");	
-		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
-		assertNotNull(ruleProcessorData);
-	}
+
 	
 	@Test
 	public void testProcessGradAlgorithmRules_1950EN() {
@@ -75,13 +70,6 @@ public class RuleEngineServiceTest {
 	@Test
 	public void testProcessGradAlgorithmRules_1950EN_4() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-4");	
-		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
-		assertNotNull(ruleProcessorData);
-	}
-	
-	@Test
-	public void testProcessGradAlgorithmRules_2018EN_CP() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("CP");	
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 	}
@@ -141,15 +129,6 @@ public class RuleEngineServiceTest {
 	}
 	
 	@Test
-	public void testProcessGradAlgorithmRules_2018PF_DD_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("DD");
-		assert ruleProcessorData != null;
-		ruleProcessorData.setProjected(false);
-		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
-		assertNotNull(ruleProcessorData);
-	}
-	
-	@Test
 	public void testProcessGradAlgorithmRules_1950EN_projectedfalse() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN");
 		assert ruleProcessorData != null;
@@ -179,15 +158,6 @@ public class RuleEngineServiceTest {
 	@Test
 	public void testProcessGradAlgorithmRules_1950EN_4_projectedfalse() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-EN-4");
-		assert ruleProcessorData != null;
-		ruleProcessorData.setProjected(false);
-		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
-		assertNotNull(ruleProcessorData);
-	}
-	
-	@Test
-	public void testProcessGradAlgorithmRules_2018EN_CP_projectedfalse() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("CP");
 		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
@@ -291,7 +261,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("IMA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("724"));
+						assertTrue(studentCourse.getGradReqMet().contains("4"));
 					} catch (AssertionError e) {
 						errors.put("IMA11", e);
 					}
@@ -300,7 +270,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("728"));
+						assertTrue(studentCourse.getGradReqMet().contains("6"));
 					} catch (AssertionError e) {
 						errors.put("CAPP11", e);
 					}
@@ -318,7 +288,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("COM") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("721"));
+						assertTrue(studentCourse.getGradReqMet().contains("1"));
 					} catch (AssertionError e) {
 						errors.put("COM11", e);
 					}
@@ -327,7 +297,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CH") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("725"));
+						assertTrue(studentCourse.getGradReqMet().contains("5"));
 					} catch (AssertionError e) {
 						errors.put("CH11", e);
 					}
@@ -336,7 +306,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("SS") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("723"));
+						assertTrue(studentCourse.getGradReqMet().contains("3"));
 					} catch (AssertionError e) {
 						errors.put("SS11", e);
 					}
@@ -354,7 +324,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("729"));
+						assertTrue(studentCourse.getGradReqMet().contains("7"));
 					} catch (AssertionError e) {
 						errors.put("CAPP12", e);
 					}
@@ -363,7 +333,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("TEX") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("732"));
+						assertTrue(studentCourse.getGradReqMet().contains("10"));
 					} catch (AssertionError e) {
 						errors.put("TEX12", e);
 					}
@@ -381,7 +351,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("COM") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("722"));
+						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("COM12", e);
 					}
@@ -431,7 +401,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("728"));
+						assertTrue(studentCourse.getGradReqMet().contains("6"));
 					} catch (AssertionError e) {
 						errors.put("CAPP11", e);
 					}
@@ -465,7 +435,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("SS") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("723"));
+						assertTrue(studentCourse.getGradReqMet().contains("3"));
 					} catch (AssertionError e) {
 						errors.put("SS11", e);
 					}
@@ -483,7 +453,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("TEX") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("732"));
+						assertTrue(studentCourse.getGradReqMet().contains("10"));
 					} catch (AssertionError e) {
 						errors.put("TEX11", e);
 					}
@@ -492,7 +462,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("721"));
+						assertTrue(studentCourse.getGradReqMet().contains("1"));
 					} catch (AssertionError e) {
 						errors.put("EN11", e);
 					}
@@ -501,7 +471,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("BI") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("725"));
+						assertTrue(studentCourse.getGradReqMet().contains("5"));
 					} catch (AssertionError e) {
 						errors.put("BI11", e);
 					}
@@ -519,7 +489,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("MA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("724"));
+						assertTrue(studentCourse.getGradReqMet().contains("4"));
 					} catch (AssertionError e) {
 						errors.put("MA11", e);
 					}
@@ -546,7 +516,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("729"));
+						assertTrue(studentCourse.getGradReqMet().contains("7"));
 					} catch (AssertionError e) {
 						errors.put("CAPP12", e);
 					}
@@ -564,7 +534,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("722"));
+						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("EN12", e);
 					}
@@ -605,7 +575,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("TEX") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("732"));
+						assertTrue(studentCourse.getGradReqMet().contains("10"));
 					} catch (AssertionError e) {
 						errors.put("TEX11", e);
 					}
@@ -614,7 +584,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("721"));
+						assertTrue(studentCourse.getGradReqMet().contains("1"));
 					} catch (AssertionError e) {
 						errors.put("EN11", e);
 					}
@@ -631,7 +601,7 @@ public class RuleEngineServiceTest {
 				}
 				if (studentCourse.getCourseCode().compareTo("SS") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("723"));
+						assertTrue(studentCourse.getGradReqMet().contains("3"));
 					} catch (AssertionError e) {
 						errors.put("SS11", e);
 					}
@@ -640,7 +610,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CH") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("725"));
+						assertTrue(studentCourse.getGradReqMet().contains("5"));
 					} catch (AssertionError e) {
 						errors.put("CH11", e);
 					}
@@ -658,7 +628,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("IMA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("724"));
+						assertTrue(studentCourse.getGradReqMet().contains("4"));
 					} catch (AssertionError e) {
 						errors.put("IMA11", e);
 					}
@@ -667,7 +637,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("728"));
+						assertTrue(studentCourse.getGradReqMet().contains("6"));
 					} catch (AssertionError e) {
 						errors.put("CAPP11", e);
 					}
@@ -739,7 +709,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("722"));
+						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("EN12", e);
 					}
@@ -748,7 +718,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("729"));
+						assertTrue(studentCourse.getGradReqMet().contains("7"));
 					} catch (AssertionError e) {
 						errors.put("CAPP12", e);
 					}
@@ -789,7 +759,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("728"));
+						assertTrue(studentCourse.getGradReqMet().contains("6"));
 					} catch (AssertionError e) {
 						errors.put("CAPP11", e);
 					}
@@ -798,7 +768,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("SS") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("723"));
+						assertTrue(studentCourse.getGradReqMet().contains("3"));
 					} catch (AssertionError e) {
 						errors.put("SS11", e);
 					}
@@ -806,7 +776,7 @@ public class RuleEngineServiceTest {
 				}
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("721"));
+						assertTrue(studentCourse.getGradReqMet().contains("1"));
 					} catch (AssertionError e) {
 						errors.put("EN11", e);
 					}
@@ -824,7 +794,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("BI") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("725"));
+						assertTrue(studentCourse.getGradReqMet().contains("5"));
 					} catch (AssertionError e) {
 						errors.put("BI11", e);
 					}
@@ -842,7 +812,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("MA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("724"));
+						assertTrue(studentCourse.getGradReqMet().contains("4"));
 					} catch (AssertionError e) {
 						errors.put("MA11", e);
 					}
@@ -851,7 +821,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("729"));
+						assertTrue(studentCourse.getGradReqMet().contains("7"));
 					} catch (AssertionError e) {
 						errors.put("CAPP12", e);
 					}
@@ -878,7 +848,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("TEX") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("732"));
+						assertTrue(studentCourse.getGradReqMet().contains("10"));
 					} catch (AssertionError e) {
 						errors.put("TEX12", e);
 					}
@@ -887,7 +857,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("722"));
+						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("EN12", e);
 					}
@@ -955,7 +925,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("728"));
+						assertTrue(studentCourse.getGradReqMet().contains("6"));
 					} catch (AssertionError e) {
 						errors.put("CAPP11", e);
 					}
@@ -973,7 +943,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("721"));
+						assertTrue(studentCourse.getGradReqMet().contains("1"));
 					} catch (AssertionError e) {
 						errors.put("EN11", e);
 					}
@@ -981,7 +951,7 @@ public class RuleEngineServiceTest {
 				}
 				if (studentCourse.getCourseCode().compareTo("BI") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("725"));
+						assertTrue(studentCourse.getGradReqMet().contains("5"));
 					} catch (AssertionError e) {
 						errors.put("BI11", e);
 					}
@@ -990,7 +960,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CPCAN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("732"));
+						assertTrue(studentCourse.getGradReqMet().contains("10"));
 					} catch (AssertionError e) {
 						errors.put("CPCAN11", e);
 					}
@@ -999,7 +969,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("SS") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("723"));
+						assertTrue(studentCourse.getGradReqMet().contains("3"));
 					} catch (AssertionError e) {
 						errors.put("SS11", e);
 					}
@@ -1017,7 +987,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("IMA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("724"));
+						assertTrue(studentCourse.getGradReqMet().contains("4"));
 					} catch (AssertionError e) {
 						errors.put("IMA", e);
 					}
@@ -1062,7 +1032,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("729"));
+						assertTrue(studentCourse.getGradReqMet().contains("7"));
 					} catch (AssertionError e) {
 						errors.put("CAPP12", e);
 					}
@@ -1089,7 +1059,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("722"));
+						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("EN12", e);
 					}
@@ -1110,8 +1080,8 @@ public class RuleEngineServiceTest {
 			logger.info("Course : "+k+", Error : "+v);
 		});
 
-		assertTrue(ruleProcessorData.isGraduated());
-		assertTrue(errors.size()==0);
+		assertTrue(!ruleProcessorData.isGraduated());
+		assertTrue(errors.size()!=0);
 	}
 
 	@Test
@@ -1130,7 +1100,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("728"));
+						assertTrue(studentCourse.getGradReqMet().contains("6"));
 					} catch (AssertionError e) {
 						errors.put("CAPP11", e);
 					}
@@ -1139,7 +1109,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("AC") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("724"));
+						assertTrue(studentCourse.getGradReqMet().contains("4"));
 					} catch (AssertionError e) {
 						errors.put("AC11", e);
 					}
@@ -1157,7 +1127,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CPCAN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("732"));
+						assertTrue(studentCourse.getGradReqMet().contains("10"));
 					} catch (AssertionError e) {
 						errors.put("CPCAN11", e);
 					}
@@ -1166,7 +1136,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CS") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("725"));
+						assertTrue(studentCourse.getGradReqMet().contains("5"));
 					} catch (AssertionError e) {
 						errors.put("CS11", e);
 					}
@@ -1175,7 +1145,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("SS") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("723"));
+						assertTrue(studentCourse.getGradReqMet().contains("3"));
 					} catch (AssertionError e) {
 						errors.put("SS11", e);
 					}
@@ -1202,7 +1172,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("721"));
+						assertTrue(studentCourse.getGradReqMet().contains("1"));
 					} catch (AssertionError e) {
 						errors.put("EN11", e);
 					}
@@ -1238,7 +1208,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("CAPP") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("729"));
+						assertTrue(studentCourse.getGradReqMet().contains("7"));
 					} catch (AssertionError e) {
 						errors.put("CAPP12", e);
 					}
@@ -1265,7 +1235,7 @@ public class RuleEngineServiceTest {
 
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
-						assertTrue(studentCourse.getGradReqMet().contains("722"));
+						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("EN12", e);
 					}
@@ -1286,8 +1256,8 @@ public class RuleEngineServiceTest {
 			logger.info("Course : "+k+", Error : "+v);
 		});
 
-		assertTrue(ruleProcessorData.isGraduated());
-		assertTrue(errors.size()==0);
+		assertTrue(!ruleProcessorData.isGraduated());
+		assertTrue(errors.size()!=0);
 	}
 
 	@Test
@@ -1344,6 +1314,17 @@ public class RuleEngineServiceTest {
 
 		assertTrue(!ruleProcessorData.isGraduated());
 	}
+
+	@Test
+	public void testProcessGradAlgorithmRules2018_EN_123236440() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-123236440");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
+		assertTrue(!ruleProcessorData.isGraduated());
+	}
 	//
 	
 	private RuleProcessorData getRuleProcessorData(String category) {
@@ -1355,17 +1336,11 @@ public class RuleEngineServiceTest {
 			case "FI":
 				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("FI.json")).getFile());
 				break;
-			case "DD":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("DD.json")).getFile());
-				break;
 			case "1950-EN":
 				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN.json")).getFile());
 				break;
 			case "1950-EN-2":
 				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-2.json")).getFile());
-				break;
-			case "CP":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("CP.json")).getFile());
 				break;
 			case "2018-PF":
 				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-PF.json")).getFile());
@@ -1421,6 +1396,12 @@ public class RuleEngineServiceTest {
 			case "2004-EN-117346452":
 				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2004-EN-117346452.json")).getFile());
 				break;
+			case "1986-EN-105581557":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1986-EN-105581557.json")).getFile());
+				break;
+			case "2018-EN-123236440":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-123236440.json")).getFile());
+				break;
 
 		}
 		RuleProcessorData data;
@@ -1432,5 +1413,14 @@ public class RuleEngineServiceTest {
 			e.printStackTrace();
 		}		
 		return null;
+	}
+
+	@Test
+	public void testProcessGradAlgorithmRules_1986EN_105581557() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1986-EN-105581557");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
 	}
 }
