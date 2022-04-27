@@ -21,7 +21,7 @@
 			src/main/java/ca/bc/gov/educ/api/ruleengine/config/**,
 			src/main/java/ca/bc/gov/educ/api/ruleengine/exception/**,
 			src/main/java/ca/bc/gov/educ/api/ruleengine/dto/**,
-			src/main/java/ca/bc/gov/educ/api/dataconversion/util/**
+			src/main/java/ca/bc/gov/educ/api/ruleengine/util/**
 		</sonar.exclusions>
 		<java.version>11</java.version>
 		<junit>4.12</junit>
