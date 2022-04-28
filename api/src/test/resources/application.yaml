@@ -61,3 +61,8 @@ springdoc:
   swagger-ui:
     path: /api/v1/api-docs-ui.html
     operationsSorter: alpha
+
+#Splunk LogHelper
+splunk:
+  log-helper:
+    enabled: false
