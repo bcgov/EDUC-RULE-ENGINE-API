@@ -1,10 +1,18 @@
 package ca.bc.gov.educ.api.ruleengine.util;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
+@Component
+@Getter
+@Setter
 public class RuleEngineApiConstants {
 
-    private RuleEngineApiConstants () {}
+    public static final String CORRELATION_ID = "correlationID";
 
     //API end-point Mapping constants
     public static final String API_ROOT_MAPPING = "";
@@ -22,4 +30,8 @@ public class RuleEngineApiConstants {
     public static final Date DEFAULT_CREATED_TIMESTAMP = new Date();
     public static final String DEFAULT_UPDATED_BY = "RuleEngineAPI";
     public static final Date DEFAULT_UPDATED_TIMESTAMP = new Date();
+
+    // Splunk LogHelper Enabled
+    @Value("${splunk.log-helper.enabled}")
+    private boolean splunkLogHelperEnabled;
 }
