@@ -1,17 +1,13 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 @Component
@@ -62,38 +58,52 @@ public class AlgorithmSupportRule {
 
     public static void checkCoursesForEquivalency(List<ProgramRequirement> finalProgramRulesList, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
         for(ProgramRequirement pr:finalProgramRulesList) {
-            if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("116")==0) {
-                for(StudentCourse sc:courseList) {
-                    if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("NME10") ||
-                            sc.getMetLitNumRequirement().equalsIgnoreCase("NME") ||
-                            sc.getMetLitNumRequirement().equalsIgnoreCase("NMF10") ||
-                            sc.getMetLitNumRequirement().equalsIgnoreCase("NMF"))) {
-                        createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                    }
-                }
-            }
-            if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("115")==0) {
-                for(StudentCourse sc:courseList) {
-                    if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE10") ||
-                            sc.getMetLitNumRequirement().equalsIgnoreCase("LTP10"))) {
-                        createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                    }
-                }
-            }
-            if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("118")==0) {
-                for(StudentCourse sc:courseList) {
-                    if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE12") ||
-                            sc.getMetLitNumRequirement().equalsIgnoreCase("LTP12"))) {
-                        createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                    }
-                }
-            }
+            ruleFor116(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
+            ruleFor115(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
+            ruleFor118(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
+            ruleFor404(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
+        }
+    }
 
-            if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("404")==0) {
-                for(StudentCourse sc:courseList) {
-                    if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE12"))) {
-                        createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                    }
+    private static void ruleFor404(ProgramRequirement pr, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
+        if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("404")==0) {
+            for(StudentCourse sc:courseList) {
+                if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE12"))) {
+                    createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
+                }
+            }
+        }
+    }
+
+    private static void ruleFor118(ProgramRequirement pr, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
+        if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("118")==0) {
+            for(StudentCourse sc:courseList) {
+                if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE12") ||
+                        sc.getMetLitNumRequirement().equalsIgnoreCase("LTP12"))) {
+                    createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
+                }
+            }
+        }
+    }
+
+    private static void ruleFor115(ProgramRequirement pr, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
+        if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("115")==0) {
+            for(StudentCourse sc:courseList) {
+                if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE10") ||
+                        sc.getMetLitNumRequirement().equalsIgnoreCase("LTP10"))) {
+                    createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
+                }
+            }
+        }
+    }
+    private static void ruleFor116(ProgramRequirement pr, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
+        if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("116")==0) {
+            for(StudentCourse sc:courseList) {
+                if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("NME10") ||
+                        sc.getMetLitNumRequirement().equalsIgnoreCase("NME") ||
+                        sc.getMetLitNumRequirement().equalsIgnoreCase("NMF10") ||
+                        sc.getMetLitNumRequirement().equalsIgnoreCase("NMF"))) {
+                    createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
                 }
             }
         }
