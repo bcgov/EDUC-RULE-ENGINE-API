@@ -39,9 +39,6 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<StudentAssessment> assessmentList = RuleProcessorRuleUtils.getUniqueStudentAssessments(
                 ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
-        List<StudentAssessment> excludedAssessments = RuleProcessorRuleUtils.getExcludedStudentAssessments(
-                ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
-        ruleProcessorData.setExcludedAssessments(excludedAssessments);
 
         List<ProgramRequirement> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
                 .stream()
@@ -141,18 +138,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
     		finalProgramRulesList.addAll(unusedRules);
     	}
 		
-		for(ProgramRequirement pr:finalProgramRulesList) {
-			if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("116")==0) {
-				for(StudentCourse sc:courseList) {
-					if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("NME10") ||
-							sc.getMetLitNumRequirement().equalsIgnoreCase("NME") ||
-							sc.getMetLitNumRequirement().equalsIgnoreCase("NMF10") ||
-							sc.getMetLitNumRequirement().equalsIgnoreCase("NMF"))) {
-						createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-					}
-				}
-			}
-		}
+		AlgorithmSupportRule.checkCoursesForEquivalency(finalProgramRulesList,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
         List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
@@ -196,22 +182,6 @@ public class AssessmentsMatchCreditsRule implements Rule {
         ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
         return ruleProcessorData;
     }
-
-    private void createAssessmentRecord(List<StudentAssessment> finalAssessmentList, String aCode, List<Assessment> assmList, ProgramRequirement pr,String pen, List<GradRequirement> requirementsMet) {
-    	StudentAssessment sA = new StudentAssessment();
-    	sA.setAssessmentCode(aCode);
-    	sA.setPen(pen);
-        assmList.stream().filter(amt -> aCode.equals(amt.getAssessmentCode())).findAny().ifPresent(asmt -> sA.setAssessmentName(asmt.getAssessmentName()));
-        sA.setGradReqMet(pr.getProgramRequirementCode().getTraxReqNumber());
-        sA.setGradReqMetDetail(pr.getProgramRequirementCode().getTraxReqNumber() + " - " + pr.getProgramRequirementCode().getLabel());
-        sA.setSpecialCase("M");
-        sA.setUsed(true);
-        sA.setProficiencyScore(Double.valueOf("0"));
-        finalAssessmentList.add(sA);
-        pr.getProgramRequirementCode().setPassed(true);
-        requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel()));
-        	
-	}
 
 	@Override
     public void setInputData(RuleData inputData) {

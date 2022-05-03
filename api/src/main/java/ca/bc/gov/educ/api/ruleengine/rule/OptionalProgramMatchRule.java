@@ -80,7 +80,7 @@ public class OptionalProgramMatchRule {
         }
 
         obj.setStudentAssessmentsOptionalProgram(finalAssessmentList);
-        handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet);
+        handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet, ruleProcessorData);
 
     }
     public static void handleFailedRules(List<OptionalProgramRequirement> failedRules, List<GradRequirement> requirementsNotMet, OptionalProgramRuleProcessor obj) {
@@ -249,13 +249,23 @@ public class OptionalProgramMatchRule {
             }
         }
         obj.setStudentCoursesOptionalProgram(finalCourseList);
-        handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet);
+        handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet,ruleProcessorData);
     }
-    public static void handleRule(List<OptionalProgramRequirement> gradOptionalProgramRulesMatch, List<OptionalProgramRequirement> finalOptionalProgramRulesList, List<GradRequirement> requirementsNotMet, OptionalProgramRuleProcessor obj, List<GradRequirement> requirementsMet) {
+    public static void handleRule(List<OptionalProgramRequirement> gradOptionalProgramRulesMatch, List<OptionalProgramRequirement> finalOptionalProgramRulesList, List<GradRequirement> requirementsNotMet, OptionalProgramRuleProcessor obj, List<GradRequirement> requirementsMet, RuleProcessorData ruleProcessorData) {
         if(gradOptionalProgramRulesMatch.size() != finalOptionalProgramRulesList.size()) {
             List<OptionalProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneOptionalProgramRule(gradOptionalProgramRulesMatch);
             unusedRules.removeAll(finalOptionalProgramRulesList);
             finalOptionalProgramRulesList.addAll(unusedRules);
+        }
+        List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
+        for(OptionalProgramRequirement pr:finalOptionalProgramRulesList) {
+            if(!pr.getOptionalProgramRequirementCode().isPassed() && pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("203")==0) {
+                for(StudentCourse sc:courseList) {
+                    if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTF12"))) {
+                        AlgorithmSupportRule.createAssessmentRecordOptionalProgram(obj.getStudentAssessmentsOptionalProgram(),sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
+                    }
+                }
+            }
         }
         List<OptionalProgramRequirement> failedRules = finalOptionalProgramRulesList.stream().filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed())
                 .collect(Collectors.toList());
