@@ -35,10 +35,10 @@ public class AdultCPCoursesRule implements Rule {
         logger.debug("###################### Finding CAREER PROGRAM courses ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
-            if (studentCourse.getCourseCode().startsWith("CP") 
+            boolean isCPWEExceptionCourse = studentCourse.getCourseCode().equalsIgnoreCase("CPWE") && studentCourse.getCourseLevel().equalsIgnoreCase("12");
+            if (studentCourse.getCourseCode().startsWith("CP")
             		&& (RuleEngineApiUtils.parsingTraxDate(studentCourse.getSessionDate()).compareTo(RuleEngineApiUtils.parsingTraxDate("2000/09")) > 0) 
-            		&& !studentCourse.getCourseCode().equalsIgnoreCase("CPWE") 
-            		&& studentCourse.getCourseLevel().equalsIgnoreCase("12")) {
+            		&& !isCPWEExceptionCourse) {
                 studentCourse.setCareerPrep(true);
             }
         }
