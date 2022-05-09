@@ -111,13 +111,13 @@ public class MinCreditsRule implements Rule {
         for(StudentCourse sc:studentCourses) {
         	if(sc.getCourseLevel().contains(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim())
             		|| (sc.getCourseCode().startsWith("CLC") && StringUtils.isBlank(sc.getCourseLevel()))) {
-        		tC += sc.getCredits();
-        		if(tC<=requiredCredits) {
-        			processReqMet(sc,gradProgramRule);
-        		}else {
-        			break;
-        		}
-        		
+                if (tC + sc.getCredits() < requiredCredits) {
+                    tC += sc.getCredits();
+                    processReqMet(sc,gradProgramRule);
+                }else {
+                    processReqMet(sc,gradProgramRule);
+                    break;
+                }
         	}
         }		
 	}
