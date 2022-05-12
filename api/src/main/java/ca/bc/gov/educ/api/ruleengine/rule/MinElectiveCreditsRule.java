@@ -33,10 +33,13 @@ public class MinElectiveCreditsRule implements Rule {
 	public RuleData fire() {
 		int totalCredits = 0;
 		int requiredCredits;
+		List<GradRequirement> requirementsNotMet = new ArrayList<>();
+
 		logger.debug("Min Elective Credits Rule");
 
 		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
+			AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
 			return ruleProcessorData;
 		}
 

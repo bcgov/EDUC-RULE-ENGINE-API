@@ -29,10 +29,8 @@ public class MinElectiveCredits1996Rule implements Rule {
 		int requiredCredits;
 		logger.debug("Min Elective Credits Rule");
 
-		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
-			return ruleProcessorData;
-		}
+		List<GradRequirement> requirementsNotMet = new ArrayList<>();
+
 		Map<String,Integer> map1996 = ruleProcessorData.getMap1996Crse();
 		int ldCourseCounter = 0;
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
@@ -45,6 +43,12 @@ public class MinElectiveCredits1996Rule implements Rule {
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
+
+		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
+			AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
+			return ruleProcessorData;
+		}
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			if(gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null) {
