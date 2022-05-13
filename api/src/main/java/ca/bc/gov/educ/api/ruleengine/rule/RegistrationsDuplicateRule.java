@@ -53,7 +53,7 @@ public class RegistrationsDuplicateRule implements Rule {
                             inProgressCourse1 = cal.before(calSDate1);
                             inProgressCourse2 = cal.before(calSDate2);
                         } catch (ParseException e) {
-                            e.printStackTrace();
+                            logger.debug("Parse Error {}",e.getMessage());
                         }
                         if(inProgressCourse1 && inProgressCourse2) {
                             logger.debug("comparing {} with {}  -> Duplicate FOUND - CourseID: {}-{}", studentCourseList.get(i).getCourseCode(), studentCourseList.get(j).getCourseCode(), studentCourseList.get(i).getCourseCode(), studentCourseList.get(i).getCourseLevel());
