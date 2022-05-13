@@ -5,15 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ca.bc.gov.educ.api.ruleengine.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
@@ -38,6 +35,9 @@ public class ProgramCompletionDateRule implements Rule {
 				.getGradProgramRules().stream().filter(gpr -> "PCD".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0)
 				.collect(Collectors.toList());
+		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
+				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
+		ruleProcessorData.setStudentCourses(studentCourses);
     	for (ProgramRequirement gradProgramRule : gradProgramRules) {
 	    	String programCompletionDate = ruleProcessorData.getGradStatus().getProgramCompletionDate();
 	    	if(programCompletionDate != null) {
