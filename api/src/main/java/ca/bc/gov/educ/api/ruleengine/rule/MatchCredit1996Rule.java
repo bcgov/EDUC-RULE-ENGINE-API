@@ -54,7 +54,6 @@ public class MatchCredit1996Rule implements Rule {
 
         if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
-            AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,gradProgramRulesMatch,requirementsNotMet);
             return ruleProcessorData;
         }
 

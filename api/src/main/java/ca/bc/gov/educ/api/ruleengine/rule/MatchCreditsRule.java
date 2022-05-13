@@ -45,7 +45,6 @@ public class MatchCreditsRule implements Rule {
 
         if (courseList == null || courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credits Rule for processing");
-            AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,gradProgramRulesMatch,requirementsNotMet);
             return ruleProcessorData;
         }
 

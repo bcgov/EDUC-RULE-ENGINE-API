@@ -51,6 +51,7 @@ public class ProgramCompletionDateRule implements Rule {
 	 					reqsMet = new ArrayList<>();
 	 				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
 	 				ruleProcessorData.setRequirementsMet(reqsMet);
+				    ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 	 				return ruleProcessorData;
 	    		 }
 	    	}
@@ -63,6 +64,7 @@ public class ProgramCompletionDateRule implements Rule {
 			ruleProcessorData.setNonGradReasons(nonGradReasons);
 	    	
     	}
+		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
         return ruleProcessorData;
     }
 

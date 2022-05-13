@@ -53,7 +53,17 @@ public class AlgorithmSupportRule {
 
         reqsMet.addAll(requirementsMet);
         ruleProcessorData.setRequirementsMet(reqsMet);
-        ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
+        if(ruleProcessorData.getStudentAssessments() == null || ruleProcessorData.getStudentAssessments().isEmpty()) {
+            ruleProcessorData.setStudentAssessments(ruleProcessorData.getExcludedAssessments());
+        }else {
+            ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
+        }
+
+        if(ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+            ruleProcessorData.setStudentCourses(ruleProcessorData.getExcludedCourses());
+        }else {
+            ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
+        }
     }
 
     public static void checkCoursesForEquivalency(List<ProgramRequirement> finalProgramRulesList, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
