@@ -118,7 +118,6 @@ public class AdultWorkExperienceRule implements Rule {
 	        }
 		}
 		ruleProcessorData.setStudentCourses(finalCourseList);
-		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
 	}
 
