@@ -83,7 +83,12 @@ public class DuplicateAssessmentsRule implements Rule {
 
 		logger.log(Level.INFO, "Duplicate Assessments: {0}",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isDuplicate).count());
-
+		if(ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("SCCP")
+				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1950")
+				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("NOPROG")
+				|| ruleProcessorData.getGradProgram().getProgramCode().contains("2004")) {
+			ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
+		}
 		return ruleProcessorData;
 	}
 
