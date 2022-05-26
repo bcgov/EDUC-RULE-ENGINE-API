@@ -30,10 +30,7 @@ public class MinCredit1996Rule implements Rule {
         int requiredCredits;
         logger.debug("Min Credits Rule");
 
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
-            return ruleProcessorData;
-        }
+
         List<StudentCourse> tempStudentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule()).collect(Collectors.toList());
@@ -47,6 +44,11 @@ public class MinCredit1996Rule implements Rule {
                 .collect(Collectors.toList());
 
         logger.debug(gradProgramRules.toString());
+
+        if (tempStudentCourseList == null || tempStudentCourseList.isEmpty()) {
+            logger.warn("!!!Empty list sent to Min Credits Rule for processing");
+            return ruleProcessorData;
+        }
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
             requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim());

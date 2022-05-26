@@ -43,7 +43,7 @@ public class MinElectiveCredits1986Rule implements Rule {
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 
-		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+		if (studentCourses == null || studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
 			AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
 			return ruleProcessorData;

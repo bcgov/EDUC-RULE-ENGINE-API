@@ -35,10 +35,7 @@ public class MinCreditsElective12Rule implements Rule {
 		int requiredCredits;
 		logger.debug("Min Credits Elective 12 Rule");
 
-		if (ruleProcessorData.getStudentCourses().isEmpty()) {
-			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
-			return ruleProcessorData;
-		}
+
 
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
@@ -51,6 +48,11 @@ public class MinCreditsElective12Rule implements Rule {
 				.collect(Collectors.toList());
 
 		logger.debug(gradProgramRules.toString());
+
+		if (studentCourses == null || studentCourses.isEmpty()) {
+			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
+			return ruleProcessorData;
+		}
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list

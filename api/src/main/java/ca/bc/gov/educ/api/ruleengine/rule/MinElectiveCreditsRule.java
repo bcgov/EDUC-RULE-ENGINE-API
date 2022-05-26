@@ -35,23 +35,19 @@ public class MinElectiveCreditsRule implements Rule {
 		int requiredCredits;
 		List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
-		logger.debug("Min Elective Credits Rule");
-
-		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
-			AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
-			return ruleProcessorData;
-		}
-
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-
-		logger.debug("Unique Courses: {}",studentCourses.size());
 
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
+
+		if (studentCourses == null || studentCourses.isEmpty()) {
+			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
+			AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
+			return ruleProcessorData;
+		}
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
@@ -111,7 +107,6 @@ public class MinElectiveCreditsRule implements Rule {
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
 
-			logger.debug("Min Elective Credits -> Required:{} Has: {}",requiredCredits,totalCredits);
 			totalCredits = 0;
 		}
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
