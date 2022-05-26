@@ -52,7 +52,7 @@ public class MatchCredit1996Rule implements Rule {
                         && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
 
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+        if (courseList == null || courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
             return ruleProcessorData;
         }

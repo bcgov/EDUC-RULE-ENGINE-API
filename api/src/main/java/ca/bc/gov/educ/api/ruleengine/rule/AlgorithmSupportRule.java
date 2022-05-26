@@ -24,6 +24,7 @@ public class AlgorithmSupportRule {
         List<GradRequirement> requirementsMet = new ArrayList<>();
         checkCoursesForEquivalency(gradProgramRulesMatch,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
         ruleProcessorData.setStudentAssessments(finalAssessmentList);
+        ruleProcessorData.setStudentCourses(courseList);
         List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
                 .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
@@ -34,7 +35,7 @@ public class AlgorithmSupportRule {
                 requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
             }
 
-            logger.info("One or more Match rules not met!");
+            logger.debug("One or more Match rules not met!");
             ruleProcessorData.setGraduated(false);
 
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();

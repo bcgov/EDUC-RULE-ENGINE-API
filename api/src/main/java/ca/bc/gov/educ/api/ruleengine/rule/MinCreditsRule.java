@@ -30,14 +30,9 @@ public class MinCreditsRule implements Rule {
     public RuleData fire() {
         int totalCredits;
         int requiredCredits;
-        logger.debug("Min Credits Rule");
-
-
 
         List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-
-        logger.debug("Unique Courses: {}",studentCourses.size());
 
         List<ProgramRequirement> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
@@ -46,10 +41,8 @@ public class MinCreditsRule implements Rule {
                             && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
 
-        if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+        if (studentCourses == null || studentCourses.isEmpty()) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");
-            List<GradRequirement> requirementsNotMet = new ArrayList<>();
-            AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,gradProgramRules,requirementsNotMet);
             return ruleProcessorData;
         }
 
@@ -84,7 +77,7 @@ public class MinCreditsRule implements Rule {
                         gradProgramRule.getProgramRequirementCode().getLabel()));
                 ruleProcessorData.setRequirementsMet(reqsMet);
             } else {
-                logger.info("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
+                logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
                 ruleProcessorData.setGraduated(false);
 
                 List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
