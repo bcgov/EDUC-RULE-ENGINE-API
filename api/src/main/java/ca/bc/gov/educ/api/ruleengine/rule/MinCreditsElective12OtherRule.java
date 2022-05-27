@@ -51,7 +51,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 		logger.debug(gradProgramRules.toString());
 		if (studentCourses == null || studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
-			AlgorithmSupportRule.processEmptyAssessmentCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
+			AlgorithmSupportRule.processEmptyCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
 			return ruleProcessorData;
 		}
 

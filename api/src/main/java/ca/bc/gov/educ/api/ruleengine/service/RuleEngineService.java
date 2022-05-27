@@ -19,7 +19,6 @@ public class RuleEngineService {
      * Process all the Grad Algorithm Rules
      *
      * @return RuleProcessorData
-     * @exception java.io.IOException
      */
     @SneakyThrows
     public RuleProcessorData processGradAlgorithmRules(RuleProcessorData ruleProcessorData) {
@@ -34,11 +33,7 @@ public class RuleEngineService {
             ruleProcessorData = (RuleProcessorData)rule.fire();
         }
         if(ruleProcessorData.getNonGradReasons() == null || ruleProcessorData.getNonGradReasons().isEmpty()) {
-            if(ruleProcessorData.getRequirementsMet() != null && !ruleProcessorData.getRequirementsMet().isEmpty()) {
-                ruleProcessorData.setGraduated(true);
-            }else {
-                ruleProcessorData.setGraduated(false);
-            }
+            ruleProcessorData.setGraduated(ruleProcessorData.getRequirementsMet() != null && !ruleProcessorData.getRequirementsMet().isEmpty());
         }else {
             ruleProcessorData.setGraduated(false);
         }

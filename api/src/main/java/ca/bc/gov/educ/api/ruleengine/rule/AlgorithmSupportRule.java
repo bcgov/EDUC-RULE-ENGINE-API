@@ -12,12 +12,45 @@ import java.util.stream.Collectors;
 
 @Component
 public class AlgorithmSupportRule {
-    private static Logger logger = LoggerFactory.getLogger(AlgorithmSupportRule.class);
+    private static final Logger logger = LoggerFactory.getLogger(AlgorithmSupportRule.class);
 
     private AlgorithmSupportRule() {
     }
 
-    public static void processEmptyAssessmentCourseCondition(RuleProcessorData ruleProcessorData,List<ProgramRequirement> gradProgramRulesMatch, List<GradRequirement> requirementsNotMet) {
+    public static void processEmptyCourseCondition(RuleProcessorData ruleProcessorData,List<ProgramRequirement> gradProgramRulesMatch, List<GradRequirement> requirementsNotMet) {
+        List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
+                ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
+        ruleProcessorData.setStudentCourses(courseList);
+        List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("C")).collect(Collectors.toList());
+
+        if (failedRules.isEmpty()) {
+            logger.debug("All the match rules met!");
+        } else {
+            for (ProgramRequirement failedRule : failedRules) {
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+            }
+
+            logger.debug("One or more Match rules not met!");
+            ruleProcessorData.setGraduated(false);
+
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
+
+            if (nonGradReasons == null)
+                nonGradReasons = new ArrayList<>();
+
+            nonGradReasons.addAll(requirementsNotMet);
+            ruleProcessorData.setNonGradReasons(nonGradReasons);
+        }
+
+        if(ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
+            ruleProcessorData.setStudentCourses(ruleProcessorData.getExcludedCourses());
+        }else {
+            ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
+        }
+    }
+
+    public static void processEmptyAssessmentCondition(RuleProcessorData ruleProcessorData,List<ProgramRequirement> gradProgramRulesMatch, List<GradRequirement> requirementsNotMet) {
         List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
@@ -26,7 +59,7 @@ public class AlgorithmSupportRule {
         ruleProcessorData.setStudentAssessments(finalAssessmentList);
         ruleProcessorData.setStudentCourses(courseList);
         List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("A")).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -58,12 +91,6 @@ public class AlgorithmSupportRule {
             ruleProcessorData.setStudentAssessments(ruleProcessorData.getExcludedAssessments());
         }else {
             ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
-        }
-
-        if(ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-            ruleProcessorData.setStudentCourses(ruleProcessorData.getExcludedCourses());
-        }else {
-            ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
         }
     }
 
@@ -150,5 +177,67 @@ public class AlgorithmSupportRule {
         pr.getOptionalProgramRequirementCode().setPassed(true);
         requirementsMet.add(new GradRequirement(pr.getOptionalProgramRequirementCode().getTraxReqNumber(), pr.getOptionalProgramRequirementCode().getLabel()));
 
+    }
+
+    public static void setGradReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
+        if (sc.getGradReqMet().length() > 0) {
+
+            sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
+            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
+                    + gradProgramRule.getProgramRequirementCode().getLabel());
+        } else {
+            sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
+            sc.setGradReqMetDetail(
+                    gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+        }
+    }
+    public static int processExtraCredits(boolean extraCreditsUsed, int extraCreditsLDcrses, StudentCourse sc, int totalCredits, int requiredCredits) {
+        if (extraCreditsUsed && extraCreditsLDcrses != 0) {
+            if (totalCredits + extraCreditsLDcrses <= requiredCredits) {
+                totalCredits += extraCreditsLDcrses;
+                sc.setCreditsUsedForGrad(extraCreditsLDcrses);
+            } else {
+                int extraCredits = totalCredits + extraCreditsLDcrses - requiredCredits;
+                totalCredits = requiredCredits;
+                sc.setCreditsUsedForGrad(extraCreditsLDcrses - extraCredits);
+            }
+        } else {
+            if (totalCredits + sc.getCredits() <= requiredCredits) {
+                totalCredits += sc.getCredits();
+                sc.setCreditsUsedForGrad(sc.getCredits());
+            } else {
+                int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+                totalCredits = requiredCredits;
+                sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+            }
+        }
+        return totalCredits;
+    }
+    public static void checkCredits(int totalCredits, int requiredCredits, ProgramRequirement gradProgramRule, RuleProcessorData ruleProcessorData) {
+        if (totalCredits >= requiredCredits) {
+            logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
+            gradProgramRule.getProgramRequirementCode().setPassed(true);
+
+            List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
+
+            if (reqsMet == null)
+                reqsMet = new ArrayList<>();
+
+            reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
+            ruleProcessorData.setRequirementsMet(reqsMet);
+            logger.debug("Min Elective Credits Rule: Total-{} Required- {}",totalCredits,requiredCredits);
+
+        } else {
+            logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
+            ruleProcessorData.setGraduated(false);
+
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
+
+            if (nonGradReasons == null)
+                nonGradReasons = new ArrayList<>();
+
+            nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+            ruleProcessorData.setNonGradReasons(nonGradReasons);
+        }
     }
 }
