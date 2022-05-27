@@ -69,7 +69,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 							totalCredits = requiredCredits;
 							sc.setCreditsUsedForGrad(map1996.get(sc.getCourseCode()) - extraCredits);
 						}
-						setGradReqMet(sc,gradProgramRule);
+						AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 						sc.setUsed(true);
 					} else {
 						if (!sc.isUsedInMatchRule()) {
@@ -89,8 +89,8 @@ public class MinElectiveCredits1996Rule implements Rule {
 									continue;
 								}
 							}
-							totalCredits = processExtraCredits(extraCreditsUsed,extraCreditsLDcrses,sc,totalCredits,requiredCredits);
-							setGradReqMet(sc,gradProgramRule);
+							totalCredits = AlgorithmSupportRule.processExtraCredits(extraCreditsUsed,extraCreditsLDcrses,sc,totalCredits,requiredCredits);
+							AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 							sc.setUsed(true);
 						}
 					}
@@ -98,7 +98,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 						break;
 					}
 				}
-				checkCredits(totalCredits,requiredCredits,gradProgramRule);
+				AlgorithmSupportRule.checkCredits(totalCredits,requiredCredits,gradProgramRule,ruleProcessorData);
 				totalCredits = 0;
 			}
 		}
@@ -108,67 +108,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 		return ruleProcessorData;
 	}
 
-	private void setGradReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
-		if (sc.getGradReqMet().length() > 0) {
 
-			sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-			sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
-					+ gradProgramRule.getProgramRequirementCode().getLabel());
-		} else {
-			sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-			sc.setGradReqMetDetail(
-					gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-		}
-	}
-	private int processExtraCredits(boolean extraCreditsUsed, int extraCreditsLDcrses, StudentCourse sc, int totalCredits, int requiredCredits) {
-		if (extraCreditsUsed && extraCreditsLDcrses != 0) {
-			if (totalCredits + extraCreditsLDcrses <= requiredCredits) {
-				totalCredits += extraCreditsLDcrses;
-				sc.setCreditsUsedForGrad(extraCreditsLDcrses);
-			} else {
-				int extraCredits = totalCredits + extraCreditsLDcrses - requiredCredits;
-				totalCredits = requiredCredits;
-				sc.setCreditsUsedForGrad(extraCreditsLDcrses - extraCredits);
-			}
-		} else {
-			if (totalCredits + sc.getCredits() <= requiredCredits) {
-				totalCredits += sc.getCredits();
-				sc.setCreditsUsedForGrad(sc.getCredits());
-			} else {
-				int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-				totalCredits = requiredCredits;
-				sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
-			}
-		}
-		return totalCredits;
-	}
-	private void checkCredits(int totalCredits, int requiredCredits, ProgramRequirement gradProgramRule) {
-		if (totalCredits >= requiredCredits) {
-			logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
-			gradProgramRule.getProgramRequirementCode().setPassed(true);
-
-			List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
-
-			if (reqsMet == null)
-				reqsMet = new ArrayList<>();
-
-			reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
-			ruleProcessorData.setRequirementsMet(reqsMet);
-			logger.debug("Min Elective Credits Rule: Total-{} Required- {}",totalCredits,requiredCredits);
-
-		} else {
-			logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
-			ruleProcessorData.setGraduated(false);
-
-			List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
-
-			if (nonGradReasons == null)
-				nonGradReasons = new ArrayList<>();
-
-			nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
-			ruleProcessorData.setNonGradReasons(nonGradReasons);
-		}
-	}
 
 	@Override
 	public void setInputData(RuleData inputData) {
