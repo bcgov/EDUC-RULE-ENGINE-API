@@ -107,7 +107,7 @@ public class RuleProcessorRuleUtils {
         if(!exclList.isEmpty()) {
             for(StudentAssessment sc:exclList) {
                 StudentAssessment tempAssmt = existingExcludedList.stream()
-                        .filter(sp -> sp.getAssessmentCode().compareTo(sc.getAssessmentCode()) == 0)
+                        .filter(sp -> sp.getAssessmentCode().compareTo(sc.getAssessmentCode()) == 0 && sp.getSessionDate().compareTo(sc.getSessionDate())==0)
                         .findAny()
                         .orElse(null);
                 if(tempAssmt == null) {
