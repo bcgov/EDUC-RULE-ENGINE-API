@@ -87,7 +87,7 @@ public class RuleProcessorRuleUtils {
         if(!exclList.isEmpty()) {
             for(StudentCourse sc:exclList) {
                 StudentCourse tempCourse = existingExcludedList.stream()
-                        .filter(sp -> sp.getCourseCode().compareTo(sc.getCourseCode()) == 0 && sp.getCourseLevel().compareTo(sc.getCourseLevel())==0 )
+                        .filter(sp -> sp.getCourseCode().compareTo(sc.getCourseCode()) == 0 && sp.getCourseLevel().compareTo(sc.getCourseLevel())==0 && sp.getSessionDate().compareTo(sc.getSessionDate())==0 )
                         .findAny()
                         .orElse(null);
                 if(tempCourse == null) {
