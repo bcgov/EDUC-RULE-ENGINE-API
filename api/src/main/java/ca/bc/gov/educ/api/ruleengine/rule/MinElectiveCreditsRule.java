@@ -33,102 +33,68 @@ public class MinElectiveCreditsRule implements Rule {
 	public RuleData fire() {
 		int totalCredits = 0;
 		int requiredCredits;
-		logger.debug("Min Elective Credits Rule");
-
-		if (ruleProcessorData.getStudentCourses() == null || ruleProcessorData.getStudentCourses().isEmpty()) {
-			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
-			return ruleProcessorData;
-		}
+		List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-
-		logger.debug("Unique Courses: {}",studentCourses.size());
 
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 
+		if (studentCourses == null || studentCourses.isEmpty()) {
+			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
+			AlgorithmSupportRule.processEmptyCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
+			return ruleProcessorData;
+		}
+
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 			for (StudentCourse sc : studentCourses) {
-				if(sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0) {
-					if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
-						totalCredits += sc.getLeftOverCredits();
-						sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
-					} else {
-						int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
-						totalCredits = requiredCredits;
-						sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
-					}
-					setGradReqMet(sc,gradProgramRule);
-				}
-
-				if(!sc.isUsedInMatchRule()){
-					if (totalCredits + sc.getCredits() <= requiredCredits) {
-						totalCredits += sc.getCredits();
-						sc.setCreditsUsedForGrad(sc.getCredits());
-					} else {
-						int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
-						totalCredits = requiredCredits;
-						sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
-					}
-					setGradReqMet(sc,gradProgramRule);
-				}
+				totalCredits = processLeftOverCredits(sc,requiredCredits,totalCredits,gradProgramRule);
+				totalCredits = processOthers(sc,requiredCredits,totalCredits,gradProgramRule);
 				if (totalCredits == requiredCredits) {
 					break;
 				}
 
 			}
-
-			if (totalCredits >= requiredCredits) {
-				logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
-				gradProgramRule.getProgramRequirementCode().setPassed(true);
-
-				List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
-
-				if (reqsMet == null)
-					reqsMet = new ArrayList<>();
-
-				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
-				ruleProcessorData.setRequirementsMet(reqsMet);
-				logger.debug("Min Elective Credits Rule: Total-{} Required : {}",totalCredits,requiredCredits);
-
-			} else {
-				logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
-				ruleProcessorData.setGraduated(false);
-
-				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
-
-				if (nonGradReasons == null)
-					nonGradReasons = new ArrayList<>();
-
-				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
-				ruleProcessorData.setNonGradReasons(nonGradReasons);
-			}
-
-			logger.debug("Min Elective Credits -> Required:{} Has: {}",requiredCredits,totalCredits);
+			AlgorithmSupportRule.checkCredits(totalCredits,requiredCredits,gradProgramRule,ruleProcessorData);
 			totalCredits = 0;
 		}
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
 	}
 
-	private void setGradReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
-		if (sc.getGradReqMet().length() > 0) {
-
-			sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-			sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
-					+ gradProgramRule.getProgramRequirementCode().getLabel());
-		} else {
-			sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-			sc.setGradReqMetDetail(
-					gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+	private int processOthers(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
+		if(!sc.isUsedInMatchRule()){
+			if (totalCredits + sc.getCredits() <= requiredCredits) {
+				totalCredits += sc.getCredits();
+				sc.setCreditsUsedForGrad(sc.getCredits());
+			} else {
+				int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
+				totalCredits = requiredCredits;
+				sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
+			}
+			AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 		}
-		sc.setUsed(true);
-
+		return totalCredits;
 	}
+	private int processLeftOverCredits(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
+		if(sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0) {
+			if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
+				totalCredits += sc.getLeftOverCredits();
+				sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
+			} else {
+				int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
+				totalCredits = requiredCredits;
+				sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
+			}
+			AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
+		}
+		return totalCredits;
+	}
+
 
 	@Override
 	public void setInputData(RuleData inputData) {

@@ -84,7 +84,17 @@ public class RuleProcessorRuleUtils {
         if(existingExcludedList == null)
             existingExcludedList = new ArrayList<>();
 
-        existingExcludedList.addAll(exclList);
+        if(!exclList.isEmpty()) {
+            for(StudentCourse sc:exclList) {
+                StudentCourse tempCourse = existingExcludedList.stream()
+                        .filter(sp -> sp.getCourseCode().compareTo(sc.getCourseCode()) == 0 && sp.getCourseLevel().compareTo(sc.getCourseLevel())==0 && sp.getSessionDate().compareTo(sc.getSessionDate())==0 )
+                        .findAny()
+                        .orElse(null);
+                if(tempCourse == null) {
+                    existingExcludedList.add(sc);
+                }
+            }
+        }
         return existingExcludedList;
 
     }
@@ -94,7 +104,17 @@ public class RuleProcessorRuleUtils {
         if(existingExcludedList == null)
             existingExcludedList = new ArrayList<>();
 
-        existingExcludedList.addAll(exclList);
+        if(!exclList.isEmpty()) {
+            for(StudentAssessment sc:exclList) {
+                StudentAssessment tempAssmt = existingExcludedList.stream()
+                        .filter(sp -> sp.getAssessmentCode().compareTo(sc.getAssessmentCode()) == 0 && sp.getSessionDate().compareTo(sc.getSessionDate())==0)
+                        .findAny()
+                        .orElse(null);
+                if(tempAssmt == null) {
+                    existingExcludedList.add(sc);
+                }
+            }
+        }
         return existingExcludedList;
 
     }
@@ -139,7 +159,7 @@ public class RuleProcessorRuleUtils {
         try {
             gradDate = dateFormat.parse("1700/01/01");
         } catch (ParseException e) {
-            e.getMessage();
+            logger.debug("Error {}",e.getMessage());
         }
 
         for (StudentCourse studentCourse : studentCourses) {
@@ -148,7 +168,7 @@ public class RuleProcessorRuleUtils {
                     gradDate = dateFormat.parse(studentCourse.getSessionDate() + "/01");
                 }
             } catch (ParseException e) {
-                e.getMessage();
+                logger.debug("Error {}",e.getMessage());
             }
         }
         dateFormat = new SimpleDateFormat(RuleEngineApiConstants.DEFAULT_DATE_FORMAT);

@@ -33,12 +33,11 @@ public class MinCreditsElective12OtherRule implements Rule {
 	public RuleData fire() {
 		int totalCredits = 0;
 		int requiredCredits;
+
+		List<GradRequirement> requirementsNotMet = new ArrayList<>();
 		logger.debug("Min Credits Elective 12 Rule");
 
-		if (ruleProcessorData.getStudentCourses().isEmpty()) {
-			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
-			return ruleProcessorData;
-		}
+
 
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
@@ -50,6 +49,11 @@ public class MinCreditsElective12OtherRule implements Rule {
 				.collect(Collectors.toList());
 
 		logger.debug(gradProgramRules.toString());
+		if (studentCourses == null || studentCourses.isEmpty()) {
+			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
+			AlgorithmSupportRule.processEmptyCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
+			return ruleProcessorData;
+		}
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list

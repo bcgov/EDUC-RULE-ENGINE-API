@@ -46,7 +46,7 @@ public class FrenchImmersionMinElectiveCredits1986Rule implements Rule {
         StudentCourse tempSC;
         ObjectMapper objectMapper = new ObjectMapper();
 
-        List<StudentCourse> modifiedList = courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).collect(Collectors.toList());
+        List<StudentCourse> modifiedList = RuleEngineApiUtils.getClone(courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).collect(Collectors.toList()));
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();

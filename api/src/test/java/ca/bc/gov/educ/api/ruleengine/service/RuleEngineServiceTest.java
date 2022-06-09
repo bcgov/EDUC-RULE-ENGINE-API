@@ -1290,6 +1290,17 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
+		assertTrue(ruleProcessorData.isGraduated());
+	}
+
+	@Test
+	public void testProcessGradAlgorithmRules_SCCP_130319387_fail() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("SCCP-130319387-fail");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
 		assertTrue(!ruleProcessorData.isGraduated());
 	}
 
@@ -1420,6 +1431,9 @@ public class RuleEngineServiceTest {
 				break;
 			case "SCCP-130319387":
 				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("SCCP-130319387.json")).getFile());
+				break;
+			case "SCCP-130319387-fail":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("SCCP-130319387-fail.json")).getFile());
 				break;
 			case "1950-122740988":
 				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-122740988.json")).getFile());

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class OptionalProgramMatchRule {
-    private static Logger logger = LoggerFactory.getLogger(OptionalProgramMatchRule.class);
+    private static final Logger logger = LoggerFactory.getLogger(OptionalProgramMatchRule.class);
 
     private OptionalProgramMatchRule() {
     }
@@ -59,8 +59,7 @@ public class OptionalProgramMatchRule {
                     .collect(Collectors.toList());
 
             logger.debug("Temp Assessment Requirement: {}",tempAssessmentRequirement);
-            OptionalProgramRequirement tempOptionalProgramRule = null;
-            handleOptionalProgramRule(tempAssessmentRequirement,gradOptionalProgramRulesMatch,requirementsMet,tempAssessment,tempOptionalProgramRule);
+            OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramRule(tempAssessmentRequirement,gradOptionalProgramRulesMatch,requirementsMet,tempAssessment,null);
 
             try {
                 tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempAssessment), StudentAssessment.class);
@@ -102,7 +101,7 @@ public class OptionalProgramMatchRule {
             logger.debug("One or more Match rules not met!");
         }
     }
-    public static void handleOptionalProgramRule(List<AssessmentRequirement> tempAssessmentRequirement, List<OptionalProgramRequirement> gradOptionalProgramRulesMatch, List<GradRequirement> requirementsMet, StudentAssessment tempAssessment, OptionalProgramRequirement tempOptionalProgramRule) {
+    public static OptionalProgramRequirement handleOptionalProgramRule(List<AssessmentRequirement> tempAssessmentRequirement, List<OptionalProgramRequirement> gradOptionalProgramRulesMatch, List<GradRequirement> requirementsMet, StudentAssessment tempAssessment, OptionalProgramRequirement tempOptionalProgramRule) {
 
         if (!tempAssessmentRequirement.isEmpty()) {
             for(AssessmentRequirement ar:tempAssessmentRequirement) {
@@ -144,9 +143,10 @@ public class OptionalProgramMatchRule {
                 logger.debug("!!! Program Rule met Already: {}",tempOptionalProgramRule);
             }
         }
+        return tempOptionalProgramRule;
     }
 
-    public static void handleOptionalProgramCourseMatchRule(List<CourseRequirement> tempCourseRequirement, OptionalProgramRequirement tempOptionalProgramRule, List<GradRequirement> requirementsMet, StudentCourse tempCourse, List<OptionalProgramRequirement> gradOptionalProgramRulesMatch) {
+    public static OptionalProgramRequirement handleOptionalProgramCourseMatchRule(List<CourseRequirement> tempCourseRequirement, OptionalProgramRequirement tempOptionalProgramRule, List<GradRequirement> requirementsMet, StudentCourse tempCourse, List<OptionalProgramRequirement> gradOptionalProgramRulesMatch) {
         if (!tempCourseRequirement.isEmpty()) {
             for(CourseRequirement cr:tempCourseRequirement) {
                 if(tempOptionalProgramRule == null) {
@@ -186,6 +186,7 @@ public class OptionalProgramMatchRule {
                 logger.debug("!!! Program Rule met Already: {}", tempOptionalProgramRule);
             }
         }
+        return tempOptionalProgramRule;
     }
     public static void processOptionalProgramCourseMatchRule(OptionalProgramRuleProcessor obj, RuleProcessorData ruleProcessorData) {
         obj.setOptionalProgramGraduated(true);
@@ -228,9 +229,8 @@ public class OptionalProgramMatchRule {
 
             logger.debug("Temp Course Requirement: {}", tempCourseRequirement);
 
-            OptionalProgramRequirement tempOptionalProgramRule = null;
 
-            handleOptionalProgramCourseMatchRule(tempCourseRequirement,tempOptionalProgramRule,requirementsMet,tempCourse,gradOptionalProgramRulesMatch);
+            OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramCourseMatchRule(tempCourseRequirement,null,requirementsMet,tempCourse,gradOptionalProgramRulesMatch);
 
             try {
                 tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
