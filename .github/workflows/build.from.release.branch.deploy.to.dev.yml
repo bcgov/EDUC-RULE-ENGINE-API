@@ -15,10 +15,10 @@ env:
   IMAGE_REGISTRY_USER: ${{ github.actor }}
   IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
 
-  SPRING_BOOT_IMAGE_NAME: educ-grad-rule-engine-api-dc
+  SPRING_BOOT_IMAGE_NAME: educ-rule-engine-api-dc
   DOCKER_ARTIFACTORY_REPO: docker-remote.artifacts.developer.gov.bc.ca
 
-  REPO_NAME: "educ-grad-rule-engine-api"
+  REPO_NAME: "educ-rule-engine-api"
   APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
   TAG: "latest"
 
