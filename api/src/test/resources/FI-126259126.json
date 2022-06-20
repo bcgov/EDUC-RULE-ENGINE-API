@@ -213,15 +213,28 @@
       }
     },
     {
-      "programAlgoRuleID": "dc9f3dc7-f5aa-83ef-e053-9ae9228e5807",
+      "programAlgoRuleID": "c70b587f-af3d-d11b-e053-9ae9228eda21",
       "graduationProgramCode": "2018-EN",
       "sortOrder": 22,
       "algorithmRuleCode": {
-        "algoRuleCode": "REGTN_DUPLICATE_RULE",
-        "ruleImplementation": "RegistrationsDuplicateRule",
-        "label": "Registration Duplicate Rule",
-        "description": "Checks if there are duplicate in progress courses",
-        "displayOrder": 480,
+        "algoRuleCode": "CRSE_REGISTRATION_DUPLICATE_RULE",
+        "ruleImplementation": "RegistrationsDuplicateCrseRule",
+        "label": "Course Registrations rule",
+        "description": "Checks if the student achievement record (e.g., course) session date is still current or future dated (e.g. from today YYYYMM) or later) and no final result or special case exists.",
+        "displayOrder": 30,
+        "isActiveRule": "Y"
+      }
+    },
+    {
+      "programAlgoRuleID": "c70b587f-af3d-d11b-e053-9ae9228eda21",
+      "graduationProgramCode": "2018-EN",
+      "sortOrder": 23,
+      "algorithmRuleCode": {
+        "algoRuleCode": "CRSE_REGISTRATION_DUPLICATE_RULE",
+        "ruleImplementation": "RegistrationsDuplicateAssmtRule",
+        "label": "Course Registrations rule",
+        "description": "Checks if the student achievement record (e.g., course) session date is still current or future dated (e.g. from today YYYYMM) or later) and no final result or special case exists.",
+        "displayOrder": 30,
         "isActiveRule": "Y"
       }
     },

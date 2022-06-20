@@ -20,9 +20,9 @@ import java.util.*;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistrationsDuplicateRule implements Rule {
+public class RegistrationsDuplicateCrseRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(RegistrationsDuplicateRule.class);
+    private static Logger logger = LoggerFactory.getLogger(RegistrationsDuplicateCrseRule.class);
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
@@ -83,7 +83,7 @@ public class RegistrationsDuplicateRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Registrations but Duplicates: {}",(int) studentCourseList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
+        logger.info("Registrations but Duplicates Courses: {}",(int) studentCourseList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
 
         return ruleProcessorData;
     }
@@ -91,6 +91,6 @@ public class RegistrationsDuplicateRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("RegistrationsDuplicateRule: Rule Processor Data set.");
+        logger.info("RegistrationsDuplicateCrseRule: Rule Processor Data set.");
     }
 }
