@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
@@ -56,7 +55,7 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
                             logger.debug("Parse Error {}",e.getMessage());
                         }
                         if(inProgressCourse1 && inProgressCourse2) {
-                            logger.debug("comparing {} with {}  -> Duplicate FOUND - Assessment Code : {}-{}", studentAssessmentsList.get(i).getAssessmentCode(), studentAssessmentsList.get(j).getAssessmentCode());
+                            logger.debug("comparing {} with {}  -> Duplicate FOUND", studentAssessmentsList.get(i).getAssessmentCode(), studentAssessmentsList.get(j).getAssessmentCode());
                             boolean decision = RuleEngineApiUtils.compareCourseSessionDates(studentAssessmentsList.get(i).getSessionDate(), studentAssessmentsList.get(j).getSessionDate());
                             if (decision) {
                                 studentAssessmentsList.get(i).setDuplicate(false);
