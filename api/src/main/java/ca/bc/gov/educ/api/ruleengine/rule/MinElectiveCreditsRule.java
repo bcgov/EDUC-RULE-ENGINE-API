@@ -77,6 +77,7 @@ public class MinElectiveCreditsRule implements Rule {
 				sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
 			}
 			AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
+			sc.setUsed(true);
 		}
 		return totalCredits;
 	}
