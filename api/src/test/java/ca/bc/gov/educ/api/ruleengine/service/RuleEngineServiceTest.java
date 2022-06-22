@@ -1367,6 +1367,17 @@ public class RuleEngineServiceTest {
 		assertTrue(!ruleProcessorData.isGraduated());
 	}
 
+	@Test
+	public void testProcessGradAlgorithmRules2018_EN_126187616() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-126187616");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+		assertTrue(!ruleProcessorData.isGraduated());
+	}
+
+
 	//
 	
 	private RuleProcessorData getRuleProcessorData(String category) {
@@ -1455,6 +1466,9 @@ public class RuleEngineServiceTest {
 				break;
 			case "2018-EN-127970861":
 				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-127970861.json")).getFile());
+				break;
+			case "2018-EN-126187616":
+				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-126187616.json")).getFile());
 				break;
 
 		}
