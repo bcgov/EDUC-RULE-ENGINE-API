@@ -144,6 +144,9 @@ parameters:
   - name: REPO_NAME
     description: Application repository name
     required: true
+  - name: TOOLS_NAMESPACE
+    description: The tools namespace
+    required: true
   - name: TAG_NAME
     description: Imagestream tag name
     required: false
