@@ -7,7 +7,7 @@ env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: ${{ secrets.GRAD_BUSINESS_NAMESPACE }}
-  OPENSHIFT_TOOLS_NAMESPACE: ${{ secrets.GRAD_TOOLS_NAMESPACE }}
+  OPENSHIFT_TOOLS_NAMESPACE: ${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}
 
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
