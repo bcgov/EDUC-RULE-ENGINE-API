@@ -114,7 +114,7 @@ jobs:
           oc -n ${{ env.OPENSHIFT_TOOLS_NAMESPACE }} tag ${{ steps.push-image.outputs.registry-path }} ${{ env.REPO_NAME }}:${{ env.TAG }}
 
           # Process and apply deployment template
-          oc process -f tools/openshift/api.dc.yaml -p REPO_NAME=${{ env.REPO_NAME }} -p TAG_NAME=${{ env.TAG }} -p HOST_ROUTE=${{ env.REPO_NAME }}-${{ env.OPENSHIFT_NAMESPACE }}.${{ env.APP_DOMAIN }}  \
+          oc process -f tools/openshift/api.dc.yaml -p TOOLS_NAMESPACE=${{ env.OPENSHIFT_TOOLS_NAMESPACE }} -p REPO_NAME=${{ env.REPO_NAME }} -p TAG_NAME=${{ env.TAG }} -p HOST_ROUTE=${{ env.REPO_NAME }}-${{ env.OPENSHIFT_NAMESPACE }}.${{ env.APP_DOMAIN }}  \
           | oc apply -f -
 
           # Start rollout (if necessary) and follow it
