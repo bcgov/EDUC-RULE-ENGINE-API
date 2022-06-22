@@ -3,11 +3,11 @@ pipeline{
         label 'maven'
     }
     environment{
-        TOOLS_NAMESPACE = '77c02f-tools'
-        DEV_NAMESPACE = '77c02f-dev'
-        TEST_NAMESPACE = '77c02f-test'
-        UAT_NAMESPACE = '77c02f-uat'
-        PROD_NAMESPACE = '77c02f-prod'
+        TOOLS_NAMESPACE = 'e8a97a-tools'
+        DEV_NAMESPACE = 'e8a97a-dev'
+        TEST_NAMESPACE = 'e8a97a-test'
+        UAT_NAMESPACE = 'e8a97a-uat'
+        PROD_NAMESPACE = 'e8a97a-prod'
 
         REPO_NAME = 'educ-rule-engine-api'
         ORG = 'bcgov'
@@ -76,7 +76,7 @@ pipeline{
                         openshift.withProject(DEV_NAMESPACE) {
                             openshift.apply(
                                         openshift.process("-f", "${SOURCE_REPO_URL_RAW}/${BRANCH}/tools/openshift/api.dc.yaml",
-                                        "REPO_NAME=${REPO_NAME}", "HOST_ROUTE=${DEV_HOST_ROUTE}")
+                                        "TOOLS_NAMESPACE=${TOOLS_NAMESPACE}", ""REPO_NAME=${REPO_NAME}", "HOST_ROUTE=${DEV_HOST_ROUTE}")
                                     )
                             openshift.selector("dc", "${REPO_NAME}-dc").rollout().latest()
                             timeout (time: 10, unit: 'MINUTES') {
