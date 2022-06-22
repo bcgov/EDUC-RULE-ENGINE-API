@@ -31,7 +31,7 @@ objects:
             deploymentConfig: "${REPO_NAME}-dc"
         spec:
           containers:
-            - image: image-registry.openshift-image-registry.svc:5000/77c02f-tools/${REPO_NAME}:${TAG_NAME}
+            - image: image-registry.openshift-image-registry.svc:5000/${TOOLS_NAMESPACE}/${REPO_NAME}:${TAG_NAME}
               imagePullPolicy: Always
               readinessProbe:
                 tcpSocket:
@@ -143,6 +143,9 @@ objects:
 parameters:
   - name: REPO_NAME
     description: Application repository name
+    required: true
+  - name: TOOLS_NAMESPACE
+    description: The tools namespace
     required: true
   - name: TAG_NAME
     description: Imagestream tag name
