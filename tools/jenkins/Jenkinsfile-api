@@ -3,11 +3,11 @@ pipeline{
         label 'maven'
     }
     environment{
-        TOOLS_NAMESPACE = 'e8a97a-tools'
-        DEV_NAMESPACE = 'e8a97a-dev'
-        TEST_NAMESPACE = 'e8a97a-test'
-        UAT_NAMESPACE = 'e8a97a-uat'
-        PROD_NAMESPACE = 'e8a97a-prod'
+        TOOLS_NAMESPACE = '77c02f-tools'
+        DEV_NAMESPACE = '77c02f-dev'
+        TEST_NAMESPACE = '77c02f-test'
+        UAT_NAMESPACE = '77c02f-uat'
+        PROD_NAMESPACE = '77c02f-prod'
 
         REPO_NAME = 'educ-rule-engine-api'
         ORG = 'bcgov'
