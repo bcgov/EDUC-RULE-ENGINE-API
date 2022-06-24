@@ -11,6 +11,7 @@ env:
   SPRING_BOOT_IMAGE_NAME: educ-rule-engine-api-dc
 
   REPO_NAME: "educ-rule-engine-api"
+  APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
   NAMESPACE: ${{ secrets.GRAD_BUSINESS_NAMESPACE }}
   TAG: "latest"
 
