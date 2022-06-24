@@ -27,7 +27,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  openshift-ci-cd:
+  deploy-to-openshift-test:
     name: Deploy to OpenShift TEST
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-18.04
