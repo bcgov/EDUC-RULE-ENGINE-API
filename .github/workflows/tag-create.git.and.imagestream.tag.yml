@@ -13,7 +13,7 @@ env:
 
   REPO_NAME: "educ-rule-engine-api"
   BRANCH: "master"
-  NAMESPACE: ${{ secrets.EDX_NAMESPACE_NO_ENV }}
+  NAMESPACE: ${{ secrets.GRAD_BUSINESS_NAMESPACE }}
 
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
@@ -24,7 +24,7 @@ on:
         required: true
 
 jobs:
-  openshift-ci-cd:
+  tag_image:
     name: Tag Image
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-18.04
