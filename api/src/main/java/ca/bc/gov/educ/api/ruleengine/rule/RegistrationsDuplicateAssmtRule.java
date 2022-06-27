@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
 
         logger.debug("###################### Finding Duplicate Registrations ######################");
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
+        String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
         boolean inProgressCourse1 = false;
         boolean inProgressCourse2 = false;
         for (int i = 0; i < studentAssessmentsList.size() - 1; i++) {
@@ -43,14 +45,16 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
                             && !studentAssessmentsList.get(i).isDuplicate()
                             && !studentAssessmentsList.get(j).isDuplicate()) {
                         try {
-                            Date sDate1 = RuleEngineApiUtils.parseDate(studentAssessmentsList.get(i).getSessionDate() + "/01", "yyyy/MM/dd");
-                            Date sDate2 = RuleEngineApiUtils.parseDate(studentAssessmentsList.get(j).getSessionDate() + "/01", "yyyy/MM/dd");
-                            Calendar calSDate1 = Calendar.getInstance();
-                            calSDate1.setTime(sDate1);
-                            Calendar calSDate2 = Calendar.getInstance();
-                            calSDate2.setTime(sDate2);
-                            inProgressCourse1 = cal.before(calSDate1);
-                            inProgressCourse2 = cal.before(calSDate2);
+                            Date sessionDate1 = RuleEngineApiUtils.parseDate(studentAssessmentsList.get(i).getSessionDate() + "/01", "yyyy/MM/dd");
+                            Date sessionDate2 = RuleEngineApiUtils.parseDate(studentAssessmentsList.get(j).getSessionDate() + "/01", "yyyy/MM/dd");
+                            String sDate1 = RuleEngineApiUtils.formatDate(sessionDate1, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
+                            String sDate2 = RuleEngineApiUtils.formatDate(sessionDate2, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
+
+                            int diff1 = RuleEngineApiUtils.getDifferenceInMonths(sDate1,today);
+                            int diff2 = RuleEngineApiUtils.getDifferenceInMonths(sDate2,today);
+                            inProgressCourse1 = diff1 <= 0;
+                            inProgressCourse2 = diff2 <= 0;
+
                         } catch (ParseException e) {
                             logger.debug("Parse Error {}",e.getMessage());
                         }
