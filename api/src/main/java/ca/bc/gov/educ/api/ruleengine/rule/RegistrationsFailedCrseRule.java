@@ -42,7 +42,7 @@ public class RegistrationsFailedCrseRule implements Rule {
                 String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                 int diff = RuleEngineApiUtils.getDifferenceInMonths(sDate,today);
 
-                inProgressCourse = diff >= 0;
+                inProgressCourse = diff <= 0;
             } catch (ParseException e) {
                 logger.debug("Parse Error {}",e.getMessage());
             }
