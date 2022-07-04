@@ -1,23 +1,21 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Data
 @Component
@@ -87,7 +85,7 @@ public class DuplicateAssessmentsRule implements Rule {
 				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1950")
 				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("NOPROG")
 				|| ruleProcessorData.getGradProgram().getProgramCode().contains("2004")) {
-			ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
+			RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected()).addAll(ruleProcessorData.getExcludedAssessments());
 		}
 		return ruleProcessorData;
 	}
