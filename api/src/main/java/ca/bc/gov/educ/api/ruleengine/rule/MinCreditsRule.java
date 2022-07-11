@@ -92,8 +92,6 @@ public class MinCreditsRule implements Rule {
 
             logger.debug("Min Credits -> Required:{} Has : {}",requiredCredits,totalCredits);
         }
-
-        logger.debug(ruleProcessorData.toString());
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }
@@ -117,15 +115,7 @@ public class MinCreditsRule implements Rule {
 
 	public void processReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
 		sc.setUsed(true);
-		if (sc.getGradReqMet().length() > 0) {
-
-            sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber()
-                    + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-        } else {
-            sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-            sc.setGradReqMetDetail(gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-        }
+        AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
     }
     
     

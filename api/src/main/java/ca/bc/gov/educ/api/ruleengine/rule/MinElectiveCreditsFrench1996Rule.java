@@ -68,16 +68,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                        totalCredits = requiredCredits;
                        sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
                    }
-                   if (sc.getGradReqMet().length() > 0) {
-
-                       sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-                       sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
-                               + gradProgramRule.getProgramRequirementCode().getLabel());
-                   } else {
-                       sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-                       sc.setGradReqMetDetail(
-                               gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-                   }
+                   AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
                    sc.setUsed(true);
 
                    if (totalCredits == requiredCredits) {
