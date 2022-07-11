@@ -87,7 +87,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 			if(courseFound == 0) {
 				boolean reqCourseFound = false;
 				for(StudentCourse sc:studentCourses) {
-					if(sc.getGradReqMet().compareTo("502") == 0) {
+					if(sc.getGradReqMet().compareTo("3") == 0) {
 						reqCourseFound = true;
 						AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 					}
@@ -103,7 +103,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 					ruleProcessorData.setRequirementsMet(reqsMet);
 					List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
 					if(delReqsMet != null)
-						delReqsMet.removeIf(e -> e.getRule().compareTo("502") == 0);	
+						delReqsMet.removeIf(e -> e.getRule().compareTo("3") == 0);
 				}else {
 					ruleProcessorData.setGraduated(false);
 					
@@ -142,7 +142,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 					ruleProcessorData.setNonGradReasons(nonGradReasons);
 				}
 				studentCourses.stream()
-                .filter(sc -> sc.getGradReqMet().compareTo("502") == 0)
+                .filter(sc -> sc.getGradReqMet().compareTo("3") == 0)
                 .forEach(sc -> {                	
 						sc.setUsed(false);
 						sc.setGradReqMet("");
@@ -150,10 +150,10 @@ public class MinCreditsElective12OtherRule implements Rule {
 					
                 });
 				List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
-				delReqsMet.removeIf(e -> e.getRule().compareTo("502") == 0);	
+				delReqsMet.removeIf(e -> e.getRule().compareTo("3") == 0);
 				if(ruleProcessorData.getNonGradReasons() != null) {
 					List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
-					delNonGradReason.removeIf(e -> e.getRule().compareTo("502") == 0);
+					delNonGradReason.removeIf(e -> e.getRule().compareTo("3") == 0);
 				}
 			}
 
