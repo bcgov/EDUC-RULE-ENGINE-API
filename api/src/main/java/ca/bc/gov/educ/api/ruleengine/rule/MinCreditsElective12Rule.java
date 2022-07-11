@@ -33,21 +33,14 @@ public class MinCreditsElective12Rule implements Rule {
 	public RuleData fire() {
 		int totalCredits = 0;
 		int requiredCredits;
-		logger.debug("Min Credits Elective 12 Rule");
-
-
 
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-
-		logger.debug("Unique Courses: {}",studentCourses.size());
 
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE12".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
-
-		logger.debug(gradProgramRules.toString());
 
 		if (studentCourses == null || studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
@@ -79,16 +72,7 @@ public class MinCreditsElective12Rule implements Rule {
 						totalCredits = requiredCredits;
 						sc.setCreditsUsedForGrad(sc.getCredits() - extraCredits);
 					}
-					if (sc.getGradReqMet().length() > 0) {
-	
-						sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-						sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
-								+ gradProgramRule.getProgramRequirementCode().getLabel());
-					} else {
-						sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-						sc.setGradReqMetDetail(
-								gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-					}
+					AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 					sc.setUsed(true);
 	
 					if (totalCredits == requiredCredits) {

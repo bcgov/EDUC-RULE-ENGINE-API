@@ -188,16 +188,7 @@ public class MatchCreditsRule implements Rule {
             tempCourse.setCreditsUsedForGrad(leftOverCredits != 0?leftOverCredits:tempCourse.getCredits());
             tempCourse.setLeftOverCredits(leftOverCredits);
         }
-
-        if (tempCourse.getGradReqMet().length() > 0) {
-
-            tempCourse.setGradReqMet(tempCourse.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
-            tempCourse.setGradReqMetDetail(tempCourse.getGradReqMetDetail() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber()
-                    + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
-        } else {
-            tempCourse.setGradReqMet(tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
-            tempCourse.setGradReqMetDetail(tempProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + tempProgramRule.getProgramRequirementCode().getLabel());
-        }
+        AlgorithmSupportRule.setGradReqMet(tempCourse,tempProgramRule);
         if(tempCourse.getCreditsUsedForGrad() == 2) {
             tempProgramRule.getProgramRequirementCode().setTempFailed(true);
 
