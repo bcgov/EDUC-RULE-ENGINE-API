@@ -139,8 +139,8 @@ public class MatchCredit1996Rule implements Rule {
             if(gR.getRule().compareTo(RULE_CODE_732) == 0) {
                 reqmtSatisfied= true;
                 if(nonGradReasons != null) {
-                    nonGradReasons.removeIf(e -> e.getRule().compareTo(RULE_CODE_726) == 0);
-                    nonGradReasons.removeIf(e -> e.getRule().compareTo(RULE_CODE_727) == 0);
+                    nonGradReasons.removeIf(e -> e.getRule() != null && e.getRule().compareTo(RULE_CODE_726) == 0);
+                    nonGradReasons.removeIf(e -> e.getRule() != null && e.getRule().compareTo(RULE_CODE_727) == 0);
                 }
             }
             if(gR.getRule().compareTo(RULE_CODE_726)==0 || gR.getRule().compareTo(RULE_CODE_727)==0) {
@@ -148,12 +148,12 @@ public class MatchCredit1996Rule implements Rule {
             }
         }
         if(counter ==2 && nonGradReasons != null)
-            nonGradReasons.removeIf(e -> e.getRule().compareTo(RULE_CODE_732) == 0);
+            nonGradReasons.removeIf(e -> e.getRule() != null && e.getRule().compareTo(RULE_CODE_732) == 0);
 
 
         if(reqmtSatisfied) {
-            requirementsMet.removeIf(e -> e.getRule().compareTo(RULE_CODE_727) == 0);
-            requirementsMet.removeIf(e -> e.getRule().compareTo(RULE_CODE_726) == 0);
+            requirementsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo(RULE_CODE_727) == 0);
+            requirementsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo(RULE_CODE_726) == 0);
 
             for(StudentCourse sc:studentCourses) {
                 if(sc.getGradReqMet().compareTo(RULE_CODE_727)==0 || sc.getGradReqMet().compareTo(RULE_CODE_726)==0){
@@ -177,7 +177,7 @@ public class MatchCredit1996Rule implements Rule {
     	if (!tempCourseRequirement.isEmpty() && tempProgramRule != null) {
             ProgramRequirement finalTempProgramRule = tempProgramRule;
             if (requirementsMet.stream()
-                    .filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
+                    .filter(rm -> rm.getRule() != null && rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
                     .findAny()
                     .orElse(null) == null) {
             	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet);

@@ -103,7 +103,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 					ruleProcessorData.setRequirementsMet(reqsMet);
 					List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
 					if(delReqsMet != null)
-						delReqsMet.removeIf(e -> e.getRule().compareTo("3") == 0);
+						delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("3") == 0);
 				}else {
 					ruleProcessorData.setGraduated(false);
 					
@@ -150,10 +150,10 @@ public class MinCreditsElective12OtherRule implements Rule {
 					
                 });
 				List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
-				delReqsMet.removeIf(e -> e.getRule().compareTo("3") == 0);
+				delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("3") == 0);
 				if(ruleProcessorData.getNonGradReasons() != null) {
 					List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
-					delNonGradReason.removeIf(e -> e.getRule().compareTo("3") == 0);
+					delNonGradReason.removeIf(e -> e.getRule() != null && e.getRule().compareTo("3") == 0);
 				}
 			}
 
