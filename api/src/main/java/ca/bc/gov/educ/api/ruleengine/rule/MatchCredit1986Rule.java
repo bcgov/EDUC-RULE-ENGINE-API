@@ -113,7 +113,7 @@ public class MatchCredit1986Rule implements Rule {
     private void processCourse(StudentCourse tempCourse, List<CourseRequirement> tempCourseRequirement, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet) {
     	if (!tempCourseRequirement.isEmpty() && tempProgramRule != null) {
             if (requirementsMet.stream()
-                    .filter(rm -> rm.getRule().equals(tempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
+                    .filter(rm -> rm.getRule() != null && rm.getRule().equals(tempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
                     .findAny()
                     .orElse(null) == null) {
             	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet);
