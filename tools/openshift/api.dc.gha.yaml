@@ -66,7 +66,7 @@ objects:
               name: "${REPO_NAME}-fluent-bit-sidecar"
               imagePullPolicy: Always
               imagePullSecrets:
-                - name: artifactory-creds
+                - name: artifacts-pull-default-skautd
               volumeMounts:
                 - name: log-storage
                   mountPath: /mnt/log
