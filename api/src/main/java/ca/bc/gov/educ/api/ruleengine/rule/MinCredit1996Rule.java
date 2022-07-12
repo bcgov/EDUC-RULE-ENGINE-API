@@ -28,13 +28,10 @@ public class MinCredit1996Rule implements Rule {
     public RuleData fire() {
         int totalCredits;
         int requiredCredits;
-        logger.debug("Min Credits Rule");
-
 
         List<StudentCourse> tempStudentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule()).collect(Collectors.toList());
-        logger.debug("Unique Courses: {}",studentCourses.size());
 
         List<ProgramRequirement> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
@@ -43,9 +40,7 @@ public class MinCredit1996Rule implements Rule {
                             && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
 
-        logger.debug(gradProgramRules.toString());
-
-        if (tempStudentCourseList == null || tempStudentCourseList.isEmpty()) {
+        if (tempStudentCourseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");
             return ruleProcessorData;
         }
@@ -114,15 +109,7 @@ public class MinCredit1996Rule implements Rule {
 
 	public void processReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
 		sc.setUsed(true);
-		if (sc.getGradReqMet().length() > 0) {
-
-            sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber()
-                    + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-        } else {
-            sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-            sc.setGradReqMetDetail(gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
-        }
+        AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
     }
     
     

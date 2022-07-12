@@ -180,15 +180,16 @@ public class AlgorithmSupportRule {
     }
 
     public static void setGradReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
-        if (sc.getGradReqMet().length() > 0) {
-
-            sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-            sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
-                    + gradProgramRule.getProgramRequirementCode().getLabel());
-        } else {
-            sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
-            sc.setGradReqMetDetail(
-                    gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+        if(gradProgramRule.getProgramRequirementCode().getTraxReqNumber() != null) {
+            if (sc.getGradReqMet().length() > 0) {
+                sc.setGradReqMet(sc.getGradReqMet() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
+                sc.setGradReqMetDetail(sc.getGradReqMetDetail() + ", " + gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - "
+                        + gradProgramRule.getProgramRequirementCode().getLabel());
+            } else {
+                sc.setGradReqMet(gradProgramRule.getProgramRequirementCode().getTraxReqNumber());
+                sc.setGradReqMetDetail(
+                        gradProgramRule.getProgramRequirementCode().getTraxReqNumber() + " - " + gradProgramRule.getProgramRequirementCode().getLabel());
+            }
         }
     }
     public static int processExtraCredits(boolean extraCreditsUsed, int extraCreditsLDcrses, StudentCourse sc, int totalCredits, int requiredCredits) {
