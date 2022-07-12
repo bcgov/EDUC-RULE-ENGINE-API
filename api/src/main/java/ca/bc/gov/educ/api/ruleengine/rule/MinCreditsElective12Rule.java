@@ -109,7 +109,7 @@ public class MinCreditsElective12Rule implements Rule {
 			//Remove the 502 non grad reason if any as it is not a mandatory requirement
 			List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
 			if(delNonGradReason != null)
-				delNonGradReason.removeIf(e -> e.getRule().compareTo("3") == 0);
+				delNonGradReason.removeIf(e -> e.getRule()!= null && e.getRule().compareTo("3") == 0);
 			logger.info("Min Elective Credits -> Required:{} Has: {}",requiredCredits,totalCredits);
 			totalCredits = 0;
 		}

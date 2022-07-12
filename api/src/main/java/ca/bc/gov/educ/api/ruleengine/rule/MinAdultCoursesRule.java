@@ -126,7 +126,7 @@ public class MinAdultCoursesRule implements Rule {
 			if(reqMetList.size() == 2) {
 				List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
 				if(delNonGradReason != null)
-					delNonGradReason.removeIf(e -> e.getRule().compareTo("506") == 0);
+					delNonGradReason.removeIf(e -> e.getRule() != null && e.getRule().compareTo("506") == 0);
 			}
 
 			logger.info("Min Adult Courses -> Required: {} Has: {}",requiredCredits,totalCredits);
