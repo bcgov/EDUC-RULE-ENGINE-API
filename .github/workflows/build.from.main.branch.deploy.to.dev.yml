@@ -1,4 +1,4 @@
-name: Build & Deploy to DEV from Release Branch
+name: Build & Deploy to DEV from main branch
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
@@ -27,7 +27,7 @@ on:
 
 jobs:
   openshift-ci-cd:
-    name: Build and deploy to OpenShift DEV from release branch
+    name: Build and deploy to OpenShift DEV
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-18.04
     environment: dev
@@ -39,8 +39,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-        with:
-          ref: grad-release
 
       - name: Determine image tags
         if: env.TAG == ''
@@ -126,4 +124,4 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.1.0
         with:
-          target: 'https://${{ env.REPO_NAME }}-${{ env.OPENSHIFT_NAMESPACE }}-dev.apps.silver.devops.gov.bc.ca/api/v1/api-docs'
+         target: 'https://${{ env.REPO_NAME }}-${{ env.OPENSHIFT_NAMESPACE }}-dev.apps.silver.devops.gov.bc.ca/api/v1/api-docs'
