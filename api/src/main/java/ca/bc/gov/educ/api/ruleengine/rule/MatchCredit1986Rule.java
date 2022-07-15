@@ -132,7 +132,7 @@ public class MatchCredit1986Rule implements Rule {
         finalProgramRulesList.forEach(pr-> {
             if(pr.getProgramRequirementCode().getProReqCode().compareTo("745")==0 && !pr.getProgramRequirementCode().isPassed() && ruleProcessorData.getGradStatus().getConsumerEducationRequirementMet() != null && ruleProcessorData.getGradStatus().getConsumerEducationRequirementMet().compareTo("Y")==0) {
                 pr.getProgramRequirementCode().setPassed(true);
-                requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel()));
+                requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel(),pr.getProgramRequirementCode().getProReqCode()));
             }
         });
 		List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
@@ -142,7 +142,7 @@ public class MatchCredit1986Rule implements Rule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc(),failedRule.getProgramRequirementCode().getProReqCode()));
             }
 
             logger.info("One or more Match rules not met!");
@@ -189,7 +189,7 @@ public class MatchCredit1986Rule implements Rule {
         tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
         AlgorithmSupportRule.setGradReqMet(tempCourse,tempProgramRule);
         tempProgramRule.getProgramRequirementCode().setPassed(true);
-        requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel()));
+        requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel(),tempProgramRule.getProgramRequirementCode().getProReqCode()));
     }
 
     @Override

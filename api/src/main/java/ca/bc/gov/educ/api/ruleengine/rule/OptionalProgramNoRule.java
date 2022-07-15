@@ -1,8 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,8 +29,7 @@ public class OptionalProgramNoRule implements Rule {
     public RuleData fire() {
 
 		Map<String, OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
-		OptionalProgramRuleProcessor obj = null;
-		String opPrgCode = null;
+		OptionalProgramRuleProcessor obj;
 		String program = ruleProcessorData.getGradProgram().getProgramCode();
 		if(program.compareTo("1996-PF")==0 && mapOptional.get("DD") != null) {
 			obj = mapOptional.get("DD");
@@ -93,13 +89,13 @@ public class OptionalProgramNoRule implements Rule {
 		for(OptionalProgramRequirement opReq:optionalProgramNoRule) {
 			if (opReq.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("957") != 0) {
 				logger.debug("{} Passed", opReq.getOptionalProgramRequirementCode().getLabel());
-				if (obj != null && obj.isHasOptionalProgram()) {
+				if (obj.isHasOptionalProgram()) {
 					opReq.getOptionalProgramRequirementCode().setPassed(true);
 					List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
 
 					if (resMet == null)
 						resMet = new ArrayList<>();
-					resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel()));
+					resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel(),opReq.getOptionalProgramRequirementCode().getOptProReqCode()));
 					obj.setRequirementsMetOptionalProgram(resMet);
 				}
 				mapOptional.put(opPrgCode, obj);

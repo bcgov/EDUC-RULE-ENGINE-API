@@ -86,7 +86,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                    if (reqsMet == null)
                        reqsMet = new ArrayList<>();
 
-                   reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
+                   reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
                    ruleProcessorData.setRequirementsMet(reqsMet);
                    logger.debug("Min Credits Elective 12 Rule: Total-{} Requried: {}",totalCredits,requiredCredits);
 
@@ -99,7 +99,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                    if (nonGradReasons == null)
                        nonGradReasons = new ArrayList<>();
 
-                   nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+                   nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
                    ruleProcessorData.setNonGradReasons(nonGradReasons);
                }
                logger.info("Min Elective Credits -> Required:{} Has:{}",requiredCredits,totalCredits);

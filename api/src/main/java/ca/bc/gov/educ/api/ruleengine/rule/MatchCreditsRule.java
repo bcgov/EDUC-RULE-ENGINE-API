@@ -144,7 +144,7 @@ public class MatchCreditsRule implements Rule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc(),failedRule.getProgramRequirementCode().getProReqCode()));
             }
 
             logger.debug("One or more Match rules not met!");
@@ -199,12 +199,12 @@ public class MatchCreditsRule implements Rule {
 
         if(courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
             tempProgramRule.getProgramRequirementCode().setPassed(true);
-            requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel()));
+            requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel(),tempProgramRule.getProgramRequirementCode().getProReqCode()));
         }else {
             if(courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == 4) {
                 tempProgramRule.getProgramRequirementCode().setPassed(true);
                 tempProgramRule.getProgramRequirementCode().setTempFailed(false);
-                requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel()));
+                requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel(),tempProgramRule.getProgramRequirementCode().getProReqCode()));
             }
         }
     }

@@ -99,11 +99,11 @@ public class MinCreditsElective12OtherRule implements Rule {
 					if (reqsMet == null)
 						reqsMet = new ArrayList<>();
 	
-					reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
+					reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setRequirementsMet(reqsMet);
 					List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
 					if(delReqsMet != null)
-						delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("3") == 0);
+						delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("502") == 0);
 				}else {
 					ruleProcessorData.setGraduated(false);
 					
@@ -112,7 +112,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 					if (nonGradReasons == null)
 						nonGradReasons = new ArrayList<>();
 	
-					nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+					nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setNonGradReasons(nonGradReasons);
 				}
 				
@@ -125,7 +125,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 					if (reqsMet == null)
 						reqsMet = new ArrayList<>();
 	
-					reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
+					reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setRequirementsMet(reqsMet);
 					logger.debug("Min Credits Elective 12 Rule: Total- {} Required- {}",totalCredits,requiredCredits);
 	
@@ -138,7 +138,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 					if (nonGradReasons == null)
 						nonGradReasons = new ArrayList<>();
 	
-					nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+					nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setNonGradReasons(nonGradReasons);
 				}
 				studentCourses.stream()
@@ -150,10 +150,10 @@ public class MinCreditsElective12OtherRule implements Rule {
 					
                 });
 				List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
-				delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("3") == 0);
+				delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("502") == 0);
 				if(ruleProcessorData.getNonGradReasons() != null) {
 					List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
-					delNonGradReason.removeIf(e -> e.getRule() != null && e.getRule().compareTo("3") == 0);
+					delNonGradReason.removeIf(e -> e.getRule() != null && e.getRule().compareTo("502") == 0);
 				}
 			}
 

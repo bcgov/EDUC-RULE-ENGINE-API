@@ -1,8 +1,5 @@
 package ca.bc.gov.educ.api.ruleengine.service;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -18,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -382,7 +381,7 @@ public class RuleEngineServiceTest {
 		});
 
 		assertTrue(ruleProcessorData.isGraduated());
-		assertTrue(errors.size()==0);
+		assertEquals(0, errors.size());
 	}
 
 	@Test
@@ -407,46 +406,12 @@ public class RuleEngineServiceTest {
 					}
 
 				}
-				if (studentCourse.getCourseCode().compareTo("PE") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("PE11", e);
-					}
-
-				}
-				if (studentCourse.getCourseCode().compareTo("XTA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("XTA11", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("XCRCU") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("XCRCU11", e);
-					}
-
-				}
 
 				if (studentCourse.getCourseCode().compareTo("SS") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
 						assertTrue(studentCourse.getGradReqMet().contains("3"));
 					} catch (AssertionError e) {
 						errors.put("SS11", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("FR") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("FR11", e);
 					}
 
 				}
@@ -478,38 +443,11 @@ public class RuleEngineServiceTest {
 
 				}
 
-				if (studentCourse.getCourseCode().compareTo("CH") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("CH11", e);
-					}
-
-				}
-
 				if (studentCourse.getCourseCode().compareTo("MA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
 						assertTrue(studentCourse.getGradReqMet().contains("4"));
 					} catch (AssertionError e) {
 						errors.put("MA11", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("PE") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("PE12730", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("PE") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("PE12720", e);
 					}
 
 				}
@@ -523,29 +461,11 @@ public class RuleEngineServiceTest {
 
 				}
 
-				if (studentCourse.getCourseCode().compareTo("LAW") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("LAW12", e);
-					}
-
-				}
-
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
 						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("EN12", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("BI") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("BI12", e);
 					}
 
 				}
@@ -556,7 +476,7 @@ public class RuleEngineServiceTest {
 		});
 
 		assertTrue(ruleProcessorData.isGraduated());
-		assertTrue(errors.size()==0);
+		assertEquals(0, errors.size());
 	}
 
 	@Test
@@ -731,7 +651,7 @@ public class RuleEngineServiceTest {
 		});
 
 		assertTrue(ruleProcessorData.isGraduated());
-		assertTrue(errors.size()==0);
+		assertEquals(0, errors.size());
 	}
 
 	@Test
@@ -906,7 +826,7 @@ public class RuleEngineServiceTest {
 		});
 
 		assertTrue(ruleProcessorData.isGraduated());
-		assertTrue(errors.size()==0);
+		assertEquals(0, errors.size());
 	}
 
 	@Test
@@ -928,15 +848,6 @@ public class RuleEngineServiceTest {
 						assertTrue(studentCourse.getGradReqMet().contains("6"));
 					} catch (AssertionError e) {
 						errors.put("CAPP11", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("AR") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("AR11", e);
 					}
 
 				}
@@ -976,56 +887,11 @@ public class RuleEngineServiceTest {
 
 				}
 
-				if (studentCourse.getCourseCode().compareTo("FR") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("FR11", e);
-					}
-
-				}
-
 				if (studentCourse.getCourseCode().compareTo("IMA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
 						assertTrue(studentCourse.getGradReqMet().contains("4"));
 					} catch (AssertionError e) {
 						errors.put("IMA", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("CPHSC") == 0 && studentCourse.getCourseLevel().compareTo("11A") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("CPHSC11A", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("CPGC") == 0 && studentCourse.getCourseLevel().compareTo("11A") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("CPGC11A", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("FM") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("FM12730", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("FM") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("FM12720", e);
 					}
 
 				}
@@ -1039,38 +905,11 @@ public class RuleEngineServiceTest {
 
 				}
 
-				if (studentCourse.getCourseCode().compareTo("LAW") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("LAW12730", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("LAW") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("LAW12720", e);
-					}
-
-				}
-
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
 						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("EN12", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("FR") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("FR12", e);
 					}
 
 				}
@@ -1080,8 +919,8 @@ public class RuleEngineServiceTest {
 			logger.info("Course : "+k+", Error : "+v);
 		});
 
-		assertTrue(!ruleProcessorData.isGraduated());
-		assertTrue(errors.size()!=0);
+		assertTrue(ruleProcessorData.isGraduated());
+		assertEquals(0, errors.size());
 	}
 
 	@Test
@@ -1116,15 +955,6 @@ public class RuleEngineServiceTest {
 
 				}
 
-				if (studentCourse.getCourseCode().compareTo("KB") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("KB11", e);
-					}
-
-				}
-
 				if (studentCourse.getCourseCode().compareTo("CPCAN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
 						assertTrue(studentCourse.getGradReqMet().contains("10"));
@@ -1152,56 +982,11 @@ public class RuleEngineServiceTest {
 
 				}
 
-				if (studentCourse.getCourseCode().compareTo("DP") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("DP11", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("MA") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("MA11", e);
-					}
-
-				}
-
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
 					try {
 						assertTrue(studentCourse.getGradReqMet().contains("1"));
 					} catch (AssertionError e) {
 						errors.put("EN11", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("FN") == 0 && studentCourse.getCourseLevel().compareTo("11") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("FN11", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("FA") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("FA12730", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("FA") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("FA12720", e);
 					}
 
 				}
@@ -1215,38 +1000,11 @@ public class RuleEngineServiceTest {
 
 				}
 
-				if (studentCourse.getCourseCode().compareTo("AA") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("730"));
-					} catch (AssertionError e) {
-						errors.put("AA12730", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("AA") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("AA12720", e);
-					}
-
-				}
-
 				if (studentCourse.getCourseCode().compareTo("EN") == 0 && studentCourse.getCourseLevel().compareTo("12") == 0) {
 					try {
 						assertTrue(studentCourse.getGradReqMet().contains("2"));
 					} catch (AssertionError e) {
 						errors.put("EN12", e);
-					}
-
-				}
-
-				if (studentCourse.getCourseCode().compareTo("CPWE") == 0 && studentCourse.getCourseLevel().compareTo("12A") == 0) {
-					try {
-						assertTrue(studentCourse.getGradReqMet().contains("720"));
-					} catch (AssertionError e) {
-						errors.put("CPWE12A", e);
 					}
 
 				}
@@ -1256,8 +1014,8 @@ public class RuleEngineServiceTest {
 			logger.info("Course : "+k+", Error : "+v);
 		});
 
-		assertTrue(!ruleProcessorData.isGraduated());
-		assertTrue(errors.size()!=0);
+		assertTrue(ruleProcessorData.isGraduated());
+		assertEquals(0, errors.size());
 	}
 
 	@Test
@@ -1278,8 +1036,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
-
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertTrue(ruleProcessorData.isGraduated());
 	}
 
 	@Test

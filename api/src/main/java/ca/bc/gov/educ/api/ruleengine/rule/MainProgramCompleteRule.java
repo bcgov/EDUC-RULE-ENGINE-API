@@ -31,7 +31,6 @@ public class MainProgramCompleteRule implements Rule {
 		Map<String, OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
 		List<GradRequirement> nongReason = ruleProcessorData.getNonGradReasons();
 		for (Map.Entry<String, OptionalProgramRuleProcessor> entry : mapOptional.entrySet()) {
-			String optionalProgramCode = entry.getKey();
 			OptionalProgramRuleProcessor obj = entry.getValue();
 			if(obj != null && obj.isHasOptionalProgram() && obj.isOptionalProgramGraduated()) {
 				processMainProgramCompleteRules(nongReason,obj);
@@ -49,7 +48,7 @@ public class MainProgramCompleteRule implements Rule {
 				.collect(Collectors.toList());
 		for(OptionalProgramRequirement opReq:optionalProgramNoRule) {
 			if(opReq.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("957")==0) {
-				if (nonGradReasons == null || nonGradReasons.size() == 0) {
+				if (nonGradReasons == null || nonGradReasons.isEmpty()) {
 					logger.debug("{} Passed", opReq.getOptionalProgramRequirementCode().getLabel());
 					opReq.getOptionalProgramRequirementCode().setPassed(true);
 				} else {
@@ -66,12 +65,12 @@ public class MainProgramCompleteRule implements Rule {
 					if (resMet == null)
 						resMet = new ArrayList<>();
 
-					resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel()));
+					resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel(),opReq.getOptionalProgramRequirementCode().getOptProReqCode()));
 					obj.setRequirementsMetOptionalProgram(resMet);
 				} else {
 					List<GradRequirement> requirementsNotMet = new ArrayList<>();
 					for (OptionalProgramRequirement failedRule : failedRules) {
-						requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
+						requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc(),failedRule.getOptionalProgramRequirementCode().getOptProReqCode()));
 					}
 					obj.setOptionalProgramGraduated(false);
 					List<GradRequirement> nonGReasons = obj.getNonGradReasonsOptionalProgram();
