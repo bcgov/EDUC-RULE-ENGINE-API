@@ -142,7 +142,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc(),failedRule.getProgramRequirementCode().getProReqCode()));
             }
 
             logger.info("One or more Match rules not met!");
@@ -176,7 +176,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 }
 
                 tempProgramRule.getProgramRequirementCode().setPassed(true);
-                requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel()));
+                requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel(),tempProgramRule.getProgramRequirementCode().getProReqCode()));
             } else {
                 logger.debug("!!! Program Rule met Already: {}",tempProgramRule);
             }

@@ -87,7 +87,7 @@ public class OptionalProgramMatchRule {
             logger.debug("All the match rules met!");
         } else {
             for (OptionalProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc(),failedRule.getOptionalProgramRequirementCode().getOptProReqCode()));
             }
             obj.setOptionalProgramGraduated(false);
 
@@ -138,7 +138,7 @@ public class OptionalProgramMatchRule {
 
                 tempOptionalProgramRule.getOptionalProgramRequirementCode().setPassed(true);
                 requirementsMet.add(new GradRequirement(tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(),
-                        tempOptionalProgramRule.getOptionalProgramRequirementCode().getLabel()));
+                        tempOptionalProgramRule.getOptionalProgramRequirementCode().getLabel(),tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode()));
             } else {
                 logger.debug("!!! Program Rule met Already: {}",tempOptionalProgramRule);
             }
@@ -181,7 +181,7 @@ public class OptionalProgramMatchRule {
 
                 tempOptionalProgramRule.getOptionalProgramRequirementCode().setPassed(true);
                 requirementsMet.add(new GradRequirement(tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(),
-                        tempOptionalProgramRule.getOptionalProgramRequirementCode().getLabel()));
+                        tempOptionalProgramRule.getOptionalProgramRequirementCode().getLabel(),tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode()));
             } else {
                 logger.debug("!!! Program Rule met Already: {}", tempOptionalProgramRule);
             }

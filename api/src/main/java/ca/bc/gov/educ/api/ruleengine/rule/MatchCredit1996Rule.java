@@ -24,9 +24,12 @@ import java.util.stream.Collectors;
 public class MatchCredit1996Rule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MatchCredit1996Rule.class);
-    private static final String RULE_CODE_732 = "10";
-    private static final String RULE_CODE_726 = "8";
-    private static final String RULE_CODE_727 = "9";
+    private static final String RULE_CODE_732 = "732";
+    private static final String RULE_CODE_726 = "726";
+    private static final String RULE_CODE_727 = "727";
+    private static final String RULE_CODE_10 = "10";
+    private static final String RULE_CODE_8 = "8";
+    private static final String RULE_CODE_9 = "9";
     private static final String FINE_ARTS = "F";
     private static final String APPLIED_SCIENCES = "A";
     private static final String FINE_ARTS_APPLIED_SCIENCES = "B";
@@ -92,7 +95,7 @@ public class MatchCredit1996Rule implements Rule {
 
                         if (tempProgramRule != null) {
                             ProgramRequirement finalTempProgramRule = tempProgramRule;
-                            GradRequirement req = requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber())).findAny().orElse(null);
+                            GradRequirement req = requirementsMet.stream().filter(rm -> rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode())).findAny().orElse(null);
                             if (req != null) {
                                 tempProgramRule = null;
                             }
@@ -156,7 +159,7 @@ public class MatchCredit1996Rule implements Rule {
             requirementsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo(RULE_CODE_726) == 0);
 
             for(StudentCourse sc:studentCourses) {
-                if(sc.getGradReqMet().compareTo(RULE_CODE_727)==0 || sc.getGradReqMet().compareTo(RULE_CODE_726)==0){
+                if(sc.getGradReqMet().compareTo(RULE_CODE_9)==0 || sc.getGradReqMet().compareTo(RULE_CODE_8)==0){
                     sc.setGradReqMet("");
                     sc.setGradReqMetDetail("");
                     sc.setUsed(false);
@@ -226,7 +229,7 @@ public class MatchCredit1996Rule implements Rule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc(),failedRule.getProgramRequirementCode().getProReqCode()));
             }
 
             logger.info("One or more Match rules not met!");
@@ -269,7 +272,7 @@ public class MatchCredit1996Rule implements Rule {
         tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
         AlgorithmSupportRule.setGradReqMet(tempCourse,tempProgramRule);
         tempProgramRule.getProgramRequirementCode().setPassed(true);
-        requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel()));
+        requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel(),tempProgramRule.getProgramRequirementCode().getProReqCode()));
     }
 
     @Override

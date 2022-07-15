@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GradRequirement {
-    String rule;
+    String transcriptRule;
     String description;
+    String rule;
+
 }

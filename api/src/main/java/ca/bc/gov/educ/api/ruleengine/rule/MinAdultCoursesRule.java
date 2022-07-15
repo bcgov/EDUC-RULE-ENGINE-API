@@ -104,7 +104,7 @@ public class MinAdultCoursesRule implements Rule {
 				if (reqsMet == null)
 					reqsMet = new ArrayList<>();
 
-				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
+				reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 				ruleProcessorData.setRequirementsMet(reqsMet);
 				logger.debug("Min Adult Courses : Total- {} Required {}",totalCredits,requiredCredits);
 
@@ -117,7 +117,7 @@ public class MinAdultCoursesRule implements Rule {
 				if (nonGradReasons == null)
 					nonGradReasons = new ArrayList<>();
 
-				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+				nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
 			
