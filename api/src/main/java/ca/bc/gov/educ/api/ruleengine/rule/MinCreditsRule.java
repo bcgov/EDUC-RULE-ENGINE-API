@@ -74,7 +74,7 @@ public class MinCreditsRule implements Rule {
                     reqsMet = new ArrayList<>();
 
                 reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(),
-                        gradProgramRule.getProgramRequirementCode().getLabel()));
+                        gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
                 ruleProcessorData.setRequirementsMet(reqsMet);
             } else {
                 logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
@@ -86,7 +86,7 @@ public class MinCreditsRule implements Rule {
                     nonGradReasons = new ArrayList<>();
 
                 nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(),
-                        gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+                        gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
                 ruleProcessorData.setNonGradReasons(nonGradReasons);
             }
 

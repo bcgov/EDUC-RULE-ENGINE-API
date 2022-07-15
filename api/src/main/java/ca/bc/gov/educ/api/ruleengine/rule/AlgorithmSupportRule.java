@@ -28,7 +28,7 @@ public class AlgorithmSupportRule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc(),failedRule.getProgramRequirementCode().getProReqCode()));
             }
 
             logger.debug("One or more Match rules not met!");
@@ -65,7 +65,7 @@ public class AlgorithmSupportRule {
             logger.debug("All the match rules met!");
         } else {
             for (ProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc(),failedRule.getProgramRequirementCode().getProReqCode()));
             }
 
             logger.debug("One or more Match rules not met!");
@@ -159,7 +159,7 @@ public class AlgorithmSupportRule {
         sA.setProficiencyScore(Double.valueOf("0"));
         finalAssessmentList.add(sA);
         pr.getProgramRequirementCode().setPassed(true);
-        requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel()));
+        requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel(),pr.getProgramRequirementCode().getProReqCode()));
 
     }
 
@@ -175,7 +175,7 @@ public class AlgorithmSupportRule {
         sA.setProficiencyScore(Double.valueOf("0"));
         finalAssessmentList.add(sA);
         pr.getOptionalProgramRequirementCode().setPassed(true);
-        requirementsMet.add(new GradRequirement(pr.getOptionalProgramRequirementCode().getTraxReqNumber(), pr.getOptionalProgramRequirementCode().getLabel()));
+        requirementsMet.add(new GradRequirement(pr.getOptionalProgramRequirementCode().getTraxReqNumber(), pr.getOptionalProgramRequirementCode().getLabel(),pr.getOptionalProgramRequirementCode().getOptProReqCode()));
 
     }
 
@@ -224,7 +224,7 @@ public class AlgorithmSupportRule {
             if (reqsMet == null)
                 reqsMet = new ArrayList<>();
 
-            reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel()));
+            reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
             ruleProcessorData.setRequirementsMet(reqsMet);
             logger.debug("Min Elective Credits Rule: Total-{} Required- {}",totalCredits,requiredCredits);
 
@@ -237,7 +237,7 @@ public class AlgorithmSupportRule {
             if (nonGradReasons == null)
                 nonGradReasons = new ArrayList<>();
 
-            nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc()));
+            nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
             ruleProcessorData.setNonGradReasons(nonGradReasons);
         }
     }

@@ -75,7 +75,7 @@ public class CareerProgramMatchRule implements Rule {
                     }
 
                     if (totalCredits >= requiredCredits) {
-                        requirementsMet.add(new GradRequirement(pR.getOptionalProgramRequirementCode().getOptProReqCode(), pR.getOptionalProgramRequirementCode().getLabel()));
+                        requirementsMet.add(new GradRequirement(pR.getOptionalProgramRequirementCode().getOptProReqCode(), pR.getOptionalProgramRequirementCode().getLabel(),pR.getOptionalProgramRequirementCode().getOptProReqCode()));
                         pR.getOptionalProgramRequirementCode().setPassed(true);
                     }
                     if (sc.getGradReqMet().length() > 0) {
@@ -121,7 +121,7 @@ public class CareerProgramMatchRule implements Rule {
             logger.debug("All the Career Program Match rules met!");
         } else {
             for (OptionalProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc(),failedRule.getOptionalProgramRequirementCode().getOptProReqCode()));
             }
             List<GradRequirement> nonGradReasons = obj.getNonGradReasonsOptionalProgram();
 
