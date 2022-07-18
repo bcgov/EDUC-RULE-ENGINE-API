@@ -161,7 +161,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
         if (!tempAssessmentRequirement.isEmpty() && tempProgramRule != null) {
 
             if (requirementsMet.stream()
-                    .filter(rm -> rm.getRule().equals(tempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
+                    .filter(rm -> rm.getRule().equals(tempProgramRule.getProgramRequirementCode().getProReqCode()))
                     .findAny().orElse(null) == null) {
                 tempAssessment.setUsed(true);
 

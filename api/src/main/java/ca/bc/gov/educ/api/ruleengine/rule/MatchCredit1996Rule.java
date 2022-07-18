@@ -180,7 +180,7 @@ public class MatchCredit1996Rule implements Rule {
     	if (!tempCourseRequirement.isEmpty() && tempProgramRule != null) {
             ProgramRequirement finalTempProgramRule = tempProgramRule;
             if (requirementsMet.stream()
-                    .filter(rm -> rm.getRule() != null && rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getTraxReqNumber()))
+                    .filter(rm -> rm.getRule() != null && rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode()))
                     .findAny()
                     .orElse(null) == null) {
             	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet);
