@@ -25,6 +25,9 @@ env:
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
   workflow_dispatch:
+  push:
+    branches:
+      - grad-release
 
 jobs:
   openshift-ci-cd:
