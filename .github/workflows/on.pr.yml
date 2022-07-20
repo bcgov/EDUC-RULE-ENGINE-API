@@ -1,12 +1,6 @@
 name: API CI
 
 on:
-  push:
-    branches:
-      - grad-release
-      - main
-    paths:
-      - 'api/**'
   pull_request:
     branches:
       - grad-release
