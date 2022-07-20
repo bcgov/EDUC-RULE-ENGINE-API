@@ -61,7 +61,13 @@ objects:
                     name: educ-grad-rule-engine-api-config-map
                 - secretRef:
                     name: api-student-graduation-db-secret
-              resources: {}
+              resources:
+                requests:
+                  cpu: "50m"
+                  #memory: "50Mi"
+                limits:
+                  cpu: "250m"
+                  #memory: "100Mi"
             - image: docker-remote.artifacts.developer.gov.bc.ca/fluent/fluent-bit:1.5.7
               name: "${REPO_NAME}-fluent-bit-sidecar"
               imagePullPolicy: Always
