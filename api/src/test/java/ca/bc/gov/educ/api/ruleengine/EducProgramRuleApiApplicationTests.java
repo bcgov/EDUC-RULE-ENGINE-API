@@ -7,7 +7,6 @@ class EducProgramRuleApiApplicationTests {
 
 	//@Test
 	void contextLoads() {
-		//TEst
 	}
 
 }
