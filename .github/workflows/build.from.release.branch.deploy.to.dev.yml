@@ -28,6 +28,9 @@ on:
   push:
     branches:
       - grad-release
+    paths:
+      - 'api/**'
+      - 'tools/**'
 
 jobs:
   openshift-ci-cd:
