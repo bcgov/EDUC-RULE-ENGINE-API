@@ -15,12 +15,12 @@ env:
   NAMESPACE: ${{ secrets.GRAD_BUSINESS_NAMESPACE }}
   TAG: "latest"
 
+  MIN_CPU: "20m"
+  MAX_CPU: "250m"
+  MIN_MEM: "100mi"
+  MAX_MEM: "400mi"
   MIN_REPLICAS: "3"
   MAX_REPLICAS: "3"
-  MIN_CPU: "75m"
-  MAX_CPU: "150m"
-  MIN_MEM: "400Mi"
-  MAX_MEM: "800Mi"
 
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
