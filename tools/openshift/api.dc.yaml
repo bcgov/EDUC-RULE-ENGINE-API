@@ -63,11 +63,12 @@ objects:
                     name: api-student-graduation-db-secret
               resources:
                 requests:
-                  cpu: "50m"
-                  #memory: "50Mi"
-                limits:
-                  cpu: "250m"
-                  #memory: "100Mi"
+                  requests:
+                    cpu: "${MIN_CPU}"
+                    memory: "${MIN_MEM}"
+                  limits:
+                    cpu: "${MAX_CPU}"
+                    memory: "${MAX_MEM}"
             - image: docker-remote.artifacts.developer.gov.bc.ca/fluent/fluent-bit:1.5.7
               name: "${REPO_NAME}-fluent-bit-sidecar"
               imagePullPolicy: Always
@@ -146,6 +147,22 @@ objects:
         name: "${REPO_NAME}"
         weight: 100
       wildcardPolicy: None
+  - apiVersion: autoscaling/v2beta1
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: "${REPO_NAME}-cpu-autoscaler"
+    spec:
+      scaleTargetRef:
+      apiVersion: apps.openshift.io/v1
+      kind: DeploymentConfig
+      name: "${REPO_NAME}"
+      subresource: scale
+      minReplicas: ${{MIN_REPLICAS}}
+      maxReplicas: ${{MAX_REPLICAS}}
+      metrics:
+        - type: Resource
+            resource:
+            name: cpu
 parameters:
   - name: REPO_NAME
     description: Application repository name

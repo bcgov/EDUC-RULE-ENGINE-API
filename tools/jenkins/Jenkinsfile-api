@@ -24,6 +24,13 @@ pipeline{
         TEST_HOST_ROUTE = "${APP_NAME}-${TEST_NAMESPACE}.${APP_DOMAIN}"
         UAT_HOST_ROUTE = "${APP_NAME}-${UAT_NAMESPACE}.${APP_DOMAIN}"
         PROD_HOST_ROUTE = "${APP_NAME}-${PROD_NAMESPACE}.${APP_DOMAIN}"
+
+        MIN_CPU = "20m"
+        MAX_CPU = "250m"
+        MIN_MEM = "100mi"
+        MAX_MEM = "400mi"
+        MIN_REPLICAS = "1"
+        MAX_REPLICAS = "3"
     }
     options {
         buildDiscarder(logRotator(daysToKeepStr: '', numToKeepStr: '5'))
@@ -76,7 +83,9 @@ pipeline{
                         openshift.withProject(DEV_NAMESPACE) {
                             openshift.apply(
                                         openshift.process("-f", "${SOURCE_REPO_URL_RAW}/${BRANCH}/tools/openshift/api.dc.yaml",
-                                        "IS_NAMESPACE=${TOOLS_NAMESPACE}", "REPO_NAME=${REPO_NAME}", "HOST_ROUTE=${DEV_HOST_ROUTE}")
+                                        "IS_NAMESPACE=${TOOLS_NAMESPACE}", "REPO_NAME=${REPO_NAME}", "HOST_ROUTE=${DEV_HOST_ROUTE}",
+                                        "MIN_CPU=${MIN_CPU}", "MAX_CPU=${MAX_CPU}", "MIN_MEM=${MIN_MEM}", "MAX_MEM=${MAX_MEM}", "MIN_REPLICAS=${MIN_REPLICAS}", "MAX_REPLICAS=${MAX_REPLICAS}"
+                                        )
                                     )
                             openshift.selector("dc", "${REPO_NAME}-dc").rollout().latest()
                             timeout (time: 10, unit: 'MINUTES') {
