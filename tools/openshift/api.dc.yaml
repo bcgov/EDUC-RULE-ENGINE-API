@@ -146,7 +146,7 @@ objects:
         name: "${REPO_NAME}"
         weight: 100
       wildcardPolicy: None
-  - apiVersion: autoscaling/v2beta1
+  - apiVersion: autoscaling/v2beta2
     kind: HorizontalPodAutoscaler
     metadata:
       name: "${REPO_NAME}-cpu-autoscaler"
