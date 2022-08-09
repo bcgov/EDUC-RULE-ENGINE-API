@@ -146,22 +146,6 @@ objects:
         name: "${REPO_NAME}"
         weight: 100
       wildcardPolicy: None
-  - apiVersion: autoscaling/v2beta2
-    kind: HorizontalPodAutoscaler
-    metadata:
-      name: "${REPO_NAME}-cpu-autoscaler"
-    spec:
-      scaleTargetRef:
-        apiVersion: apps.openshift.io/v1
-        kind: DeploymentConfig
-        name: "${REPO_NAME}"
-        subresource: scale
-      minReplicas: ${{MIN_REPLICAS}}
-      maxReplicas: ${{MAX_REPLICAS}}
-      metrics:
-        - type: Resource
-          resource:
-            name: cpu
 parameters:
   - name: REPO_NAME
     description: Application repository name
