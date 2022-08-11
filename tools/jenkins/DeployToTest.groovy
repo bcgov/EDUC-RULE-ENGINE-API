@@ -16,8 +16,8 @@ pipeline{
         SOURCE_REPO_URL_RAW = 'https://raw.githubusercontent.com/${ORG}/${REPO_NAME}'
         MIN_CPU = "20m"
         MAX_CPU = "250m"
-        MIN_MEM = "100mi"
-        MAX_MEM = "400mi"
+        MIN_MEM = "100Mi"
+        MAX_MEM = "400Mi"
         MIN_REPLICAS = "1"
         MAX_REPLICAS = "3"
     }
