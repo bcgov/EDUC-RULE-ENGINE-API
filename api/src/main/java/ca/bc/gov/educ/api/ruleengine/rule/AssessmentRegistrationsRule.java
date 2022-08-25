@@ -1,5 +1,12 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRuleProcessor;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -7,29 +14,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ca.bc.gov.educ.api.ruleengine.dto.*;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
 public class AssessmentRegistrationsRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(AssessmentRegistrationsRule.class.getName());
 
-	@Autowired
-	private RuleProcessorData ruleProcessorData;
-
 	@Override
-	public RuleData fire() {
+	public RuleData fire(RuleProcessorData ruleProcessorData) {
 
 		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 
@@ -77,19 +68,14 @@ public class AssessmentRegistrationsRule implements Rule {
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
 		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
-		prepareAssessmentForOptionalPrograms();
+		prepareAssessmentForOptionalPrograms(ruleProcessorData);
 		return ruleProcessorData;
 	}
 
-	private void prepareAssessmentForOptionalPrograms() {
+	private void prepareAssessmentForOptionalPrograms(RuleProcessorData ruleProcessorData) {
     	List<StudentAssessment> listAssessments = ruleProcessorData.getStudentAssessments();
 		Map<String,OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
 		mapOptional.forEach((k,v)-> v.setStudentAssessmentsOptionalProgram(RuleEngineApiUtils.getAssessmentClone(listAssessments)));
 	}
 
-	@Override
-	public void setInputData(RuleData inputData) {
-		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("AssessmentRegistrationsRule: Rule Processor Data set.");
-	}
 }

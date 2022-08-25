@@ -4,29 +4,18 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Remove2CreditCoursesRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(Remove2CreditCoursesRule.class.getName());
 
-	@Autowired
-	private RuleProcessorData ruleProcessorData;
-
 	@Override
-	public RuleData fire() {
+	public RuleData fire(RuleProcessorData ruleProcessorData) {
 
 		logger.log(Level.INFO, "###################### Finding 2 Credit Courses ######################");
 
@@ -49,9 +38,4 @@ public class Remove2CreditCoursesRule implements Rule {
 		return ruleProcessorData;
 	}
 
-	@Override
-	public void setInputData(RuleData inputData) {
-		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("DuplicateAssessmentsRule: Rule Processor Data set.");
-	}
 }

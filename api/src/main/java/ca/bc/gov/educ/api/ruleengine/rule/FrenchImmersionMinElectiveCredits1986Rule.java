@@ -3,30 +3,20 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class FrenchImmersionMinElectiveCredits1986Rule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(FrenchImmersionMinElectiveCredits1986Rule.class);
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
-
-    public RuleProcessorData fire() {
+    @Override
+    public RuleData fire(RuleProcessorData ruleProcessorData) {
 
         Map<String,OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
         OptionalProgramRuleProcessor obj = mapOptional.get("FI");
@@ -138,11 +128,6 @@ public class FrenchImmersionMinElectiveCredits1986Rule implements Rule {
     	
     	return totalCredits;
     }
-    
-    @Override
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("FrenchImmersionMinElectiveCredits1986Rule: Rule Processor Data set.");
-    }
+
 
 }

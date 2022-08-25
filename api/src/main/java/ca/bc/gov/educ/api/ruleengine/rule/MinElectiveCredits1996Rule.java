@@ -2,29 +2,22 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class MinElectiveCredits1996Rule implements Rule {
 
 	private static Logger logger = LoggerFactory.getLogger(MinElectiveCredits1996Rule.class);
 
-	@Autowired
-	private RuleProcessorData ruleProcessorData;
-
-	public RuleData fire() {
+	@Override
+	public RuleData fire(RuleProcessorData ruleProcessorData) {
 		int totalCredits = 0;
 		int requiredCredits;
 
@@ -106,14 +99,6 @@ public class MinElectiveCredits1996Rule implements Rule {
 		if(ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1996-EN"))
 			ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
-	}
-
-
-
-	@Override
-	public void setInputData(RuleData inputData) {
-		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinElectiveCredits1996Rule: Rule Processor Data set.");
 	}
 
 }

@@ -5,31 +5,20 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class DuplicateAssessmentsRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(DuplicateAssessmentsRule.class.getName());
 
-	@Autowired
-	private RuleProcessorData ruleProcessorData;
-
 	@Override
-	public RuleData fire() {
+	public RuleData fire(RuleProcessorData ruleProcessorData) {
 
 		logger.log(Level.INFO, "###################### Finding DUPLICATE Assessments ######################");
 
@@ -146,9 +135,4 @@ public class DuplicateAssessmentsRule implements Rule {
 		}
 	}
 
-	@Override
-	public void setInputData(RuleData inputData) {
-		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("DuplicateAssessmentsRule: Rule Processor Data set.");
-	}
 }

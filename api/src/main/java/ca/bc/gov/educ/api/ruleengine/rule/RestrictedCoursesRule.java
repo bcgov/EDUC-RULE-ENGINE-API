@@ -3,12 +3,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +12,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class RestrictedCoursesRule implements Rule {
 
     private static Logger logger = Logger.getLogger(RestrictedCoursesRule.class.getName());
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
-
     @Override
-    public RuleData fire() {
+    public RuleData fire(RuleProcessorData ruleProcessorData) {
         logger.log(Level.INFO,"###################### Finding COURSE RESTRICTIONS ######################");
         
         
@@ -66,7 +55,7 @@ public class RestrictedCoursesRule implements Rule {
 		}
 		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourses,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentCourses(studentCourses);
-        prepareCoursesForOptionalPrograms();
+        prepareCoursesForOptionalPrograms(ruleProcessorData);
         logger.log(Level.INFO, "Restricted Courses: {0} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
         return ruleProcessorData;
     }
@@ -101,15 +90,10 @@ public class RestrictedCoursesRule implements Rule {
         	studentCourses.get(i).setRestricted(true);
         }
     }
-    private void prepareCoursesForOptionalPrograms() {
+    private void prepareCoursesForOptionalPrograms(RuleProcessorData ruleProcessorData) {
     	List<StudentCourse> listCourses = ruleProcessorData.getStudentCourses();
         Map<String,OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
 		mapOptional.forEach((k,v)-> v.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(listCourses)));
     }
-    
-    @Override
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("RestrictedCoursesRule: Rule Processor Data set.");
-    }    
+
 }

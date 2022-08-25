@@ -1,33 +1,21 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
 public class FailedCoursesRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(FailedCoursesRule.class.getName());
 
-	@Autowired
-	private RuleProcessorData ruleProcessorData;
-
 	@Override
-	public RuleData fire() {
+	public RuleData fire(RuleProcessorData ruleProcessorData) {
 
 		List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
@@ -53,8 +41,4 @@ public class FailedCoursesRule implements Rule {
 		return ruleProcessorData;
 	}
 
-	public void setInputData(RuleData inputData) {
-		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("FailedCoursesRule: Rule Processor Data set.");
-	}
 }

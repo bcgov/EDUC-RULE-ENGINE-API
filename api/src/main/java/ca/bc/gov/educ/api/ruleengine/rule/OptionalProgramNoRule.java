@@ -1,53 +1,42 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class OptionalProgramNoRule implements Rule {
 
-    private static Logger logger = LoggerFactory.getLogger(OptionalProgramNoRule.class);
+	private static Logger logger = LoggerFactory.getLogger(OptionalProgramNoRule.class);
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
-
-    @Override
-    public RuleData fire() {
+	@Override
+	public RuleData fire(RuleProcessorData ruleProcessorData) {
 
 		Map<String, OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
 		OptionalProgramRuleProcessor obj;
 		String program = ruleProcessorData.getGradProgram().getProgramCode();
-		if(program.compareTo("1996-PF")==0 && mapOptional.get("DD") != null) {
+		if (program.compareTo("1996-PF") == 0 && mapOptional.get("DD") != null) {
 			obj = mapOptional.get("DD");
-			processOptionalProgramNoRules("DD",obj,mapOptional);
-		}else if(program.compareTo("2018-EN")==0 || program.compareTo("2004-EN")==0 || program.compareTo("2018-PF")==0 ||program.compareTo("2004-PF")==0 || program.compareTo("1996-EN")==0) {
-			if(mapOptional.get("AD") != null) {
+			processOptionalProgramNoRules("DD", obj, mapOptional);
+		} else if (program.compareTo("2018-EN") == 0 || program.compareTo("2004-EN") == 0 || program.compareTo("2018-PF") == 0 || program.compareTo("2004-PF") == 0 || program.compareTo("1996-EN") == 0) {
+			if (mapOptional.get("AD") != null) {
 				obj = mapOptional.get("AD");
-				processOptionalProgramNoRules("AD",obj,mapOptional);
+				processOptionalProgramNoRules("AD", obj, mapOptional);
 			}
-			if(mapOptional.get("BC") != null) {
+			if (mapOptional.get("BC") != null) {
 				obj = mapOptional.get("BC");
-				processOptionalProgramNoRules("BC",obj,mapOptional);
+				processOptionalProgramNoRules("BC", obj, mapOptional);
 			}
-			if(mapOptional.get("BD") != null) {
+			if (mapOptional.get("BD") != null) {
 				obj = mapOptional.get("BD");
-				processOptionalProgramNoRules("BD",obj,mapOptional);
+				processOptionalProgramNoRules("BD", obj, mapOptional);
 			}
-		}else if(program.compareTo("SCCP")==0) {
+		} else if (program.compareTo("SCCP") == 0) {
 			if (mapOptional.get("FR") != null) {
 				obj = mapOptional.get("FR");
 				processOptionalProgramNoRules("FR", obj, mapOptional);
@@ -57,36 +46,35 @@ public class OptionalProgramNoRule implements Rule {
 				processOptionalProgramNoRules("CP", obj, mapOptional);
 			}
 
-		}
-		else if(program.compareTo("1950")==0) {
-			if(mapOptional.get("AD") != null) {
+		} else if (program.compareTo("1950") == 0) {
+			if (mapOptional.get("AD") != null) {
 				obj = mapOptional.get("AD");
-				processOptionalProgramNoRules("AD",obj,mapOptional);
+				processOptionalProgramNoRules("AD", obj, mapOptional);
 			}
-			if(mapOptional.get("BC") != null) {
+			if (mapOptional.get("BC") != null) {
 				obj = mapOptional.get("BC");
-				processOptionalProgramNoRules("BC",obj,mapOptional);
+				processOptionalProgramNoRules("BC", obj, mapOptional);
 			}
-			if(mapOptional.get("BD") != null) {
+			if (mapOptional.get("BD") != null) {
 				obj = mapOptional.get("BD");
-				processOptionalProgramNoRules("BD",obj,mapOptional);
+				processOptionalProgramNoRules("BD", obj, mapOptional);
 			}
-			if(mapOptional.get("CP") != null) {
+			if (mapOptional.get("CP") != null) {
 				obj = mapOptional.get("CP");
-				processOptionalProgramNoRules("CP",obj,mapOptional);
+				processOptionalProgramNoRules("CP", obj, mapOptional);
 			}
 		}
 		ruleProcessorData.setMapOptional(mapOptional);
 		return ruleProcessorData;
-    }
+	}
 
-	private void processOptionalProgramNoRules(String opPrgCode,OptionalProgramRuleProcessor obj,Map<String,OptionalProgramRuleProcessor> mapOptional) {
+	private void processOptionalProgramNoRules(String opPrgCode, OptionalProgramRuleProcessor obj, Map<String, OptionalProgramRuleProcessor> mapOptional) {
 		List<OptionalProgramRequirement> optionalProgramNoRule = obj.getOptionalProgramRules()
 				.stream()
 				.filter(gradOptionalProgramRule -> "SR".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0)
 				.collect(Collectors.toList());
-		for(OptionalProgramRequirement opReq:optionalProgramNoRule) {
+		for (OptionalProgramRequirement opReq : optionalProgramNoRule) {
 			if (opReq.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("957") != 0) {
 				logger.debug("{} Passed", opReq.getOptionalProgramRequirementCode().getLabel());
 				if (obj.isHasOptionalProgram()) {
@@ -95,16 +83,11 @@ public class OptionalProgramNoRule implements Rule {
 
 					if (resMet == null)
 						resMet = new ArrayList<>();
-					resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel(),opReq.getOptionalProgramRequirementCode().getOptProReqCode()));
+					resMet.add(new GradRequirement(opReq.getOptionalProgramRequirementCode().getOptProReqCode(), opReq.getOptionalProgramRequirementCode().getLabel(), opReq.getOptionalProgramRequirementCode().getOptProReqCode()));
 					obj.setRequirementsMetOptionalProgram(resMet);
 				}
 				mapOptional.put(opPrgCode, obj);
 			}
 		}
 	}
-    @Override
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("OptionalProgramNoRule: Rule Processor Data set.");
-    }
 }

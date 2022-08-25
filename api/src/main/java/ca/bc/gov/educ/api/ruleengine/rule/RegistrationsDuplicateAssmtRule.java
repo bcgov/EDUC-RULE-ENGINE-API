@@ -6,30 +6,19 @@ import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.util.*;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class RegistrationsDuplicateAssmtRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(RegistrationsDuplicateAssmtRule.class);
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
-
     @Override
-    public RuleData fire() {
+    public RuleData fire(RuleProcessorData ruleProcessorData) {
         List<StudentAssessment> studentAssessmentsList = ruleProcessorData.getStudentAssessments();
 
         logger.debug("###################### Finding Duplicate Registrations ######################");
@@ -83,9 +72,4 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
         return ruleProcessorData;
     }
 
-    @Override
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("RegistrationsDuplicateAssmtRule: Rule Processor Data set.");
-    }
 }

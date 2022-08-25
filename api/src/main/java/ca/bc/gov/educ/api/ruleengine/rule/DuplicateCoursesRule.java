@@ -1,34 +1,22 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.List;
-
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+import java.util.List;
+
+
 public class DuplicateCoursesRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(DuplicateCoursesRule.class);
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
-
     @Override
-    public RuleData fire() {
+    public RuleData fire(RuleProcessorData ruleProcessorData) {
 
         logger.info("###################### Finding DUPLICATE courses ######################");
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
@@ -73,10 +61,5 @@ public class DuplicateCoursesRule implements Rule {
             studentCourseList.get(j).setDuplicate(false);
         }
     }
-    
-    @Override
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("DuplicateCoursesRule: Rule Processor Data set.");
-    }
+
 }

@@ -1,13 +1,10 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import org.springframework.stereotype.Component;
-
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 
-@Component
 public interface Rule {
 
-    RuleData fire();
+    RuleData fire(RuleProcessorData inputData);
 
-    void setInputData(RuleData inputData);
 }

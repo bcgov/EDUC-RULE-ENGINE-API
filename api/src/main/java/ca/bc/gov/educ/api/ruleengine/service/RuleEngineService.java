@@ -28,9 +28,8 @@ public class RuleEngineService {
         RuleProcessorData originalData = RuleProcessorRuleUtils.cloneObject(ruleProcessorData);
         ruleProcessorData.setGraduated(true);
         for (ProgramAlgorithmRule gradAlgorithmRule : originalData.getAlgorithmRules()) {
-        	Rule rule = RuleFactory.createRule(gradAlgorithmRule.getAlgorithmRuleCode().getRuleImplementation(), ruleProcessorData);
-            rule.setInputData(ruleProcessorData);
-            ruleProcessorData = (RuleProcessorData)rule.fire();
+        	Rule rule = RuleFactory.createRule(gradAlgorithmRule.getAlgorithmRuleCode().getRuleImplementation());
+            ruleProcessorData = (RuleProcessorData)rule.fire(ruleProcessorData);
         }
         if(ruleProcessorData.getNonGradReasons() == null || ruleProcessorData.getNonGradReasons().isEmpty()) {
             ruleProcessorData.setGraduated(ruleProcessorData.getRequirementsMet() != null && !ruleProcessorData.getRequirementsMet().isEmpty());

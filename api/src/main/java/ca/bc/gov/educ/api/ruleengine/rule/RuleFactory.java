@@ -1,14 +1,10 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.Arrays;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import java.util.Arrays;
 
-@Component
 public class RuleFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleFactory.class);
@@ -16,13 +12,13 @@ public class RuleFactory {
     private RuleFactory() {}
 
     @SuppressWarnings("unchecked")
-	public static Rule createRule(String ruleImplementation, RuleProcessorData data) {
+	public static Rule createRule(String ruleImplementation) {
         Class<Rule> clazz;
         Rule rule = null;
 
         try {
             clazz = (Class<Rule>) Class.forName("ca.bc.gov.educ.api.ruleengine.rule." + ruleImplementation);
-            rule = clazz.getDeclaredConstructor(RuleProcessorData.class).newInstance(data);
+            rule = clazz.getDeclaredConstructor().newInstance();
             logger.debug("Class Created: {}" , rule.getClass());
         } catch (Exception e) {
             logger.debug("ERROR: No Such Class: {}" , ruleImplementation);

@@ -2,32 +2,21 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
-@Component
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class MinCreditsRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MinCreditsRule.class);
 
-    @Autowired
-    private RuleProcessorData ruleProcessorData;
-
-    public RuleData fire() {
+    @Override
+    public RuleData fire(RuleProcessorData ruleProcessorData) {
         int totalCredits;
         int requiredCredits;
 
@@ -117,12 +106,5 @@ public class MinCreditsRule implements Rule {
 		sc.setUsed(true);
         AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
     }
-    
-    
 
-    @Override
-    public void setInputData(RuleData inputData) {
-        ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MinCreditsRule: Rule Processor Data set.");
-    }
 }
