@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,13 +13,13 @@ public class RuleFactory {
     private RuleFactory() {}
 
     @SuppressWarnings("unchecked")
-	public static Rule createRule(String ruleImplementation) {
+	public static Rule createRule(String ruleImplementation, RuleProcessorData data) {
         Class<Rule> clazz;
         Rule rule = null;
 
         try {
             clazz = (Class<Rule>) Class.forName("ca.bc.gov.educ.api.ruleengine.rule." + ruleImplementation);
-            rule = clazz.getDeclaredConstructor().newInstance();
+            rule = clazz.getDeclaredConstructor(RuleProcessorData.class).newInstance(data);
             logger.debug("Class Created: {}" , rule.getClass());
         } catch (Exception e) {
             logger.debug("ERROR: No Such Class: {}" , ruleImplementation);

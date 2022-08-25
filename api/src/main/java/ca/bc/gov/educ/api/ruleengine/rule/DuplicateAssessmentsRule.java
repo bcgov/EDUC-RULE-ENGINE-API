@@ -5,6 +5,8 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Comparator;
@@ -12,13 +14,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+@Data
+@AllArgsConstructor
 public class DuplicateAssessmentsRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(DuplicateAssessmentsRule.class.getName());
 
+	private RuleProcessorData ruleProcessorData;
+
 	@Override
-	public RuleData fire(RuleProcessorData ruleProcessorData) {
+	public RuleData fire() {
 
 		logger.log(Level.INFO, "###################### Finding DUPLICATE Assessments ######################");
 

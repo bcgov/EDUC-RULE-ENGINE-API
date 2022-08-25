@@ -4,6 +4,8 @@ import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,13 +13,15 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class MatchCreditsRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MatchCreditsRule.class);
 
-    @Override
-    public RuleData fire(RuleProcessorData ruleProcessorData) {
+    private RuleProcessorData ruleProcessorData;
+
+    public RuleData fire() {
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
@@ -84,7 +88,7 @@ public class MatchCreditsRule implements Rule {
                 logger.error("ERROR: {}",e.getMessage());
             }
         }
-        processReqMetAndNotMet(ruleProcessorData,finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
+        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);        
 
         return ruleProcessorData;
     }
@@ -119,7 +123,7 @@ public class MatchCreditsRule implements Rule {
 		
 	}
 
-	public void processReqMetAndNotMet(RuleProcessorData ruleProcessorData, List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch) {
+	public void processReqMetAndNotMet(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch) {
     	finalProgramRulesList.removeIf(e -> e.getProgramRequirementCode().isTempFailed());
 		if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
             List<ProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
@@ -197,4 +201,5 @@ public class MatchCreditsRule implements Rule {
             }
         }
     }
+
 }

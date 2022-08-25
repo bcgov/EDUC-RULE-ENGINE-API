@@ -4,6 +4,8 @@ import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +14,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class MatchCredit1996Rule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MatchCredit1996Rule.class);
@@ -26,8 +29,9 @@ public class MatchCredit1996Rule implements Rule {
     private static final String APPLIED_SCIENCES = "A";
     private static final String FINE_ARTS_APPLIED_SCIENCES = "B";
 
-    @Override
-    public RuleData fire(RuleProcessorData ruleProcessorData) {
+    private RuleProcessorData ruleProcessorData;
+
+    public RuleData fire() {
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
@@ -119,7 +123,7 @@ public class MatchCredit1996Rule implements Rule {
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
-        processReqMetAndNotMet(ruleProcessorData,finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
+        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);        
         ruleProcessorData.setMap1996Crse(map1996);
         checkAppliedScienceAndFineArtsCondition(ruleProcessorData.getStudentCourses(),ruleProcessorData.getRequirementsMet(),ruleProcessorData.getNonGradReasons(),ruleProcessorData.getMap1996Crse());
         return ruleProcessorData;
@@ -206,7 +210,7 @@ public class MatchCredit1996Rule implements Rule {
         }
 	}
 
-	public void processReqMetAndNotMet(RuleProcessorData ruleProcessorData, List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch) {
+	public void processReqMetAndNotMet(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch) {
 		if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
             List<ProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
     		unusedRules.removeAll(finalProgramRulesList);

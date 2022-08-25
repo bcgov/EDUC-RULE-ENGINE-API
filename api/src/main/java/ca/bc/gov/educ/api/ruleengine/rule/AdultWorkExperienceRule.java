@@ -4,6 +4,8 @@ import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,13 +15,15 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class AdultWorkExperienceRule implements Rule {
 
 	private static Logger logger = LoggerFactory.getLogger(AdultWorkExperienceRule.class);
 
-	@Override
-	public RuleData fire(RuleProcessorData ruleProcessorData) {
+	private RuleProcessorData ruleProcessorData;
+
+	public RuleData fire() {
 		logger.debug("Adult Work Experience Rule");
 		
 		if (ruleProcessorData.getStudentCourses().isEmpty()) {

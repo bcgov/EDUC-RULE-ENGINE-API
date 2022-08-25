@@ -3,6 +3,8 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -12,13 +14,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class RestrictedCoursesRule implements Rule {
 
     private static Logger logger = Logger.getLogger(RestrictedCoursesRule.class.getName());
 
+    private RuleProcessorData ruleProcessorData;
+
     @Override
-    public RuleData fire(RuleProcessorData ruleProcessorData) {
+    public RuleData fire() {
         logger.log(Level.INFO,"###################### Finding COURSE RESTRICTIONS ######################");
         
         
@@ -55,7 +60,7 @@ public class RestrictedCoursesRule implements Rule {
 		}
 		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourses,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentCourses(studentCourses);
-        prepareCoursesForOptionalPrograms(ruleProcessorData);
+        prepareCoursesForOptionalPrograms();
         logger.log(Level.INFO, "Restricted Courses: {0} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
         return ruleProcessorData;
     }
@@ -90,7 +95,7 @@ public class RestrictedCoursesRule implements Rule {
         	studentCourses.get(i).setRestricted(true);
         }
     }
-    private void prepareCoursesForOptionalPrograms(RuleProcessorData ruleProcessorData) {
+    private void prepareCoursesForOptionalPrograms() {
     	List<StudentCourse> listCourses = ruleProcessorData.getStudentCourses();
         Map<String,OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
 		mapOptional.forEach((k,v)-> v.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(listCourses)));

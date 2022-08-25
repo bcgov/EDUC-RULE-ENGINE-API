@@ -3,6 +3,8 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,13 +17,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class MinAdultCourses19Rule implements Rule {
 
 	private static Logger logger = LoggerFactory.getLogger(MinAdultCourses19Rule.class);
 
-	@Override
-	public RuleData fire(RuleProcessorData ruleProcessorData) {
+	private RuleProcessorData ruleProcessorData;
+
+	public RuleData fire() {
 		logger.debug("Min Adult Courses 19 Rule");
 
 		int totalCredits = 0;

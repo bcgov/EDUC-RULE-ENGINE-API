@@ -4,18 +4,23 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+@Data
+@AllArgsConstructor
 public class FailedCoursesRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(FailedCoursesRule.class.getName());
 
+	private RuleProcessorData ruleProcessorData;
+
 	@Override
-	public RuleData fire(RuleProcessorData ruleProcessorData) {
+	public RuleData fire() {
 
 		List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 

@@ -4,6 +4,8 @@ import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,13 +15,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class MatchCredit1986Rule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MatchCredit1986Rule.class);
 
-    @Override
-    public RuleData fire(RuleProcessorData ruleProcessorData) {
+    private RuleProcessorData ruleProcessorData;
+
+    public RuleData fire() {
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
@@ -79,7 +83,7 @@ public class MatchCredit1986Rule implements Rule {
                 }
             }
             logger.debug("Temp Program Rule: {}", tempProgramRule);
-            processCourse(ruleProcessorData, tempCourse, tempCourseRequirement, tempProgramRule, requirementsMet);
+            processCourse(tempCourse, tempCourseRequirement, tempProgramRule, requirementsMet);
 
             try {
                 StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
@@ -99,23 +103,23 @@ public class MatchCredit1986Rule implements Rule {
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
-        processReqMetAndNotMet(ruleProcessorData,finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
+        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
         return ruleProcessorData;
     }
-    private void processCourse(RuleProcessorData ruleProcessorData, StudentCourse tempCourse, List<CourseRequirement> tempCourseRequirement, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet) {
+    private void processCourse(StudentCourse tempCourse, List<CourseRequirement> tempCourseRequirement, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet) {
     	if (!tempCourseRequirement.isEmpty() && tempProgramRule != null) {
             if (requirementsMet.stream()
                     .filter(rm -> rm.getRule() != null && rm.getRule().equals(tempProgramRule.getProgramRequirementCode().getProReqCode()))
                     .findAny()
                     .orElse(null) == null) {
-            	setDetailsForCourses(ruleProcessorData,tempCourse,tempProgramRule,requirementsMet);
+            	setDetailsForCourses(tempCourse,tempProgramRule,requirementsMet);
             } else {
                 logger.debug("!!! Program Rule met Already: {}",tempProgramRule);
             }
         }
 	}
 
-	public void processReqMetAndNotMet(RuleProcessorData ruleProcessorData, List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch) {
+	public void processReqMetAndNotMet(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch) {
 		if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
             List<ProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
     		unusedRules.removeAll(finalProgramRulesList);
@@ -171,7 +175,7 @@ public class MatchCredit1986Rule implements Rule {
         ruleProcessorData.setRequirementsMet(reqsMet);
     }
     
-    public void setDetailsForCourses(RuleProcessorData ruleProcessorData, StudentCourse tempCourse, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet) {
+    public void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet) {
         if(tempCourse.getCourseCode().startsWith("X")) {
             Integer ldCounter = ruleProcessorData.getLdCounter();
             ruleProcessorData.setLdCounter(ldCounter + tempCourse.getCredits());

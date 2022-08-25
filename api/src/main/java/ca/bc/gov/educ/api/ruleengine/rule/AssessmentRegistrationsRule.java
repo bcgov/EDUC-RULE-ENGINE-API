@@ -6,6 +6,8 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -14,13 +16,16 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+@Data
+@AllArgsConstructor
 public class AssessmentRegistrationsRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(AssessmentRegistrationsRule.class.getName());
 
+	private RuleProcessorData ruleProcessorData;
+
 	@Override
-	public RuleData fire(RuleProcessorData ruleProcessorData) {
+	public RuleData fire() {
 
 		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 
@@ -68,11 +73,11 @@ public class AssessmentRegistrationsRule implements Rule {
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
 		logger.log(Level.INFO, "Projected Assessments (Registrations): {0} ",(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
-		prepareAssessmentForOptionalPrograms(ruleProcessorData);
+		prepareAssessmentForOptionalPrograms();
 		return ruleProcessorData;
 	}
 
-	private void prepareAssessmentForOptionalPrograms(RuleProcessorData ruleProcessorData) {
+	private void prepareAssessmentForOptionalPrograms() {
     	List<StudentAssessment> listAssessments = ruleProcessorData.getStudentAssessments();
 		Map<String,OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
 		mapOptional.forEach((k,v)-> v.setStudentAssessmentsOptionalProgram(RuleEngineApiUtils.getAssessmentClone(listAssessments)));

@@ -4,18 +4,23 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+@Data
+@AllArgsConstructor
 public class Remove2CreditCoursesRule implements Rule {
 
 	private static Logger logger = Logger.getLogger(Remove2CreditCoursesRule.class.getName());
 
+	private RuleProcessorData ruleProcessorData;
+
 	@Override
-	public RuleData fire(RuleProcessorData ruleProcessorData) {
+	public RuleData fire() {
 
 		logger.log(Level.INFO, "###################### Finding 2 Credit Courses ######################");
 
@@ -24,12 +29,12 @@ public class Remove2CreditCoursesRule implements Rule {
 
 		for (StudentCourse studentCourse : studentCourseList) {
 			Integer credits = studentCourse.getCredits();
-			if(credits < 4) {
+			if (credits < 4) {
 				studentCourse.setLessCreditCourse(true);
 			}
 		}
 
-		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
+		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList, ruleProcessorData.getExcludedCourses(), ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentCourses(studentCourseList);
 
 		logger.log(Level.INFO, "Removed 2 Credit Courses: {0} ",

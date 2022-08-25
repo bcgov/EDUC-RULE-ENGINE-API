@@ -5,18 +5,23 @@ import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-
+@Data
+@AllArgsConstructor
 public class DuplicateCoursesRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(DuplicateCoursesRule.class);
 
+    private RuleProcessorData ruleProcessorData;
+
     @Override
-    public RuleData fire(RuleProcessorData ruleProcessorData) {
+    public RuleData fire() {
 
         logger.info("###################### Finding DUPLICATE courses ######################");
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());

@@ -1,6 +1,8 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,13 +11,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class MainProgramCompleteRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MainProgramCompleteRule.class);
 
+    private RuleProcessorData ruleProcessorData;
+
     @Override
-    public RuleData fire(RuleProcessorData ruleProcessorData) {
+    public RuleData fire() {
 
 		Map<String, OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
 		List<GradRequirement> nongReason = ruleProcessorData.getNonGradReasons();
@@ -73,4 +78,5 @@ public class MainProgramCompleteRule implements Rule {
 			}
 		}
 	}
+
 }

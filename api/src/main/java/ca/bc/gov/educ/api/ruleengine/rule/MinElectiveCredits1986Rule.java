@@ -2,6 +2,8 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,13 +12,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class MinElectiveCredits1986Rule implements Rule {
 
 	private static Logger logger = LoggerFactory.getLogger(MinElectiveCredits1986Rule.class);
 
-	@Override
-	public RuleData fire(RuleProcessorData ruleProcessorData) {
+	private RuleProcessorData ruleProcessorData;
+
+	public RuleData fire() {
 		int totalCredits = 0;
 		int requiredCredits;
 

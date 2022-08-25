@@ -6,19 +6,24 @@ import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.util.*;
 
-
+@Data
+@AllArgsConstructor
 public class RegistrationsFailedCrseRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(RegistrationsFailedCrseRule.class);
 
+    private RuleProcessorData ruleProcessorData;
+
     @Override
-    public RuleData fire(RuleProcessorData ruleProcessorData) {
+    public RuleData fire() {
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
         logger.debug("###################### Finding Failed Registrations ######################");
