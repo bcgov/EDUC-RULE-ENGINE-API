@@ -4,10 +4,13 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Component
 public class OptionalProgramRuleProcessor {
+
+	private UUID optionalProgramID;
 
 	private List<OptionalProgramRequirement> optionalProgramRules;
 	private List<StudentCourse> studentCoursesOptionalProgram;
