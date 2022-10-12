@@ -101,10 +101,10 @@ objects:
                   name: metrics
               resources:
                 requests:
-                  cpu: "25m"
+                  cpu: "15m"
                   memory: "50Mi"
                 limits:
-                  cpu: "50m"
+                  cpu: "30m"
                   memory: "100Mi"
           volumes:
             - name: log-storage
@@ -143,7 +143,7 @@ objects:
           resource:
             name: cpu
             target:
-              averageUtilization: 600
+              averageUtilization: 350
               type: Utilization
 parameters:
   - name: REPO_NAME
