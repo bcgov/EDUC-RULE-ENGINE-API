@@ -39,6 +39,8 @@ public class AdultStudentGradeRule implements Rule {
             logger.info("#Checking SG Rule");
 
             for (ProgramRequirement gradProgramRule : gradProgramRules) {
+                logger.debug("StudentGrade:" + ruleProcessorData.getGradStudent().getStudentGrade());
+
                 if ("AD".compareTo(ruleProcessorData.getGradStudent().getStudentGrade()) != 0) {
                     gradProgramRule.getProgramRequirementCode().setPassed(false);
                     List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -49,10 +51,10 @@ public class AdultStudentGradeRule implements Rule {
                     nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
                     ruleProcessorData.setNonGradReasons(nonGradReasons);
 
-                    logger.info("#SG Rule Failed");
+                    logger.debug("#SG Rule Failed");
                 }
                 else {
-                    logger.info("#SG Rule Passed");
+                    logger.debug("#SG Rule Passed");
                 }
             }
         }
