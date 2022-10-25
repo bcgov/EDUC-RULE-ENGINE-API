@@ -1,8 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
