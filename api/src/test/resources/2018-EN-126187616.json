@@ -4886,8 +4886,7 @@
     "description": "The current B.C. Certificate of Graduation or “Dogwood Diploma” program. Students must earn a minimum of 80 credits and write the Grade 10 Numeracy Assessment and Grades 10 and 12 Literacy Assessments.",
     "displayOrder": 20,
     "effectiveDate": 1530428400000,
-    "expiryDate": null,
-    "assessmentReleaseDate": 1656658800000
+    "expiryDate": null
   },
   "school": {
     "minCode": "07897034",

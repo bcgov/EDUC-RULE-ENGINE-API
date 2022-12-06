@@ -20,7 +20,10 @@ public class AlgorithmSupportRule {
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         ruleProcessorData.setStudentCourses(courseList);
         List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("C")).collect(Collectors.toList());
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()
+                        && pr.getProgramRequirementCode().getRequirementCategory() != null
+                        && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("C"))
+                .collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");

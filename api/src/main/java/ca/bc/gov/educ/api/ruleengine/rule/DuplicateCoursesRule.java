@@ -37,7 +37,10 @@ public class DuplicateCoursesRule implements Rule {
 
                 	logger.debug("comparing {} with {}  -> Duplicate FOUND - CourseID: {}-{}",studentCourseList.get(i).getCourseCode(),studentCourseList.get(j).getCourseCode(),studentCourseList.get(i).getCourseCode(),studentCourseList.get(i).getCourseLevel());
 
-                    if (studentCourseList.get(i).getCompletedCoursePercentage() > studentCourseList.get(j).getCompletedCoursePercentage()) {
+                    if (studentCourseList.get(i).getCredits() > studentCourseList.get(j).getCredits()) {
+                        studentCourseList.get(i).setDuplicate(false);
+                        studentCourseList.get(j).setDuplicate(true);
+                    } else if (studentCourseList.get(i).getCompletedCoursePercentage() > studentCourseList.get(j).getCompletedCoursePercentage()) {
                         studentCourseList.get(i).setDuplicate(false);
                         studentCourseList.get(j).setDuplicate(true);
                     } else if (studentCourseList.get(i).getCompletedCoursePercentage() < studentCourseList.get(j).getCompletedCoursePercentage()) {
