@@ -129,7 +129,6 @@ public class RestrictedCoursesRule implements Rule {
         mapOptional.forEach((k, v) -> v.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(listCourses)));
     }
 
-    @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
         logger.info("RestrictedCoursesRule: Rule Processor Data set.");

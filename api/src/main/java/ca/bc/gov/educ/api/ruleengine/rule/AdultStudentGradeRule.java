@@ -1,6 +1,9 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -60,7 +63,6 @@ public class AdultStudentGradeRule implements Rule {
         return ruleProcessorData;
     }
 
-    @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
         logger.info("AdultStudentGradeRule: Rule Processor Data set.");
