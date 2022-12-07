@@ -3,6 +3,8 @@ package ca.bc.gov.educ.api.ruleengine.dto;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Data
 @Component
 public class StudentAssessment {
@@ -26,5 +28,17 @@ public class StudentAssessment {
     private boolean isProjected;
     private boolean isNotCompleted;
     private String equivalentCode;
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentAssessment that = (StudentAssessment) o;
+        return getPen().equals(that.getPen()) && getAssessmentCode().equals(that.getAssessmentCode()) && Objects.equals(getSessionDate(), that.getSessionDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPen(), getAssessmentCode(), getSessionDate());
+    }
 }

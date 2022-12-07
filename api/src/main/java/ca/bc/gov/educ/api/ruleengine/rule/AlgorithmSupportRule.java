@@ -99,10 +99,10 @@ public class AlgorithmSupportRule {
 
     public static void checkCoursesForEquivalency(List<ProgramRequirement> finalProgramRulesList, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
         for(ProgramRequirement pr:finalProgramRulesList) {
-            ruleFor116(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
-            ruleFor115(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
-            ruleFor118(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
-            ruleFor404(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
+//            ruleFor116(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
+//            ruleFor115(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
+//            ruleFor118(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
+//            ruleFor404(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
         }
     }
 
@@ -160,7 +160,7 @@ public class AlgorithmSupportRule {
         sA.setSpecialCase("M");
         sA.setUsed(true);
         sA.setProficiencyScore(Double.valueOf("0"));
-        finalAssessmentList.add(sA);
+
         pr.getProgramRequirementCode().setPassed(true);
         requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel(),pr.getProgramRequirementCode().getProReqCode()));
 
