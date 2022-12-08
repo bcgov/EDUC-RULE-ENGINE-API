@@ -101,13 +101,13 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
 
-
-        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,requirementsMet,gradProgramRulesMatch,courseList,finalAssessmentList);
+        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,gradProgramRulesMatch);
 
         //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
         finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0)
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
+                        || "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
                 .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
@@ -126,14 +126,12 @@ public class AssessmentsMatchCreditsRule implements Rule {
         return ruleProcessorData;
     }
 
-    private void processReqMetAndNotMet(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList) {
+    private void processReqMetAndNotMet(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<ProgramRequirement> gradProgramRulesMatch) {
         if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
             List<ProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
             unusedRules.removeAll(finalProgramRulesList);
             finalProgramRulesList.addAll(unusedRules);
         }
-
-        AlgorithmSupportRule.checkCoursesForEquivalency(finalProgramRulesList,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
 
         List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
