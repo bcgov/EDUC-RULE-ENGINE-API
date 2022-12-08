@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,21 +110,8 @@ public class MatchCredit1996Rule implements Rule {
             logger.debug("Temp Program Rule: {}", tempProgramRule);
             processCourse(tempCourse, tempCourseRequirement, tempProgramRule, requirementsMet, gradProgramRulesMatch, map1996);
 
-            try {
-                StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
-                if (tempSC != null)
-                    finalCourseList.add(tempSC);
-                logger.debug("TempSC: {}", tempSC);
-                logger.debug("Final course List size: {}: ", finalCourseList.size());
-                ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), ProgramRequirement.class);
-                if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
-                    finalProgramRulesList.add(tempPR);
-                }
-                logger.debug("TempPR: {}", tempPR);
-                logger.debug("Final Program rules list size: {}", finalProgramRulesList.size());
-            } catch (IOException e) {
-                logger.error("ERROR: {}", e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
