@@ -85,8 +85,9 @@ public class MinAdultCourses19Rule implements Rule {
 				} catch (ParseException e) {
 					logger.debug(e.getMessage());
 				}
-				int age = calculateAge(dobOfStudent,RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
-				if(age >= 19 && (totalCredits + sc.getCredits()) <= requiredCredits) {
+				//Change DOB to first of the month for calculation
+				int age = calculateAge(dobOfStudent.substring(0, 8).concat("01"), RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
+				if(age > 19 && (totalCredits + sc.getCredits()) <= requiredCredits) {
 					totalCredits += sc.getCredits();
 					AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 					sc.setUsed(true);
