@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,6 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
                 .collect(Collectors.toList());
        
         logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
-        StudentCourse tempSC;
         ObjectMapper objectMapper = new ObjectMapper();
 
         List<StudentCourse> modifiedList = RuleEngineApiUtils.getClone(courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).collect(Collectors.toList()));
@@ -62,13 +60,7 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
                     totalCreditsGrade11or12 = processCredits(pR,totalCreditsGrade11or12,sc,requirementsMet);
                 }
             }
-            try {
-                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
-                if (tempSC != null)
-                	finalCourseList2.add(tempSC);
-            } catch (IOException e) {
-                logger.error("ERROR: {}",e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList2, objectMapper);
             
             if ((totalCreditsGrade11or12 == requiredCreditsGrad11or12) && totalCreditsGrade11or12 != 0) {
             	break;
