@@ -313,12 +313,10 @@ public class EquivalencyRule implements Rule {
                 .stream()
                 .map(fr -> fr.getProgramRequirementCode().getProReqCode()).collect(Collectors.toList());
 
-        List<CourseRequirement> courseRequirementsForEquivalency = courseRequirements
+        return courseRequirements
                 .stream()
                 .filter(cr -> failedRuleCodes.contains(cr.getRuleCode().getCourseRequirementCode()))
                 .collect(Collectors.toList());
-
-        return courseRequirementsForEquivalency;
     }
 
     private List<CourseRequirement> getCourseRequirementsForAssessmentsEquivalency(List<OptionalProgramRequirement> gradOptionalProgramRulesMatch) {
@@ -334,12 +332,10 @@ public class EquivalencyRule implements Rule {
                 .stream()
                 .map(fr -> fr.getOptionalProgramRequirementCode().getOptProReqCode()).collect(Collectors.toList());
 
-        List<CourseRequirement> courseRequirementsForEquivalency = courseRequirements
+        return courseRequirements
                 .stream()
                 .filter(cr -> failedRuleCodes.contains(cr.getRuleCode().getCourseRequirementCode()))
                 .collect(Collectors.toList());
-
-        return courseRequirementsForEquivalency;
     }
 
     private boolean validateAssessmentsEmptyOrFailed(List<ProgramRequirement> gradProgramRulesMatch, List<StudentAssessment> studentAssessments) {
