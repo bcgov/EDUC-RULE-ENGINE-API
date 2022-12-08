@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Component
 public class AlgorithmSupportRule {
     private static final Logger logger = LoggerFactory.getLogger(AlgorithmSupportRule.class);
+    private static final String ERROR_FORMAT_STR = "ERROR: {}";
 
     private AlgorithmSupportRule() {
     }
@@ -192,7 +193,7 @@ public class AlgorithmSupportRule {
             logger.debug("TempPR: {}",tempPR);
             logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
         } catch (IOException e) {
-            logger.error("ERROR: {}",e.getMessage());
+            logger.error(ERROR_FORMAT_STR,e.getMessage());
         }
     }
 
@@ -205,7 +206,7 @@ public class AlgorithmSupportRule {
             logger.debug("TempPR: {}", tempSPR);
             logger.debug("Final Program rules list size: {}", finalOptionalProgramRulesList.size());
         } catch (IOException e) {
-            logger.error("ERROR: {}",e.getMessage());
+            logger.error(ERROR_FORMAT_STR,e.getMessage());
         }
     }
 
@@ -217,7 +218,7 @@ public class AlgorithmSupportRule {
             logger.debug("TempSC: {}", tempSC);
             logger.debug("Final course List size: {}: ", finalCourseList.size());
         } catch (IOException e) {
-            logger.error("ERROR: {}",e.getMessage());
+            logger.error(ERROR_FORMAT_STR,e.getMessage());
         }
     }
 
@@ -229,7 +230,7 @@ public class AlgorithmSupportRule {
             logger.debug("TempSC: {}",tempSA);
             logger.debug("Final Assessment List size: : {}",finalAssessmentList.size());
         } catch (IOException e) {
-            logger.error("ERROR: {}",e.getMessage());
+            logger.error(ERROR_FORMAT_STR,e.getMessage());
         }
     }
 }

@@ -226,16 +226,6 @@ public class OptionalProgramMatchRule {
             unusedRules.removeAll(finalOptionalProgramRulesList);
             finalOptionalProgramRulesList.addAll(unusedRules);
         }
-        List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
-        for(OptionalProgramRequirement pr:finalOptionalProgramRulesList) {
-            if(!pr.getOptionalProgramRequirementCode().isPassed() && pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("203")==0) {
-                for(StudentCourse sc:courseList) {
-                    if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTF12"))) {
-                        AlgorithmSupportRule.createAssessmentRecordOptionalProgram(obj.getStudentAssessmentsOptionalProgram(),sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                    }
-                }
-            }
-        }
         List<OptionalProgramRequirement> failedRules = finalOptionalProgramRulesList.stream().filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed())
                 .collect(Collectors.toList());
 
