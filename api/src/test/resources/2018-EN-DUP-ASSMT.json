@@ -3026,6 +3026,19 @@
       "courseName": null
     },
     {
+      "courseRequirementId": "63e318a9-a839-4aae-b282-755b48abbfc5",
+      "courseCode": "EN",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "115",
+        "label": "LTE10",
+        "description": "Course is eligible to meet the Literacy 10 Graduation Assessment requirement",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
       "courseRequirementId": "494f35dc-a1c9-486f-90d1-f42e4952b277",
       "courseCode": "EN",
       "courseLevel": "10",

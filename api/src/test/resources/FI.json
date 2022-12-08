@@ -3546,6 +3546,19 @@
       "courseName": null
     },
     {
+      "courseRequirementId": "8aa720a5-11de-6211-b03a-168e53ae1a00",
+      "courseCode": "FRAL",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "203",
+        "label": "LTF12",
+        "description": "French Immersion requirement if successfully completed with the Exam written flag where the Exam % > 0.",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
       "courseRequirementId": "63e318a9-a831-4aae-b282-755b48abbfc5",
       "courseCode": "EN",
       "courseLevel": "10",
