@@ -2,10 +2,12 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -178,6 +180,56 @@ public class AlgorithmSupportRule {
 
             nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
             ruleProcessorData.setNonGradReasons(nonGradReasons);
+        }
+    }
+
+    public static void copyAndAddIntoProgramRulesList(ProgramRequirement programRule, List<ProgramRequirement> finalProgramRulesList, ObjectMapper objectMapper) {
+        try {
+            ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(programRule), ProgramRequirement.class);
+            if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
+                finalProgramRulesList.add(tempPR);
+            }
+            logger.debug("TempPR: {}",tempPR);
+            logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
+        } catch (IOException e) {
+            logger.error("ERROR: {}",e.getMessage());
+        }
+    }
+
+    public static void copyAndAddIntoOptionalProgramRulesList(OptionalProgramRequirement optionalProgramRule, List<OptionalProgramRequirement> finalOptionalProgramRulesList, ObjectMapper objectMapper) {
+        try {
+            OptionalProgramRequirement tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(optionalProgramRule),
+                    OptionalProgramRequirement.class);
+            if (tempSPR != null && !finalOptionalProgramRulesList.contains(optionalProgramRule))
+                finalOptionalProgramRulesList.add(tempSPR);
+            logger.debug("TempPR: {}", tempSPR);
+            logger.debug("Final Program rules list size: {}", finalOptionalProgramRulesList.size());
+        } catch (IOException e) {
+            logger.error("ERROR: {}",e.getMessage());
+        }
+    }
+
+    public static void copyAndAddIntoStudentCoursesList(StudentCourse studentCourse, List<StudentCourse> finalCourseList, ObjectMapper objectMapper) {
+        try {
+            StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(studentCourse), StudentCourse.class);
+            if (tempSC != null)
+                finalCourseList.add(tempSC);
+            logger.debug("TempSC: {}", tempSC);
+            logger.debug("Final course List size: {}: ", finalCourseList.size());
+        } catch (IOException e) {
+            logger.error("ERROR: {}",e.getMessage());
+        }
+    }
+
+    public static void copyAndAddIntoStudentAssessmentsList(StudentAssessment studentAssessment, List<StudentAssessment> finalAssessmentList, ObjectMapper objectMapper) {
+        try {
+            StudentAssessment tempSA = objectMapper.readValue(objectMapper.writeValueAsString(studentAssessment), StudentAssessment.class);
+            if (tempSA != null)
+                finalAssessmentList.add(tempSA);
+            logger.debug("TempSC: {}",tempSA);
+            logger.debug("Final Assessment List size: : {}",finalAssessmentList.size());
+        } catch (IOException e) {
+            logger.error("ERROR: {}",e.getMessage());
         }
     }
 }

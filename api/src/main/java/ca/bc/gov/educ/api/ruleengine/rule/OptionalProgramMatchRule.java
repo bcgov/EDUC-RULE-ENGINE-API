@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -44,8 +43,6 @@ public class OptionalProgramMatchRule {
 
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        StudentAssessment tempSC;
-        OptionalProgramRequirement tempSPR;
         ObjectMapper objectMapper = new ObjectMapper();
 
         while (assessmentIterator.hasNext()) {
@@ -61,21 +58,8 @@ public class OptionalProgramMatchRule {
             logger.debug("Temp Assessment Requirement: {}",tempAssessmentRequirement);
             OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramRule(tempAssessmentRequirement,gradOptionalProgramRulesMatch,requirementsMet,tempAssessment,null);
 
-            try {
-                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempAssessment), StudentAssessment.class);
-                if (tempSC != null)
-                    finalAssessmentList.add(tempSC);
-                logger.debug("TempSC: {}",tempSC);
-                logger.debug("Final Assessment List size: : {}",finalAssessmentList.size());
-                tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(tempOptionalProgramRule),
-                        OptionalProgramRequirement.class);
-                if (tempSPR != null)
-                    finalOptionalProgramRulesList.add(tempSPR);
-                logger.debug("TempPR: {}",tempSPR);
-                logger.debug("Final Program rules list size: {}",finalOptionalProgramRulesList.size());
-            } catch (IOException e) {
-                logger.error("ERROR: {}",e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList, objectMapper);
         }
 
         obj.setStudentAssessmentsOptionalProgram(finalAssessmentList);
@@ -212,8 +196,6 @@ public class OptionalProgramMatchRule {
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        StudentCourse tempSC;
-        OptionalProgramRequirement tempSPR;
         ObjectMapper objectMapper = new ObjectMapper();
 
         while (courseIterator.hasNext()) {
@@ -232,21 +214,8 @@ public class OptionalProgramMatchRule {
 
             OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramCourseMatchRule(tempCourseRequirement,null,requirementsMet,tempCourse,gradOptionalProgramRulesMatch);
 
-            try {
-                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
-                if (tempSC != null)
-                    finalCourseList.add(tempSC);
-                logger.debug("TempSC: {}", tempSC);
-                logger.debug("Final course List size: : {}", finalCourseList.size());
-                tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(tempOptionalProgramRule),
-                        OptionalProgramRequirement.class);
-                if (tempSPR != null)
-                    finalOptionalProgramRulesList.add(tempSPR);
-                logger.debug("TempPR: {}", tempSPR);
-                logger.debug("Final Program rules list size: {}", finalOptionalProgramRulesList.size());
-            } catch (IOException e) {
-                logger.error("ERROR:{}", e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList, objectMapper);
         }
         obj.setStudentCoursesOptionalProgram(finalCourseList);
         handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet,ruleProcessorData);
