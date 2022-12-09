@@ -57,7 +57,7 @@ public class EquivalencyRule implements Rule {
 
         // 1. check assessment is empty or failed
         if (!validateAssessmentsEmptyOrFailed(gradProgramRulesMatch, ruleProcessorData.getStudentAssessments())) {
-            logger.warn("!!!Not empty nor failed assessments for optional program -> skip Equivalency Rule for processing");
+            logger.warn("!!!Not empty nor failed assessments -> skip Equivalency Rule for processing");
             return;
         }
 
