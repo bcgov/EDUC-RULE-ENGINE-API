@@ -343,6 +343,19 @@
       }
     },
     {
+      "programAlgoRuleID": "c9f09802-a902-679c-e053-98e9228ef633",
+      "graduationProgramCode": "2018-EN",
+      "sortOrder": 115,
+      "algorithmRuleCode": {
+        "algoRuleCode": "EQUIVALENCY_RULE",
+        "ruleImplementation": "EquivalencyRule",
+        "label": "Assessment Equivalency Rule",
+        "description": "Checks for eligible, successfully completed courses with a written provincial exam to meet a Graduation Assessment requirement",
+        "displayOrder": 290,
+        "isActiveRule": "Y"
+      }
+    },
+    {
       "programAlgoRuleID": "c70b587f-af46-d11b-e053-9ae9228eda21",
       "graduationProgramCode": "2018-EN",
       "sortOrder": 80,

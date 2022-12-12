@@ -382,6 +382,19 @@
       }
     },
     {
+      "programAlgoRuleID": "c9f09802-a902-679c-e053-98e9228ef633",
+      "graduationProgramCode": "2018-EN",
+      "sortOrder": 115,
+      "algorithmRuleCode": {
+        "algoRuleCode": "EQUIVALENCY_RULE",
+        "ruleImplementation": "EquivalencyRule",
+        "label": "Assessment Equivalency Rule",
+        "description": "Checks for eligible, successfully completed courses with a written provincial exam to meet a Graduation Assessment requirement",
+        "displayOrder": 290,
+        "isActiveRule": "Y"
+      }
+    },
+    {
       "programAlgoRuleID": "c70b587f-af4b-d11b-e053-9ae9228eda21",
       "graduationProgramCode": "2018-EN",
       "sortOrder": 120,
@@ -3527,6 +3540,19 @@
         "courseRequirementCode": "300",
         "label": "Français langue première 12 - Programme francophone ",
         "description": "Français langue première 12 - Programme francophone ",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "8aa720a5-11de-6211-b03a-168e53ae1a00",
+      "courseCode": "FRAL",
+      "courseLevel": "12",
+      "ruleCode": {
+        "courseRequirementCode": "203",
+        "label": "LTF12",
+        "description": "French Immersion requirement if successfully completed with the Exam written flag where the Exam % > 0.",
         "effectiveDate": 1626048000000,
         "expiryDate": null
       },
