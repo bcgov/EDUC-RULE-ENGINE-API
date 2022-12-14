@@ -84,11 +84,17 @@ public class MinAdultCoursesRule implements Rule {
 				} catch (ParseException e) {
 					logger.debug(e.getMessage());
 				}
-				int age = calculateAge(dobOfStudent,RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
-				if(age >= 18 && (totalCredits + sc.getCredits()) <= requiredCredits) {
-						totalCredits += sc.getCredits();
-						AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
-						sc.setUsed(true);
+				//Change DOB to first of the month for calculation
+				Period agePeriod = calculateAge(dobOfStudent.substring(0, 8).concat("01"), RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
+
+				int years = agePeriod.getYears();
+				int months = agePeriod.getMonths();
+
+				if( (years > 18 || (years == 18 && months > 0 ) )
+						&& (totalCredits + sc.getCredits()) <= requiredCredits) {
+					totalCredits += sc.getCredits();
+					AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
+					sc.setUsed(true);
 				}
 				if (totalCredits == requiredCredits) {
 					break;
@@ -135,11 +141,11 @@ public class MinAdultCoursesRule implements Rule {
 		return ruleProcessorData;
 	}
 	
-	public int calculateAge(String dob,String sessionDate) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	public Period calculateAge(String dob, String sessionDate) {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthDate = LocalDate.parse(dob, dateFormatter);
         LocalDate sDate = LocalDate.parse(sessionDate, dateFormatter);
-        return Period.between(birthDate, sDate).getYears();
+        return Period.between(birthDate, sDate);
     }
 
 	@Override
