@@ -184,7 +184,9 @@ public class MatchCreditsRule implements Rule {
             courseCreditException.merge(tempProgramRule.getProgramRequirementCode().getProReqCode(), 2, Integer::sum);
         }
         if(exceptionalCase != null)
-            gradProgramRulesMatch.stream().filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo("111") == 0).forEach(pR -> pR.getProgramRequirementCode().setPassed(true));
+            gradProgramRulesMatch.stream().filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo("111") == 0
+                    && tempCourse.getCredits() >= Integer.valueOf(pr.getProgramRequirementCode().getRequiredCredits()))
+                    .forEach(pR -> pR.getProgramRequirementCode().setPassed(true));
 
         if(courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
             tempProgramRule.getProgramRequirementCode().setPassed(true);
