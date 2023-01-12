@@ -85,7 +85,9 @@ public class DuplicateAssessmentsRule implements Rule {
 				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1950")
 				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("NOPROG")
 				|| ruleProcessorData.getGradProgram().getProgramCode().contains("2004")) {
-			RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected()).addAll(ruleProcessorData.getExcludedAssessments());
+			ruleProcessorData.setStudentAssessments(
+					RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected()));
+			ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
 		}
 		return ruleProcessorData;
 	}
