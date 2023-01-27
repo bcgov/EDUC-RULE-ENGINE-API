@@ -560,7 +560,7 @@
         "label": "3 Courses after turning 18",
         "description": "Of the five courses required for the Adult Dogwood, at least three must be completed after the student has turned 18",
         "requirementTypeCode": {
-          "reqTypeCode": "MAC18",
+          "reqTypeCode": "MAC",
           "label": "Min Adult Courses - Age 18",
           "displayOrder": 60,
           "description": "Algorithm identifies student courses taken after Adult student turns 18 (if a student’s projected grade date is > = 2012/07. Currently applies to the Adult Graduation Diploma Program only.",
@@ -626,32 +626,6 @@
         "activeRequirement": "Y",
         "requirementCategory": "C",
         "traxReqNumber": "506",
-        "passed": false,
-        "tempFailed": false
-      }
-    },
-    {
-      "programRequirementID": "c962a66c-6ae8-8c51-e053-98e9228e5e67",
-      "graduationProgramCode": "1950",
-      "programRequirementCode": {
-        "proReqCode": "507",
-        "label": "3 Courses after turning 19",
-        "description": "Of the five courses required for the Adult Dogwood, at least three must be completed after the student has turned 19",
-        "requirementTypeCode": {
-          "reqTypeCode": "MAC19",
-          "label": "Min Adult Courses - Age 19",
-          "displayOrder": 70,
-          "description": "Algorithm identifies student courses taken after Adult student turns 19 (if a student’s projected grade date is < 2012/07. Currently applies to the Adult Graduation Diploma Program only.",
-          "effectiveDate": 1628751600000,
-          "expiryDate": null
-        },
-        "requiredCredits": "12",
-        "notMetDesc": "Fewer than 3 courses after 19th birthday",
-        "requiredLevel": null,
-        "languageOfInstruction": null,
-        "activeRequirement": "Y",
-        "requirementCategory": "C",
-        "traxReqNumber": "507",
         "passed": false,
         "tempFailed": false
       }
@@ -4269,7 +4243,8 @@
     "studentGrade": "AD",
     "studentStatus": "ARC",
     "studentID": "ac339d70-7649-1a2e-8176-4a2e2a9914c2",
-    "consumerEducationRequirementMet": null
+    "consumerEducationRequirementMet": null,
+    "adultStartDate": "1999-03-30"
   },
   "gradOptionalProgramStatus": null,
   "gradProgram": {
