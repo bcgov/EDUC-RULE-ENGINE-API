@@ -85,7 +85,7 @@ public class MinAdultCoursesRule implements Rule {
 				// Get Adult Start date from the Data Object
 				Date adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
 
-				if( adultStartDate != null && temp.compareTo(adultStartDate) > 0
+				if( adultStartDate != null && temp != null && temp.compareTo(adultStartDate) > 0
 						&& (totalCredits + sc.getCredits()) <= requiredCredits) {
 					totalCredits += sc.getCredits();
 					AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
