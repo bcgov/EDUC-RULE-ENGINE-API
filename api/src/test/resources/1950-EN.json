@@ -395,19 +395,6 @@
       }
     },
     {
-      "programAlgoRuleID": "c962b9a5-01b1-a3db-e053-98e9228e703d",
-      "graduationProgramCode": "1950",
-      "sortOrder": 120,
-      "algorithmRuleCode": {
-        "algoRuleCode": "MIN_ADULT_CRSE_RULE_19",
-        "ruleImplementation": "MinAdultCourses19Rule",
-        "label": "Min Adult Courses After 19 rule",
-        "description": "Of the five courses required for the Adult Dogwood, at least three must be completed after a student has turned 19  if a student’s projected grade date is < 2012/07",
-        "displayOrder": 280,
-        "isActiveRule": "Y"
-      }
-    },
-    {
       "programAlgoRuleID": "c70b587f-af7e-d11b-e053-9ae9228eda21",
       "graduationProgramCode": "1950",
       "sortOrder": 130,
