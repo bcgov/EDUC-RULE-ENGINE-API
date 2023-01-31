@@ -47,12 +47,6 @@ public class MinAdultCoursesRule implements Rule {
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 		
-		String gradDate = RuleProcessorRuleUtils.getGradDate(studentCourses);
-		int diff = RuleEngineApiUtils.getDifferenceInMonths(gradDate, "2012-07-01");
-		if(diff > 0) {
-			return ruleProcessorData;
-		}
-
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MAC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
