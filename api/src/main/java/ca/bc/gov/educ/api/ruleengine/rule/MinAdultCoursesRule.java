@@ -147,7 +147,7 @@ public class MinAdultCoursesRule implements Rule {
 			// Get Adult Start date from the Data Object
 			Date adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
 
-			if(temp.compareTo(adultStartDate) <= 0) {
+			if(adultStartDate != null && temp != null && temp.compareTo(adultStartDate) <= 0) {
 				carryForwardCoursesCount++;
 
 				if (carryForwardCoursesCount > 2) {
