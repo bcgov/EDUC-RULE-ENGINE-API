@@ -126,6 +126,42 @@ public class MinAdultCoursesRule implements Rule {
 
 			logger.info("Min Adult Courses -> Required: {} Has: {}",requiredCredits,totalCredits);
 		}
+
+		/*
+			Carry Forward Courses Rule
+			Check if there are more than 2 match courses that are before the student has entered the Adult Graduation Program.
+			Remove them if any.
+		 */
+		int carryForwardCoursesCount = 0;
+		List<StudentCourse> tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).collect(Collectors.toList());
+
+		for (StudentCourse sc : tempStudentCourseList) {
+			String courseSessionDate = sc.getSessionDate() + "/01";
+			Date temp = null;
+			try {
+				temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
+			} catch (ParseException e) {
+				logger.debug(e.getMessage());
+			}
+
+			// Get Adult Start date from the Data Object
+			Date adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
+
+			if(temp.compareTo(adultStartDate) <= 0) {
+				carryForwardCoursesCount++;
+
+				if (carryForwardCoursesCount > 2) {
+					//Remove course from ReqMet
+					sc.setUsed(false);
+					sc.setUsedInMatchRule(false);
+					sc.setGradReqMet("");
+					sc.setGradReqMetDetail("");
+					sc.setCreditsUsedForGrad(0);
+					sc.setLeftOverCredits(0);
+				}
+			}
+		}
+
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
 	}
