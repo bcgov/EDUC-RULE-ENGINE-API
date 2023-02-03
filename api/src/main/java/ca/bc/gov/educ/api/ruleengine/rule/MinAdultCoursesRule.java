@@ -116,7 +116,7 @@ public class MinAdultCoursesRule implements Rule {
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
 			
-			List<GradRequirement> reqMetList = ruleProcessorData.getRequirementsMet() == null ? new ArrayList<GradRequirement>() :
+			List<GradRequirement> reqMetList = ruleProcessorData.getRequirementsMet() == null ? new ArrayList<>() :
 					ruleProcessorData.getRequirementsMet()
 					.stream()
 					.filter(gpr -> gpr.getRule() != null && "4".compareTo(gpr.getRule()) == 0)
