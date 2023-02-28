@@ -1,3 +1,21 @@
+CONNECTION_TIMEOUT: '30000'
+EDUC_SCHOOL_API: 'https://school-api-75e61b-dev.apps.silver.devops.gov.bc.ca/'
+SHOW_SQL_LOGS: 'false'
+SPRING_SHOW_REQUEST_DETAILS: 'true'
+MAX_LIFETIME: '60000'
+MAXIMUM_POOL_SIZE: '15'
+TZ: America/Vancouver
+MAX_URI_TAGS: '200'
+COMMON_NAMESPACE: 75e61b-dev
+ENABLE_SPLUNK_LOG_HELPER: 'false'
+GRAD_NAMESPACE: 77c02f-dev
+APP_LOG_LEVEL: DEBUG
+SPRING_WEB_LOG_LEVEL: INFO
+GRAD_BUSINESS_NAMESPACE: e8a97a-dev
+TOKEN_ISSUER_URL: 'https://soam-dev.apps.silver.devops.gov.bc.ca/auth/realms/master'
+SPRING_BOOT_AUTOCONFIG_LOG_LEVEL: INFO
+SPRING_SECURITY_LOG_LEVEL: INFO
+
 #DB Properties
 spring:
   jmx:
@@ -53,7 +71,7 @@ server:
     threads:
       worker: 128
       io: 16
-  #port: ${HTTP_PORT}
+  port: 9000
 
 #API Documentation
 springdoc:

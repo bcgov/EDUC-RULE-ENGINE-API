@@ -20,7 +20,7 @@ env:
   MIN_MEM: "200Mi"
   MAX_MEM: "750Mi"
   MIN_REPLICAS: "3"
-  MAX_REPLICAS: "5"
+  MAX_REPLICAS: "7"
 
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
