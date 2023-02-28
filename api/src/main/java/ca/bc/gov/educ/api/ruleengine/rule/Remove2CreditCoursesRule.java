@@ -7,12 +7,12 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Data
 @Component
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 @AllArgsConstructor
 public class Remove2CreditCoursesRule implements Rule {
 
-	private static Logger logger = Logger.getLogger(Remove2CreditCoursesRule.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(Remove2CreditCoursesRule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
@@ -28,7 +28,7 @@ public class Remove2CreditCoursesRule implements Rule {
 	@Override
 	public RuleData fire() {
 
-		logger.log(Level.INFO, "###################### Finding 2 Credit Courses ######################");
+		logger.debug("###################### Finding 2 Credit Courses ######################");
 
 		List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
 				ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
@@ -43,7 +43,7 @@ public class Remove2CreditCoursesRule implements Rule {
 		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentCourses(studentCourseList);
 
-		logger.log(Level.INFO, "Removed 2 Credit Courses: {0} ",
+		logger.debug("Removed 2 Credit Courses: {0} ",
 				(int) studentCourseList.stream().filter(StudentCourse::isLessCreditCourse).count());
 
 		return ruleProcessorData;
@@ -52,6 +52,6 @@ public class Remove2CreditCoursesRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("DuplicateAssessmentsRule: Rule Processor Data set.");
+		logger.debug("DuplicateAssessmentsRule: Rule Processor Data set.");
 	}
 }

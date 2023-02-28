@@ -36,7 +36,7 @@ public class EquivalencyRule implements Rule {
     }
 
     private void handleProgramRulesForAssessmentEquivalency() {
-        logger.info("# Processing Program Rules for Assessment Equivalency");
+        logger.debug("# Processing Program Rules for Assessment Equivalency");
 
         List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
@@ -82,7 +82,7 @@ public class EquivalencyRule implements Rule {
                             .orElse(null);
                 }
                 if (programRule != null && !programRule.getProgramRequirementCode().isPassed()) {
-                    logger.info("Pseudo Assessment ==> Program rule[{}] - course code[{}] / [{}]", programRule.getProgramRequirementCode().getProReqCode(), st.getCourseCode(), st.getCourseLevel());
+                    logger.debug("Pseudo Assessment ==> Program rule[{}] - course code[{}] / [{}]", programRule.getProgramRequirementCode().getProReqCode(), st.getCourseCode(), st.getCourseLevel());
                     processAssessmentEquivalency(st, programRule, courseRequirement, ruleProcessorData.getGradStudent().getPen(), requirementsMet, finalAssessmentList);
                     AlgorithmSupportRule.copyAndAddIntoProgramRulesList(programRule, finalProgramRulesList, objectMapper);
                 }
@@ -128,7 +128,7 @@ public class EquivalencyRule implements Rule {
             logger.debug("All the failed assessment match rules met the assessment equivalency requirement!");
         } else {
             // no need to add the failed one into requirementsNotMet as it was already processed as failed in the assessment rule processors before.
-            logger.info("One or more Match rules did not meet the assessment equivalency requirement!");
+            logger.debug("One or more Match rules did not meet the assessment equivalency requirement!");
             ruleProcessorData.setGraduated(false);
         }
 
@@ -161,7 +161,7 @@ public class EquivalencyRule implements Rule {
     }
 
     private void handleOptionalProgramRulesForAssessmentEquivalency() {
-        logger.info("# Processing Optional Program Rules for Assessment Equivalency");
+        logger.debug("# Processing Optional Program Rules for Assessment Equivalency");
         Map<String, OptionalProgramRuleProcessor> mapOptional = ruleProcessorData.getMapOptional();
 
         boolean isFrenchImmersion = ruleProcessorData.getGradProgram().getProgramCode().endsWith("EN");
@@ -222,7 +222,7 @@ public class EquivalencyRule implements Rule {
                             .orElse(null);
                 }
                 if (optionalProgramRule != null && !optionalProgramRule.getOptionalProgramRequirementCode().isPassed()) {
-                    logger.info("Pseudo Assessment ==> Optional Program rule[{}] - course code[{}] / [{}]", optionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(), st.getCourseCode(), st.getCourseLevel());
+                    logger.debug("Pseudo Assessment ==> Optional Program rule[{}] - course code[{}] / [{}]", optionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(), st.getCourseCode(), st.getCourseLevel());
                     processAssessmentEquivalencyOptionalProgram(st, optionalProgramRule, courseRequirement, ruleProcessorData.getGradStudent().getPen(), requirementsMet, finalAssessmentList);
                     AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(optionalProgramRule, finalOptionalProgramRulesList, objectMapper);
                 }
@@ -276,7 +276,7 @@ public class EquivalencyRule implements Rule {
             logger.debug("All the failed assessment match rules met the assessment equivalency requirement for optional program!");
         } else {
             // no need to add the failed one into requirementsNotMet as it was processed as failed before in assessment related rule processors
-            logger.info("One or more Match rules did not meet the assessment equivalency requirement for optional program!");
+            logger.debug("One or more Match rules did not meet the assessment equivalency requirement for optional program!");
             obj.setOptionalProgramGraduated(false);
         }
 
@@ -361,6 +361,6 @@ public class EquivalencyRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("EquivalencyRule: Rule Processor Data set.");
+        logger.debug("EquivalencyRule: Rule Processor Data set.");
     }
 }

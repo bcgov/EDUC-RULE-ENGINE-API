@@ -62,7 +62,7 @@ public class RegistrationsFailedCrseRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Registrations but Failed Courses: {}",(int) studentCourseList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
+        logger.debug("Registrations but Failed Courses: {}",(int) studentCourseList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
 
         return ruleProcessorData;
     }
@@ -70,6 +70,6 @@ public class RegistrationsFailedCrseRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("RegistrationsDuplicateCrseRule: Rule Processor Data set.");
+        logger.debug("RegistrationsDuplicateCrseRule: Rule Processor Data set.");
     }
 }

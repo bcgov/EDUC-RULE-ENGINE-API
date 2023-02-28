@@ -40,7 +40,7 @@ public class AssessmentDualDogwoodMatchCreditsRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("AssessmentDualDogwoodMatchCreditsRule: Rule Processor Data set.");
+		logger.debug("AssessmentDualDogwoodMatchCreditsRule: Rule Processor Data set.");
 	}
 
 }

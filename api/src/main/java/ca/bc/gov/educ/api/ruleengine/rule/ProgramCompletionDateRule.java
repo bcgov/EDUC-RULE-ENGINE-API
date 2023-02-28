@@ -71,6 +71,6 @@ public class ProgramCompletionDateRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("ProgramCompletionDateRule: Rule Processor Data set.");
+        logger.debug("ProgramCompletionDateRule: Rule Processor Data set.");
     }
 }

@@ -203,7 +203,7 @@ public class MatchCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MatchRule: Rule Processor Data set.");
+        logger.debug("MatchRule: Rule Processor Data set.");
     }
 
 }

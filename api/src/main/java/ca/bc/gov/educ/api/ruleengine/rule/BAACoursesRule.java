@@ -43,7 +43,7 @@ public class BAACoursesRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Board/Authority Authorized: {}",(int) studentCourseList.stream().filter(StudentCourse::isBoardAuthorityAuthorized).count());
+        logger.debug("Board/Authority Authorized: {}",(int) studentCourseList.stream().filter(StudentCourse::isBoardAuthorityAuthorized).count());
 
         return ruleProcessorData;
     }
@@ -51,6 +51,6 @@ public class BAACoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("BAACoursesRule: Rule Processor Data set.");
+        logger.debug("BAACoursesRule: Rule Processor Data set.");
     }
 }

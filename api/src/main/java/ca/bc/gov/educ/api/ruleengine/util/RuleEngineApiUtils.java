@@ -37,7 +37,7 @@ public class RuleEngineApiUtils {
         try {
             date = simpleDateFormat.parse(dateString);
         } catch (ParseException e) {
-            logger.info(ERROR_MSG,e.getMessage());
+            logger.error(ERROR_MSG,e.getMessage());
         }
 
         return date;
@@ -82,7 +82,7 @@ public class RuleEngineApiUtils {
 			String json = mapper.writeValueAsString(listCourses);
 			return mapper.readValue(json, new TypeReference<>(){});
 		} catch (JsonProcessingException e) {
-			logger.info(ERROR_MSG,e.getMessage());
+			logger.error(ERROR_MSG,e.getMessage());
 		}
 		return Collections.emptyList();
 		
@@ -94,7 +94,7 @@ public class RuleEngineApiUtils {
 			String json = mapper.writeValueAsString(listAssessments);
 			return mapper.readValue(json, new TypeReference<>(){});
 		} catch (JsonProcessingException e) {
-			logger.info(ERROR_MSG,e.getMessage());
+			logger.error(ERROR_MSG,e.getMessage());
 		}
 		return Collections.emptyList();
 		
@@ -107,7 +107,7 @@ public class RuleEngineApiUtils {
 			String json = mapper.writeValueAsString(gradProgramRulesMatch);
 			return mapper.readValue(json, new TypeReference<>(){});
 		} catch (JsonProcessingException e) {
-			logger.info(ERROR_MSG,e.getMessage());
+			logger.error(ERROR_MSG,e.getMessage());
 		}
 		return Collections.emptyList();
 		
@@ -118,7 +118,7 @@ public class RuleEngineApiUtils {
 			String json = mapper.writeValueAsString(rules);
 			return mapper.readValue(json, new TypeReference<>(){});
 		} catch (JsonProcessingException e) {
-			logger.info(ERROR_MSG,e.getMessage());
+			logger.error(ERROR_MSG,e.getMessage());
 		}
 		return Collections.emptyList();
 		
@@ -134,7 +134,7 @@ public class RuleEngineApiUtils {
                 return parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT).after(sDate);
             }
         } catch (ParseException e) {
-            logger.info(ERROR_MSG,e.getMessage());
+            logger.error(ERROR_MSG,e.getMessage());
         }
         return false;
     }

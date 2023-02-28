@@ -84,7 +84,7 @@ public class MinCredit1986Rule implements Rule {
                 ruleProcessorData.setNonGradReasons(nonGradReasons);
             }
 
-            logger.info("Min Credits -> Required: {} Has : {}",requiredCredits,totalCredits);
+            logger.debug("Min Credits -> Required: {} Has : {}",requiredCredits,totalCredits);
         }
 
         studentCourses.addAll(tempStudentCourseList.stream().filter(StudentCourse::isUsedInMatchRule).collect(Collectors.toList()));
@@ -117,6 +117,6 @@ public class MinCredit1986Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MinCredit1986Rule: Rule Processor Data set.");
+        logger.debug("MinCredit1986Rule: Rule Processor Data set.");
     }
 }

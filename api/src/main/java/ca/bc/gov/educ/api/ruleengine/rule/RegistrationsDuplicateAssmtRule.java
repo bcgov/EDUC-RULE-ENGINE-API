@@ -78,7 +78,7 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
         ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentsList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentAssessments(studentAssessmentsList);
 
-        logger.info("Registrations but Duplicates Asessments: {}",(int) studentAssessmentsList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
+        logger.debug("Registrations but Duplicates Asessments: {}",(int) studentAssessmentsList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
 
         return ruleProcessorData;
     }
@@ -86,6 +86,6 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("RegistrationsDuplicateAssmtRule: Rule Processor Data set.");
+        logger.debug("RegistrationsDuplicateAssmtRule: Rule Processor Data set.");
     }
 }

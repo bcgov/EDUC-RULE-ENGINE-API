@@ -1,10 +1,10 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FailedAssessmentsRule implements Rule {
 
-	private static Logger logger = Logger.getLogger(FailedAssessmentsRule.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(FailedAssessmentsRule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
@@ -31,7 +31,7 @@ public class FailedAssessmentsRule implements Rule {
 
 		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 
-		logger.log(Level.INFO, "###################### Finding FAILED assessments ######################");
+		logger.debug("###################### Finding FAILED assessments ######################");
 
 		for (StudentAssessment studentAssessment : studentAssessmentList) {
 
@@ -58,7 +58,7 @@ public class FailedAssessmentsRule implements Rule {
 		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-		logger.log(Level.INFO, "Failed Assessments: {0}",
+		logger.debug("Failed Assessments: {0}",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isFailed).count());
 
 		return ruleProcessorData;
@@ -66,6 +66,6 @@ public class FailedAssessmentsRule implements Rule {
 
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("FailedAssessmentsRule: Rule Processor Data set.");
+		logger.debug("FailedAssessmentsRule: Rule Processor Data set.");
 	}
 }

@@ -102,7 +102,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                    nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
                    ruleProcessorData.setNonGradReasons(nonGradReasons);
                }
-               logger.info("Min Elective Credits -> Required:{} Has:{}",requiredCredits,totalCredits);
+               logger.debug("Min Elective Credits -> Required:{} Has:{}",requiredCredits,totalCredits);
                totalCredits = 0;
            }
         }
@@ -113,7 +113,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MinElectiveCreditsFrench1996Rule: Rule Processor Data set.");
+        logger.debug("MinElectiveCreditsFrench1996Rule: Rule Processor Data set.");
     }
 
 }
