@@ -173,7 +173,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("FrenchImmersionMinElectiveCreditRule: Rule Processor Data set.");
+        logger.debug("FrenchImmersionMinElectiveCreditRule: Rule Processor Data set.");
     }
 
 }

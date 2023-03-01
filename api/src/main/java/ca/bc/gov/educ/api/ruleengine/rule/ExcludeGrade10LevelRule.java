@@ -42,7 +42,7 @@ public class ExcludeGrade10LevelRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Grade Level 10 Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isGrade10Course).count());
+        logger.debug("Grade Level 10 Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isGrade10Course).count());
 
         return ruleProcessorData;
     }
@@ -50,6 +50,6 @@ public class ExcludeGrade10LevelRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("ExcludeGrade10LevelRule: Rule Processor Data set.");
+        logger.debug("ExcludeGrade10LevelRule: Rule Processor Data set.");
     }
 }

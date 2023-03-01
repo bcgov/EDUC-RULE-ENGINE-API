@@ -87,6 +87,6 @@ public class MainProgramCompleteRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MainProgramCompleteRule: Rule Processor Data set.");
+        logger.debug("MainProgramCompleteRule: Rule Processor Data set.");
     }
 }

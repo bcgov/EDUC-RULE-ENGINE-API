@@ -89,7 +89,7 @@ public class MinElectiveCredits1986Rule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinElectiveCredits1986Rule: Rule Processor Data set.");
+		logger.debug("MinElectiveCredits1986Rule: Rule Processor Data set.");
 	}
 
 }

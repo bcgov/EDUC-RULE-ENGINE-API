@@ -1,10 +1,10 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FailedCoursesRule implements Rule {
 
-	private static Logger logger = Logger.getLogger(FailedCoursesRule.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(FailedCoursesRule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
@@ -31,7 +31,7 @@ public class FailedCoursesRule implements Rule {
 
 		List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
-		logger.log(Level.INFO, "###################### Finding FAILED courses ######################");
+		logger.debug("###################### Finding FAILED courses ######################");
 
 		for (StudentCourse studentCourse : studentCourseList) {
 			String finalLetterGrade = studentCourse.getCompletedCourseLetterGrade();
@@ -47,7 +47,7 @@ public class FailedCoursesRule implements Rule {
 		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentCourses(studentCourseList);
 
-		logger.log(Level.INFO, "Failed Courses: {0} ",
+		logger.debug("Failed Courses: {0} ",
 				(int) studentCourseList.stream().filter(StudentCourse::isFailed).count());
 
 		return ruleProcessorData;
@@ -55,6 +55,6 @@ public class FailedCoursesRule implements Rule {
 
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("FailedCoursesRule: Rule Processor Data set.");
+		logger.debug("FailedCoursesRule: Rule Processor Data set.");
 	}
 }

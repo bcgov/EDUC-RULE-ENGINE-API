@@ -105,6 +105,6 @@ public class OptionalProgramNoRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("OptionalProgramNoRule: Rule Processor Data set.");
+        logger.debug("OptionalProgramNoRule: Rule Processor Data set.");
     }
 }

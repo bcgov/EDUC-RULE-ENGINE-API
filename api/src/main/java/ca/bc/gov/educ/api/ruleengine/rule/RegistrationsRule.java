@@ -59,7 +59,7 @@ public class RegistrationsRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Projected Courses (Registrations): {}",(int) studentCourseList.stream().filter(StudentCourse::isProjected).count());
+        logger.debug("Projected Courses (Registrations): {}",(int) studentCourseList.stream().filter(StudentCourse::isProjected).count());
 
         return ruleProcessorData;
     }
@@ -67,6 +67,6 @@ public class RegistrationsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("RegistrationsRule: Rule Processor Data set.");
+        logger.debug("RegistrationsRule: Rule Processor Data set.");
     }
 }

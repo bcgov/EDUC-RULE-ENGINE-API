@@ -42,7 +42,7 @@ public class IDSCoursesRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Independent Directed Studies Courses: {}", (int) studentCourseList.stream().filter(StudentCourse::isIndependentDirectedStudies).count());
+        logger.debug("Independent Directed Studies Courses: {}", (int) studentCourseList.stream().filter(StudentCourse::isIndependentDirectedStudies).count());
 
         return ruleProcessorData;
     }
@@ -50,6 +50,6 @@ public class IDSCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("IDSCoursesRule: Rule Processor Data set.");
+        logger.debug("IDSCoursesRule: Rule Processor Data set.");
     }
 }

@@ -134,7 +134,7 @@ public class CareerProgramMatchRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("CareerProgramMatchRule: Rule Processor Data set.");
+        logger.debug("CareerProgramMatchRule: Rule Processor Data set.");
     }
 
 }

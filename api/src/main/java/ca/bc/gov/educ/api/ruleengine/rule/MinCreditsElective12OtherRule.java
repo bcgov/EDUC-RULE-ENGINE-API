@@ -157,7 +157,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 				}
 			}
 
-			logger.info("Min Elective Credits 12 Other -> Required: {} Has: {}",requiredCredits,totalCredits);
+			logger.debug("Min Elective Credits 12 Other -> Required: {} Has: {}",requiredCredits,totalCredits);
 
 		}
 		ruleProcessorData.setStudentCourses(studentCourses);
@@ -167,7 +167,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinCreditsElective12Rule: Rule Processor Data set.");
+		logger.debug("MinCreditsElective12Rule: Rule Processor Data set.");
 	}
 
 }

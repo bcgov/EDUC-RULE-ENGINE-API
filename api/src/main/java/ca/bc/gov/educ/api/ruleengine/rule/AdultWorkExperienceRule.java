@@ -116,7 +116,7 @@ public class AdultWorkExperienceRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("AdultWorkExperienceRule: Rule Processor Data set.");
+		logger.debug("AdultWorkExperienceRule: Rule Processor Data set.");
 	}
 
 }
