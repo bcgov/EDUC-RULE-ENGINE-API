@@ -74,7 +74,7 @@ public class IncompleteAssessmentsRule implements Rule {
         ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-        logger.info("Not Completed Assessments: {}",(int) studentAssessmentList.stream().filter(StudentAssessment::isNotCompleted).count());
+        logger.debug("Not Completed Assessments: {}",(int) studentAssessmentList.stream().filter(StudentAssessment::isNotCompleted).count());
 
         return ruleProcessorData;
     }
@@ -82,6 +82,6 @@ public class IncompleteAssessmentsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("IncompleteAssessmentsRule: Rule Processor Data set.");
+        logger.debug("IncompleteAssessmentsRule: Rule Processor Data set.");
     }
 }

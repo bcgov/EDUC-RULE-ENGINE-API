@@ -104,7 +104,7 @@ public class MinAdultCoursesRule implements Rule {
 				logger.debug("Min Adult Courses : Total- {} Required {}",totalCredits,requiredCredits);
 
 			} else {
-				logger.info("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
+				logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
 				ruleProcessorData.setGraduated(false);
 
 				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -127,7 +127,7 @@ public class MinAdultCoursesRule implements Rule {
 					delNonGradReason.removeIf(e -> e.getRule() != null && e.getRule().compareTo("506") == 0);
 			}
 
-			logger.info("Min Adult Courses -> Required: {} Has: {}",requiredCredits,totalCredits);
+			logger.debug("Min Adult Courses -> Required: {} Has: {}",requiredCredits,totalCredits);
 		}
 
 		/*
@@ -172,7 +172,7 @@ public class MinAdultCoursesRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinAdultCoursesRule: Rule Processor Data set.");
+		logger.debug("MinAdultCoursesRule: Rule Processor Data set.");
 	}
 
 }

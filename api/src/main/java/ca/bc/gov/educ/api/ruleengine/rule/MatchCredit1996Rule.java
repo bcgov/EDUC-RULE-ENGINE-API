@@ -218,7 +218,7 @@ public class MatchCredit1996Rule implements Rule {
                 requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc(),failedRule.getProgramRequirementCode().getProReqCode()));
             }
 
-            logger.info("One or more Match rules not met!");
+            logger.debug("One or more Match rules not met!");
             ruleProcessorData.setGraduated(false);
 
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -264,7 +264,7 @@ public class MatchCredit1996Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("Match4Credit1996Rule: Rule Processor Data set.");
+        logger.debug("Match4Credit1996Rule: Rule Processor Data set.");
     }
 
 }

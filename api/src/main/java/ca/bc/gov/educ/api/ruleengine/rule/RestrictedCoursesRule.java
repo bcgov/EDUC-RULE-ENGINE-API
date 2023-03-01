@@ -7,14 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Data
@@ -23,14 +23,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RestrictedCoursesRule implements Rule {
 
-    private static Logger logger = Logger.getLogger(RestrictedCoursesRule.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(RestrictedCoursesRule.class);
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
 
     @Override
     public RuleData fire() {
-        logger.log(Level.INFO, "## Finding COURSE RESTRICTIONS");
+        logger.debug("## Finding COURSE RESTRICTIONS");
 
         List<StudentCourse> studentCourses = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
@@ -69,7 +69,7 @@ public class RestrictedCoursesRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourses, ruleProcessorData.getExcludedCourses(), ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourses);
         prepareCoursesForOptionalPrograms();
-        logger.log(Level.INFO, "Restricted Courses: {0} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
+        logger.debug("Restricted Courses: {0} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
         return ruleProcessorData;
     }
 
@@ -132,6 +132,6 @@ public class RestrictedCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("RestrictedCoursesRule: Rule Processor Data set.");
+        logger.debug("RestrictedCoursesRule: Rule Processor Data set.");
     }
 }

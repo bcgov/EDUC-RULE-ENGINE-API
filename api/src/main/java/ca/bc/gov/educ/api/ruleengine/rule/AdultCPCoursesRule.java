@@ -46,7 +46,7 @@ public class AdultCPCoursesRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Career Program Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isCareerPrep).count());
+        logger.debug("Career Program Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isCareerPrep).count());
 
         return ruleProcessorData;
     }
@@ -54,6 +54,6 @@ public class AdultCPCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("AdultCPCoursesRule: Rule Processor Data set.");
+        logger.debug("AdultCPCoursesRule: Rule Processor Data set.");
     }
 }

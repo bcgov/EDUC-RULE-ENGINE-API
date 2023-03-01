@@ -84,7 +84,7 @@ public class RegistrationsDuplicateCrseRule implements Rule {
 
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Registrations but Duplicates Courses: {}",(int) studentCourseList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
+        logger.debug("Registrations but Duplicates Courses: {}",(int) studentCourseList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
 
         return ruleProcessorData;
     }
@@ -92,6 +92,6 @@ public class RegistrationsDuplicateCrseRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("RegistrationsDuplicateCrseRule: Rule Processor Data set.");
+        logger.debug("RegistrationsDuplicateCrseRule: Rule Processor Data set.");
     }
 }

@@ -40,7 +40,7 @@ public class FrenchImmersionMatchRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("FrenchImmersionMatchRule: Rule Processor Data set.");
+		logger.debug("FrenchImmersionMatchRule: Rule Processor Data set.");
 	}
 
 }

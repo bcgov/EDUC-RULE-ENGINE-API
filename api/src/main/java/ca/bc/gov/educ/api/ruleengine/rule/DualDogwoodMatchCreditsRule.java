@@ -39,7 +39,7 @@ public class DualDogwoodMatchCreditsRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("DualDogwoodMatchCreditsRule: Rule Processor Data set.");
+		logger.debug("DualDogwoodMatchCreditsRule: Rule Processor Data set.");
 	}
 
 }
