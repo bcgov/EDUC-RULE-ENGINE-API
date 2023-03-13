@@ -147,7 +147,9 @@ public class MinCreditsElective12OtherRule implements Rule {
 						sc.setUsed(false);
 						sc.setGradReqMet("");
 						sc.setGradReqMetDetail("");
-					
+						sc.setUsedInMatchRule(false);
+						sc.setCreditsUsedForGrad(0);
+						sc.setLeftOverCredits(0);
                 });
 				List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
 				delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("502") == 0);
