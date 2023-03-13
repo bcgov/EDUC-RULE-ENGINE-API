@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class AlgorithmSupportRule {
@@ -27,8 +26,9 @@ public class AlgorithmSupportRule {
         List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
                 .filter(pr -> !pr.getProgramRequirementCode().isPassed()
                         && pr.getProgramRequirementCode().getRequirementCategory() != null
-                        && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("C"))
-                .collect(Collectors.toList());
+                        && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("C")
+                        && "N/A".compareToIgnoreCase(pr.getProgramRequirementCode().getNotMetDesc()) != 0)
+                .toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -61,7 +61,7 @@ public class AlgorithmSupportRule {
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         ruleProcessorData.setStudentCourses(courseList);
         List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("A")).collect(Collectors.toList());
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("A")).toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
