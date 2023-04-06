@@ -44,8 +44,8 @@ public class MatchCredit1996Rule implements Rule {
 
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-        courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
-                .thenComparing(StudentCourse::getCompletedCoursePercentage).reversed());
+        courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel, Comparator.reverseOrder())
+                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
 
         List<ProgramRequirement> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
                 .stream()
@@ -209,7 +209,7 @@ public class MatchCredit1996Rule implements Rule {
     		finalProgramRulesList.addAll(unusedRules);
     	}
 		List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -234,7 +234,7 @@ public class MatchCredit1996Rule implements Rule {
         finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0 || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0 || "4".compareTo(gradProgramRule.getProgramRequirementCode().getRequiredCredits()) != 0)
-                .collect(Collectors.toList()));
+                .toList());
        
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
