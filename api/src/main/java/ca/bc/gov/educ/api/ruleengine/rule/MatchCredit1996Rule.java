@@ -279,7 +279,6 @@ public class MatchCredit1996Rule implements Rule {
             reqsMet = new ArrayList<>();
 
         reqsMet.addAll(requirementsMet);
-        ruleProcessorData.setRequirementsMet(reqsMet);
     }
 
 	public void processReqMetAndNotMet(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<StudentCourse> finalCourseList, List<CourseRequirement> originalCourseRequirements, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch) {
