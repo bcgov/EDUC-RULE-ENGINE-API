@@ -189,6 +189,17 @@ public class AlgorithmSupportRule {
             ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(programRule), ProgramRequirement.class);
             if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
                 finalProgramRulesList.add(tempPR);
+
+                //See if there are duplicates
+                List<ProgramRequirement> duplicateProgramRules = finalProgramRulesList.stream()
+                        .filter(fprl -> fprl.getProgramRequirementCode().getProReqCode().compareTo(tempPR.getProgramRequirementCode().getProReqCode()) == 0)
+                        .toList();
+
+                if (duplicateProgramRules.size() > 1) {
+                    finalProgramRulesList.removeAll(
+                            duplicateProgramRules.stream().filter(dpr -> !dpr.getProgramRequirementCode().isPassed()).toList()
+                    );
+                }
             }
             logger.debug("TempPR: {}",tempPR);
             logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
