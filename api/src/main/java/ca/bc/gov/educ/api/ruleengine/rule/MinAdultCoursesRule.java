@@ -1,9 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +34,7 @@ public class MinAdultCoursesRule implements Rule {
 	private RuleProcessorData ruleProcessorData;
 
 	public RuleData fire() {
-		logger.debug("Min Adult Courses 18 Rule");
+		logger.debug("Min Adult Courses Rule");
 
 		int totalCredits = 0;
 		int requiredCredits;
@@ -50,14 +47,8 @@ public class MinAdultCoursesRule implements Rule {
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 		
-		String gradDate = RuleProcessorRuleUtils.getGradDate(studentCourses);
-		int diff = RuleEngineApiUtils.getDifferenceInMonths(gradDate, "2012-07-01");
-		if(diff > 0) {
-			return ruleProcessorData;
-		}
-		String dobOfStudent = ruleProcessorData.getGradStudent().getDob();
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
-				.getGradProgramRules().stream().filter(gpr -> "MAC18".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+				.getGradProgramRules().stream().filter(gpr -> "MAC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
 				.collect(Collectors.toList());
 
@@ -84,11 +75,15 @@ public class MinAdultCoursesRule implements Rule {
 				} catch (ParseException e) {
 					logger.debug(e.getMessage());
 				}
-				int age = calculateAge(dobOfStudent,RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd"));
-				if(age >= 18 && (totalCredits + sc.getCredits()) <= requiredCredits) {
-						totalCredits += sc.getCredits();
-						AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
-						sc.setUsed(true);
+
+				// Get Adult Start date from the Data Object
+				Date adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
+
+				if( adultStartDate != null && temp != null && temp.compareTo(adultStartDate) > 0
+						&& (totalCredits + sc.getCredits()) <= requiredCredits) {
+					totalCredits += sc.getCredits();
+					AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
+					sc.setUsed(true);
 				}
 				if (totalCredits == requiredCredits) {
 					break;
@@ -109,7 +104,7 @@ public class MinAdultCoursesRule implements Rule {
 				logger.debug("Min Adult Courses : Total- {} Required {}",totalCredits,requiredCredits);
 
 			} else {
-				logger.info("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
+				logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
 				ruleProcessorData.setGraduated(false);
 
 				List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -121,31 +116,63 @@ public class MinAdultCoursesRule implements Rule {
 				ruleProcessorData.setNonGradReasons(nonGradReasons);
 			}
 			
-			List<GradRequirement> reqMetList = ruleProcessorData.getRequirementsMet().stream().filter(gpr -> gpr.getRule() != null && "4".compareTo(gpr.getRule()) == 0)
-			.collect(Collectors.toList());
+			List<GradRequirement> reqMetList = ruleProcessorData.getRequirementsMet() == null ? new ArrayList<>() :
+					ruleProcessorData.getRequirementsMet()
+					.stream()
+					.filter(gpr -> gpr.getRule() != null && "4".compareTo(gpr.getRule()) == 0)
+					.collect(Collectors.toList());
 			if(reqMetList.size() == 2) {
 				List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
 				if(delNonGradReason != null)
 					delNonGradReason.removeIf(e -> e.getRule() != null && e.getRule().compareTo("506") == 0);
 			}
 
-			logger.info("Min Adult Courses -> Required: {} Has: {}",requiredCredits,totalCredits);
+			logger.debug("Min Adult Courses -> Required: {} Has: {}",requiredCredits,totalCredits);
 		}
+
+		/*
+			Carry Forward Courses Rule
+			Check if there are more than 2 match courses that are before the student has entered the Adult Graduation Program.
+			Remove them if any.
+		 */
+		int carryForwardCoursesCount = 0;
+		List<StudentCourse> tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).collect(Collectors.toList());
+
+		for (StudentCourse sc : tempStudentCourseList) {
+			String courseSessionDate = sc.getSessionDate() + "/01";
+			Date temp = null;
+			try {
+				temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
+			} catch (ParseException e) {
+				logger.debug(e.getMessage());
+			}
+
+			// Get Adult Start date from the Data Object
+			Date adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
+
+			if(adultStartDate != null && temp != null && temp.compareTo(adultStartDate) <= 0) {
+				carryForwardCoursesCount++;
+
+				if (carryForwardCoursesCount > 2) {
+					//Remove course from ReqMet
+					sc.setUsed(false);
+					sc.setUsedInMatchRule(false);
+					sc.setGradReqMet("");
+					sc.setGradReqMetDetail("");
+					sc.setCreditsUsedForGrad(0);
+					sc.setLeftOverCredits(0);
+				}
+			}
+		}
+
 		ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
 		return ruleProcessorData;
 	}
-	
-	public int calculateAge(String dob,String sessionDate) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate birthDate = LocalDate.parse(dob, dateFormatter);
-        LocalDate sDate = LocalDate.parse(sessionDate, dateFormatter);
-        return Period.between(birthDate, sDate).getYears();
-    }
 
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinAdultCoursesRule: Rule Processor Data set.");
+		logger.debug("MinAdultCoursesRule: Rule Processor Data set.");
 	}
 
 }

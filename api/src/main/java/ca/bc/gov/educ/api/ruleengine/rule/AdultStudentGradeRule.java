@@ -34,7 +34,7 @@ public class AdultStudentGradeRule implements Rule {
                 .collect(Collectors.toList());
 
         if (RuleProcessorUtils.isNotEmptyOrNull(gradProgramRules)) {
-            logger.info("#Checking SG Rule");
+            logger.debug("#Checking SG Rule");
 
             for (ProgramRequirement gradProgramRule : gradProgramRules) {
                 logger.debug("StudentGrade:" + ruleProcessorData.getGradStudent().getStudentGrade());
@@ -63,6 +63,6 @@ public class AdultStudentGradeRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("AdultStudentGradeRule: Rule Processor Data set.");
+        logger.debug("AdultStudentGradeRule: Rule Processor Data set.");
     }
 }

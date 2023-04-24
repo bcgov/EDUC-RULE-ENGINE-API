@@ -9,13 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Data
 @Component
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 @AllArgsConstructor
 public class DuplicateAssessmentsRule implements Rule {
 
-	private static Logger logger = Logger.getLogger(DuplicateAssessmentsRule.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(DuplicateAssessmentsRule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
@@ -31,7 +31,7 @@ public class DuplicateAssessmentsRule implements Rule {
 	@Override
 	public RuleData fire() {
 
-		logger.log(Level.INFO, "###################### Finding DUPLICATE Assessments ######################");
+		logger.debug("###################### Finding DUPLICATE Assessments ######################");
 
 		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 		getModifiedAndSortedData(studentAssessmentList);
@@ -79,13 +79,15 @@ public class DuplicateAssessmentsRule implements Rule {
 		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-		logger.log(Level.INFO, "Duplicate Assessments: {0}",
+		logger.debug("Duplicate Assessments: {0}",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isDuplicate).count());
 		if(ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("SCCP")
 				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1950")
 				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("NOPROG")
 				|| ruleProcessorData.getGradProgram().getProgramCode().contains("2004")) {
-			RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected()).addAll(ruleProcessorData.getExcludedAssessments());
+			ruleProcessorData.setStudentAssessments(
+					RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected()));
+			ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
 		}
 		return ruleProcessorData;
 	}
@@ -149,6 +151,6 @@ public class DuplicateAssessmentsRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("DuplicateAssessmentsRule: Rule Processor Data set.");
+		logger.debug("DuplicateAssessmentsRule: Rule Processor Data set.");
 	}
 }

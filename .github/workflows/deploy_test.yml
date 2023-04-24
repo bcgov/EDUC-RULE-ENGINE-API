@@ -20,7 +20,7 @@ env:
   MIN_MEM: "200Mi"
   MAX_MEM: "750Mi"
   MIN_REPLICAS: "3"
-  MAX_REPLICAS: "5"
+  MAX_REPLICAS: "7"
 
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
@@ -30,7 +30,7 @@ jobs:
   deploy-to-openshift-test:
     name: Deploy to OpenShift TEST
     # ubuntu-20.04 can also be used.
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     environment: test
 
     outputs:

@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -35,59 +34,45 @@ public class OptionalProgramMatchRule {
                         && "A".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
-        if(assessmentRequirements == null) {
+        if (assessmentRequirements == null) {
             assessmentRequirements = new ArrayList<>();
         }
-        logger.debug("#### Match Optional Program Rule size: {}",gradOptionalProgramRulesMatch.size());
+        logger.debug("## Match OptPrgmRule size: {}", gradOptionalProgramRulesMatch.size());
 
         ListIterator<StudentAssessment> assessmentIterator = assessmentList.listIterator();
 
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        StudentAssessment tempSC;
-        OptionalProgramRequirement tempSPR;
         ObjectMapper objectMapper = new ObjectMapper();
 
         while (assessmentIterator.hasNext()) {
             StudentAssessment tempAssessment = assessmentIterator.next();
 
-            logger.debug("Processing Assessment: Code= {}",tempAssessment.getAssessmentCode());
-            logger.debug("Assessment Requirements size: {} ",assessmentRequirements.size());
+            logger.debug("Processing Assmt: Code= {}", tempAssessment.getAssessmentCode());
+            logger.debug("AssmtReq size: {} ", assessmentRequirements.size());
 
             List<AssessmentRequirement> tempAssessmentRequirement = assessmentRequirements.stream()
                     .filter(ar -> tempAssessment.getAssessmentCode().compareTo(ar.getAssessmentCode()) == 0)
                     .collect(Collectors.toList());
 
-            logger.debug("Temp Assessment Requirement: {}",tempAssessmentRequirement);
-            OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramRule(tempAssessmentRequirement,gradOptionalProgramRulesMatch,requirementsMet,tempAssessment,null);
+            logger.debug("TempAssmtReq: {}", tempAssessmentRequirement);
+            OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramRule(tempAssessmentRequirement, gradOptionalProgramRulesMatch, requirementsMet, tempAssessment, null);
 
-            try {
-                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempAssessment), StudentAssessment.class);
-                if (tempSC != null)
-                    finalAssessmentList.add(tempSC);
-                logger.debug("TempSC: {}",tempSC);
-                logger.debug("Final Assessment List size: : {}",finalAssessmentList.size());
-                tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(tempOptionalProgramRule),
-                        OptionalProgramRequirement.class);
-                if (tempSPR != null)
-                    finalOptionalProgramRulesList.add(tempSPR);
-                logger.debug("TempPR: {}",tempSPR);
-                logger.debug("Final Program rules list size: {}",finalOptionalProgramRulesList.size());
-            } catch (IOException e) {
-                logger.error("ERROR: {}",e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList, objectMapper);
         }
 
         obj.setStudentAssessmentsOptionalProgram(finalAssessmentList);
-        handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet, ruleProcessorData);
+        handleRule(gradOptionalProgramRulesMatch, finalOptionalProgramRulesList, requirementsNotMet, obj, requirementsMet, ruleProcessorData);
 
     }
+
     public static void handleFailedRules(List<OptionalProgramRequirement> failedRules, List<GradRequirement> requirementsNotMet, OptionalProgramRuleProcessor obj) {
         if (failedRules.isEmpty()) {
-            logger.debug("All the match rules met!");
+            logger.debug("All match rules met!");
         } else {
             for (OptionalProgramRequirement failedRule : failedRules) {
-                requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc(),failedRule.getOptionalProgramRequirementCode().getOptProReqCode()));
+                requirementsNotMet.add(new GradRequirement(failedRule.getOptionalProgramRequirementCode().getOptProReqCode(), failedRule.getOptionalProgramRequirementCode().getNotMetDesc(), failedRule.getOptionalProgramRequirementCode().getOptProReqCode()));
             }
             obj.setOptionalProgramGraduated(false);
 
@@ -101,11 +86,12 @@ public class OptionalProgramMatchRule {
             logger.debug("One or more Match rules not met!");
         }
     }
+
     public static OptionalProgramRequirement handleOptionalProgramRule(List<AssessmentRequirement> tempAssessmentRequirement, List<OptionalProgramRequirement> gradOptionalProgramRulesMatch, List<GradRequirement> requirementsMet, StudentAssessment tempAssessment, OptionalProgramRequirement tempOptionalProgramRule) {
 
         if (!tempAssessmentRequirement.isEmpty()) {
-            for(AssessmentRequirement ar:tempAssessmentRequirement) {
-                if(tempOptionalProgramRule == null) {
+            for (AssessmentRequirement ar : tempAssessmentRequirement) {
+                if (tempOptionalProgramRule == null) {
                     tempOptionalProgramRule = gradOptionalProgramRulesMatch.stream()
                             .filter(pr -> pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo(ar.getRuleCode().getAssmtRequirementCode()) == 0)
                             .findAny()
@@ -114,7 +100,7 @@ public class OptionalProgramMatchRule {
             }
         }
 
-        logger.debug("Temp Program Rule: {}",tempOptionalProgramRule);
+        logger.debug("Temp Program Rule: {}", tempOptionalProgramRule);
 
         if (!tempAssessmentRequirement.isEmpty() && tempOptionalProgramRule != null) {
 
@@ -138,9 +124,9 @@ public class OptionalProgramMatchRule {
 
                 tempOptionalProgramRule.getOptionalProgramRequirementCode().setPassed(true);
                 requirementsMet.add(new GradRequirement(tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(),
-                        tempOptionalProgramRule.getOptionalProgramRequirementCode().getLabel(),tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode()));
+                        tempOptionalProgramRule.getOptionalProgramRequirementCode().getLabel(), tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode()));
             } else {
-                logger.debug("!!! Program Rule met Already: {}",tempOptionalProgramRule);
+                logger.debug("!!! Program Rule met Already: {}", tempOptionalProgramRule);
             }
         }
         return tempOptionalProgramRule;
@@ -148,10 +134,13 @@ public class OptionalProgramMatchRule {
 
     public static OptionalProgramRequirement handleOptionalProgramCourseMatchRule(List<CourseRequirement> tempCourseRequirement, OptionalProgramRequirement tempOptionalProgramRule, List<GradRequirement> requirementsMet, StudentCourse tempCourse, List<OptionalProgramRequirement> gradOptionalProgramRulesMatch) {
         if (!tempCourseRequirement.isEmpty()) {
-            for(CourseRequirement cr:tempCourseRequirement) {
-                if(tempOptionalProgramRule == null) {
+            for (CourseRequirement cr : tempCourseRequirement) {
+                if (tempOptionalProgramRule == null) {
                     tempOptionalProgramRule = gradOptionalProgramRulesMatch.stream()
-                            .filter(pr -> pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo(cr.getRuleCode().getCourseRequirementCode()) == 0).findAny()
+                            .filter(pr ->
+                                    pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo(cr.getRuleCode().getCourseRequirementCode()) == 0
+                                            && tempCourse.getCredits() >= Integer.parseInt(pr.getOptionalProgramRequirementCode().getRequiredCredits())
+                            ).findAny()
                             .orElse(null);
                 }
             }
@@ -181,13 +170,14 @@ public class OptionalProgramMatchRule {
 
                 tempOptionalProgramRule.getOptionalProgramRequirementCode().setPassed(true);
                 requirementsMet.add(new GradRequirement(tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(),
-                        tempOptionalProgramRule.getOptionalProgramRequirementCode().getLabel(),tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode()));
+                        tempOptionalProgramRule.getOptionalProgramRequirementCode().getLabel(), tempOptionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode()));
             } else {
                 logger.debug("!!! Program Rule met Already: {}", tempOptionalProgramRule);
             }
         }
         return tempOptionalProgramRule;
     }
+
     public static void processOptionalProgramCourseMatchRule(OptionalProgramRuleProcessor obj, RuleProcessorData ruleProcessorData) {
         obj.setOptionalProgramGraduated(true);
         List<GradRequirement> requirementsMet = new ArrayList<>();
@@ -202,75 +192,51 @@ public class OptionalProgramMatchRule {
                         && "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
                 .collect(Collectors.toList());
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
-        if(courseRequirements == null) {
+        if (courseRequirements == null) {
             courseRequirements = new ArrayList<>();
         }
 
-        logger.debug("#### Match Optional Program Rule size: {}", gradOptionalProgramRulesMatch.size());
+        logger.debug("## MatchOptPrgmRule size: {}", gradOptionalProgramRulesMatch.size());
 
         ListIterator<StudentCourse> courseIterator = courseList.listIterator();
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        StudentCourse tempSC;
-        OptionalProgramRequirement tempSPR;
         ObjectMapper objectMapper = new ObjectMapper();
 
         while (courseIterator.hasNext()) {
             StudentCourse tempCourse = courseIterator.next();
 
-            logger.debug("Processing Course: Code={} Level={}",tempCourse.getCourseCode(),tempCourse.getCourseLevel());
-            logger.debug("Course Requirements size: {}",courseRequirements.size());
+            logger.debug("Processing Course: Code={} Level={}", tempCourse.getCourseCode(), tempCourse.getCourseLevel());
+            logger.debug("CourseRqmts size: {}", courseRequirements.size());
 
             List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
                     .collect(Collectors.toList());
 
-            logger.debug("Temp Course Requirement: {}", tempCourseRequirement);
+            logger.debug("TempCrseReq: {}", tempCourseRequirement);
 
 
-            OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramCourseMatchRule(tempCourseRequirement,null,requirementsMet,tempCourse,gradOptionalProgramRulesMatch);
+            OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramCourseMatchRule(tempCourseRequirement, null, requirementsMet, tempCourse, gradOptionalProgramRulesMatch);
 
-            try {
-                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
-                if (tempSC != null)
-                    finalCourseList.add(tempSC);
-                logger.debug("TempSC: {}", tempSC);
-                logger.debug("Final course List size: : {}", finalCourseList.size());
-                tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(tempOptionalProgramRule),
-                        OptionalProgramRequirement.class);
-                if (tempSPR != null)
-                    finalOptionalProgramRulesList.add(tempSPR);
-                logger.debug("TempPR: {}", tempSPR);
-                logger.debug("Final Program rules list size: {}", finalOptionalProgramRulesList.size());
-            } catch (IOException e) {
-                logger.error("ERROR:{}", e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList, objectMapper);
         }
         obj.setStudentCoursesOptionalProgram(finalCourseList);
-        handleRule(gradOptionalProgramRulesMatch,finalOptionalProgramRulesList,requirementsNotMet,obj,requirementsMet,ruleProcessorData);
+        handleRule(gradOptionalProgramRulesMatch, finalOptionalProgramRulesList, requirementsNotMet, obj, requirementsMet, ruleProcessorData);
     }
+
     public static void handleRule(List<OptionalProgramRequirement> gradOptionalProgramRulesMatch, List<OptionalProgramRequirement> finalOptionalProgramRulesList, List<GradRequirement> requirementsNotMet, OptionalProgramRuleProcessor obj, List<GradRequirement> requirementsMet, RuleProcessorData ruleProcessorData) {
-        if(gradOptionalProgramRulesMatch.size() != finalOptionalProgramRulesList.size()) {
+        if (gradOptionalProgramRulesMatch.size() != finalOptionalProgramRulesList.size()) {
             List<OptionalProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneOptionalProgramRule(gradOptionalProgramRulesMatch);
             unusedRules.removeAll(finalOptionalProgramRulesList);
             finalOptionalProgramRulesList.addAll(unusedRules);
         }
-        List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
-        for(OptionalProgramRequirement pr:finalOptionalProgramRulesList) {
-            if(!pr.getOptionalProgramRequirementCode().isPassed() && pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("203")==0) {
-                for(StudentCourse sc:courseList) {
-                    if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTF12"))) {
-                        AlgorithmSupportRule.createAssessmentRecordOptionalProgram(obj.getStudentAssessmentsOptionalProgram(),sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                    }
-                }
-            }
-        }
         List<OptionalProgramRequirement> failedRules = finalOptionalProgramRulesList.stream().filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed())
                 .collect(Collectors.toList());
 
-        handleFailedRules(failedRules,requirementsNotMet,obj);
+        handleFailedRules(failedRules, requirementsNotMet, obj);
 
         List<GradRequirement> resMet = obj.getRequirementsMetOptionalProgram();
 

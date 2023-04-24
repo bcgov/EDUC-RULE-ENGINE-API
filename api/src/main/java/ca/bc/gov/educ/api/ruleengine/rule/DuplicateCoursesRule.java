@@ -30,7 +30,7 @@ public class DuplicateCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        logger.info("###################### Finding DUPLICATE courses ######################");
+        logger.debug("###################### Finding DUPLICATE courses ######################");
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
         for (int i = 0; i < studentCourseList.size() - 1; i++) {
@@ -62,7 +62,7 @@ public class DuplicateCoursesRule implements Rule {
         }
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
-        logger.info("Duplicate Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
+        logger.debug("Duplicate Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isDuplicate).count());
         return ruleProcessorData;
     }
     
@@ -80,6 +80,6 @@ public class DuplicateCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("DuplicateCoursesRule: Rule Processor Data set.");
+        logger.debug("DuplicateCoursesRule: Rule Processor Data set.");
     }
 }

@@ -421,6 +421,19 @@
       }
     },
     {
+      "programAlgoRuleID": "c9f09802-a902-679c-e053-98e9228ef633",
+      "graduationProgramCode": "2018-EN",
+      "sortOrder": 115,
+      "algorithmRuleCode": {
+        "algoRuleCode": "EQUIVALENCY_RULE",
+        "ruleImplementation": "EquivalencyRule",
+        "label": "Assessment Equivalency Rule",
+        "description": "Checks for eligible, successfully completed courses with a written provincial exam to meet a Graduation Assessment requirement",
+        "displayOrder": 290,
+        "isActiveRule": "Y"
+      }
+    },
+    {
       "programAlgoRuleID": "c70b587f-af4b-d11b-e053-9ae9228eda21",
       "graduationProgramCode": "2018-EN",
       "sortOrder": 120,
@@ -3219,6 +3232,19 @@
         "courseRequirementCode": "101",
         "label": "Language Arts 10",
         "description": "Language Arts 10",
+        "effectiveDate": 1626048000000,
+        "expiryDate": null
+      },
+      "courseName": null
+    },
+    {
+      "courseRequirementId": "8aa720a5-11de-6211-b03a-168e53ae1a00",
+      "courseCode": "EN",
+      "courseLevel": "10",
+      "ruleCode": {
+        "courseRequirementCode": "115",
+        "label": "LTE10",
+        "description": "Course is eligible to meet the Literacy 10 Graduation Assessment requirement",
         "effectiveDate": 1626048000000,
         "expiryDate": null
       },

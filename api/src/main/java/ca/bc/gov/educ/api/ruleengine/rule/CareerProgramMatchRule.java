@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -91,13 +90,7 @@ public class CareerProgramMatchRule implements Rule {
                     sc.setUsed(true);
                 }
             }
-            try {
-                StudentCourse tempSC= objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
-                if (tempSC != null)
-                    finalCourseList.add(tempSC);
-            } catch (IOException e) {
-                logger.error("ERROR: {}",e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList, objectMapper);
 	       
             if ((totalCredits >= requiredCredits) && totalCredits != 0) {
                 break;
@@ -141,7 +134,7 @@ public class CareerProgramMatchRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("CareerProgramMatchRule: Rule Processor Data set.");
+        logger.debug("CareerProgramMatchRule: Rule Processor Data set.");
     }
 
 }

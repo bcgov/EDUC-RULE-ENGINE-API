@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -96,14 +95,7 @@ public class AdultWorkExperienceRule implements Rule {
 	            		tempCourse.setNotEligibleForElective(true);
 	            	}
 	            }
-
-	            try {
-					StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
-	                if (tempSC != null)
-	                    finalCourseList.add(tempSC);
-	            } catch (IOException e) {
-	                logger.error("ERROR: {}",e.getMessage());
-	            }
+				AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
 	        }
 	        
 	        if(numberOfWExCourses > 1L) {
@@ -124,7 +116,7 @@ public class AdultWorkExperienceRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("AdultWorkExperienceRule: Rule Processor Data set.");
+		logger.debug("AdultWorkExperienceRule: Rule Processor Data set.");
 	}
 
 }

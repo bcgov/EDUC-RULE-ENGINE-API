@@ -46,7 +46,7 @@ public class ExcludeValidationCoursesRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Validation Courses: {}",
+        logger.debug("Validation Courses: {}",
                 (int) studentCourseList
                         .stream()
                         .filter(StudentCourse::isValidationCourse)
@@ -58,6 +58,6 @@ public class ExcludeValidationCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("ExcludeValidationCoursesRule: Rule Processor Data set.");
+        logger.debug("ExcludeValidationCoursesRule: Rule Processor Data set.");
     }
 }

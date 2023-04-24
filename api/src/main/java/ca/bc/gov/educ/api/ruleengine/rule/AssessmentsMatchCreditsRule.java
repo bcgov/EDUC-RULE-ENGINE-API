@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,32 +81,19 @@ public class AssessmentsMatchCreditsRule implements Rule {
             logger.debug("Temp Program Rule: {}",tempProgramRule);
             processAssessments(tempAssessmentRequirement,tempProgramRule,requirementsMet,tempAssessment);
 
-            try {
-                StudentAssessment tempSA = objectMapper.readValue(objectMapper.writeValueAsString(tempAssessment), StudentAssessment.class);
-                if (tempSA != null)
-                    finalAssessmentList.add(tempSA);
-                logger.debug("TempSC: {}",tempSA);
-                logger.debug("Final Assessment List size: : {}",finalAssessmentList.size());
-                ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), ProgramRequirement.class);
-                if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
-                    finalProgramRulesList.add(tempPR);
-                }
-                logger.debug("TempPR: {}",tempPR);
-                logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
-            } catch (IOException e) {
-                logger.error("ERROR: {}",e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
 
-
-        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,requirementsMet,gradProgramRulesMatch,courseList,finalAssessmentList);
+        processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,gradProgramRulesMatch);
 
         //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
         finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0)
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
+                        || "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
                 .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
@@ -126,14 +112,12 @@ public class AssessmentsMatchCreditsRule implements Rule {
         return ruleProcessorData;
     }
 
-    private void processReqMetAndNotMet(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList) {
+    private void processReqMetAndNotMet(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsNotMet, List<ProgramRequirement> gradProgramRulesMatch) {
         if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
             List<ProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
             unusedRules.removeAll(finalProgramRulesList);
             finalProgramRulesList.addAll(unusedRules);
         }
-
-        AlgorithmSupportRule.checkCoursesForEquivalency(finalProgramRulesList,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
 
         List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
@@ -145,7 +129,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 requirementsNotMet.add(new GradRequirement(failedRule.getProgramRequirementCode().getTraxReqNumber(), failedRule.getProgramRequirementCode().getNotMetDesc(),failedRule.getProgramRequirementCode().getProReqCode()));
             }
 
-            logger.info("One or more Match rules not met!");
+            logger.debug("One or more Match rules not met!");
             ruleProcessorData.setGraduated(false);
 
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
@@ -186,7 +170,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
 	@Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("AssessmentsMatchCreditsRule: Rule Processor Data set.");
+        logger.debug("AssessmentsMatchCreditsRule: Rule Processor Data set.");
     }
 
 }

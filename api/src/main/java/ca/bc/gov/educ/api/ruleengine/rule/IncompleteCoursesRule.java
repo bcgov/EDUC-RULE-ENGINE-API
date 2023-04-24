@@ -58,13 +58,13 @@ public class IncompleteCoursesRule implements Rule {
 
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
-        logger.info("Not Completed Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isNotCompleted).count());
+        logger.debug("Not Completed Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isNotCompleted).count());
         return ruleProcessorData;
     }
 
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("IncompleteCoursesRule: Rule Processor Data set.");
+        logger.debug("IncompleteCoursesRule: Rule Processor Data set.");
     }
 }

@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -82,18 +81,8 @@ public class MatchCreditsRule implements Rule {
             }
             processCourse(tempCourse,tempCourseRequirement,tempProgramRule,requirementsMet,gradProgramRulesMatch,courseCreditException);
 
-            try {
-                StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(tempCourse), StudentCourse.class);
-                if (tempSC != null)
-                    finalCourseList.add(tempSC);
-                ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(tempProgramRule), ProgramRequirement.class);
-                if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
-                    finalProgramRulesList.add(tempPR);
-                }
-
-            } catch (IOException e) {
-                logger.error("ERROR: {}",e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
         }
         processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);        
 
@@ -195,7 +184,9 @@ public class MatchCreditsRule implements Rule {
             courseCreditException.merge(tempProgramRule.getProgramRequirementCode().getProReqCode(), 2, Integer::sum);
         }
         if(exceptionalCase != null)
-            gradProgramRulesMatch.stream().filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo("111") == 0).forEach(pR -> pR.getProgramRequirementCode().setPassed(true));
+            gradProgramRulesMatch.stream().filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo("111") == 0
+                    && tempCourse.getCredits() >= Integer.valueOf(pr.getProgramRequirementCode().getRequiredCredits()))
+                    .forEach(pR -> pR.getProgramRequirementCode().setPassed(true));
 
         if(courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
             tempProgramRule.getProgramRequirementCode().setPassed(true);
@@ -212,7 +203,7 @@ public class MatchCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("MatchRule: Rule Processor Data set.");
+        logger.debug("MatchRule: Rule Processor Data set.");
     }
 
 }

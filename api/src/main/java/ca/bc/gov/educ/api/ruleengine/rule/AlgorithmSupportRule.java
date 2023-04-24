@@ -2,17 +2,19 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class AlgorithmSupportRule {
     private static final Logger logger = LoggerFactory.getLogger(AlgorithmSupportRule.class);
+    private static final String ERROR_FORMAT_STR = "ERROR: {}";
 
     private AlgorithmSupportRule() {
     }
@@ -24,8 +26,9 @@ public class AlgorithmSupportRule {
         List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
                 .filter(pr -> !pr.getProgramRequirementCode().isPassed()
                         && pr.getProgramRequirementCode().getRequirementCategory() != null
-                        && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("C"))
-                .collect(Collectors.toList());
+                        && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("C")
+                        && "N/A".compareToIgnoreCase(pr.getProgramRequirementCode().getNotMetDesc()) != 0)
+                .toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -56,13 +59,9 @@ public class AlgorithmSupportRule {
     public static void processEmptyAssessmentCondition(RuleProcessorData ruleProcessorData,List<ProgramRequirement> gradProgramRulesMatch, List<GradRequirement> requirementsNotMet) {
         List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-        List<StudentAssessment> finalAssessmentList = new ArrayList<>();
-        List<GradRequirement> requirementsMet = new ArrayList<>();
-        checkCoursesForEquivalency(gradProgramRulesMatch,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
-        ruleProcessorData.setStudentAssessments(finalAssessmentList);
         ruleProcessorData.setStudentCourses(courseList);
         List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("A")).collect(Collectors.toList());
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("A")).toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -83,70 +82,10 @@ public class AlgorithmSupportRule {
             ruleProcessorData.setNonGradReasons(nonGradReasons);
         }
 
-        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
-
-        if (reqsMet == null)
-            reqsMet = new ArrayList<>();
-
-        reqsMet.addAll(requirementsMet);
-        ruleProcessorData.setRequirementsMet(reqsMet);
         if(ruleProcessorData.getStudentAssessments() == null || ruleProcessorData.getStudentAssessments().isEmpty()) {
             ruleProcessorData.setStudentAssessments(ruleProcessorData.getExcludedAssessments());
         }else {
             ruleProcessorData.getStudentAssessments().addAll(ruleProcessorData.getExcludedAssessments());
-        }
-    }
-
-    public static void checkCoursesForEquivalency(List<ProgramRequirement> finalProgramRulesList, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
-        for(ProgramRequirement pr:finalProgramRulesList) {
-            ruleFor116(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
-            ruleFor115(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
-            ruleFor118(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
-            ruleFor404(pr,courseList,finalAssessmentList,ruleProcessorData,requirementsMet);
-        }
-    }
-
-    private static void ruleFor404(ProgramRequirement pr, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
-        if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("404")==0) {
-            for(StudentCourse sc:courseList) {
-                if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE12"))) {
-                    createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                }
-            }
-        }
-    }
-
-    private static void ruleFor118(ProgramRequirement pr, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
-        if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("118")==0) {
-            for(StudentCourse sc:courseList) {
-                if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE12") ||
-                        sc.getMetLitNumRequirement().equalsIgnoreCase("LTP12"))) {
-                    createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                }
-            }
-        }
-    }
-
-    private static void ruleFor115(ProgramRequirement pr, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
-        if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("115")==0) {
-            for(StudentCourse sc:courseList) {
-                if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("LTE10") ||
-                        sc.getMetLitNumRequirement().equalsIgnoreCase("LTP10"))) {
-                    createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                }
-            }
-        }
-    }
-    private static void ruleFor116(ProgramRequirement pr, List<StudentCourse> courseList, List<StudentAssessment> finalAssessmentList, RuleProcessorData ruleProcessorData, List<GradRequirement> requirementsMet) {
-        if(!pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getProReqCode().compareTo("116")==0) {
-            for(StudentCourse sc:courseList) {
-                if(sc.getMetLitNumRequirement() != null && (sc.getMetLitNumRequirement().equalsIgnoreCase("NME10") ||
-                        sc.getMetLitNumRequirement().equalsIgnoreCase("NME") ||
-                        sc.getMetLitNumRequirement().equalsIgnoreCase("NMF10") ||
-                        sc.getMetLitNumRequirement().equalsIgnoreCase("NMF"))) {
-                    createAssessmentRecord(finalAssessmentList,sc.getMetLitNumRequirement(),ruleProcessorData.getAssessmentList(),pr,ruleProcessorData.getGradStudent().getPen(),requirementsMet);
-                }
-            }
         }
     }
 
@@ -242,6 +181,67 @@ public class AlgorithmSupportRule {
 
             nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
             ruleProcessorData.setNonGradReasons(nonGradReasons);
+        }
+    }
+
+    public static void copyAndAddIntoProgramRulesList(ProgramRequirement programRule, List<ProgramRequirement> finalProgramRulesList, ObjectMapper objectMapper) {
+        try {
+            ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(programRule), ProgramRequirement.class);
+            if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
+                finalProgramRulesList.add(tempPR);
+
+                //See if there are duplicates
+                List<ProgramRequirement> duplicateProgramRules = finalProgramRulesList.stream()
+                        .filter(fprl -> fprl.getProgramRequirementCode().getProReqCode().compareTo(tempPR.getProgramRequirementCode().getProReqCode()) == 0)
+                        .toList();
+
+                if (duplicateProgramRules.size() > 1) {
+                    finalProgramRulesList.removeAll(
+                            duplicateProgramRules.stream().filter(dpr -> !dpr.getProgramRequirementCode().isPassed()).toList()
+                    );
+                }
+            }
+            logger.debug("TempPR: {}",tempPR);
+            logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
+        } catch (IOException e) {
+            logger.error(ERROR_FORMAT_STR,e.getMessage());
+        }
+    }
+
+    public static void copyAndAddIntoOptionalProgramRulesList(OptionalProgramRequirement optionalProgramRule, List<OptionalProgramRequirement> finalOptionalProgramRulesList, ObjectMapper objectMapper) {
+        try {
+            OptionalProgramRequirement tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(optionalProgramRule),
+                    OptionalProgramRequirement.class);
+            if (tempSPR != null && !finalOptionalProgramRulesList.contains(optionalProgramRule))
+                finalOptionalProgramRulesList.add(tempSPR);
+            logger.debug("TempPR: {}", tempSPR);
+            logger.debug("Final Program rules list size: {}", finalOptionalProgramRulesList.size());
+        } catch (IOException e) {
+            logger.error(ERROR_FORMAT_STR,e.getMessage());
+        }
+    }
+
+    public static void copyAndAddIntoStudentCoursesList(StudentCourse studentCourse, List<StudentCourse> finalCourseList, ObjectMapper objectMapper) {
+        try {
+            StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(studentCourse), StudentCourse.class);
+            if (tempSC != null)
+                finalCourseList.add(tempSC);
+            logger.debug("TempSC: {}", tempSC);
+            logger.debug("Final course List size: {}: ", finalCourseList.size());
+        } catch (IOException e) {
+            logger.error(ERROR_FORMAT_STR,e.getMessage());
+        }
+    }
+
+    public static void copyAndAddIntoStudentAssessmentsList(StudentAssessment studentAssessment, List<StudentAssessment> finalAssessmentList, ObjectMapper objectMapper) {
+        try {
+            StudentAssessment tempSA = objectMapper.readValue(objectMapper.writeValueAsString(studentAssessment), StudentAssessment.class);
+            if (tempSA != null)
+                finalAssessmentList.add(tempSA);
+            logger.debug("TempSC: {}",tempSA);
+            logger.debug("Final Assessment List size: : {}",finalAssessmentList.size());
+        } catch (IOException e) {
+            logger.error(ERROR_FORMAT_STR,e.getMessage());
         }
     }
 }

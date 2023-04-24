@@ -35,7 +35,7 @@ public class AdultCPCoursesRule implements Rule {
         logger.debug("###################### Finding CAREER PROGRAM courses ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
-            boolean isCPWEExceptionCourse = studentCourse.getCourseCode().equalsIgnoreCase("CPWE") && studentCourse.getCourseLevel().equalsIgnoreCase("12");
+            boolean isCPWEExceptionCourse = studentCourse.getCourseCode().equalsIgnoreCase("CPWE") && studentCourse.getCourseLevel().contains("12");
             if (studentCourse.getCourseCode().startsWith("CP")
             		&& (RuleEngineApiUtils.parsingTraxDate(studentCourse.getSessionDate()).compareTo(RuleEngineApiUtils.parsingTraxDate("2000/09")) > 0) 
             		&& !isCPWEExceptionCourse) {
@@ -46,7 +46,7 @@ public class AdultCPCoursesRule implements Rule {
         ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.info("Career Program Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isCareerPrep).count());
+        logger.debug("Career Program Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isCareerPrep).count());
 
         return ruleProcessorData;
     }
@@ -54,6 +54,6 @@ public class AdultCPCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("AdultCPCoursesRule: Rule Processor Data set.");
+        logger.debug("AdultCPCoursesRule: Rule Processor Data set.");
     }
 }

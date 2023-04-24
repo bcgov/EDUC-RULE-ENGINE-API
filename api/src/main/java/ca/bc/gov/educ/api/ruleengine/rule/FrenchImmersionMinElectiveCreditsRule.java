@@ -1,6 +1,5 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,7 +48,6 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<StudentCourse> finalCourseList2 = new ArrayList<>();
-        StudentCourse tempSC;
         ObjectMapper objectMapper = new ObjectMapper();
         List<StudentCourse> matchedList = courseList
         		.stream()
@@ -72,13 +70,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
 	        		}
 	            }
         	}
-            try {
-                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
-                if (tempSC != null)
-                    finalCourseList.add(tempSC);
-            } catch (IOException e) {
-                logger.error("ERROR: {}",e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList, objectMapper);
             if ((totalCredits == requiredCredits) && totalCredits != 0) {
             	requirementAchieved = true;
             }
@@ -107,14 +99,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         			}         		
         		}
         	}
-
-            try {
-                tempSC = objectMapper.readValue(objectMapper.writeValueAsString(sc), StudentCourse.class);
-                if (tempSC != null)
-                	finalCourseList2.add(tempSC);
-            } catch (IOException e) {
-                logger.error("ERROR: {}",e.getMessage());
-            }
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList2, objectMapper);
             
             if ((totalCreditsGrade11or12 == requiredCreditsGrad11or12) && totalCreditsGrade11or12 != 0) {
             	requirementAchieved = true;
@@ -188,7 +173,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.info("FrenchImmersionMinElectiveCreditRule: Rule Processor Data set.");
+        logger.debug("FrenchImmersionMinElectiveCreditRule: Rule Processor Data set.");
     }
 
 }

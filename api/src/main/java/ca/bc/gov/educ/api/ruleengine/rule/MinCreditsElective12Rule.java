@@ -110,7 +110,7 @@ public class MinCreditsElective12Rule implements Rule {
 			List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
 			if(delNonGradReason != null)
 				delNonGradReason.removeIf(e -> e.getRule()!= null && e.getRule().compareTo("502") == 0);
-			logger.info("Min Elective Credits -> Required:{} Has: {}",requiredCredits,totalCredits);
+			logger.debug("Min Elective Credits -> Required:{} Has: {}",requiredCredits,totalCredits);
 			totalCredits = 0;
 		}
 		ruleProcessorData.setStudentCourses(studentCourses);
@@ -120,7 +120,7 @@ public class MinCreditsElective12Rule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinCreditsElective12Rule: Rule Processor Data set.");
+		logger.debug("MinCreditsElective12Rule: Rule Processor Data set.");
 	}
 
 }

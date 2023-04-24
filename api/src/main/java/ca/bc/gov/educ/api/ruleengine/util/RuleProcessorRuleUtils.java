@@ -40,13 +40,13 @@ public class RuleProcessorRuleUtils {
                 .collect(Collectors.toList());
 
         if (!projected) {
-            logger.info("Excluding Registrations!");
+            logger.debug("Excluding Registrations!");
             uniqueStudentCourseList = uniqueStudentCourseList
                     .stream()
                     .filter(sc -> !sc.isProjected())
                     .collect(Collectors.toList());
         } else
-            logger.info("Including Registrations!");
+            logger.debug("Including Registrations!");
 
         return uniqueStudentCourseList;
     }
@@ -130,13 +130,13 @@ public class RuleProcessorRuleUtils {
                 .collect(Collectors.toList());
 
         if (!projected) {
-            logger.info("Excluding Registrations!");
+            logger.debug("Excluding Registrations!");
             uniqueStudentAssessmentList = uniqueStudentAssessmentList
                     .stream()
                     .filter(sc -> !sc.isProjected())
                     .collect(Collectors.toList());
         } else
-            logger.info("Including Registrations!");
+            logger.debug("Including Registrations!");
 
         return uniqueStudentAssessmentList;
     }

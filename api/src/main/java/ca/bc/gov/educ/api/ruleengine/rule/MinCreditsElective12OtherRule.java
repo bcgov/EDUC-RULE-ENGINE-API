@@ -147,7 +147,9 @@ public class MinCreditsElective12OtherRule implements Rule {
 						sc.setUsed(false);
 						sc.setGradReqMet("");
 						sc.setGradReqMetDetail("");
-					
+						sc.setUsedInMatchRule(false);
+						sc.setCreditsUsedForGrad(0);
+						sc.setLeftOverCredits(0);
                 });
 				List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
 				delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("502") == 0);
@@ -157,7 +159,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 				}
 			}
 
-			logger.info("Min Elective Credits 12 Other -> Required: {} Has: {}",requiredCredits,totalCredits);
+			logger.debug("Min Elective Credits 12 Other -> Required: {} Has: {}",requiredCredits,totalCredits);
 
 		}
 		ruleProcessorData.setStudentCourses(studentCourses);
@@ -167,7 +169,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.info("MinCreditsElective12Rule: Rule Processor Data set.");
+		logger.debug("MinCreditsElective12Rule: Rule Processor Data set.");
 	}
 
 }
