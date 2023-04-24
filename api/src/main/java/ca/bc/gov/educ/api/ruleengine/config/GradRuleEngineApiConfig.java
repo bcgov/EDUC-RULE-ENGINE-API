@@ -23,17 +23,6 @@ public class GradRuleEngineApiConfig {
         return builder.build();
     }
 
-    @Bean
-    ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
-        return builder.createXmlMapper(false)
-                // Set timezone for JSON serialization as system timezone
-                .timeZone(TimeZone.getDefault())
-                .build();
-    }
-
-    @Bean
-    Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
-        return new Jackson2ObjectMapperBuilder();
-    }
+    
 
 }
