@@ -163,6 +163,7 @@ public class OptionalProgramMatchRule {
                         else {
                             tempCredits = 0;
                             isRequirementMet = true;
+                            sideCredits.remove(cr.getRuleCode().getCourseRequirementCode());
                         }
                     }
                 }
