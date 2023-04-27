@@ -212,8 +212,25 @@ public class AlgorithmSupportRule {
         try {
             OptionalProgramRequirement tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(optionalProgramRule),
                     OptionalProgramRequirement.class);
-            if (tempSPR != null && !finalOptionalProgramRulesList.contains(optionalProgramRule))
-                finalOptionalProgramRulesList.add(tempSPR);
+            if (tempSPR != null && !finalOptionalProgramRulesList.contains(optionalProgramRule)) {
+                //If Rule already exists in the list then remove and replace
+                OptionalProgramRequirement opr = finalOptionalProgramRulesList.stream()
+                        .filter(pr -> pr.getOptionalProgramRequirementID().compareTo(tempSPR.getOptionalProgramRequirementID()) == 0)
+                                .findAny().orElse(null);
+
+                if (opr != null) {
+                    // If Rule already added before, check if the added rule is failed, then replace with current one
+                    // Otherwise, do not add anything
+                    if (!opr.getOptionalProgramRequirementCode().isPassed()) {
+                        finalOptionalProgramRulesList.remove(opr);
+                        finalOptionalProgramRulesList.add(tempSPR);
+                    }
+                }
+                // If rule not added yet, just add it
+                else {
+                    finalOptionalProgramRulesList.add(tempSPR);
+                }
+            }
             logger.debug("TempPR: {}", tempSPR);
             logger.debug("Final Program rules list size: {}", finalOptionalProgramRulesList.size());
         } catch (IOException e) {

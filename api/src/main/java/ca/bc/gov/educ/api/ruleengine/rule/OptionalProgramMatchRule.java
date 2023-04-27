@@ -23,7 +23,7 @@ public class OptionalProgramMatchRule {
     }
 
     public static void processOptionalProgramAssessmentMatchRule(OptionalProgramRuleProcessor obj, RuleProcessorData ruleProcessorData) {
-        obj.setOptionalProgramGraduated(true);
+        //obj.setOptionalProgramGraduated(true);
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
@@ -33,7 +33,8 @@ public class OptionalProgramMatchRule {
                 .getOptionalProgramRules().stream()
                 .filter(gradOptionalProgramRule -> "M".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
-                        && "A".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
+                        && "A".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0
+                        && !gradOptionalProgramRule.getOptionalProgramRequirementCode().isPassed())
                 .collect(Collectors.toList());
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
         if (assessmentRequirements == null) {
@@ -214,7 +215,8 @@ public class OptionalProgramMatchRule {
                 .getOptionalProgramRules().stream()
                 .filter(gradOptionalProgramRule -> "M".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
-                        && "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
+                        && "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0
+                        && !gradOptionalProgramRule.getOptionalProgramRequirementCode().isPassed())
                 .collect(Collectors.toList());
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
         if (courseRequirements == null) {
