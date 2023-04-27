@@ -23,7 +23,6 @@ public class OptionalProgramMatchRule {
     }
 
     public static void processOptionalProgramAssessmentMatchRule(OptionalProgramRuleProcessor obj, RuleProcessorData ruleProcessorData) {
-        //obj.setOptionalProgramGraduated(true);
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
