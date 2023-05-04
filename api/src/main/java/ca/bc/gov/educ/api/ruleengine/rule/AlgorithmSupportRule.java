@@ -184,6 +184,46 @@ public class AlgorithmSupportRule {
         }
     }
 
+    public static void checkCredits1996(int totalCredits, int requiredCredits, ProgramRequirement gradProgramRule, RuleProcessorData ruleProcessorData) {
+
+        List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
+        List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
+        GradRequirement gr = new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(),
+                gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode());
+
+        if (totalCredits >= requiredCredits) {
+            logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
+            gradProgramRule.getProgramRequirementCode().setPassed(true);
+
+            if (reqsMet == null)
+                reqsMet = new ArrayList<>();
+            if (nonGradReasons == null)
+                nonGradReasons = new ArrayList<>();
+
+            if (!reqsMet.contains(gr)) {
+                reqsMet.add(gr);
+                ruleProcessorData.setRequirementsMet(reqsMet);
+                logger.debug("Min Elective Credits Rule: Total-{} Required- {}",totalCredits,requiredCredits);
+            }
+
+            //When you add the requirement to ReqMet List, remove them from the NotGradReasons list if they exist
+            nonGradReasons.remove(gr);
+            ruleProcessorData.setNonGradReasons(nonGradReasons);
+
+        } else {
+            logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
+            ruleProcessorData.setGraduated(false);
+
+            if (nonGradReasons == null)
+                nonGradReasons = new ArrayList<>();
+
+            if (!nonGradReasons.contains(gr)) {
+                nonGradReasons.add(gr);
+                ruleProcessorData.setNonGradReasons(nonGradReasons);
+            }
+        }
+    }
+
     public static void copyAndAddIntoProgramRulesList(ProgramRequirement programRule, List<ProgramRequirement> finalProgramRulesList, ObjectMapper objectMapper) {
         try {
             ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(programRule), ProgramRequirement.class);

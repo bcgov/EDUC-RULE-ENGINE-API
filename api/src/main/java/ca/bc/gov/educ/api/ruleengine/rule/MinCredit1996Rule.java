@@ -58,30 +58,39 @@ public class MinCredit1996Rule implements Rule {
             }
             setCoursesReqMet(studentCourses,gradProgramRule,requiredCredits);
 
+            List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
+            List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
+            GradRequirement gr = new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(),
+                    gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode());
+
             if (totalCredits >= requiredCredits) {
                 logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
                 gradProgramRule.getProgramRequirementCode().setPassed(true);
 
-                List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
-
                 if (reqsMet == null)
                     reqsMet = new ArrayList<>();
+                if (nonGradReasons == null)
+                    nonGradReasons = new ArrayList<>();
 
-                reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(),
-                        gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
-                ruleProcessorData.setRequirementsMet(reqsMet);
+                if (!reqsMet.contains(gr)) {
+                    reqsMet.add(gr);
+                    ruleProcessorData.setRequirementsMet(reqsMet);
+                }
+
+                //When you add the requirement to ReqMet List, remove them from the NotGradReasons list if they exist
+                nonGradReasons.remove(gr);
+                ruleProcessorData.setNonGradReasons(nonGradReasons);
             } else {
                 logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
                 ruleProcessorData.setGraduated(false);
 
-                List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
-
                 if (nonGradReasons == null)
                     nonGradReasons = new ArrayList<>();
 
-                nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(),
-                        gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
-                ruleProcessorData.setNonGradReasons(nonGradReasons);
+                if (!nonGradReasons.contains(gr)) {
+                    nonGradReasons.add(gr);
+                    ruleProcessorData.setNonGradReasons(nonGradReasons);
+                }
             }
 
             logger.debug("Min Credits -> Required: {} Has : {}",requiredCredits,totalCredits);
