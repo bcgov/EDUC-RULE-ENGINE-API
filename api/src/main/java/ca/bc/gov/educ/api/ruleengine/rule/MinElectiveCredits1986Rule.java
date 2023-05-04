@@ -50,6 +50,9 @@ public class MinElectiveCredits1986Rule implements Rule {
 			if(gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null) {
 				requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 
+				if (ruleProcessorData.isConsumerEdFlagUsed())
+					requiredCredits = 32;
+
 				for (StudentCourse sc : studentCourses) {
 					if (!sc.isUsedInMatchRule() && (sc.getCourseLevel().trim().contains("11") || sc.getCourseLevel().trim().contains("12"))) {
 						boolean extraCreditsUsed = false;

@@ -119,6 +119,13 @@ public class MatchCredit1986Rule implements Rule {
             if(pr.getProgramRequirementCode().getProReqCode().compareTo("745")==0 && !pr.getProgramRequirementCode().isPassed() && ruleProcessorData.getGradStatus().getConsumerEducationRequirementMet() != null && ruleProcessorData.getGradStatus().getConsumerEducationRequirementMet().compareTo("Y")==0) {
                 pr.getProgramRequirementCode().setPassed(true);
                 requirementsMet.add(new GradRequirement(pr.getProgramRequirementCode().getTraxReqNumber(), pr.getProgramRequirementCode().getLabel(),pr.getProgramRequirementCode().getProReqCode()));
+
+                /*
+                    If you make it here, it means that the GRAD requirement 745 was met using the help of ConsumerEdFlag and not by matching an actual course.
+                    So, in that case, the required credits for MinElectiveCourses requirement 746 would be 32 instead of 28.
+                    Set this flag for further use in the MinElectiveCredits1986 Rule for processing
+                */
+                ruleProcessorData.setConsumerEdFlagUsed(true);
             }
         });
 		List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
