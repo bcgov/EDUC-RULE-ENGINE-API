@@ -98,7 +98,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 						break;
 					}
 				}
-				AlgorithmSupportRule.checkCredits(totalCredits,requiredCredits,gradProgramRule,ruleProcessorData);
+				AlgorithmSupportRule.checkCredits1996(totalCredits,requiredCredits,gradProgramRule,ruleProcessorData);
 				totalCredits = 0;
 			}
 		}

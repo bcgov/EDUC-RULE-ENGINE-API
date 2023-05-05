@@ -42,4 +42,5 @@ public class RuleProcessorData implements RuleData {
     private boolean isProjected;
     private Integer ldCounter=0;
     private List<StudentCareerProgram> cpList;
+    private boolean consumerEdFlagUsed;
 }

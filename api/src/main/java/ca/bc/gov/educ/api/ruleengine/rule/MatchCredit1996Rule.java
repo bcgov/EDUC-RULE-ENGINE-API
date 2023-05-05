@@ -267,7 +267,15 @@ public class MatchCredit1996Rule implements Rule {
             unusedRules.removeAll(finalProgramRulesList);
             finalProgramRulesList.addAll(unusedRules);
         }
-        logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
+
+        //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
+        finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
+                .stream()
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
+                        || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
+                .toList());
+
+        logger.debug("Final Program rules list size 2: {}", finalProgramRulesList.size());
 
         ruleProcessorData.setStudentCourses(finalCourseList);
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);
@@ -312,7 +320,8 @@ public class MatchCredit1996Rule implements Rule {
         //finalProgramRulesList only has the Match type rules in it. Add rest of the type of rules back to the list.
         finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
                 .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0 || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0 || "4".compareTo(gradProgramRule.getProgramRequirementCode().getRequiredCredits()) != 0)
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
+                        || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
                 .toList());
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
