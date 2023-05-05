@@ -128,6 +128,16 @@ public class MatchCredit1986Rule implements Rule {
                 ruleProcessorData.setConsumerEdFlagUsed(true);
             }
         });
+
+        // Iterate through the course list and see if any of the courses has met the requirement 745
+        // and if found then see if that course is a Level 10 course
+        // If matches, then set the Consumer Ed Flag to TRUE
+        finalCourseList.forEach(fcl -> {
+            if (fcl.getGradReqMet().contains("745") && fcl.getCourseLevel().contains("10")) {
+                ruleProcessorData.setConsumerEdFlagUsed(true);
+            }
+        });
+
 		List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
                 .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
