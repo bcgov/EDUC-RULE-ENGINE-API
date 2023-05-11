@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -25,9 +27,27 @@ public class RuleEngineApiUtils {
 
     private RuleEngineApiUtils() {}
 
-	public static String formatDate(Date date, String dateFormat) {
+	public static String formatDate(LocalDate date, String dateFormat) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
+        return date.format(formatter);
+    }
+
+    public static String formatDate(Date date, String dateFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         return simpleDateFormat.format(date);
+    }
+
+    public static LocalDate parseLocalDate(String dateString, String dateFormat) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+        LocalDate date = LocalDate.now();
+
+        try {
+            date = simpleDateFormat.parse(dateString).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        } catch (ParseException e) {
+            logger.error(ERROR_MSG,e.getMessage());
+        }
+
+        return date;
     }
 
     public static Date parseDate(String dateString, String dateFormat) throws ParseException {
@@ -42,7 +62,7 @@ public class RuleEngineApiUtils {
 
         return date;
     }
-    
+
     public static Date parsingTraxDate(String sessionDate) {
     	 String actualSessionDate = sessionDate + "/01";
     	 Date temp;
