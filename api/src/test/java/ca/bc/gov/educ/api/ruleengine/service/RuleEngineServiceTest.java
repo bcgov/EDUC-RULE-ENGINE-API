@@ -27,8 +27,8 @@ public class RuleEngineServiceTest {
 	@Autowired RuleEngineService ruleEngineService;
 
 	private Map<String,Error> errors = new HashMap<>();
-	private static Logger logger = Logger.getLogger(RuleEngineServiceTest.class.getName());
-	
+	public static Logger logger = Logger.getLogger(RuleEngineServiceTest.class.getName());
+
 	@Test
 	public void testProcessGradAlgorithmRules() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN");	
@@ -1026,7 +1026,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 	@Test
@@ -1058,7 +1058,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 	@Test
@@ -1069,7 +1069,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 	@Test
@@ -1080,7 +1080,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 	@Test
@@ -1090,7 +1090,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 	@Test
@@ -1101,7 +1101,18 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
+	}
+
+	@Test
+	public void testProcessGradAlgorithmRules2023_EN_109496042() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2023-EN-109496042");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 	@Test
@@ -1111,7 +1122,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 	@Test
@@ -1121,7 +1132,7 @@ public class RuleEngineServiceTest {
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 	@Test
@@ -1131,104 +1142,76 @@ public class RuleEngineServiceTest {
 		ruleProcessorData.setProjected(false);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
-		assertTrue(!ruleProcessorData.isGraduated());
+		assertFalse(ruleProcessorData.isGraduated());
 	}
 
 
 	//
 	
 	private RuleProcessorData getRuleProcessorData(String category) {
-		File file = null;
-		switch (category) {
-			case "2018-EN":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN.json")).getFile());
-				break;
-			case "FI":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("FI.json")).getFile());
-				break;
-			case "1950-EN":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN.json")).getFile());
-				break;
-			case "1950-EN-2":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-2.json")).getFile());
-				break;
-			case "2018-PF":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-PF.json")).getFile());
-				break;
-			case "2018-EN-UNGRAD":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-UNGRAD.json")).getFile());
-				break;
-			case "2018-EN-DUP-ASSMT":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-DUP-ASSMT.json")).getFile());
-				break;
-			case "DD-FAIL":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("DD-FAIL.json")).getFile());
-				break;
-			case "1950-EN-3":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-3.json")).getFile());
-				break;
-			case "1950-EN-4":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-4.json")).getFile());
-				break;
-			case "2018-EN-MIN-CREDIT-FAIL":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-MIN-CREDIT-FAIL.json")).getFile());
-				break;
-			case "1996-EN-106945306":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-106945306.json")).getFile());
-				break;
-			case "1996-EN-104337712":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-104337712.json")).getFile());
-				break;
-			case "1996-EN-101821056":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-101821056.json")).getFile());
-				break;
-			case "1996-EN-101541068":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-101541068.json")).getFile());
-				break;
-			case "1996-EN-101171718":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-101171718.json")).getFile());
-				break;
-			case "1996-EN-101039378":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-101039378.json")).getFile());
-				break;
-			case "1996-PF-104573159":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-PF-104573159.json")).getFile());
-				break;
-			case "1996-EN-109491597":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-109491597.json")).getFile());
-				break;
-			case "SCCP-130319387":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("SCCP-130319387.json")).getFile());
-				break;
-			case "SCCP-130319387-fail":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("SCCP-130319387-fail.json")).getFile());
-				break;
-			case "1950-122740988":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-122740988.json")).getFile());
-				break;
-			case "2004-EN-117346452":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2004-EN-117346452.json")).getFile());
-				break;
-			case "1986-EN-105581557":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1986-EN-105581557.json")).getFile());
-				break;
-			case "2018-EN-123236440":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-123236440.json")).getFile());
-				break;
-			case "2018-EN-109496042":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-109496042.json")).getFile());
-				break;
-			case "FI-126259126":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("FI-126259126.json")).getFile());
-				break;
-			case "2018-EN-127970861":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-127970861.json")).getFile());
-				break;
-			case "2018-EN-126187616":
-				file = new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-126187616.json")).getFile());
-				break;
-
-		}
+		File file = switch (category) {
+			case "2018-EN" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN.json")).getFile());
+			case "FI" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("FI.json")).getFile());
+			case "1950-EN" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN.json")).getFile());
+			case "1950-EN-2" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-2.json")).getFile());
+			case "2018-PF" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-PF.json")).getFile());
+			case "2018-EN-UNGRAD" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-UNGRAD.json")).getFile());
+			case "2018-EN-DUP-ASSMT" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-DUP-ASSMT.json")).getFile());
+			case "DD-FAIL" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("DD-FAIL.json")).getFile());
+			case "1950-EN-3" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-3.json")).getFile());
+			case "1950-EN-4" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-EN-4.json")).getFile());
+			case "2018-EN-MIN-CREDIT-FAIL" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-MIN-CREDIT-FAIL.json")).getFile());
+			case "1996-EN-106945306" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-106945306.json")).getFile());
+			case "1996-EN-104337712" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-104337712.json")).getFile());
+			case "1996-EN-101821056" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-101821056.json")).getFile());
+			case "1996-EN-101541068" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-101541068.json")).getFile());
+			case "1996-EN-101171718" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-101171718.json")).getFile());
+			case "1996-EN-101039378" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-101039378.json")).getFile());
+			case "1996-PF-104573159" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-PF-104573159.json")).getFile());
+			case "1996-EN-109491597" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1996-EN-109491597.json")).getFile());
+			case "SCCP-130319387" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("SCCP-130319387.json")).getFile());
+			case "SCCP-130319387-fail" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("SCCP-130319387-fail.json")).getFile());
+			case "1950-122740988" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-122740988.json")).getFile());
+			case "2004-EN-117346452" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2004-EN-117346452.json")).getFile());
+			case "1986-EN-105581557" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1986-EN-105581557.json")).getFile());
+			case "2018-EN-123236440" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-123236440.json")).getFile());
+			case "2018-EN-109496042" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-109496042.json")).getFile());
+			case "2023-EN-109496042" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2023-EN-109496042.json")).getFile());
+			case "FI-126259126" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("FI-126259126.json")).getFile());
+			case "2018-EN-127970861" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-127970861.json")).getFile());
+			case "2018-EN-126187616" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-126187616.json")).getFile());
+			default -> null;
+		};
 		RuleProcessorData data;
 		try {
 			data = new ObjectMapper().readValue(file, RuleProcessorData.class);
