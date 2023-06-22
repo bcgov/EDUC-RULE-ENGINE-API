@@ -170,9 +170,6 @@ public class MinCreditsElective12OtherRule implements Rule {
 	}
 
 	private boolean existsRule505WithoutRule502(List<GradRequirement> reqsMet) {
-//		if (reqsMet == null || reqsMet.isEmpty()) {
-//			return false;
-//		}
 		List<GradRequirement> list = reqsMet.stream().filter(r -> "502".equalsIgnoreCase(r.getRule()) || "505".equalsIgnoreCase(r.getRule())).toList();
 		return list.size() == 1 && "505".equalsIgnoreCase(list.get(0).getRule());
 	}
