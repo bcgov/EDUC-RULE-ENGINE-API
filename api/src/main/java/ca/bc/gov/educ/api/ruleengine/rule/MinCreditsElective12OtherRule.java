@@ -64,6 +64,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 								&& sc.getCourseLevel().compareTo(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) == 0)
 						.collect(Collectors.toList());
 			}
+
 			int courseFound = 0;
 			for (StudentCourse sc : tempStudentCourseList) {
 				if(sc.getCourseLevel().contains("12") && !sc.isNotEligibleForElective()) {
@@ -141,16 +142,18 @@ public class MinCreditsElective12OtherRule implements Rule {
 					nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setNonGradReasons(nonGradReasons);
 				}
-				studentCourses.stream()
-                .filter(sc -> sc.getGradReqMet().compareTo("3") == 0)
-                .forEach(sc -> {                	
-						sc.setUsed(false);
-						sc.setGradReqMet("");
-						sc.setGradReqMetDetail("");
-						sc.setUsedInMatchRule(false);
-						sc.setCreditsUsedForGrad(0);
-						sc.setLeftOverCredits(0);
-                });
+				if (existsRule505WithoutRule502(ruleProcessorData.getRequirementsMet())) {
+					studentCourses.stream()
+							.filter(sc -> sc.getGradReqMet().compareTo("3") == 0)
+							.forEach(sc -> {
+								sc.setUsed(false);
+								sc.setGradReqMet("");
+								sc.setGradReqMetDetail("");
+								sc.setUsedInMatchRule(false);
+								sc.setCreditsUsedForGrad(0);
+								sc.setLeftOverCredits(0);
+							});
+				}
 				List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
 				delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("502") == 0);
 				if(ruleProcessorData.getNonGradReasons() != null) {
@@ -164,6 +167,14 @@ public class MinCreditsElective12OtherRule implements Rule {
 		}
 		ruleProcessorData.setStudentCourses(studentCourses);
 		return ruleProcessorData;
+	}
+
+	private boolean existsRule505WithoutRule502(List<GradRequirement> reqsMet) {
+//		if (reqsMet == null || reqsMet.isEmpty()) {
+//			return false;
+//		}
+		List<GradRequirement> list = reqsMet.stream().filter(r -> "502".equalsIgnoreCase(r.getRule()) || "505".equalsIgnoreCase(r.getRule())).toList();
+		return list.size() == 1 && "505".equalsIgnoreCase(list.get(0).getRule());
 	}
 
 	@Override
