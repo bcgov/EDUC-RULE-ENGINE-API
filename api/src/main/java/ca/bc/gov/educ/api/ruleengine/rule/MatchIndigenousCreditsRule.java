@@ -187,7 +187,7 @@ public class MatchIndigenousCreditsRule implements Rule {
         tempCourse.setUsedInMatchRule(true);
         if (courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
             tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
-        } else {
+        } else if (tempCourse.getCreditsUsedForGrad() == 0) {
             int leftOverCredits = tempCourse.getCredits() - courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode());
             tempCourse.setCreditsUsedForGrad(leftOverCredits != 0 ? leftOverCredits : tempCourse.getCredits());
             tempCourse.setLeftOverCredits(leftOverCredits);
