@@ -187,7 +187,7 @@ public class MatchIndigenousCreditsRule implements Rule {
         tempCourse.setUsedInMatchRule(true);
         if (courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
             tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
-        } else if (tempCourse.getCreditsUsedForGrad() == 0) {
+        } else {
             int leftOverCredits = tempCourse.getCredits() - courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode());
             tempCourse.setCreditsUsedForGrad(leftOverCredits != 0 ? leftOverCredits : tempCourse.getCredits());
             tempCourse.setLeftOverCredits(leftOverCredits);
@@ -198,19 +198,17 @@ public class MatchIndigenousCreditsRule implements Rule {
 
             courseCreditException.merge(tempProgramRule.getProgramRequirementCode().getProReqCode(), 2, Integer::sum);
         }
-        if (exceptionalCase != null)
-            gradProgramRulesMatch.stream().filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo("111") == 0
-                            && tempCourse.getCredits() >= Integer.valueOf(pr.getProgramRequirementCode().getRequiredCredits()))
-                    .forEach(pR -> pR.getProgramRequirementCode().setPassed(true));
 
         if (courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
             tempProgramRule.getProgramRequirementCode().setPassed(true);
+            tempCourse.setCreditsUsedForGrad(tempCourse.getOriginalCredits());
             requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(),
                     tempProgramRule.getProgramRequirementCode().getLabel(), tempProgramRule.getProgramRequirementCode().getProReqCode()));
         } else {
             if (courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == 4) {
                 tempProgramRule.getProgramRequirementCode().setPassed(true);
                 tempProgramRule.getProgramRequirementCode().setTempFailed(false);
+                tempCourse.setCreditsUsedForGrad(tempCourse.getOriginalCredits());
                 requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(),
                         tempProgramRule.getProgramRequirementCode().getLabel(), tempProgramRule.getProgramRequirementCode().getProReqCode()));
             }
