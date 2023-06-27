@@ -89,15 +89,17 @@ public class MinElectiveCreditsRule implements Rule {
 	}
 	private int processLeftOverCredits(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
 		if(sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0) {
-			if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
-				totalCredits += sc.getLeftOverCredits();
-				sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
-			} else {
-				int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
-				totalCredits = requiredCredits;
-				sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
+			if (!gradProgramRule.getGraduationProgramCode().contains("2023") && "14".compareTo(sc.getGradReqMet()) != 0) {
+				if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
+					totalCredits += sc.getLeftOverCredits();
+					sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
+				} else {
+					int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
+					totalCredits = requiredCredits;
+					sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
+				}
+				AlgorithmSupportRule.setGradReqMet(sc, gradProgramRule);
 			}
-			AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 		}
 		return totalCredits;
 	}
