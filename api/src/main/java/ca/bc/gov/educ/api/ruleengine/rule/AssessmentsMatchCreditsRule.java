@@ -148,7 +148,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                     .filter(rm -> rm.getRule().equals(tempProgramRule.getProgramRequirementCode().getProReqCode()))
                     .findAny().orElse(null) == null) {
                 tempAssessment.setUsed(true);
-
+                tempAssessment.setSpecialCase("M");
                 if (tempAssessment.getGradReqMet().length() > 0) {
 
                     tempAssessment.setGradReqMet(tempAssessment.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
