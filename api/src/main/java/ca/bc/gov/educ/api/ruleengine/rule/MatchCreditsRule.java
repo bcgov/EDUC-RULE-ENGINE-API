@@ -27,9 +27,9 @@ public class MatchCreditsRule implements Rule {
     @Autowired
     private RuleProcessorData ruleProcessorData;
 
-    private final String GRAD_PROGRAM_1950 = "1950";
-    private final String LA2_REQNO_1950 = "1";
-    private final String MA11_MA12_REQNO_1950 = "2";
+    private static final String GRAD_PROGRAM_1950 = "1950";
+    private static final String LA2_REQNO_1950 = "1";
+    private static final String MA11_MA12_REQNO_1950 = "2";
 
 
     public RuleData fire() {
