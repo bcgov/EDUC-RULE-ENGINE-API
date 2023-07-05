@@ -30,6 +30,10 @@ public class MinCreditsElective12OtherRule implements Rule {
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
 
+	private static final String COURSE_CODE_SOCIAL_STUDIES = "SS";
+	private static final String COURSE_LEVEL_11 = "11";
+	private static final String COURSE_LEVEL_12 = "12";
+
 	public RuleData fire() {
 		int totalCredits = 0;
 		int requiredCredits;
@@ -67,7 +71,16 @@ public class MinCreditsElective12OtherRule implements Rule {
 
 			int courseFound = 0;
 			for (StudentCourse sc : tempStudentCourseList) {
-				if(sc.getCourseLevel().contains("12") && !sc.isNotEligibleForElective()) {
+				/*
+					Match course with grade level 12 or social studies grade level 11
+					The course also has to be one that's eligible to be counted towards electives
+				 */
+				if( (sc.getCourseLevel().contains(COURSE_LEVEL_12)
+							||	(sc.getCourseLevel().contains(COURSE_LEVEL_11)
+									&& COURSE_CODE_SOCIAL_STUDIES.compareToIgnoreCase(sc.getCourseCode()) == 0)
+								)
+						&& !sc.isNotEligibleForElective()
+				) {
 					courseFound++;
 					if (totalCredits + sc.getCredits() <= requiredCredits) {
 						totalCredits += sc.getCredits();
