@@ -67,13 +67,7 @@ public class MinElectiveCreditsRule implements Rule {
 	}
 
 	private int processOthers(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
-		/*
-		Usually for Matching Electives, you would only pick the courses that were not already used in a match credits rule before
-		But, for 2023-EN and 2023-PF programs, you could still use the courses that were already used to match req 14 (Indigenous Requirement)
-		 */
-		if(!sc.isUsedInMatchRule() ||
-				 (gradProgramRule.getGraduationProgramCode().contains("2023") && "14".compareTo(sc.getGradReqMet()) == 0)
-		){
+		if(!sc.isUsedInMatchRule()){
 			if (totalCredits + sc.getCredits() <= requiredCredits) {
 				totalCredits += sc.getCredits();
 				sc.setCreditsUsedForGrad(sc.getCredits());
@@ -88,17 +82,16 @@ public class MinElectiveCreditsRule implements Rule {
 		return totalCredits;
 	}
 	private int processLeftOverCredits(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
-		if((sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0)
-			&& (!gradProgramRule.getGraduationProgramCode().contains("2023") && "14".compareTo(sc.getGradReqMet()) != 0)) {
-				if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
-					totalCredits += sc.getLeftOverCredits();
-					sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
-				} else {
-					int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
-					totalCredits = requiredCredits;
-					sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
-				}
-				AlgorithmSupportRule.setGradReqMet(sc, gradProgramRule);
+		if(sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0) {
+			if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
+				totalCredits += sc.getLeftOverCredits();
+				sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
+			} else {
+				int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
+				totalCredits = requiredCredits;
+				sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
+			}
+			AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 		}
 		return totalCredits;
 	}
