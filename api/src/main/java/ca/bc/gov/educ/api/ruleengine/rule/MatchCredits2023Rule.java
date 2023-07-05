@@ -27,9 +27,6 @@ public class MatchCredits2023Rule implements Rule {
     @Autowired
     private RuleProcessorData ruleProcessorData;
 
-    private static final String GRAD_PROGRAM_1950 = "1950";
-    private static final String LA2_REQNO_1950 = "1";
-    private static final String MA11_MA12_REQNO_1950 = "2";
     public RuleData fire() {
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
@@ -44,39 +41,14 @@ public class MatchCredits2023Rule implements Rule {
             return ruleProcessorData;
         }
 
-        /*
-            For 1950 program, sort the list and run the Match Req 1 and 2. Then sort it back using split method.
-         */
-        if (GRAD_PROGRAM_1950.compareTo(ruleProcessorData.getGradProgram().getProgramCode()) == 0) {
-            courseList.sort(
-                    Comparator.comparing(StudentCourse::getCourseLevel)
-                            .thenComparing(StudentCourse::getCompletedCourseLetterGrade, Comparator.nullsLast(String::compareTo))
-                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder())
-            );
+        gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
+                .stream()
+                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+                        && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
+                        && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
+                .collect(Collectors.toList());
 
-            gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
-                    .stream()
-                    .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
-                            && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
-                            && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0
-                            && (LA2_REQNO_1950.compareTo(gradProgramRule.getProgramRequirementCode().getTraxReqNumber()) == 0 ||
-                            MA11_MA12_REQNO_1950.compareTo(gradProgramRule.getProgramRequirementCode().getTraxReqNumber()) == 0)
-                    )
-                    .collect(Collectors.toList());
-
-            processRule(courseList, gradProgramRulesMatch, requirementsMet, requirementsNotMet);
-            splitSortStudentCourses(courseList, ruleProcessorData.getGradStatus().getAdultStartDate());
-        }
-        else {
-            gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
-                    .stream()
-                    .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
-                            && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
-                            && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                    .collect(Collectors.toList());
-
-            processRule(courseList, gradProgramRulesMatch, requirementsMet, requirementsNotMet);
-        }
+        processRule(courseList, gradProgramRulesMatch, requirementsMet, requirementsNotMet);
 
         return ruleProcessorData;
     }
@@ -123,54 +95,6 @@ public class MatchCredits2023Rule implements Rule {
             AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
         }
         processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
-    }
-
-    public void splitSortStudentCourses(List<StudentCourse> studentCourses, Date adultStartDate) {
-        /*
-         * Split Student courses into 2 parts
-         * 1. Courses taken after start date
-         * 2. Courses taken on or before start date
-         * Sort #1 by Final LG, Final % desc
-         * Sort #2 by Final LG, Final % desc
-         * Join 2 lists
-         */
-        List<StudentCourse> coursesAfterStartDate = new ArrayList<>();
-        List<StudentCourse> coursesOnOrBeforeStartDate = new ArrayList<>();
-
-        for (StudentCourse sc : studentCourses) {
-            String courseSessionDate = sc.getSessionDate() + "/01";
-            Date temp = null;
-            try {
-                temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
-            } catch (ParseException e) {
-                logger.debug(e.getMessage());
-            }
-
-            if (adultStartDate != null && temp != null && temp.compareTo(adultStartDate) > 0) {
-                coursesAfterStartDate.add(sc);
-            } else {
-                coursesOnOrBeforeStartDate.add(sc);
-            }
-        }
-        studentCourses.clear();
-
-        if (!coursesAfterStartDate.isEmpty()) {
-            coursesAfterStartDate.sort(
-                    Comparator.comparing(StudentCourse::getCourseLevel)
-                            .thenComparing(StudentCourse::getCompletedCourseLetterGrade, Comparator.nullsLast(String::compareTo))
-                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder())
-            );
-            studentCourses.addAll(coursesAfterStartDate);
-        }
-
-        if (!coursesOnOrBeforeStartDate.isEmpty()) {
-            coursesOnOrBeforeStartDate.sort(
-                    Comparator.comparing(StudentCourse::getCourseLevel)
-                            .thenComparing(StudentCourse::getCompletedCourseLetterGrade, Comparator.nullsLast(String::compareTo))
-                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder())
-            );
-            studentCourses.addAll(coursesOnOrBeforeStartDate);
-        }
     }
 
     private void processCourse(StudentCourse tempCourse, List<CourseRequirement> tempCourseRequirement, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch,Map<String,Integer> courseCreditException) {
