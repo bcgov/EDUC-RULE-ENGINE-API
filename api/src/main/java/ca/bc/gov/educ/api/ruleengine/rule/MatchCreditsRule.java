@@ -69,15 +69,16 @@ public class MatchCreditsRule implements Rule {
             processRule(courseList, gradProgramRulesMatch, requirementsMet, requirementsNotMet);
             splitSortStudentCourses(courseList, ruleProcessorData.getGradStatus().getAdultStartDate());
         }
+        else {
+            gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
+                    .stream()
+                    .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+                            && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
+                            && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
+                    .collect(Collectors.toList());
 
-        gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
-                .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
-                        && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getTraxReqNumber()) == 0
-                        && "C".compareTo(gradProgramRule.getProgramRequirementCode().getTraxReqNumber()) == 0)
-                .collect(Collectors.toList());
-
-        processRule(courseList, gradProgramRulesMatch, requirementsMet, requirementsNotMet);
+            processRule(courseList, gradProgramRulesMatch, requirementsMet, requirementsNotMet);
+        }
 
         return ruleProcessorData;
     }
