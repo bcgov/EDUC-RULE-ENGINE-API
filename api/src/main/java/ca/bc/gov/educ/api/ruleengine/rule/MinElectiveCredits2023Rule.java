@@ -2,6 +2,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,7 +69,7 @@ public class MinElectiveCredits2023Rule implements Rule {
 		But, for 2023-EN and 2023-PF programs, you could still use the courses that were already used to match req 14 (Indigenous Requirement)
 		 */
 		if(!sc.isUsedInMatchRule() ||
-				 (gradProgramRule.getGraduationProgramCode().contains("2023") && "14".compareTo(sc.getGradReqMet()) == 0)
+				 (gradProgramRule.getGraduationProgramCode().contains("2023") && !hasMatchTypeRule(sc.getGradReqMet()))
 		){
 			if (totalCredits + sc.getCredits() <= requiredCredits) {
 				totalCredits += sc.getCredits();
@@ -84,7 +86,7 @@ public class MinElectiveCredits2023Rule implements Rule {
 	}
 	private int processLeftOverCredits(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
 		if((sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0)
-			&& (!gradProgramRule.getGraduationProgramCode().contains("2023") && "14".compareTo(sc.getGradReqMet()) != 0)) {
+			&& (!gradProgramRule.getGraduationProgramCode().contains("2023") && !hasMatchTypeRule(sc.getGradReqMet()))) {
 				if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
 					totalCredits += sc.getLeftOverCredits();
 					sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
@@ -98,11 +100,24 @@ public class MinElectiveCredits2023Rule implements Rule {
 		return totalCredits;
 	}
 
+	private boolean hasMatchTypeRule(String gradReqMet) {
+		if (!RuleProcessorUtils.isEmptyOrNull(gradReqMet)) {
+			String[] gradReqMetList = gradReqMet.split(",");
+			List<ProgramRequirement> matchProgramRequirements = ruleProcessorData.getGradProgramRules().stream()
+					.filter(pr -> "M".compareTo(pr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0)
+					.collect(Collectors.toList());
+
+			for (ProgramRequirement pr : matchProgramRequirements) {
+				if (Arrays.asList(gradReqMetList).contains(pr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()))
+					return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("MinElectiveCreditsRule: Rule Processor Data set.");
+		logger.debug("MinElectiveCredits2023Rule: Rule Processor Data set.");
 	}
-
 }
