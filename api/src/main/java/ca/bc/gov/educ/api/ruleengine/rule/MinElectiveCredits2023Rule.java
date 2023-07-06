@@ -103,6 +103,11 @@ public class MinElectiveCredits2023Rule implements Rule {
 	private boolean hasMatchTypeRule(String gradReqMet) {
 		if (!RuleProcessorUtils.isEmptyOrNull(gradReqMet)) {
 			String[] gradReqMetList = gradReqMet.split(",");
+
+			//Trim items in the list
+			for (int i = 0; i < gradReqMetList.length; i++)
+				gradReqMetList[i] = gradReqMetList[i].trim();
+
 			List<ProgramRequirement> matchProgramRequirements = ruleProcessorData.getGradProgramRules().stream()
 					.filter(pr -> "M".compareTo(pr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0)
 					.collect(Collectors.toList());
