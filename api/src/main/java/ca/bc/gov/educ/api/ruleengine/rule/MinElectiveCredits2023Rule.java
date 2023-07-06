@@ -108,7 +108,7 @@ public class MinElectiveCredits2023Rule implements Rule {
 					.collect(Collectors.toList());
 
 			for (ProgramRequirement pr : matchProgramRequirements) {
-				if (Arrays.asList(gradReqMetList).contains(pr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()))
+				if (Arrays.asList(gradReqMetList).contains(pr.getProgramRequirementCode().getTraxReqNumber()))
 					return true;
 			}
 		}
