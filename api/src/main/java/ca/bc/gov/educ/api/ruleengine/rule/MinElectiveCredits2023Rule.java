@@ -1,31 +1,28 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MinElectiveCreditsRule implements Rule {
+public class MinElectiveCredits2023Rule implements Rule {
 
-	private static Logger logger = LoggerFactory.getLogger(MinElectiveCreditsRule.class);
+	private static Logger logger = LoggerFactory.getLogger(MinElectiveCredits2023Rule.class);
 
 	@Autowired
 	private RuleProcessorData ruleProcessorData;
@@ -67,7 +64,13 @@ public class MinElectiveCreditsRule implements Rule {
 	}
 
 	private int processOthers(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
-		if(!sc.isUsedInMatchRule()){
+		/*
+		Usually for Matching Electives, you would only pick the courses that were not already used in a match credits rule before
+		But, for 2023-EN and 2023-PF programs, you could still use the courses that were already used to match req 14 (Indigenous Requirement)
+		 */
+		if(!sc.isUsedInMatchRule() ||
+				 (gradProgramRule.getGraduationProgramCode().contains("2023") && !hasMatchTypeRule(sc.getGradReqMet()))
+		){
 			if (totalCredits + sc.getCredits() <= requiredCredits) {
 				totalCredits += sc.getCredits();
 				sc.setCreditsUsedForGrad(sc.getCredits());
@@ -82,25 +85,44 @@ public class MinElectiveCreditsRule implements Rule {
 		return totalCredits;
 	}
 	private int processLeftOverCredits(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
-		if(sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0) {
-			if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
-				totalCredits += sc.getLeftOverCredits();
-				sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
-			} else {
-				int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
-				totalCredits = requiredCredits;
-				sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
-			}
-			AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
+		if((sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0)
+			&& (!gradProgramRule.getGraduationProgramCode().contains("2023") && !hasMatchTypeRule(sc.getGradReqMet()))) {
+				if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
+					totalCredits += sc.getLeftOverCredits();
+					sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
+				} else {
+					int extraCredits = totalCredits + sc.getLeftOverCredits() - requiredCredits;
+					totalCredits = requiredCredits;
+					sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits() - extraCredits);
+				}
+				AlgorithmSupportRule.setGradReqMet(sc, gradProgramRule);
 		}
 		return totalCredits;
 	}
 
+	private boolean hasMatchTypeRule(String gradReqMet) {
+		if (!RuleProcessorUtils.isEmptyOrNull(gradReqMet)) {
+			String[] gradReqMetList = gradReqMet.split(",");
+
+			//Trim items in the list
+			for (int i = 0; i < gradReqMetList.length; i++)
+				gradReqMetList[i] = gradReqMetList[i].trim();
+
+			List<ProgramRequirement> matchProgramRequirements = ruleProcessorData.getGradProgramRules().stream()
+					.filter(pr -> "M".compareTo(pr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0)
+					.collect(Collectors.toList());
+
+			for (ProgramRequirement pr : matchProgramRequirements) {
+				if (Arrays.asList(gradReqMetList).contains(pr.getProgramRequirementCode().getTraxReqNumber()))
+					return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("MinElectiveCreditsRule: Rule Processor Data set.");
+		logger.debug("MinElectiveCredits2023Rule: Rule Processor Data set.");
 	}
-
 }

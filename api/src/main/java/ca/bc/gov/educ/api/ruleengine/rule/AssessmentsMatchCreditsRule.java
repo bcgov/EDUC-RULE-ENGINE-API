@@ -32,8 +32,6 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
-        List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
-                ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<StudentAssessment> assessmentList = RuleProcessorRuleUtils.getUniqueStudentAssessments(
                 ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
 
@@ -148,7 +146,6 @@ public class AssessmentsMatchCreditsRule implements Rule {
                     .filter(rm -> rm.getRule().equals(tempProgramRule.getProgramRequirementCode().getProReqCode()))
                     .findAny().orElse(null) == null) {
                 tempAssessment.setUsed(true);
-
                 if (tempAssessment.getGradReqMet().length() > 0) {
 
                     tempAssessment.setGradReqMet(tempAssessment.getGradReqMet() + ", " + tempProgramRule.getProgramRequirementCode().getTraxReqNumber());
