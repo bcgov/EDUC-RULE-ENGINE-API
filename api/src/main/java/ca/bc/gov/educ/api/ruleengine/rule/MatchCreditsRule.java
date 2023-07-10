@@ -169,6 +169,7 @@ public class MatchCreditsRule implements Rule {
             );
             studentCourses.addAll(coursesOnOrBeforeStartDate);
         }
+        ruleProcessorData.setStudentCourses(studentCourses);
     }
 
     private void processCourse(StudentCourse tempCourse, List<CourseRequirement> tempCourseRequirement, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch,Map<String,Integer> courseCreditException) {
