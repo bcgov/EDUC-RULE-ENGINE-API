@@ -77,7 +77,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 				 */
 				if( (sc.getCourseLevel().contains(COURSE_LEVEL_12)
 							||	(sc.getCourseLevel().contains(COURSE_LEVEL_11)
-									&& COURSE_CODE_SOCIAL_STUDIES.compareToIgnoreCase(sc.getCourseCode()) == 0)
+									&& sc.getCourseCode().contains(COURSE_CODE_SOCIAL_STUDIES))
 								)
 						&& !sc.isNotEligibleForElective()
 				) {
