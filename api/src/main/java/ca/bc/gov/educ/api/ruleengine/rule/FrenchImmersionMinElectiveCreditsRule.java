@@ -38,6 +38,13 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     	List<GradRequirement> requirementsMet = new ArrayList<>();
         
         List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
+
+        courseList.forEach(sc -> {
+            if (sc.getCourseCode().contains("CLC")) {
+                sc.setCourseLevel("12");
+            }
+        });
+
         List<OptionalProgramRequirement> gradOptionalProgramMinCreditElectiveRulesMatch = obj.getOptionalProgramRules()
                 .stream()
                 .filter(gradOptionalProgramRule -> "MCE".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
@@ -120,6 +127,13 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
 
         obj.setRequirementsMetOptionalProgram(resMet);
         finalCourseList2.addAll(matchedList);
+
+        finalCourseList2.forEach(sc -> {
+            if (sc.getCourseCode().contains("CLC")) {
+                sc.setCourseLevel("");
+            }
+        });
+
         obj.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(finalCourseList2));
         List<OptionalProgramRequirement> failedRules = gradOptionalProgramMinCreditElectiveRulesMatch.stream()
                 .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
