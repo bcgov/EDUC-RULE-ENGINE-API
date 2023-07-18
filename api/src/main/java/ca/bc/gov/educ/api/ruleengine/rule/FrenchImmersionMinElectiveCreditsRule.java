@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         
         List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
 
-        courseList.forEach(sc -> {
-            if (sc.getCourseCode().contains("CLC")) {
-                sc.setCourseLevel("12");
-            }
-        });
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(courseList, "12");
 
         List<OptionalProgramRequirement> gradOptionalProgramMinCreditElectiveRulesMatch = obj.getOptionalProgramRules()
                 .stream()
@@ -128,11 +125,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         obj.setRequirementsMetOptionalProgram(resMet);
         finalCourseList2.addAll(matchedList);
 
-        finalCourseList2.forEach(sc -> {
-            if (sc.getCourseCode().contains("CLC")) {
-                sc.setCourseLevel("");
-            }
-        });
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(finalCourseList2, "");
 
         obj.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(finalCourseList2));
         List<OptionalProgramRequirement> failedRules = gradOptionalProgramMinCreditElectiveRulesMatch.stream()

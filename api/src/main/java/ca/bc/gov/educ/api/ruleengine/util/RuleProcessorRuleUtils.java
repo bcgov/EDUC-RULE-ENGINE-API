@@ -187,4 +187,12 @@ public class RuleProcessorRuleUtils {
     	DateFormat dateFormat = new SimpleDateFormat(RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
         return dateFormat.format(pcd);
     }
+
+    public static void updateCourseLevelForCLC(List<StudentCourse> studentCourses, String courseLevel) {
+        studentCourses.forEach(sc -> {
+            if (sc.getCourseCode().contains("CLC")) {
+                sc.setCourseLevel(courseLevel);
+            }
+        });
+    }
 }

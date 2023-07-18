@@ -46,11 +46,7 @@ public class MinCreditsRule implements Rule {
             return ruleProcessorData;
         }
 
-        studentCourses.forEach(sc -> {
-            if (sc.getCourseCode().contains("CLC")) {
-                sc.setCourseLevel("12");
-            }
-        });
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(studentCourses, "12");
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
             requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim());
@@ -99,11 +95,7 @@ public class MinCreditsRule implements Rule {
             logger.debug("Min Credits -> Required:{} Has : {}",requiredCredits,totalCredits);
         }
 
-        ruleProcessorData.getStudentCourses().forEach(sc -> {
-            if (sc.getCourseCode().contains("CLC")) {
-                sc.setCourseLevel("");
-            }
-        });
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(ruleProcessorData.getStudentCourses(), "");
 
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
