@@ -93,7 +93,13 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         	StudentCourse sc = studentCourseIterator2.next();
         	if(!requirementAchieved && sc.isUsed()) {
         		for(OptionalProgramRequirement pR:gradOptionalProgramMinCreditElectiveRulesMatch) {            	
-        			if(pR.getOptionalProgramRequirementCode().getRequiredLevel() != null && pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("11 or 12") == 0 && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F") && (sc.getCourseLevel().trim().contains("11") || sc.getCourseLevel().trim().contains("12"))) {
+        			if(pR.getOptionalProgramRequirementCode().getRequiredLevel() != null
+                            && pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("11 or 12") == 0
+                            && sc.getLanguage() != null
+                            && sc.getLanguage().equalsIgnoreCase("F")
+                            && (sc.getCourseLevel().trim().contains("11") || sc.getCourseLevel().trim().contains("12")
+                                            || sc.getCourseCode().contains("CLC"))
+                    ) {
         				requiredCreditsGrad11or12 = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
         				totalCreditsGrade11or12 = processCredits(pR,totalCreditsGrade11or12,sc,requirementsMet);
         			}         		
