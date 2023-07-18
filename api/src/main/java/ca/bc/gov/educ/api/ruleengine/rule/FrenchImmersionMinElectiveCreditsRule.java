@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     	List<GradRequirement> requirementsMet = new ArrayList<>();
         
         List<StudentCourse> courseList = obj.getStudentCoursesOptionalProgram();
+
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(courseList, "12");
+
         List<OptionalProgramRequirement> gradOptionalProgramMinCreditElectiveRulesMatch = obj.getOptionalProgramRules()
                 .stream()
                 .filter(gradOptionalProgramRule -> "MCE".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
@@ -93,7 +97,13 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         	StudentCourse sc = studentCourseIterator2.next();
         	if(!requirementAchieved && sc.isUsed()) {
         		for(OptionalProgramRequirement pR:gradOptionalProgramMinCreditElectiveRulesMatch) {            	
-        			if(pR.getOptionalProgramRequirementCode().getRequiredLevel() != null && pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("11 or 12") == 0 && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F") && (sc.getCourseLevel().trim().contains("11") || sc.getCourseLevel().trim().contains("12"))) {
+        			if(pR.getOptionalProgramRequirementCode().getRequiredLevel() != null
+                            && pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("11 or 12") == 0
+                            && sc.getLanguage() != null
+                            && sc.getLanguage().equalsIgnoreCase("F")
+                            && (sc.getCourseLevel().trim().contains("11") || sc.getCourseLevel().trim().contains("12")
+                                            || sc.getCourseCode().contains("CLC"))
+                    ) {
         				requiredCreditsGrad11or12 = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
         				totalCreditsGrade11or12 = processCredits(pR,totalCreditsGrade11or12,sc,requirementsMet);
         			}         		
@@ -114,6 +124,9 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
 
         obj.setRequirementsMetOptionalProgram(resMet);
         finalCourseList2.addAll(matchedList);
+
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(finalCourseList2, "");
+
         obj.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(finalCourseList2));
         List<OptionalProgramRequirement> failedRules = gradOptionalProgramMinCreditElectiveRulesMatch.stream()
                 .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());

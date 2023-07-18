@@ -46,6 +46,8 @@ public class MinCreditsRule implements Rule {
             return ruleProcessorData;
         }
 
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(studentCourses, "12");
+
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
             requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim());
             totalCredits = studentCourses
@@ -92,6 +94,9 @@ public class MinCreditsRule implements Rule {
 
             logger.debug("Min Credits -> Required:{} Has : {}",requiredCredits,totalCredits);
         }
+
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(ruleProcessorData.getStudentCourses(), "");
+
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }
