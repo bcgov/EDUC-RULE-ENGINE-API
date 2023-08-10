@@ -190,7 +190,7 @@ public class RuleProcessorRuleUtils {
 
     public static void updateCourseLevelForCLC(List<StudentCourse> studentCourses, String courseLevel) {
         studentCourses.forEach(sc -> {
-            if (sc.getCourseCode().contains("CLC")) {
+            if (sc.getCourseCode().startsWith("CLC")) {
                 sc.setCourseLevel(courseLevel);
             }
         });
