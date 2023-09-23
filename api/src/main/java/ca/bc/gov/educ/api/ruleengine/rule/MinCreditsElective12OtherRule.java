@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ca.bc.gov.educ.api.ruleengine.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -54,6 +50,11 @@ public class MinCreditsElective12OtherRule implements Rule {
 			return ruleProcessorData;
 		}
 
+		List<String> socialStudiesCourseCodeList = ruleProcessorData.getCourseRequirements().stream().filter(cr -> "502".equals(cr.getRuleCode().getCourseRequirementCode())).map(CourseRequirement::getCourseCode).toList();
+		if (socialStudiesCourseCodeList.isEmpty()) {
+			socialStudiesCourseCodeList = List.of(COURSE_CODE_SOCIAL_STUDIES);
+		}
+
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 
@@ -71,14 +72,12 @@ public class MinCreditsElective12OtherRule implements Rule {
 
 			int courseFound = 0;
 			for (StudentCourse sc : tempStudentCourseList) {
-				/*
+                /*
 					Match course with grade level 12 or social studies grade level 11
 					The course also has to be one that's eligible to be counted towards electives
 				 */
 				if( (sc.getCourseLevel().contains(COURSE_LEVEL_12)
-							||	(sc.getCourseLevel().contains(COURSE_LEVEL_11)
-									&& sc.getCourseCode().contains(COURSE_CODE_SOCIAL_STUDIES))
-								)
+						|| (sc.getCourseLevel().contains(COURSE_LEVEL_11) && socialStudiesCourseCodeList.contains(sc.getCourseCode())) )
 						&& !sc.isNotEligibleForElective()
 				) {
 					courseFound++;
@@ -109,10 +108,10 @@ public class MinCreditsElective12OtherRule implements Rule {
 				if(reqCourseFound) {
 					gradProgramRule.getProgramRequirementCode().setPassed(true);
 					List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
-					
+
 					if (reqsMet == null)
 						reqsMet = new ArrayList<>();
-	
+
 					reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setRequirementsMet(reqsMet);
 					List<GradRequirement> delReqsMet = ruleProcessorData.getRequirementsMet();
@@ -120,38 +119,38 @@ public class MinCreditsElective12OtherRule implements Rule {
 						delReqsMet.removeIf(e -> e.getRule() != null && e.getRule().compareTo("502") == 0);
 				}else {
 					ruleProcessorData.setGraduated(false);
-					
+
 					List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
-	
+
 					if (nonGradReasons == null)
 						nonGradReasons = new ArrayList<>();
-	
+
 					nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setNonGradReasons(nonGradReasons);
 				}
-				
+
 			}else {
 				if (totalCredits >= requiredCredits) {
 					logger.debug("{} Passed",gradProgramRule.getProgramRequirementCode().getLabel());
 					gradProgramRule.getProgramRequirementCode().setPassed(true);
 					List<GradRequirement> reqsMet = ruleProcessorData.getRequirementsMet();
-	
+
 					if (reqsMet == null)
 						reqsMet = new ArrayList<>();
-	
+
 					reqsMet.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getLabel(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setRequirementsMet(reqsMet);
 					logger.debug("Min Credits Elective 12 Rule: Total- {} Required- {}",totalCredits,requiredCredits);
-	
+
 				} else {
 					logger.debug("{} Failed!",gradProgramRule.getProgramRequirementCode().getDescription());
 					ruleProcessorData.setGraduated(false);
-	
+
 					List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
-	
+
 					if (nonGradReasons == null)
 						nonGradReasons = new ArrayList<>();
-	
+
 					nonGradReasons.add(new GradRequirement(gradProgramRule.getProgramRequirementCode().getTraxReqNumber(), gradProgramRule.getProgramRequirementCode().getNotMetDesc(),gradProgramRule.getProgramRequirementCode().getProReqCode()));
 					ruleProcessorData.setNonGradReasons(nonGradReasons);
 				}
