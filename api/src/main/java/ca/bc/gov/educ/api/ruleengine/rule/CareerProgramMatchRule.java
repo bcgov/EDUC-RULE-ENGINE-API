@@ -1,24 +1,21 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 @Data
 @Component
@@ -48,7 +45,7 @@ public class CareerProgramMatchRule implements Rule {
                 .filter(gradOptionalProgramRule -> "M".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0 
                 		&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                 		&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+                .toList();
        
         logger.debug("#### Career Program Rule size: {}", careerProgramRulesMatch.size());
 
@@ -108,7 +105,7 @@ public class CareerProgramMatchRule implements Rule {
         obj.setRequirementsMetOptionalProgram(resMet);
         
         List<OptionalProgramRequirement> failedRules = careerProgramRulesMatch.stream()
-                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
+                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the Career Program Match rules met!");
@@ -134,7 +131,6 @@ public class CareerProgramMatchRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("CareerProgramMatchRule: Rule Processor Data set.");
     }
 
 }

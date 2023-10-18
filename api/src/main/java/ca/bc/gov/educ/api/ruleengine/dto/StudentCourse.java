@@ -84,15 +84,56 @@ public class StudentCourse {
 
     @Override
     public String toString() {
-        return "StudentCourse [pen=" + pen + ", courseCode=" + courseCode + ", courseName=" + courseName
-                + ", courseLevel=" + courseLevel + ", sessionDate=" + sessionDate + ", customizedCourseName="
-                + customizedCourseName + ", gradReqMet=" + gradReqMet + ", gradReqMetDetail=" + gradReqMetDetail
-                + ", completedCoursePercentage=" + completedCoursePercentage + ", completedCourseLetterGrade="
-                + completedCourseLetterGrade + ", interimPercent=" + interimPercent + ", interimLetterGrade="
-                + interimLetterGrade + ", credits=" + credits + ", creditsUsedForGrad=" + creditsUsedForGrad
-                + ", relatedCourse=" + relatedCourse + ", relatedLevel=" + relatedLevel + ", hasRelatedCourse="
-                + hasRelatedCourse + ", isNotCompleted=" + isNotCompleted + ", isProjected=" + isProjected
-                + ", isFailed=" + isFailed + ", isDuplicate=" + isDuplicate + ", isCareerPrep=" + isCareerPrep
-                + ", isLocallyDeveloped=" + isLocallyDeveloped + ", isUsed=" + isUsed + ", isRestricted=" + isRestricted +"]";
+        return "StudentCourse{" +
+                "pen='" + pen + '\'' +
+                ", courseCode='" + courseCode + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", originalCredits=" + originalCredits +
+                ", courseLevel='" + courseLevel + '\'' +
+                ", sessionDate='" + sessionDate + '\'' +
+                ", customizedCourseName='" + customizedCourseName + '\'' +
+                ", gradReqMet='" + gradReqMet + '\'' +
+                ", gradReqMetDetail='" + gradReqMetDetail + '\'' +
+                ", completedCoursePercentage=" + completedCoursePercentage +
+                ", completedCourseLetterGrade='" + completedCourseLetterGrade + '\'' +
+                ", interimPercent=" + interimPercent +
+                ", interimLetterGrade='" + interimLetterGrade + '\'' +
+                ", bestSchoolPercent=" + bestSchoolPercent +
+                ", bestExamPercent=" + bestExamPercent +
+                ", schoolPercent=" + schoolPercent +
+                ", examPercent=" + examPercent +
+                ", equivOrChallenge='" + equivOrChallenge + '\'' +
+                ", fineArtsAppliedSkills='" + fineArtsAppliedSkills + '\'' +
+                ", metLitNumRequirement='" + metLitNumRequirement + '\'' +
+                ", credits=" + credits +
+                ", creditsUsedForGrad=" + creditsUsedForGrad +
+                ", relatedCourse='" + relatedCourse + '\'' +
+                ", relatedCourseName='" + relatedCourseName + '\'' +
+                ", relatedLevel='" + relatedLevel + '\'' +
+                ", hasRelatedCourse='" + hasRelatedCourse + '\'' +
+                ", isNotCompleted=" + isNotCompleted +
+                ", genericCourseType='" + genericCourseType + '\'' +
+                ", language='" + language + '\'' +
+                ", workExpFlag='" + workExpFlag + '\'' +
+                ", specialCase='" + specialCase + '\'' +
+                ", toWriteFlag='" + toWriteFlag + '\'' +
+                ", provExamCourse='" + provExamCourse + '\'' +
+                ", isProjected=" + isProjected +
+                ", isFailed=" + isFailed +
+                ", isDuplicate=" + isDuplicate +
+                ", isCareerPrep=" + isCareerPrep +
+                ", isLocallyDeveloped=" + isLocallyDeveloped +
+                ", isBoardAuthorityAuthorized=" + isBoardAuthorityAuthorized +
+                ", isIndependentDirectedStudies=" + isIndependentDirectedStudies +
+                ", isUsed=" + isUsed +
+                ", isRestricted=" + isRestricted +
+                ", isNotEligibleForElective=" + isNotEligibleForElective +
+                ", isUsedInMatchRule=" + isUsedInMatchRule +
+                ", isLessCreditCourse=" + isLessCreditCourse +
+                ", isValidationCourse=" + isValidationCourse +
+                ", isCutOffCourse=" + isCutOffCourse +
+                ", isGrade10Course=" + isGrade10Course +
+                ", leftOverCredits=" + leftOverCredits +
+                '}';
     }
 }

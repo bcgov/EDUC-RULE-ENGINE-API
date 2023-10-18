@@ -1,23 +1,17 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Component
@@ -41,7 +35,7 @@ public class MinElectiveCreditsRule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.collect(Collectors.toList());
+				.toList();
 
 		if (studentCourses == null || studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
@@ -100,7 +94,6 @@ public class MinElectiveCreditsRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("MinElectiveCreditsRule: Rule Processor Data set.");
 	}
 
 }

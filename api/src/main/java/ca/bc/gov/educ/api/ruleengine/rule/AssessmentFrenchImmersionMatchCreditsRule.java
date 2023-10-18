@@ -40,7 +40,6 @@ public class AssessmentFrenchImmersionMatchCreditsRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("AssessmentFrenchImmersionMatchCreditsRule: Rule Processor Data set.");
 	}
 
 }

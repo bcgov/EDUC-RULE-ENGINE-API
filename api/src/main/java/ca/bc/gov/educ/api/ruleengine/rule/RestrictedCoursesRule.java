@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -66,10 +65,10 @@ public class RestrictedCoursesRule implements Rule {
                 }
             }
         }
-        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourses, ruleProcessorData.getExcludedCourses(), ruleProcessorData.isProjected()));
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses("RestrictedCoursesRule", studentCourses, ruleProcessorData.getExcludedCourses(), ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourses);
         prepareCoursesForOptionalPrograms();
-        logger.debug("Restricted Courses: {0} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
+        logger.debug("Restricted Courses: {} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
         return ruleProcessorData;
     }
 
@@ -82,13 +81,13 @@ public class RestrictedCoursesRule implements Rule {
                             && courseLevel.compareTo(cR.getMainCourseLevel()) == 0
                             && is1950AndSameLevel(programCode, cR.getMainCourseLevel(), cR.getRestrictedCourseLevel())
                             && RuleEngineApiUtils.checkDateForRestrictedCourses(cR.getRestrictionStartDate(), cR.getRestrictionEndDate(), sessionDate))
-                    .collect(Collectors.toList());
+                    .toList();
         } else {
             shortenedList = restrictedCourses.stream()
                     .filter(cR -> courseCode.compareTo(cR.getMainCourse()) == 0
                             && is1950AndSameLevel(programCode, cR.getMainCourseLevel(), cR.getRestrictedCourseLevel())
                             && RuleEngineApiUtils.checkDateForRestrictedCourses(cR.getRestrictionStartDate(), cR.getRestrictionEndDate(), sessionDate))
-                    .collect(Collectors.toList());
+                    .toList();
         }
         return shortenedList;
     }
@@ -132,6 +131,5 @@ public class RestrictedCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("RestrictedCoursesRule: Rule Processor Data set.");
     }
 }

@@ -5,7 +5,6 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -39,7 +37,7 @@ public class MinCreditsRule implements Rule {
                 .filter(gpr -> "MC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                             && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0
                             && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+                .toList();
 
         if (studentCourses == null || studentCourses.isEmpty()) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");
@@ -128,6 +126,5 @@ public class MinCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MinCreditsRule: Rule Processor Data set.");
     }
 }

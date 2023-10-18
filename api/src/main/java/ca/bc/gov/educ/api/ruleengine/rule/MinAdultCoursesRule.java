@@ -1,26 +1,20 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Component
@@ -50,7 +44,7 @@ public class MinAdultCoursesRule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MAC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.collect(Collectors.toList());
+				.toList();
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
@@ -59,12 +53,12 @@ public class MinAdultCoursesRule implements Rule {
 
 			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
 					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).collect(Collectors.toList());
+				tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).toList();
 			} else {
 				tempStudentCourseList = studentCourses.stream()
 						.filter(sc -> sc.isUsed()
 								&& sc.getCourseLevel().compareTo(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) == 0)
-						.collect(Collectors.toList());
+						.toList();
 			}
 
 			for (StudentCourse sc : tempStudentCourseList) {
@@ -120,7 +114,7 @@ public class MinAdultCoursesRule implements Rule {
 					ruleProcessorData.getRequirementsMet()
 					.stream()
 					.filter(gpr -> gpr.getRule() != null && "4".compareTo(gpr.getRule()) == 0)
-					.collect(Collectors.toList());
+					.toList();
 			if(reqMetList.size() == 2) {
 				List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
 				if(delNonGradReason != null)
@@ -136,7 +130,7 @@ public class MinAdultCoursesRule implements Rule {
 			Remove them if any.
 		 */
 		int carryForwardCoursesCount = 0;
-		List<StudentCourse> tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).collect(Collectors.toList());
+		List<StudentCourse> tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).toList();
 
 		for (StudentCourse sc : tempStudentCourseList) {
 			String courseSessionDate = sc.getSessionDate() + "/01";
@@ -172,7 +166,6 @@ public class MinAdultCoursesRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("MinAdultCoursesRule: Rule Processor Data set.");
 	}
 
 }

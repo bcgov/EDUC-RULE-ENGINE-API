@@ -1,19 +1,17 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Component
@@ -42,7 +40,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCEOTHER".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.collect(Collectors.toList());
+				.toList();
 
 		if (studentCourses == null || studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
@@ -62,12 +60,12 @@ public class MinCreditsElective12OtherRule implements Rule {
 
 			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
 					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).collect(Collectors.toList());
+				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).toList();
 			} else {
 				tempStudentCourseList = studentCourses.stream()
 						.filter(sc -> !sc.isUsed()
 								&& sc.getCourseLevel().compareTo(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) == 0)
-						.collect(Collectors.toList());
+						.toList();
 			}
 
 			int courseFound = 0;
@@ -189,7 +187,6 @@ public class MinCreditsElective12OtherRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("MinCreditsElective12Rule: Rule Processor Data set.");
 	}
 
 }

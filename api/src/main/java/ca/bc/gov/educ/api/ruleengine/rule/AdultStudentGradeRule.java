@@ -1,6 +1,9 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -31,13 +33,13 @@ public class AdultStudentGradeRule implements Rule {
         List<ProgramRequirement> gradProgramRules = ruleProcessorData
                 .getGradProgramRules().stream().filter(gpr -> "SG".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0)
-                .collect(Collectors.toList());
+                .toList();
 
         if (RuleProcessorUtils.isNotEmptyOrNull(gradProgramRules)) {
             logger.debug("#Checking SG Rule");
 
             for (ProgramRequirement gradProgramRule : gradProgramRules) {
-                logger.debug("StudentGrade:" + ruleProcessorData.getGradStudent().getStudentGrade());
+                logger.debug("StudentGrade: {}", ruleProcessorData.getGradStudent().getStudentGrade());
 
                 if ("AD".compareTo(ruleProcessorData.getGradStudent().getStudentGrade()) != 0) {
                     gradProgramRule.getProgramRequirementCode().setPassed(false);
@@ -63,6 +65,5 @@ public class AdultStudentGradeRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("AdultStudentGradeRule: Rule Processor Data set.");
     }
 }

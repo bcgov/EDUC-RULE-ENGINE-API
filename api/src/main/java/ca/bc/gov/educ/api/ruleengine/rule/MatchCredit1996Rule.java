@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -46,7 +45,7 @@ public class MatchCredit1996Rule implements Rule {
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected())
                 .stream().filter(studentCourse -> studentCourse.getFineArtsAppliedSkills() != null
                         && studentCourse.getFineArtsAppliedSkills().length() > 0)
-                .collect(Collectors.toList());
+                .toList();
         fineArtsCourseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
                 .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
 
@@ -54,7 +53,7 @@ public class MatchCredit1996Rule implements Rule {
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected())
                 .stream().filter(studentCourse -> studentCourse.getFineArtsAppliedSkills() == null
                                 || studentCourse.getFineArtsAppliedSkills().length() <= 0)
-                .collect(Collectors.toList());
+                .toList();
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
                 .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
 
@@ -63,7 +62,7 @@ public class MatchCredit1996Rule implements Rule {
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+                .toList();
 
         if (courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
@@ -89,7 +88,7 @@ public class MatchCredit1996Rule implements Rule {
             List<CourseRequirement> tempCourseRequirements = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .collect(Collectors.toList());
+                    .toList();
 
             logger.debug("Temp Course Requirement: {}", tempCourseRequirements);
 
@@ -140,7 +139,7 @@ public class MatchCredit1996Rule implements Rule {
             List<CourseRequirement> tempCourseRequirements = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .collect(Collectors.toList());
+                    .toList();
 
             logger.debug("Temp Course Requirement: {}", tempCourseRequirements);
 
@@ -357,6 +356,5 @@ public class MatchCredit1996Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("Match4Credit1996Rule: Rule Processor Data set.");
     }
 }

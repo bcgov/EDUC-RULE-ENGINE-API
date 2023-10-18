@@ -1,21 +1,18 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.*;
 
 @Data
 @Component
@@ -47,7 +44,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
                 .filter(gradOptionalProgramRule -> "MCE".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                 		&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                 		&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+                .toList();
        
         logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
         List<StudentCourse> finalCourseList = new ArrayList<>();
@@ -56,9 +53,9 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         List<StudentCourse> matchedList = courseList
         		.stream()
         		.filter(StudentCourse::isUsed)
-        		.collect(Collectors.toList());
+        		.toList();
 
-        List<StudentCourse> modifiedList = courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).collect(Collectors.toList());
+        List<StudentCourse> modifiedList = courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).toList();
         ListIterator<StudentCourse> studentCourseIterator = modifiedList.listIterator();
         int totalCredits = 0;        
         int requiredCredits = 0;
@@ -129,7 +126,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
 
         obj.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(finalCourseList2));
         List<OptionalProgramRequirement> failedRules = gradOptionalProgramMinCreditElectiveRulesMatch.stream()
-                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
+                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the Min Elective Credit rules met!");
@@ -186,7 +183,6 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("FrenchImmersionMinElectiveCreditRule: Rule Processor Data set.");
     }
 
 }

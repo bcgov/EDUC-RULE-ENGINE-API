@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -44,7 +43,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
         List<ProgramRequirement> gradProgramRules = ruleProcessorData
                 .getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+                .toList();
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
            if(gradProgramRule.getProgramRequirementCode().getRequiredLevel() != null && gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("11 or 12") == 0 ) {
@@ -56,7 +55,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                                    && (sc.getCourseLevel().contains("11")
                                    || sc.getCourseLevel().contains("12"))
                                    && sc.getLanguage() != null && sc.getLanguage().trim().compareTo("F")==0)
-                           .collect(Collectors.toList());
+                           .toList();
 
 
                for (StudentCourse sc : tempStudentCourseList) {
@@ -113,7 +112,6 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MinElectiveCreditsFrench1996Rule: Rule Processor Data set.");
     }
 
 }

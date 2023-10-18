@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -45,7 +44,7 @@ public class MainProgramCompleteRule implements Rule {
 				.stream()
 				.filter(gradOptionalProgramRule -> "SR".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0)
-				.collect(Collectors.toList());
+				.toList();
 		for(OptionalProgramRequirement opReq:optionalProgramNoRule) {
 			if(opReq.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("957")==0) {
 				if (nonGradReasons == null || nonGradReasons.isEmpty()) {
@@ -56,7 +55,7 @@ public class MainProgramCompleteRule implements Rule {
 					opReq.getOptionalProgramRequirementCode().setPassed(false);
 				}
 				List<OptionalProgramRequirement> failedRules = obj.getOptionalProgramRules().stream()
-						.filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
+						.filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).toList();
 
 				if (failedRules.isEmpty()) {
 					logger.debug("All the match rules met!");
@@ -87,6 +86,5 @@ public class MainProgramCompleteRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MainProgramCompleteRule: Rule Processor Data set.");
     }
 }

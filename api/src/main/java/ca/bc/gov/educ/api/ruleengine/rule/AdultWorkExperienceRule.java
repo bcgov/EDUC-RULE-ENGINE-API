@@ -1,28 +1,20 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.stream.Collectors;
-
+import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ca.bc.gov.educ.api.ruleengine.dto.CourseRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 @Data
 @Component
@@ -56,7 +48,7 @@ public class AdultWorkExperienceRule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MWEX".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.collect(Collectors.toList());
+				.toList();
 
 		List<StudentCourse> finalCourseList = new ArrayList<>();
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
@@ -72,7 +64,7 @@ public class AdultWorkExperienceRule implements Rule {
 	            List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
 	                    .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
 	                            && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-	                    .collect(Collectors.toList());
+	                    .toList();
 
 	            logger.debug("Temp Course Requirement: {}",tempCourseRequirement);
 
@@ -116,7 +108,6 @@ public class AdultWorkExperienceRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("AdultWorkExperienceRule: Rule Processor Data set.");
 	}
 
 }

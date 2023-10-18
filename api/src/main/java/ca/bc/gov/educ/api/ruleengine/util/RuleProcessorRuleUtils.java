@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RuleProcessorRuleUtils {
 
@@ -37,14 +36,14 @@ public class RuleProcessorRuleUtils {
                         && !sc.isValidationCourse()
                         && !sc.isCutOffCourse()
                         && !sc.isGrade10Course())
-                .collect(Collectors.toList());
+                .toList();
 
         if (!projected) {
             logger.debug("Excluding Registrations!");
             uniqueStudentCourseList = uniqueStudentCourseList
                     .stream()
                     .filter(sc -> !sc.isProjected())
-                    .collect(Collectors.toList());
+                    .toList();
         } else
             logger.debug("Including Registrations!");
 
@@ -67,7 +66,7 @@ public class RuleProcessorRuleUtils {
                         || sc.isCutOffCourse()
                         || sc.isGrade10Course()
                         || (!projected && sc.isProjected()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @SuppressWarnings("unchecked")
@@ -79,18 +78,20 @@ public class RuleProcessorRuleUtils {
                 .readValue(objectMapper.writeValueAsString(input), input.getClass());
     }
 
-    public static List<StudentCourse> maintainExcludedCourses(List<StudentCourse> currentList,List<StudentCourse> existingExcludedList, boolean projected) {
-        List<StudentCourse> exclList = getExcludedStudentCourses(currentList, projected);
-        if(existingExcludedList == null)
+    public static List<StudentCourse> maintainExcludedCourses(String ruleName, List<StudentCourse> currentList, List<StudentCourse> existingExcludedList, boolean projected) {
+        List<StudentCourse> excludedStudentCourses = getExcludedStudentCourses(currentList, projected);
+        if(existingExcludedList == null) {
             existingExcludedList = new ArrayList<>();
+        }
 
-        if(!exclList.isEmpty()) {
-            for(StudentCourse sc:exclList) {
+        if(!excludedStudentCourses.isEmpty()) {
+            for(StudentCourse sc:excludedStudentCourses) {
                 StudentCourse tempCourse = existingExcludedList.stream()
                         .filter(sp -> sp.getCourseCode().compareTo(sc.getCourseCode()) == 0 && sp.getCourseLevel().compareTo(sc.getCourseLevel())==0 && sp.getSessionDate().compareTo(sc.getSessionDate())==0 )
                         .findAny()
                         .orElse(null);
                 if(tempCourse == null) {
+                    logger.debug("{} added the course to the excluded list {}", ruleName, sc);
                     existingExcludedList.add(sc);
                 }
             }
@@ -100,12 +101,12 @@ public class RuleProcessorRuleUtils {
     }
 
     public static List<StudentAssessment> maintainExcludedAssessments(List<StudentAssessment> currentList,List<StudentAssessment> existingExcludedList, boolean projected) {
-        List<StudentAssessment> exclList = getExcludedStudentAssessments(currentList, projected);
+        List<StudentAssessment> excludedStudentAssessments = getExcludedStudentAssessments(currentList, projected);
         if(existingExcludedList == null)
             existingExcludedList = new ArrayList<>();
 
-        if(!exclList.isEmpty()) {
-            for(StudentAssessment sc:exclList) {
+        if(!excludedStudentAssessments.isEmpty()) {
+            for(StudentAssessment sc:excludedStudentAssessments) {
                 StudentAssessment tempAssmt = existingExcludedList.stream()
                         .filter(sp -> sp.getAssessmentCode().compareTo(sc.getAssessmentCode()) == 0 && sp.getSessionDate().compareTo(sc.getSessionDate())==0)
                         .findAny()
@@ -127,14 +128,14 @@ public class RuleProcessorRuleUtils {
                 .filter(sc -> !sc.isNotCompleted()
                         && !sc.isDuplicate()
                         && !sc.isFailed())
-                .collect(Collectors.toList());
+                .toList();
 
         if (!projected) {
             logger.debug("Excluding Registrations!");
             uniqueStudentAssessmentList = uniqueStudentAssessmentList
                     .stream()
                     .filter(sc -> !sc.isProjected())
-                    .collect(Collectors.toList());
+                    .toList();
         } else
             logger.debug("Including Registrations!");
 
@@ -148,7 +149,7 @@ public class RuleProcessorRuleUtils {
                         || sc.isDuplicate()
                         || sc.isFailed()
                         || (!projected && sc.isProjected()))
-                .collect(Collectors.toList());
+                .toList();
     }
     
     public static String getGradDate(List<StudentCourse> studentCourses) {

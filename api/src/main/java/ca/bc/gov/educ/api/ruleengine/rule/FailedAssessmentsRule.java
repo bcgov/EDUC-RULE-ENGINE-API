@@ -1,19 +1,18 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.List;
-
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
 @Component
@@ -30,8 +29,6 @@ public class FailedAssessmentsRule implements Rule {
 	public RuleData fire() {
 
 		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
-
-		logger.debug("###################### Finding FAILED assessments ######################");
 
 		for (StudentAssessment studentAssessment : studentAssessmentList) {
 
@@ -58,7 +55,7 @@ public class FailedAssessmentsRule implements Rule {
 		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-		logger.debug("Failed Assessments: {0}",
+		logger.debug("Failed Assessments: {}",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isFailed).count());
 
 		return ruleProcessorData;
@@ -66,6 +63,5 @@ public class FailedAssessmentsRule implements Rule {
 
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("FailedAssessmentsRule: Rule Processor Data set.");
 	}
 }

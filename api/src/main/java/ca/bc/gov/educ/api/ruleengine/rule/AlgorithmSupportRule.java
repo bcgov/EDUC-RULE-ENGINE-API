@@ -280,11 +280,12 @@ public class AlgorithmSupportRule {
 
     public static void copyAndAddIntoStudentCoursesList(StudentCourse studentCourse, List<StudentCourse> finalCourseList, ObjectMapper objectMapper) {
         try {
-            StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(studentCourse), StudentCourse.class);
-            if (tempSC != null)
-                finalCourseList.add(tempSC);
-            logger.debug("TempSC: {}", tempSC);
-            logger.debug("Final course List size: {}: ", finalCourseList.size());
+            StudentCourse studentCourseTmp = objectMapper.readValue(objectMapper.writeValueAsString(studentCourse), StudentCourse.class);
+            if (studentCourseTmp != null) {
+                finalCourseList.add(studentCourseTmp);
+                logger.debug("Added Student Course: {}", studentCourseTmp);
+            }
+            logger.debug("Final Student Course List size: {}", finalCourseList.size());
         } catch (IOException e) {
             logger.error(ERROR_FORMAT_STR,e.getMessage());
         }

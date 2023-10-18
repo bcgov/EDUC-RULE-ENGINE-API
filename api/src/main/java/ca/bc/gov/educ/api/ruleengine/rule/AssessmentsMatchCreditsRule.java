@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -40,7 +38,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+                .toList();
 
         if (ruleProcessorData.getStudentAssessments() == null || ruleProcessorData.getStudentAssessments().isEmpty()) {
             logger.warn("!!!Empty list sent to Assessment Match Rule for processing");
@@ -62,7 +60,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
             List<AssessmentRequirement> tempAssessmentRequirement = assessmentRequirements.stream()
                     .filter(ar -> tempAssessment.getAssessmentCode().compareTo(ar.getAssessmentCode()) == 0)
-                    .collect(Collectors.toList());
+                    .toList();
 
             ProgramRequirement tempProgramRule = null;
 
@@ -92,7 +90,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
                         || "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .collect(Collectors.toList()));
+                .toList());
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
         ruleProcessorData.setStudentAssessments(finalAssessmentList);
@@ -118,7 +116,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
         }
 
         List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -167,7 +165,6 @@ public class AssessmentsMatchCreditsRule implements Rule {
 	@Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("AssessmentsMatchCreditsRule: Rule Processor Data set.");
     }
 
 }

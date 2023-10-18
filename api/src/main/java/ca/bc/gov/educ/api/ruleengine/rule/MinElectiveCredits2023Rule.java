@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -38,7 +37,7 @@ public class MinElectiveCredits2023Rule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.collect(Collectors.toList());
+				.toList();
 
 		if (studentCourses == null || studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
@@ -110,7 +109,7 @@ public class MinElectiveCredits2023Rule implements Rule {
 
 			List<ProgramRequirement> matchProgramRequirements = ruleProcessorData.getGradProgramRules().stream()
 					.filter(pr -> "M".compareTo(pr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0)
-					.collect(Collectors.toList());
+					.toList();
 
 			for (ProgramRequirement pr : matchProgramRequirements) {
 				if (Arrays.asList(gradReqMetList).contains(pr.getProgramRequirementCode().getTraxReqNumber()))
@@ -123,6 +122,5 @@ public class MinElectiveCredits2023Rule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("MinElectiveCredits2023Rule: Rule Processor Data set.");
 	}
 }

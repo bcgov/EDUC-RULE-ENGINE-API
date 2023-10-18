@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -34,7 +33,7 @@ public class OptionalProgramNoRule implements Rule {
 		if(program.compareTo("1996-PF")==0 && mapOptional.get("DD") != null) {
 			obj = mapOptional.get("DD");
 			processOptionalProgramNoRules("DD",obj,mapOptional);
-		}else if(program.compareTo("2018-EN")==0 || program.compareTo("2004-EN")==0 || program.compareTo("2018-PF")==0
+		} else if(program.compareTo("2018-EN")==0 || program.compareTo("2004-EN")==0 || program.compareTo("2018-PF")==0
 				||program.compareTo("2004-PF")==0 || program.compareTo("1996-EN")==0
 				|| program.compareTo("2023-EN")==0 || program.compareTo("2023-PF")==0) {
 			if(mapOptional.get("AD") != null) {
@@ -87,7 +86,7 @@ public class OptionalProgramNoRule implements Rule {
 				.stream()
 				.filter(gradOptionalProgramRule -> "SR".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0)
-				.collect(Collectors.toList());
+				.toList();
 		for(OptionalProgramRequirement opReq:optionalProgramNoRule) {
 			if (opReq.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("957") != 0) {
 				logger.debug("{} Passed", opReq.getOptionalProgramRequirementCode().getLabel());
@@ -107,6 +106,5 @@ public class OptionalProgramNoRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("OptionalProgramNoRule: Rule Processor Data set.");
     }
 }

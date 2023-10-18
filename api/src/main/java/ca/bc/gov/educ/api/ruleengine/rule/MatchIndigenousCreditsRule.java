@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -39,7 +38,7 @@ public class MatchIndigenousCreditsRule implements Rule {
                 .filter(gradProgramRule -> "MI".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+                .toList();
 
         if (courseList == null || courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Indigenous Credits Rule for processing");
@@ -64,7 +63,7 @@ public class MatchIndigenousCreditsRule implements Rule {
             List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .collect(Collectors.toList());
+                    .toList();
 
             ProgramRequirement tempProgramRule = null;
 
@@ -102,7 +101,7 @@ public class MatchIndigenousCreditsRule implements Rule {
                             && rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode()))
                     .findAny()
                     .orElse(null) == null) {
-                setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet, gradProgramRulesMatch, null, courseCreditException);
+                setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet, courseCreditException);
             } else {
                 logger.debug("!!! Program Rule met Already: {}", tempProgramRule);
             }
@@ -119,8 +118,7 @@ public class MatchIndigenousCreditsRule implements Rule {
                         .findAny()
                         .orElse(null);
                 if (tempProgramRule != null) {
-                    setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet, gradProgramRulesMatch,
-                            "ExceptionalCase", courseCreditException);
+                    setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet, courseCreditException);
                 }
             }
         }
@@ -137,7 +135,7 @@ public class MatchIndigenousCreditsRule implements Rule {
             finalProgramRulesList.addAll(unusedRules);
         }
         List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -165,7 +163,7 @@ public class MatchIndigenousCreditsRule implements Rule {
                 .filter(gradProgramRule -> "MI".compareTo(gradProgramRule.getProgramRequirementCode()
                         .getRequirementTypeCode().getReqTypeCode()) != 0
                         || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .collect(Collectors.toList()));
+                .toList());
 
         ruleProcessorData.setStudentCourses(finalCourseList);
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);
@@ -180,9 +178,8 @@ public class MatchIndigenousCreditsRule implements Rule {
         ruleProcessorData.setRequirementsMet(reqsMet);
     }
 
-    public void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule,
-                                     List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch,
-                                     String exceptionalCase, Map<String, Integer> courseCreditException) {
+    private void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule,
+                                     List<GradRequirement> requirementsMet, Map<String, Integer> courseCreditException) {
         tempCourse.setUsed(true);
         tempCourse.setUsedInMatchRule(true);
         if (courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
@@ -218,7 +215,6 @@ public class MatchIndigenousCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MatchIndigenousCreditsRule: Rule Processor Data set.");
     }
 
 }
