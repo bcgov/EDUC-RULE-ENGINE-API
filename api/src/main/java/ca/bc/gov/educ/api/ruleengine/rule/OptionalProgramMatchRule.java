@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.stream.Collectors;
 
 @Component
 public class OptionalProgramMatchRule {
@@ -34,7 +33,7 @@ public class OptionalProgramMatchRule {
                         && "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                         && "A".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0
                         && !gradOptionalProgramRule.getOptionalProgramRequirementCode().isPassed())
-                .collect(Collectors.toList());
+                .toList();
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
         if (assessmentRequirements == null) {
             assessmentRequirements = new ArrayList<>();
@@ -55,7 +54,7 @@ public class OptionalProgramMatchRule {
 
             List<AssessmentRequirement> tempAssessmentRequirement = assessmentRequirements.stream()
                     .filter(ar -> tempAssessment.getAssessmentCode().compareTo(ar.getAssessmentCode()) == 0)
-                    .collect(Collectors.toList());
+                    .toList();
 
             logger.debug("TempAssmtReq: {}", tempAssessmentRequirement);
             OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramRule(tempAssessmentRequirement, gradOptionalProgramRulesMatch, requirementsMet, tempAssessment, null);
@@ -216,7 +215,7 @@ public class OptionalProgramMatchRule {
                         && "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0
                         && !gradOptionalProgramRule.getOptionalProgramRequirementCode().isPassed())
-                .collect(Collectors.toList());
+                .toList();
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
         if (courseRequirements == null) {
             courseRequirements = new ArrayList<>();
@@ -239,7 +238,7 @@ public class OptionalProgramMatchRule {
             List<CourseRequirement> tempCourseRequirements = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .collect(Collectors.toList());
+                    .toList();
 
             logger.debug("TempCrseReq: {}", tempCourseRequirements);
 
@@ -260,7 +259,7 @@ public class OptionalProgramMatchRule {
             finalOptionalProgramRulesList.addAll(unusedRules);
         }
         List<OptionalProgramRequirement> failedRules = finalOptionalProgramRulesList.stream().filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed())
-                .collect(Collectors.toList());
+                .toList();
 
         handleFailedRules(failedRules, requirementsNotMet, obj);
 
