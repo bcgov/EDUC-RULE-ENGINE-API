@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -34,7 +35,7 @@ public class MinCreditsElective12Rule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE12".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.toList();
+				.collect(Collectors.toList());
 
 		if (studentCourses == null || studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
@@ -48,12 +49,12 @@ public class MinCreditsElective12Rule implements Rule {
 
 			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
 					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).toList();
+				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).collect(Collectors.toList());
 			} else {
 				tempStudentCourseList = studentCourses.stream()
 						.filter(sc -> !sc.isUsed()
 								&& sc.getCourseLevel().contains(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()))
-						.toList();
+						.collect(Collectors.toList());
 			}
 
 			for (StudentCourse sc : tempStudentCourseList) {

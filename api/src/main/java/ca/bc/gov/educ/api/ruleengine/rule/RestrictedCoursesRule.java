@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -81,13 +82,13 @@ public class RestrictedCoursesRule implements Rule {
                             && courseLevel.compareTo(cR.getMainCourseLevel()) == 0
                             && is1950AndSameLevel(programCode, cR.getMainCourseLevel(), cR.getRestrictedCourseLevel())
                             && RuleEngineApiUtils.checkDateForRestrictedCourses(cR.getRestrictionStartDate(), cR.getRestrictionEndDate(), sessionDate))
-                    .toList();
+                    .collect(Collectors.toList());
         } else {
             shortenedList = restrictedCourses.stream()
                     .filter(cR -> courseCode.compareTo(cR.getMainCourse()) == 0
                             && is1950AndSameLevel(programCode, cR.getMainCourseLevel(), cR.getRestrictedCourseLevel())
                             && RuleEngineApiUtils.checkDateForRestrictedCourses(cR.getRestrictionStartDate(), cR.getRestrictionEndDate(), sessionDate))
-                    .toList();
+                    .collect(Collectors.toList());
         }
         return shortenedList;
     }

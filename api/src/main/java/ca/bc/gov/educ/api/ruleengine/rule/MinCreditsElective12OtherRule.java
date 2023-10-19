@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -40,7 +41,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCEOTHER".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.toList();
+				.collect(Collectors.toList());
 
 		if (studentCourses == null || studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
@@ -48,7 +49,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 			return ruleProcessorData;
 		}
 
-		List<String> socialStudiesCourseCodeList = ruleProcessorData.getCourseRequirements().stream().filter(cr -> "502".equals(cr.getRuleCode().getCourseRequirementCode())).map(CourseRequirement::getCourseCode).toList();
+		List<String> socialStudiesCourseCodeList = ruleProcessorData.getCourseRequirements().stream().filter(cr -> "502".equals(cr.getRuleCode().getCourseRequirementCode())).map(CourseRequirement::getCourseCode).collect(Collectors.toList());
 		if (socialStudiesCourseCodeList.isEmpty()) {
 			socialStudiesCourseCodeList = List.of(COURSE_CODE_SOCIAL_STUDIES);
 		}
@@ -60,12 +61,12 @@ public class MinCreditsElective12OtherRule implements Rule {
 
 			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
 					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).toList();
+				tempStudentCourseList = studentCourses.stream().filter(sc -> !sc.isUsed()).collect(Collectors.toList());
 			} else {
 				tempStudentCourseList = studentCourses.stream()
 						.filter(sc -> !sc.isUsed()
 								&& sc.getCourseLevel().compareTo(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) == 0)
-						.toList();
+						.collect(Collectors.toList());
 			}
 
 			int courseFound = 0;
@@ -180,7 +181,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 	}
 
 	private boolean existsRule505WithoutRule502(List<GradRequirement> reqsMet) {
-		List<GradRequirement> list = reqsMet.stream().filter(r -> "502".equalsIgnoreCase(r.getRule()) || "505".equalsIgnoreCase(r.getRule())).toList();
+		List<GradRequirement> list = reqsMet.stream().filter(r -> "502".equalsIgnoreCase(r.getRule()) || "505".equalsIgnoreCase(r.getRule())).collect(Collectors.toList());
 		return list.size() == 1 && "505".equalsIgnoreCase(list.get(0).getRule());
 	}
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 @Component
 public class OptionalProgramMatchRule {
@@ -33,7 +34,7 @@ public class OptionalProgramMatchRule {
                         && "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                         && "A".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0
                         && !gradOptionalProgramRule.getOptionalProgramRequirementCode().isPassed())
-                .toList();
+                .collect(Collectors.toList());
         List<AssessmentRequirement> assessmentRequirements = ruleProcessorData.getAssessmentRequirements();
         if (assessmentRequirements == null) {
             assessmentRequirements = new ArrayList<>();
@@ -54,13 +55,13 @@ public class OptionalProgramMatchRule {
 
             List<AssessmentRequirement> tempAssessmentRequirement = assessmentRequirements.stream()
                     .filter(ar -> tempAssessment.getAssessmentCode().compareTo(ar.getAssessmentCode()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
 
             logger.debug("TempAssmtReq: {}", tempAssessmentRequirement);
             OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramRule(tempAssessmentRequirement, gradOptionalProgramRulesMatch, requirementsMet, tempAssessment, null);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList);
+            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList);
         }
 
         obj.setStudentAssessmentsOptionalProgram(finalAssessmentList);
@@ -215,7 +216,7 @@ public class OptionalProgramMatchRule {
                         && "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0
                         && !gradOptionalProgramRule.getOptionalProgramRequirementCode().isPassed())
-                .toList();
+                .collect(Collectors.toList());
         List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
         if (courseRequirements == null) {
             courseRequirements = new ArrayList<>();
@@ -238,15 +239,15 @@ public class OptionalProgramMatchRule {
             List<CourseRequirement> tempCourseRequirements = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
 
             logger.debug("TempCrseReq: {}", tempCourseRequirements);
 
 
             OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramCourseMatchRule(tempCourseRequirements, null, requirementsMet, tempCourse, gradOptionalProgramRulesMatch);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList);
         }
         obj.setStudentCoursesOptionalProgram(finalCourseList);
         handleRule(gradOptionalProgramRulesMatch, finalOptionalProgramRulesList, requirementsNotMet, obj, requirementsMet);
@@ -259,7 +260,7 @@ public class OptionalProgramMatchRule {
             finalOptionalProgramRulesList.addAll(unusedRules);
         }
         List<OptionalProgramRequirement> failedRules = finalOptionalProgramRulesList.stream().filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed())
-                .toList();
+                .collect(Collectors.toList());
 
         handleFailedRules(failedRules, requirementsNotMet, obj);
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -38,7 +39,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
 
         if (ruleProcessorData.getStudentAssessments() == null || ruleProcessorData.getStudentAssessments().isEmpty()) {
             logger.warn("!!!Empty list sent to Assessment Match Rule for processing");
@@ -60,7 +61,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
             List<AssessmentRequirement> tempAssessmentRequirement = assessmentRequirements.stream()
                     .filter(ar -> tempAssessment.getAssessmentCode().compareTo(ar.getAssessmentCode()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
 
             ProgramRequirement tempProgramRule = null;
 
@@ -77,8 +78,8 @@ public class AssessmentsMatchCreditsRule implements Rule {
             logger.debug("Temp Program Rule: {}",tempProgramRule);
             processAssessments(tempAssessmentRequirement,tempProgramRule,requirementsMet,tempAssessment);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
@@ -90,7 +91,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
                         || "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
         ruleProcessorData.setStudentAssessments(finalAssessmentList);
@@ -116,7 +117,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
         }
 
         List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -42,7 +43,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.toList();
+				.collect(Collectors.toList());
 
 		if (studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -45,7 +46,7 @@ public class MatchCredit1996Rule implements Rule {
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected())
                 .stream().filter(studentCourse -> studentCourse.getFineArtsAppliedSkills() != null
                         && studentCourse.getFineArtsAppliedSkills().length() > 0)
-                .toList();
+                .collect(Collectors.toList());
         fineArtsCourseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
                 .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
 
@@ -53,7 +54,7 @@ public class MatchCredit1996Rule implements Rule {
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected())
                 .stream().filter(studentCourse -> studentCourse.getFineArtsAppliedSkills() == null
                                 || studentCourse.getFineArtsAppliedSkills().length() <= 0)
-                .toList();
+                .collect(Collectors.toList());
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
                 .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
 
@@ -62,7 +63,7 @@ public class MatchCredit1996Rule implements Rule {
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
 
         if (courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
@@ -88,7 +89,7 @@ public class MatchCredit1996Rule implements Rule {
             List<CourseRequirement> tempCourseRequirements = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
 
             logger.debug("Temp Course Requirement: {}", tempCourseRequirements);
 
@@ -126,8 +127,8 @@ public class MatchCredit1996Rule implements Rule {
             logger.debug("Temp Program Rule: {}", tempProgramRule);
             processCourse(tempCourse, tempCourseRequirements, tempProgramRule, requirementsMet, gradProgramRulesMatch, map1996);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
         processReqMet(finalProgramRulesList,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
@@ -139,7 +140,7 @@ public class MatchCredit1996Rule implements Rule {
             List<CourseRequirement> tempCourseRequirements = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
 
             logger.debug("Temp Course Requirement: {}", tempCourseRequirements);
 
@@ -173,8 +174,8 @@ public class MatchCredit1996Rule implements Rule {
             logger.debug("Temp Program Rule: {}", tempProgramRule);
             processCourse(tempCourse, tempCourseRequirements, tempProgramRule, requirementsMet, gradProgramRulesMatch, map1996);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
@@ -272,7 +273,7 @@ public class MatchCredit1996Rule implements Rule {
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
                         || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: {}", finalProgramRulesList.size());
 
@@ -295,7 +296,7 @@ public class MatchCredit1996Rule implements Rule {
     		finalProgramRulesList.addAll(unusedRules);
     	}
 		List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -321,7 +322,7 @@ public class MatchCredit1996Rule implements Rule {
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
                         || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
 

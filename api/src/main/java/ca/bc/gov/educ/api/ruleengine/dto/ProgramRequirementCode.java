@@ -1,12 +1,13 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
+import java.io.Serializable;
 
 @Data
 @Component
-public class ProgramRequirementCode {
+public class ProgramRequirementCode implements Serializable {
 
 	private String proReqCode; 
 	private String label; 

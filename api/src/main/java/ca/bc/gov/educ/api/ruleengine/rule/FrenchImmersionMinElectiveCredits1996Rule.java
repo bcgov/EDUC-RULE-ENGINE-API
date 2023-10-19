@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -38,7 +39,7 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
                 .filter(gradOptionalProgramRule -> "MCE".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                 		&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                 		&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
        
         logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
         ObjectMapper objectMapper = new ObjectMapper();
@@ -59,7 +60,7 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
                     totalCreditsGrade11or12 = processCredits(pR,totalCreditsGrade11or12,sc,requirementsMet);
                 }
             }
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList2, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList2);
             
             if ((totalCreditsGrade11or12 == requiredCreditsGrad11or12) && totalCreditsGrade11or12 != 0) {
             	break;
@@ -73,10 +74,10 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
         resMet.addAll(requirementsMet);
 
         obj.setRequirementsMetOptionalProgram(resMet);
-        finalCourseList2.addAll(courseList.stream().filter(StudentCourse::isUsed).toList());
+        finalCourseList2.addAll(courseList.stream().filter(StudentCourse::isUsed).collect(Collectors.toList()));
         obj.setStudentCoursesOptionalProgram(RuleEngineApiUtils.getClone(finalCourseList2));
         List<OptionalProgramRequirement> failedRules = gradOptionalProgramMinCreditElectiveRulesMatch.stream()
-                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).toList();
+                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the Min Elective Credit rules met!");

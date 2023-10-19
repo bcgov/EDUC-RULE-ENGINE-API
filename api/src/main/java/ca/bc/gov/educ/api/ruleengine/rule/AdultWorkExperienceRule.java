@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -48,7 +49,7 @@ public class AdultWorkExperienceRule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MWEX".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.toList();
+				.collect(Collectors.toList());
 
 		List<StudentCourse> finalCourseList = new ArrayList<>();
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
@@ -64,7 +65,7 @@ public class AdultWorkExperienceRule implements Rule {
 	            List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
 	                    .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
 	                            && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-	                    .toList();
+	                    .collect(Collectors.toList());
 
 	            logger.debug("Temp Course Requirement: {}",tempCourseRequirement);
 
@@ -87,7 +88,7 @@ public class AdultWorkExperienceRule implements Rule {
 	            		tempCourse.setNotEligibleForElective(true);
 	            	}
 	            }
-				AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
+				AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
 	        }
 	        
 	        if(numberOfWExCourses > 1L) {

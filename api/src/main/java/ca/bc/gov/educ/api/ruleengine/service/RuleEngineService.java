@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RuleEngineService {
@@ -37,7 +38,7 @@ public class RuleEngineService {
             List<StudentCourse> beforeRuleCourses = ruleProcessorData.getStudentCourses();
             ruleProcessorData = (RuleProcessorData)rule.fire();
             List<StudentCourse> afterRuleCourses = ruleProcessorData.getStudentCourses();
-            List<StudentCourse> courseDifference = beforeRuleCourses.stream().filter(element -> !afterRuleCourses.contains(element)).toList();
+            List<StudentCourse> courseDifference = beforeRuleCourses.stream().filter(element -> !afterRuleCourses.contains(element)).collect(Collectors.toList());
             if(logger.isDebugEnabled() && !courseDifference.isEmpty()) {
                 logger.debug("The course excluded by the {}/{} rule: {}", gradAlgorithmRule.getAlgorithmRuleCode().getAlgoRuleCode(), gradAlgorithmRule.getAlgorithmRuleCode().getRuleImplementation(), StringUtils.join(courseDifference, ","));
             }

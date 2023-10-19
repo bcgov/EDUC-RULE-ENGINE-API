@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -42,7 +43,7 @@ public class MatchCredit1986Rule implements Rule {
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
 
         if (courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1986 Rule for processing");
@@ -70,7 +71,7 @@ public class MatchCredit1986Rule implements Rule {
             List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
 
             logger.debug("Temp Course Requirement: {}", tempCourseRequirement);
 
@@ -89,8 +90,8 @@ public class MatchCredit1986Rule implements Rule {
             logger.debug("Temp Program Rule: {}", tempProgramRule);
             processCourse(tempCourse, tempCourseRequirement, tempProgramRule, requirementsMet);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
@@ -131,7 +132,7 @@ public class MatchCredit1986Rule implements Rule {
         });
 
 		List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -156,7 +157,7 @@ public class MatchCredit1986Rule implements Rule {
         finalProgramRulesList.addAll(ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0 || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0 || "4".compareTo(gradProgramRule.getProgramRequirementCode().getRequiredCredits()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
        
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());

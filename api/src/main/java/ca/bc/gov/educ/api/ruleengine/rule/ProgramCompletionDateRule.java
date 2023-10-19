@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -32,7 +33,7 @@ public class ProgramCompletionDateRule implements Rule {
     	List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "PCD".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0)
-				.toList();
+				.collect(Collectors.toList());
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 		ruleProcessorData.setStudentCourses(studentCourses);

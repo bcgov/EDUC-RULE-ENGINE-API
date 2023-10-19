@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -45,7 +46,7 @@ public class CareerProgramMatchRule implements Rule {
                 .filter(gradOptionalProgramRule -> "M".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0 
                 		&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                 		&& "C".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
        
         logger.debug("#### Career Program Rule size: {}", careerProgramRulesMatch.size());
 
@@ -87,7 +88,7 @@ public class CareerProgramMatchRule implements Rule {
                     sc.setUsed(true);
                 }
             }
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList);
 	       
             if ((totalCredits >= requiredCredits) && totalCredits != 0) {
                 break;
@@ -105,7 +106,7 @@ public class CareerProgramMatchRule implements Rule {
         obj.setRequirementsMetOptionalProgram(resMet);
         
         List<OptionalProgramRequirement> failedRules = careerProgramRulesMatch.stream()
-                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).toList();
+                .filter(pr -> !pr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the Career Program Match rules met!");

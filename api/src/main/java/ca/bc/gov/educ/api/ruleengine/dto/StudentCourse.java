@@ -6,12 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentCourse {
+public class StudentCourse implements Serializable {
 
     private String pen;
     private String courseCode;

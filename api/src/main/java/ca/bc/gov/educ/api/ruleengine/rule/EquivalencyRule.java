@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -51,7 +52,7 @@ public class EquivalencyRule implements Rule {
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
         logger.debug("Matched Program rules list size {}", gradProgramRulesMatch.size());
 
         // 1. check assessment is empty or failed
@@ -71,7 +72,7 @@ public class EquivalencyRule implements Rule {
             List<CourseRequirement> matchedCourseRequirements = courseRequirementsForEquivalency.stream()
                     .filter(equivCr -> equivCr.getCourseCode().compareTo(st.getCourseCode()) == 0
                             && equivCr.getCourseLevel().compareTo(st.getCourseLevel()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
             matchedCourseRequirements.stream().forEach(courseRequirement -> {
                 ProgramRequirement programRule = null;
                 if (courseRequirement != null) {
@@ -83,7 +84,7 @@ public class EquivalencyRule implements Rule {
                 if (programRule != null && !programRule.getProgramRequirementCode().isPassed()) {
                     logger.debug("Pseudo Assessment ==> Program rule[{}] - course code[{}] / [{}]", programRule.getProgramRequirementCode().getProReqCode(), st.getCourseCode(), st.getCourseLevel());
                     processAssessmentEquivalency(st, programRule, courseRequirement, ruleProcessorData.getGradStudent().getPen(), requirementsMet, finalAssessmentList);
-                    AlgorithmSupportRule.copyAndAddIntoProgramRulesList(programRule, finalProgramRulesList, objectMapper);
+                    AlgorithmSupportRule.copyAndAddIntoProgramRulesList(programRule, finalProgramRulesList);
                 }
             });
         }
@@ -94,7 +95,7 @@ public class EquivalencyRule implements Rule {
             // merge studentAssessments with finalAssessmentList
             // => if any of finalAssessments already exists in studentAssessments, remove the current one and add the new one.
             List<StudentAssessment> tempAssessments = ruleProcessorData.getStudentAssessments().stream()
-                    .filter(sa -> !finalAssessmentList.contains(sa)).toList();
+                    .filter(sa -> !finalAssessmentList.contains(sa)).collect(Collectors.toList());
             tempAssessments.addAll(finalAssessmentList);
             ruleProcessorData.setStudentAssessments(tempAssessments);
         }
@@ -104,7 +105,7 @@ public class EquivalencyRule implements Rule {
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
                         || "A".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
 
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);
     }
@@ -112,7 +113,7 @@ public class EquivalencyRule implements Rule {
     private void handleFailedRules(List<ProgramRequirement> finalProgramRulesList, List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch) {
         List<ProgramRequirement> successfulRules = finalProgramRulesList.stream()
                 .filter(pr -> pr.getProgramRequirementCode().isPassed())
-                .toList();
+                .collect(Collectors.toList());
 
         if(gradProgramRulesMatch.size() != finalProgramRulesList.size()) {
             List<ProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneProgramRule(gradProgramRulesMatch);
@@ -121,7 +122,7 @@ public class EquivalencyRule implements Rule {
         }
 
         List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the failed assessment match rules met the assessment equivalency requirement!");
@@ -134,9 +135,9 @@ public class EquivalencyRule implements Rule {
         // if any failed assessments from the previous processors meet the assessment equivalency requirement,
         // then remove it from nonGradReason.
         if (!successfulRules.isEmpty()) {
-            List<String> successfulRuleCodes = successfulRules.stream().map(pr -> pr.getProgramRequirementCode().getProReqCode()).toList();
+            List<String> successfulRuleCodes = successfulRules.stream().map(pr -> pr.getProgramRequirementCode().getProReqCode()).collect(Collectors.toList());
             List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons().stream()
-                    .filter(gr -> !successfulRuleCodes.contains(gr.getRule())).toList();
+                    .filter(gr -> !successfulRuleCodes.contains(gr.getRule())).collect(Collectors.toList());
             ruleProcessorData.setNonGradReasons(nonGradReasons);
         }
 
@@ -190,7 +191,7 @@ public class EquivalencyRule implements Rule {
                 .filter(gradOptionalProgramRule -> "M".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0
                         && "A".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
 
         // 1. check assessment is empty or failed
         List<StudentAssessment> studentAssessments = RuleProcessorRuleUtils.getUniqueStudentAssessments(
@@ -211,7 +212,7 @@ public class EquivalencyRule implements Rule {
             List<CourseRequirement> matchedCourseRequirements = courseRequirementsForEquivalency.stream()
                     .filter(equivCr -> equivCr.getCourseCode().compareTo(st.getCourseCode()) == 0
                                     && equivCr.getCourseLevel().compareTo(st.getCourseLevel()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
             matchedCourseRequirements.stream().forEach(courseRequirement -> {
                 OptionalProgramRequirement optionalProgramRule = null;
                 if (courseRequirement != null) {
@@ -223,7 +224,7 @@ public class EquivalencyRule implements Rule {
                 if (optionalProgramRule != null && !optionalProgramRule.getOptionalProgramRequirementCode().isPassed()) {
                     logger.debug("Pseudo Assessment ==> Optional Program rule[{}] - course code[{}] / [{}]", optionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(), st.getCourseCode(), st.getCourseLevel());
                     processAssessmentEquivalencyOptionalProgram(st, optionalProgramRule, courseRequirement, ruleProcessorData.getGradStudent().getPen(), requirementsMet, finalAssessmentList);
-                    AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(optionalProgramRule, finalOptionalProgramRulesList, objectMapper);
+                    AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(optionalProgramRule, finalOptionalProgramRulesList);
                 }
             });
         }
@@ -234,7 +235,7 @@ public class EquivalencyRule implements Rule {
             // merge studentAssessments with finalAssessmentList
             // => if any of finalAssessments already exists in studentAssessments, remove the current one and add the new one.
             List<StudentAssessment> tempAssessments = obj.getStudentAssessmentsOptionalProgram().stream()
-                    .filter(sa -> !finalAssessmentList.contains(sa)).toList();
+                    .filter(sa -> !finalAssessmentList.contains(sa)).collect(Collectors.toList());
             tempAssessments.addAll(finalAssessmentList);
             obj.setStudentAssessmentsOptionalProgram(tempAssessments);
         }
@@ -244,7 +245,7 @@ public class EquivalencyRule implements Rule {
                 .stream()
                 .filter(optionalProgramRule -> "M".compareTo(optionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
                         || "A".compareTo(optionalProgramRule.getOptionalProgramRequirementCode().getRequirementCategory()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
 
         obj.setOptionalProgramRules(finalOptionalProgramRulesList);
     }
@@ -260,7 +261,7 @@ public class EquivalencyRule implements Rule {
     private void handleFailedRules(OptionalProgramRuleProcessor obj, List<OptionalProgramRequirement> finalOptionalProgramRulesList, List<GradRequirement> requirementsMet, List<OptionalProgramRequirement> gradOptionalProgramRulesMatch) {
         List<OptionalProgramRequirement> successfulRules = finalOptionalProgramRulesList.stream()
                 .filter(opr -> opr.getOptionalProgramRequirementCode().isPassed())
-                .toList();
+                .collect(Collectors.toList());
 
         if(gradOptionalProgramRulesMatch.size() != finalOptionalProgramRulesList.size()) {
             List<OptionalProgramRequirement> unusedRules = RuleEngineApiUtils.getCloneOptionalProgramRule(gradOptionalProgramRulesMatch);
@@ -269,7 +270,7 @@ public class EquivalencyRule implements Rule {
         }
 
         List<OptionalProgramRequirement> failedRules = finalOptionalProgramRulesList.stream()
-                .filter(opr -> !opr.getOptionalProgramRequirementCode().isPassed()).toList();
+                .filter(opr -> !opr.getOptionalProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the failed assessment match rules met the assessment equivalency requirement for optional program!");
@@ -282,9 +283,9 @@ public class EquivalencyRule implements Rule {
         // if any failed assessments from the previous processors meet the assessment equivalency requirement,
         // then remove it from nonGradReason.
         if (!successfulRules.isEmpty()) {
-            List<String> successfulRuleCodes = successfulRules.stream().map(opr -> opr.getOptionalProgramRequirementCode().getOptProReqCode()).toList();
+            List<String> successfulRuleCodes = successfulRules.stream().map(opr -> opr.getOptionalProgramRequirementCode().getOptProReqCode()).collect(Collectors.toList());
             List<GradRequirement> nonGradReasons = obj.getNonGradReasonsOptionalProgram().stream()
-                    .filter(gr -> !successfulRuleCodes.contains(gr.getRule())).toList();
+                    .filter(gr -> !successfulRuleCodes.contains(gr.getRule())).collect(Collectors.toList());
             obj.setNonGradReasonsOptionalProgram(nonGradReasons);
         }
 
@@ -308,14 +309,14 @@ public class EquivalencyRule implements Rule {
         // Rule# 115,116,118,303,304
         List<String> failedRuleCodes = gradProgramRulesMatch
                 .stream()
-                .filter((pr -> !pr.getProgramRequirementCode().isPassed())).toList()
+                .filter((pr -> !pr.getProgramRequirementCode().isPassed())).collect(Collectors.toList())
                 .stream()
-                .map(fr -> fr.getProgramRequirementCode().getProReqCode()).toList();
+                .map(fr -> fr.getProgramRequirementCode().getProReqCode()).collect(Collectors.toList());
 
         return courseRequirements
                 .stream()
                 .filter(cr -> failedRuleCodes.contains(cr.getRuleCode().getCourseRequirementCode()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private List<CourseRequirement> getCourseRequirementsForAssessmentsEquivalency(List<OptionalProgramRequirement> gradOptionalProgramRulesMatch) {
@@ -329,12 +330,12 @@ public class EquivalencyRule implements Rule {
                 .stream()
                 .filter((opr -> !opr.getOptionalProgramRequirementCode().isPassed())).toList()
                 .stream()
-                .map(fr -> fr.getOptionalProgramRequirementCode().getOptProReqCode()).toList();
+                .map(fr -> fr.getOptionalProgramRequirementCode().getOptProReqCode()).collect(Collectors.toList());
 
         return courseRequirements
                 .stream()
                 .filter(cr -> failedRuleCodes.contains(cr.getRuleCode().getCourseRequirementCode()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private boolean validateAssessmentsEmptyOrFailed(List<ProgramRequirement> gradProgramRulesMatch, List<StudentAssessment> studentAssessments) {

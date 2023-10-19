@@ -1,15 +1,15 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
+import lombok.Data;
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import org.springframework.stereotype.Component;
-
-import lombok.Data;
-
 @Data
 @Component
-public class OptionalProgram {
+public class OptionalProgram implements Serializable {
 
 	private UUID optionalProgramID; 
 	private String optProgramCode; 

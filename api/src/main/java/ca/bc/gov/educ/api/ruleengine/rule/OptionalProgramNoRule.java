@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -86,7 +87,7 @@ public class OptionalProgramNoRule implements Rule {
 				.stream()
 				.filter(gradOptionalProgramRule -> "SR".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gradOptionalProgramRule.getOptionalProgramRequirementCode().getActiveRequirement()) == 0)
-				.toList();
+				.collect(Collectors.toList());
 		for(OptionalProgramRequirement opReq:optionalProgramNoRule) {
 			if (opReq.getOptionalProgramRequirementCode().getOptProReqCode().compareTo("957") != 0) {
 				logger.debug("{} Passed", opReq.getOptionalProgramRequirementCode().getLabel());

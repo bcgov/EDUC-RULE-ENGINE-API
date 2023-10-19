@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -37,7 +38,7 @@ public class MinCreditsRule implements Rule {
                 .filter(gpr -> "MC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                             && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0
                             && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
 
         if (studentCourses == null || studentCourses.isEmpty()) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");

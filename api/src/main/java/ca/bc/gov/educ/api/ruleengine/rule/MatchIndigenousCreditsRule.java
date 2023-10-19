@@ -2,7 +2,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -30,15 +30,14 @@ public class MatchIndigenousCreditsRule implements Rule {
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
-        List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
-                ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
+        List<StudentCourse> courseList = ruleProcessorData.getStudentCourses();
 
         List<ProgramRequirement> gradProgramRulesMatchIndigenous = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gradProgramRule -> "MI".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
                         && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
 
         if (courseList == null || courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Indigenous Credits Rule for processing");
@@ -63,7 +62,7 @@ public class MatchIndigenousCreditsRule implements Rule {
             List<CourseRequirement> tempCourseRequirement = courseRequirements.stream()
                     .filter(cr -> tempCourse.getCourseCode().compareTo(cr.getCourseCode()) == 0
                             && tempCourse.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
-                    .toList();
+                    .collect(Collectors.toList());
 
             ProgramRequirement tempProgramRule = null;
 
@@ -81,8 +80,8 @@ public class MatchIndigenousCreditsRule implements Rule {
             processCourse(tempCourse, tempCourseRequirement, tempProgramRule, requirementsMet,
                     gradProgramRulesMatchIndigenous, courseCreditException);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
         processReqMetAndNotMet(finalProgramRulesList, requirementsNotMet, finalCourseList,
                 originalCourseRequirements, requirementsMet, gradProgramRulesMatchIndigenous);
@@ -135,7 +134,7 @@ public class MatchIndigenousCreditsRule implements Rule {
             finalProgramRulesList.addAll(unusedRules);
         }
         List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -163,7 +162,7 @@ public class MatchIndigenousCreditsRule implements Rule {
                 .filter(gradProgramRule -> "MI".compareTo(gradProgramRule.getProgramRequirementCode()
                         .getRequirementTypeCode().getReqTypeCode()) != 0
                         || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
 
         ruleProcessorData.setStudentCourses(finalCourseList);
         ruleProcessorData.setGradProgramRules(finalProgramRulesList);

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -30,14 +31,14 @@ public class MinCredit1996Rule implements Rule {
 
         List<StudentCourse> tempStudentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-        List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule()).toList();
+        List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule()).collect(Collectors.toList());
 
         List<ProgramRequirement> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gpr -> "MC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                             && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0
                             && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .toList();
+                .collect(Collectors.toList());
 
         if (tempStudentCourseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");
@@ -95,7 +96,7 @@ public class MinCredit1996Rule implements Rule {
             logger.debug("Min Credits -> Required: {} Has : {}",requiredCredits,totalCredits);
         }
 
-        studentCourses.addAll(tempStudentCourseList.stream().filter(StudentCourse::isUsedInMatchRule).toList());
+        studentCourses.addAll(tempStudentCourseList.stream().filter(StudentCourse::isUsedInMatchRule).collect(Collectors.toList()));
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }

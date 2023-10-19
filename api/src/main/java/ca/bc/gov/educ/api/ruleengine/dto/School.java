@@ -1,12 +1,13 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
+import java.io.Serializable;
 
 @Data
 @Component
-public class School {
+public class School implements Serializable {
 
 	private String minCode;
     private String schoolName;

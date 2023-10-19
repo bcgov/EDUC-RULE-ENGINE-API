@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -33,7 +34,7 @@ public class AdultStudentGradeRule implements Rule {
         List<ProgramRequirement> gradProgramRules = ruleProcessorData
                 .getGradProgramRules().stream().filter(gpr -> "SG".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                         && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0)
-                .toList();
+                .collect(Collectors.toList());
 
         if (RuleProcessorUtils.isNotEmptyOrNull(gradProgramRules)) {
             logger.debug("#Checking SG Rule");

@@ -1,16 +1,16 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
-import java.util.Date;
-
-import org.springframework.stereotype.Component;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Component
-public class GraduationProgramCode {
+public class GraduationProgramCode implements Serializable {
 
 	private String programCode; 
 	private String programName; 

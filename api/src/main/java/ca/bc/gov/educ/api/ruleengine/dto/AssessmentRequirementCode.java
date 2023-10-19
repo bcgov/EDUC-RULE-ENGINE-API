@@ -1,14 +1,14 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
-import java.sql.Date;
-
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
+import java.io.Serializable;
+import java.sql.Date;
 
 @Data
 @Component
-public class AssessmentRequirementCode {
+public class AssessmentRequirementCode implements Serializable {
 
 	private String assmtRequirementCode;
 	private String label;

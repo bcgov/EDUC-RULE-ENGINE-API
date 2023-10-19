@@ -1,15 +1,15 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.UUID;
 
-import org.springframework.stereotype.Component;
-
 @Data
 @Component
-public class GradAlgorithmGraduationStatus {
+public class GradAlgorithmGraduationStatus implements Serializable {
 
 	private String pen;
     private String program;

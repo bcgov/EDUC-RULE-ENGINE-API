@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 /**
  * The type for Grad Student.
  */
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GradStudent {
+public class GradStudent implements Serializable {
     private String pen;
     private String archiveFlag;
     private String studSurname;

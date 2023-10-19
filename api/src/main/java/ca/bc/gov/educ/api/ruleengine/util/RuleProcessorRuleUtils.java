@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RuleProcessorRuleUtils {
 
@@ -36,14 +37,14 @@ public class RuleProcessorRuleUtils {
                         && !sc.isValidationCourse()
                         && !sc.isCutOffCourse()
                         && !sc.isGrade10Course())
-                .toList();
+                .collect(Collectors.toList());
 
         if (!projected) {
             logger.debug("Excluding Registrations!");
             uniqueStudentCourseList = uniqueStudentCourseList
                     .stream()
                     .filter(sc -> !sc.isProjected())
-                    .toList();
+                    .collect(Collectors.toList());
         } else
             logger.debug("Including Registrations!");
 
@@ -66,7 +67,7 @@ public class RuleProcessorRuleUtils {
                         || sc.isCutOffCourse()
                         || sc.isGrade10Course()
                         || (!projected && sc.isProjected()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")
@@ -128,14 +129,14 @@ public class RuleProcessorRuleUtils {
                 .filter(sc -> !sc.isNotCompleted()
                         && !sc.isDuplicate()
                         && !sc.isFailed())
-                .toList();
+                .collect(Collectors.toList());
 
         if (!projected) {
             logger.debug("Excluding Registrations!");
             uniqueStudentAssessmentList = uniqueStudentAssessmentList
                     .stream()
                     .filter(sc -> !sc.isProjected())
-                    .toList();
+                    .collect(Collectors.toList());
         } else
             logger.debug("Including Registrations!");
 
@@ -149,7 +150,7 @@ public class RuleProcessorRuleUtils {
                         || sc.isDuplicate()
                         || sc.isFailed()
                         || (!projected && sc.isProjected()))
-                .toList();
+                .collect(Collectors.toList());
     }
     
     public static String getGradDate(List<StudentCourse> studentCourses) {

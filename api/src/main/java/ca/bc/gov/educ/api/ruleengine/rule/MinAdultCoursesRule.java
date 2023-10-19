@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -44,7 +45,7 @@ public class MinAdultCoursesRule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MAC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.toList();
+				.collect(Collectors.toList());
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
@@ -53,12 +54,12 @@ public class MinAdultCoursesRule implements Rule {
 
 			if (gradProgramRule.getProgramRequirementCode().getRequiredLevel() == null
 					|| gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
-				tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).toList();
+				tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).collect(Collectors.toList());
 			} else {
 				tempStudentCourseList = studentCourses.stream()
 						.filter(sc -> sc.isUsed()
 								&& sc.getCourseLevel().compareTo(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) == 0)
-						.toList();
+						.collect(Collectors.toList());
 			}
 
 			for (StudentCourse sc : tempStudentCourseList) {
@@ -114,7 +115,7 @@ public class MinAdultCoursesRule implements Rule {
 					ruleProcessorData.getRequirementsMet()
 					.stream()
 					.filter(gpr -> gpr.getRule() != null && "4".compareTo(gpr.getRule()) == 0)
-					.toList();
+					.collect(Collectors.toList());
 			if(reqMetList.size() == 2) {
 				List<GradRequirement> delNonGradReason = ruleProcessorData.getNonGradReasons();
 				if(delNonGradReason != null)
@@ -130,7 +131,7 @@ public class MinAdultCoursesRule implements Rule {
 			Remove them if any.
 		 */
 		int carryForwardCoursesCount = 0;
-		List<StudentCourse> tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).toList();
+		List<StudentCourse> tempStudentCourseList = studentCourses.stream().filter(StudentCourse::isUsed).collect(Collectors.toList());
 
 		for (StudentCourse sc : tempStudentCourseList) {
 			String courseSessionDate = sc.getSessionDate() + "/01";
