@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,7 +49,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<StudentCourse> finalCourseList2 = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
         List<StudentCourse> matchedList = courseList
         		.stream()
         		.filter(StudentCourse::isUsed)

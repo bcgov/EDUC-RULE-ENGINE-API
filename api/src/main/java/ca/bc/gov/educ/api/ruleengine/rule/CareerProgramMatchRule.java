@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,7 +53,7 @@ public class CareerProgramMatchRule implements Rule {
         int totalCredits = 0;        
         int requiredCredits = 0;     
         List<StudentCourse> finalCourseList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
         while (studentCourseIterator.hasNext()) {
             
         	StudentCourse sc = studentCourseIterator.next();

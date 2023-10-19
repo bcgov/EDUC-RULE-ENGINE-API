@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,7 +53,6 @@ public class MatchIndigenousCreditsRule implements Rule {
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
 
         ListIterator<StudentCourse> courseIterator = courseList.listIterator();
         Map<String, Integer> courseCreditException = new HashMap<>();
@@ -88,6 +86,7 @@ public class MatchIndigenousCreditsRule implements Rule {
         processReqMetAndNotMet(finalProgramRulesList, requirementsNotMet, finalCourseList,
                 originalCourseRequirements, requirementsMet, gradProgramRulesMatchIndigenous);
 
+        ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
         return ruleProcessorData;
     }
 

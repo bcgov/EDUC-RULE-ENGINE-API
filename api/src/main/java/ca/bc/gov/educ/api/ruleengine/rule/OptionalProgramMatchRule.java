@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -45,7 +44,7 @@ public class OptionalProgramMatchRule {
 
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         while (assessmentIterator.hasNext()) {
             StudentAssessment tempAssessment = assessmentIterator.next();
@@ -228,7 +227,7 @@ public class OptionalProgramMatchRule {
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         while (courseIterator.hasNext()) {
             StudentCourse tempCourse = courseIterator.next();

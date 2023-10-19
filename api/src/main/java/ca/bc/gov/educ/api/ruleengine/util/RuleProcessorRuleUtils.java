@@ -2,11 +2,11 @@ package ca.bc.gov.educ.api.ruleengine.util;
 
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,12 +71,8 @@ public class RuleProcessorRuleUtils {
     }
 
     @SuppressWarnings("unchecked")
-	public static <T> T cloneObject(T input) throws IOException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return (T) objectMapper
-                .readValue(objectMapper.writeValueAsString(input), input.getClass());
+	public static <T> T cloneObject(T input) {
+        return (T) SerializationUtils.clone((Serializable) input);
     }
 
     public static List<StudentCourse> maintainExcludedCourses(String ruleName, List<StudentCourse> currentList, List<StudentCourse> existingExcludedList, boolean projected) {
