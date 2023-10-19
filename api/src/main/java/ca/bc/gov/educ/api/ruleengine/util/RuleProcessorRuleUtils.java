@@ -2,11 +2,11 @@ package ca.bc.gov.educ.api.ruleengine.util;
 
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,26 +71,24 @@ public class RuleProcessorRuleUtils {
     }
 
     @SuppressWarnings("unchecked")
-	public static <T> T cloneObject(T input) throws IOException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return (T) objectMapper
-                .readValue(objectMapper.writeValueAsString(input), input.getClass());
+	public static <T> T cloneObject(T input) {
+        return (T) SerializationUtils.clone((Serializable) input);
     }
 
-    public static List<StudentCourse> maintainExcludedCourses(List<StudentCourse> currentList,List<StudentCourse> existingExcludedList, boolean projected) {
-        List<StudentCourse> exclList = getExcludedStudentCourses(currentList, projected);
-        if(existingExcludedList == null)
+    public static List<StudentCourse> maintainExcludedCourses(String ruleName, List<StudentCourse> currentList, List<StudentCourse> existingExcludedList, boolean projected) {
+        List<StudentCourse> excludedStudentCourses = getExcludedStudentCourses(currentList, projected);
+        if(existingExcludedList == null) {
             existingExcludedList = new ArrayList<>();
+        }
 
-        if(!exclList.isEmpty()) {
-            for(StudentCourse sc:exclList) {
+        if(!excludedStudentCourses.isEmpty()) {
+            for(StudentCourse sc:excludedStudentCourses) {
                 StudentCourse tempCourse = existingExcludedList.stream()
                         .filter(sp -> sp.getCourseCode().compareTo(sc.getCourseCode()) == 0 && sp.getCourseLevel().compareTo(sc.getCourseLevel())==0 && sp.getSessionDate().compareTo(sc.getSessionDate())==0 )
                         .findAny()
                         .orElse(null);
                 if(tempCourse == null) {
+                    logger.debug("{} added the course to the excluded list {}", ruleName, sc);
                     existingExcludedList.add(sc);
                 }
             }
@@ -100,12 +98,12 @@ public class RuleProcessorRuleUtils {
     }
 
     public static List<StudentAssessment> maintainExcludedAssessments(List<StudentAssessment> currentList,List<StudentAssessment> existingExcludedList, boolean projected) {
-        List<StudentAssessment> exclList = getExcludedStudentAssessments(currentList, projected);
+        List<StudentAssessment> excludedStudentAssessments = getExcludedStudentAssessments(currentList, projected);
         if(existingExcludedList == null)
             existingExcludedList = new ArrayList<>();
 
-        if(!exclList.isEmpty()) {
-            for(StudentAssessment sc:exclList) {
+        if(!excludedStudentAssessments.isEmpty()) {
+            for(StudentAssessment sc:excludedStudentAssessments) {
                 StudentAssessment tempAssmt = existingExcludedList.stream()
                         .filter(sp -> sp.getAssessmentCode().compareTo(sc.getAssessmentCode()) == 0 && sp.getSessionDate().compareTo(sc.getSessionDate())==0)
                         .findAny()

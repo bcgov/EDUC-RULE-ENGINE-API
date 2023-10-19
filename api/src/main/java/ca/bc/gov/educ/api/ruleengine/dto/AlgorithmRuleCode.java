@@ -1,12 +1,13 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
+import java.io.Serializable;
 
 @Data
 @Component
-public class AlgorithmRuleCode {
+public class AlgorithmRuleCode implements Serializable {
 
 	private String algoRuleCode; 
 	private String ruleImplementation; 

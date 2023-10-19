@@ -66,10 +66,10 @@ public class RestrictedCoursesRule implements Rule {
                 }
             }
         }
-        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourses, ruleProcessorData.getExcludedCourses(), ruleProcessorData.isProjected()));
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses("RestrictedCoursesRule", studentCourses, ruleProcessorData.getExcludedCourses(), ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourses);
         prepareCoursesForOptionalPrograms();
-        logger.debug("Restricted Courses: {0} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
+        logger.debug("Restricted Courses: {} ", (int) studentCourses.stream().filter(StudentCourse::isRestricted).count());
         return ruleProcessorData;
     }
 
@@ -132,6 +132,5 @@ public class RestrictedCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("RestrictedCoursesRule: Rule Processor Data set.");
     }
 }

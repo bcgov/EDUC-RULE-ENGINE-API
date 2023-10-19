@@ -1,12 +1,13 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
+import java.io.Serializable;
 
 @Data
 @Component
-public class LetterGrade {
+public class LetterGrade implements Serializable {
 
 	private String grade; 
 	private String gpaMarkValue; 

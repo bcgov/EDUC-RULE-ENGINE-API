@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -80,7 +79,7 @@ public class MatchCredit1996Rule implements Rule {
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         for (StudentCourse tempCourse : fineArtsCourseList) {
             logger.debug("Processing Course: Code= {} Level = {}", tempCourse.getCourseCode(), tempCourse.getCourseLevel());
@@ -127,8 +126,8 @@ public class MatchCredit1996Rule implements Rule {
             logger.debug("Temp Program Rule: {}", tempProgramRule);
             processCourse(tempCourse, tempCourseRequirements, tempProgramRule, requirementsMet, gradProgramRulesMatch, map1996);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
         processReqMet(finalProgramRulesList,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
@@ -174,8 +173,8 @@ public class MatchCredit1996Rule implements Rule {
             logger.debug("Temp Program Rule: {}", tempProgramRule);
             processCourse(tempCourse, tempCourseRequirements, tempProgramRule, requirementsMet, gradProgramRulesMatch, map1996);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
@@ -273,7 +272,7 @@ public class MatchCredit1996Rule implements Rule {
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
                         || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: {}", finalProgramRulesList.size());
 
@@ -296,7 +295,7 @@ public class MatchCredit1996Rule implements Rule {
     		finalProgramRulesList.addAll(unusedRules);
     	}
 		List<ProgramRequirement> failedRules = finalProgramRulesList.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).toList();
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed()).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -322,7 +321,7 @@ public class MatchCredit1996Rule implements Rule {
                 .stream()
                 .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) != 0
                         || "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) != 0)
-                .toList());
+                .collect(Collectors.toList()));
 
         logger.debug("Final Program rules list size 2: {}",finalProgramRulesList.size());
 
@@ -357,6 +356,5 @@ public class MatchCredit1996Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("Match4Credit1996Rule: Rule Processor Data set.");
     }
 }

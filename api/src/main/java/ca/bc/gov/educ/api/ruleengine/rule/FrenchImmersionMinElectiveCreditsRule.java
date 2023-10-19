@@ -1,21 +1,18 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -52,7 +49,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<StudentCourse> finalCourseList2 = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
         List<StudentCourse> matchedList = courseList
         		.stream()
         		.filter(StudentCourse::isUsed)
@@ -74,7 +71,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
 	        		}
 	            }
         	}
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList);
             if ((totalCredits == requiredCredits) && totalCredits != 0) {
             	requirementAchieved = true;
             }
@@ -109,7 +106,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         			}         		
         		}
         	}
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList2, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList2);
             
             if ((totalCreditsGrade11or12 == requiredCreditsGrad11or12) && totalCreditsGrade11or12 != 0) {
             	requirementAchieved = true;
@@ -186,7 +183,6 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("FrenchImmersionMinElectiveCreditRule: Rule Processor Data set.");
     }
 
 }

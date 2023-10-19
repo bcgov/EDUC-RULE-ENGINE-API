@@ -31,8 +31,6 @@ public class ExcludeValidationCoursesRule implements Rule {
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
-        logger.debug("###################### Finding CAREER PROGRAM courses ######################");
-
         for (StudentCourse studentCourse : studentCourseList) {
             String sessionDate = studentCourse.getSessionDate() + "/01";
             String cName = studentCourse.getCourseCode()+studentCourse.getCourseLevel();
@@ -43,7 +41,7 @@ public class ExcludeValidationCoursesRule implements Rule {
             }
         }
 
-        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses("ExcludeValidationCoursesRule", studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
         logger.debug("Validation Courses: {}",
@@ -58,6 +56,5 @@ public class ExcludeValidationCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("ExcludeValidationCoursesRule: Rule Processor Data set.");
     }
 }

@@ -34,7 +34,7 @@ public class OptionalProgramNoRule implements Rule {
 		if(program.compareTo("1996-PF")==0 && mapOptional.get("DD") != null) {
 			obj = mapOptional.get("DD");
 			processOptionalProgramNoRules("DD",obj,mapOptional);
-		}else if(program.compareTo("2018-EN")==0 || program.compareTo("2004-EN")==0 || program.compareTo("2018-PF")==0
+		} else if(program.compareTo("2018-EN")==0 || program.compareTo("2004-EN")==0 || program.compareTo("2018-PF")==0
 				||program.compareTo("2004-PF")==0 || program.compareTo("1996-EN")==0
 				|| program.compareTo("2023-EN")==0 || program.compareTo("2023-PF")==0) {
 			if(mapOptional.get("AD") != null) {
@@ -107,6 +107,5 @@ public class OptionalProgramNoRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("OptionalProgramNoRule: Rule Processor Data set.");
     }
 }

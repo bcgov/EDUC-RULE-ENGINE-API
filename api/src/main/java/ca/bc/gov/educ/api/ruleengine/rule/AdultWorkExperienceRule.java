@@ -1,28 +1,20 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ca.bc.gov.educ.api.ruleengine.dto.CourseRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.GradRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.ProgramRequirement;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -62,7 +54,7 @@ public class AdultWorkExperienceRule implements Rule {
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			int numberOfWExCourses = 0;
 	        ListIterator<StudentCourse> courseIterator = studentCourses.listIterator();
-	        ObjectMapper objectMapper = new ObjectMapper();
+	        
 	        while (courseIterator.hasNext()) {
 	            StudentCourse tempCourse = courseIterator.next();
 
@@ -95,7 +87,7 @@ public class AdultWorkExperienceRule implements Rule {
 	            		tempCourse.setNotEligibleForElective(true);
 	            	}
 	            }
-				AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
+				AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
 	        }
 	        
 	        if(numberOfWExCourses > 1L) {
@@ -116,7 +108,6 @@ public class AdultWorkExperienceRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("AdultWorkExperienceRule: Rule Processor Data set.");
 	}
 
 }

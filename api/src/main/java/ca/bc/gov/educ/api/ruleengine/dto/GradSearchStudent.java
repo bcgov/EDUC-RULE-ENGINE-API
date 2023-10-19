@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
+
 @Data
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GradSearchStudent {
+public class GradSearchStudent implements Serializable {
 
 	private String studentID;
 	private String pen;

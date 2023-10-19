@@ -2,14 +2,14 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class AlgorithmSupportRule {
@@ -28,7 +28,7 @@ public class AlgorithmSupportRule {
                         && pr.getProgramRequirementCode().getRequirementCategory() != null
                         && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("C")
                         && "N/A".compareToIgnoreCase(pr.getProgramRequirementCode().getNotMetDesc()) != 0)
-                .toList();
+                .collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -61,7 +61,7 @@ public class AlgorithmSupportRule {
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         ruleProcessorData.setStudentCourses(courseList);
         List<ProgramRequirement> failedRules = gradProgramRulesMatch.stream()
-                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("A")).toList();
+                .filter(pr -> !pr.getProgramRequirementCode().isPassed() && pr.getProgramRequirementCode().getRequirementCategory().equalsIgnoreCase("A")).collect(Collectors.toList());
 
         if (failedRules.isEmpty()) {
             logger.debug("All the match rules met!");
@@ -224,81 +224,65 @@ public class AlgorithmSupportRule {
         }
     }
 
-    public static void copyAndAddIntoProgramRulesList(ProgramRequirement programRule, List<ProgramRequirement> finalProgramRulesList, ObjectMapper objectMapper) {
-        try {
-            ProgramRequirement tempPR = objectMapper.readValue(objectMapper.writeValueAsString(programRule), ProgramRequirement.class);
-            if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
-                finalProgramRulesList.add(tempPR);
+    public static void copyAndAddIntoProgramRulesList(ProgramRequirement programRule, List<ProgramRequirement> finalProgramRulesList) {
+        ProgramRequirement tempPR = SerializationUtils.clone(programRule);
+        if (tempPR != null && !finalProgramRulesList.contains(tempPR)) {
+            finalProgramRulesList.add(tempPR);
 
-                //See if there are duplicates
-                List<ProgramRequirement> duplicateProgramRules = finalProgramRulesList.stream()
-                        .filter(fprl -> fprl.getProgramRequirementCode().getProReqCode().compareTo(tempPR.getProgramRequirementCode().getProReqCode()) == 0)
-                        .toList();
+            //See if there are duplicates
+            List<ProgramRequirement> duplicateProgramRules = finalProgramRulesList.stream()
+                    .filter(fprl -> fprl.getProgramRequirementCode().getProReqCode().compareTo(tempPR.getProgramRequirementCode().getProReqCode()) == 0)
+                    .collect(Collectors.toList());
 
-                if (duplicateProgramRules.size() > 1) {
-                    finalProgramRulesList.removeAll(
-                            duplicateProgramRules.stream().filter(dpr -> !dpr.getProgramRequirementCode().isPassed()).toList()
-                    );
-                }
+            if (duplicateProgramRules.size() > 1) {
+                finalProgramRulesList.removeAll(
+                        duplicateProgramRules.stream().filter(dpr -> !dpr.getProgramRequirementCode().isPassed()).collect(Collectors.toList())
+                );
             }
-            logger.debug("TempPR: {}",tempPR);
-            logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
-        } catch (IOException e) {
-            logger.error(ERROR_FORMAT_STR,e.getMessage());
         }
+        logger.debug("TempPR: {}",tempPR);
+        logger.debug("Final Program rules list size: {}",finalProgramRulesList.size());
     }
 
-    public static void copyAndAddIntoOptionalProgramRulesList(OptionalProgramRequirement optionalProgramRule, List<OptionalProgramRequirement> finalOptionalProgramRulesList, ObjectMapper objectMapper) {
-        try {
-            OptionalProgramRequirement tempSPR = objectMapper.readValue(objectMapper.writeValueAsString(optionalProgramRule),
-                    OptionalProgramRequirement.class);
-            if (tempSPR != null && !finalOptionalProgramRulesList.contains(optionalProgramRule)) {
-                //If Rule already exists in the list then remove and replace
-                OptionalProgramRequirement opr = finalOptionalProgramRulesList.stream()
-                        .filter(pr -> pr.getOptionalProgramRequirementID().compareTo(tempSPR.getOptionalProgramRequirementID()) == 0)
-                                .findAny().orElse(null);
+    public static void copyAndAddIntoOptionalProgramRulesList(OptionalProgramRequirement optionalProgramRule, List<OptionalProgramRequirement> finalOptionalProgramRulesList) {
+        OptionalProgramRequirement tempSPR = SerializationUtils.clone(optionalProgramRule);
+        if (tempSPR != null && !finalOptionalProgramRulesList.contains(optionalProgramRule)) {
+            //If Rule already exists in the list then remove and replace
+            OptionalProgramRequirement opr = finalOptionalProgramRulesList.stream()
+                    .filter(pr -> pr.getOptionalProgramRequirementID().compareTo(tempSPR.getOptionalProgramRequirementID()) == 0)
+                    .findAny().orElse(null);
 
-                if (opr != null) {
-                    // If Rule already added before, check if the added rule is failed, then replace with current one
-                    // Otherwise, do not add anything
-                    if (!opr.getOptionalProgramRequirementCode().isPassed()) {
-                        finalOptionalProgramRulesList.remove(opr);
-                        finalOptionalProgramRulesList.add(tempSPR);
-                    }
-                }
-                // If rule not added yet, just add it
-                else {
+            if (opr != null) {
+                // If Rule already added before, check if the added rule is failed, then replace with current one
+                // Otherwise, do not add anything
+                if (!opr.getOptionalProgramRequirementCode().isPassed()) {
+                    finalOptionalProgramRulesList.remove(opr);
                     finalOptionalProgramRulesList.add(tempSPR);
                 }
             }
-            logger.debug("TempPR: {}", tempSPR);
-            logger.debug("Final Program rules list size: {}", finalOptionalProgramRulesList.size());
-        } catch (IOException e) {
-            logger.error(ERROR_FORMAT_STR,e.getMessage());
+            // If rule not added yet, just add it
+            else {
+                finalOptionalProgramRulesList.add(tempSPR);
+            }
         }
+        logger.debug("TempPR: {}", tempSPR);
+        logger.debug("Final Program rules list size: {}", finalOptionalProgramRulesList.size());
     }
 
-    public static void copyAndAddIntoStudentCoursesList(StudentCourse studentCourse, List<StudentCourse> finalCourseList, ObjectMapper objectMapper) {
-        try {
-            StudentCourse tempSC = objectMapper.readValue(objectMapper.writeValueAsString(studentCourse), StudentCourse.class);
-            if (tempSC != null)
-                finalCourseList.add(tempSC);
-            logger.debug("TempSC: {}", tempSC);
-            logger.debug("Final course List size: {}: ", finalCourseList.size());
-        } catch (IOException e) {
-            logger.error(ERROR_FORMAT_STR,e.getMessage());
+    public static void copyAndAddIntoStudentCoursesList(StudentCourse studentCourse, List<StudentCourse> finalCourseList) {
+        StudentCourse studentCourseTmp = SerializationUtils.clone(studentCourse);
+        if (studentCourseTmp != null) {
+            finalCourseList.add(studentCourseTmp);
+            logger.debug("Added Student Course: {}", studentCourseTmp);
         }
+        logger.debug("Final Student Course List size: {}", finalCourseList.size());
     }
 
-    public static void copyAndAddIntoStudentAssessmentsList(StudentAssessment studentAssessment, List<StudentAssessment> finalAssessmentList, ObjectMapper objectMapper) {
-        try {
-            StudentAssessment tempSA = objectMapper.readValue(objectMapper.writeValueAsString(studentAssessment), StudentAssessment.class);
-            if (tempSA != null)
-                finalAssessmentList.add(tempSA);
-            logger.debug("TempSC: {}",tempSA);
-            logger.debug("Final Assessment List size: : {}",finalAssessmentList.size());
-        } catch (IOException e) {
-            logger.error(ERROR_FORMAT_STR,e.getMessage());
-        }
+    public static void copyAndAddIntoStudentAssessmentsList(StudentAssessment studentAssessment, List<StudentAssessment> finalAssessmentList) {
+        StudentAssessment tempSA = SerializationUtils.clone(studentAssessment);
+        if (tempSA != null)
+            finalAssessmentList.add(tempSA);
+        logger.debug("TempSC: {}",tempSA);
+        logger.debug("Final Assessment List size: : {}",finalAssessmentList.size());
     }
 }

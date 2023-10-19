@@ -1,19 +1,18 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -50,7 +49,7 @@ public class MinCreditsElective12OtherRule implements Rule {
 			return ruleProcessorData;
 		}
 
-		List<String> socialStudiesCourseCodeList = ruleProcessorData.getCourseRequirements().stream().filter(cr -> "502".equals(cr.getRuleCode().getCourseRequirementCode())).map(CourseRequirement::getCourseCode).toList();
+		List<String> socialStudiesCourseCodeList = ruleProcessorData.getCourseRequirements().stream().filter(cr -> "502".equals(cr.getRuleCode().getCourseRequirementCode())).map(CourseRequirement::getCourseCode).collect(Collectors.toList());
 		if (socialStudiesCourseCodeList.isEmpty()) {
 			socialStudiesCourseCodeList = List.of(COURSE_CODE_SOCIAL_STUDIES);
 		}
@@ -182,14 +181,13 @@ public class MinCreditsElective12OtherRule implements Rule {
 	}
 
 	private boolean existsRule505WithoutRule502(List<GradRequirement> reqsMet) {
-		List<GradRequirement> list = reqsMet.stream().filter(r -> "502".equalsIgnoreCase(r.getRule()) || "505".equalsIgnoreCase(r.getRule())).toList();
+		List<GradRequirement> list = reqsMet.stream().filter(r -> "502".equalsIgnoreCase(r.getRule()) || "505".equalsIgnoreCase(r.getRule())).collect(Collectors.toList());
 		return list.size() == 1 && "505".equalsIgnoreCase(list.get(0).getRule());
 	}
 
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("MinCreditsElective12Rule: Rule Processor Data set.");
 	}
 
 }

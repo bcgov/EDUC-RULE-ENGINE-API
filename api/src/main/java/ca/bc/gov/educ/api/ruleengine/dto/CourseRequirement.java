@@ -1,14 +1,14 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
-import java.util.UUID;
-
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
+import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @Component
-public class CourseRequirement {
+public class CourseRequirement implements Serializable {
 
 	private UUID courseRequirementId;
 	private String courseCode;

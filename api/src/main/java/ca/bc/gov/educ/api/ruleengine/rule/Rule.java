@@ -1,11 +1,12 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import java.io.Serializable;
 
 @Component
-public interface Rule {
+public interface Rule extends Serializable {
 
     RuleData fire();
 

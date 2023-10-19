@@ -1,21 +1,23 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import ca.bc.gov.educ.api.ruleengine.dto.*;
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRuleProcessor;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @Component
@@ -33,8 +35,6 @@ public class AssessmentRegistrationsRule implements Rule {
 
 		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 
-		logger.debug("###################### Finding PROJECTED assessments (For Projected GRAD) ######################");
-
 		for (StudentAssessment studentAssessment : studentAssessmentList) {
 			String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
 			String sessionDate = studentAssessment.getSessionDate() + "/01";
@@ -42,7 +42,7 @@ public class AssessmentRegistrationsRule implements Rule {
 				Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
 				sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
 			} catch (ParseException pe) {
-				logger.error("ERROR: {0}", pe.getMessage());
+				logger.error("ERROR: {}", pe.getMessage());
 			}
 
 			int diff = RuleEngineApiUtils.getDifferenceInMonths(sessionDate, today);
@@ -75,7 +75,7 @@ public class AssessmentRegistrationsRule implements Rule {
 		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-		logger.debug("Projected Assessments (Registrations): {0} ",(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
+		logger.debug("Projected Assessments (Registrations): {} ",(int) studentAssessmentList.stream().filter(StudentAssessment::isProjected).count());
 		prepareAssessmentForOptionalPrograms();
 		return ruleProcessorData;
 	}
@@ -89,6 +89,5 @@ public class AssessmentRegistrationsRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("AssessmentRegistrationsRule: Rule Processor Data set.");
 	}
 }

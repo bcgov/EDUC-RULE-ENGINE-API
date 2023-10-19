@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,7 +53,6 @@ public class MatchIndigenousCreditsRule implements Rule {
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
 
         ListIterator<StudentCourse> courseIterator = courseList.listIterator();
         Map<String, Integer> courseCreditException = new HashMap<>();
@@ -82,12 +80,13 @@ public class MatchIndigenousCreditsRule implements Rule {
             processCourse(tempCourse, tempCourseRequirement, tempProgramRule, requirementsMet,
                     gradProgramRulesMatchIndigenous, courseCreditException);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
         processReqMetAndNotMet(finalProgramRulesList, requirementsNotMet, finalCourseList,
                 originalCourseRequirements, requirementsMet, gradProgramRulesMatchIndigenous);
 
+        ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
         return ruleProcessorData;
     }
 
@@ -102,7 +101,7 @@ public class MatchIndigenousCreditsRule implements Rule {
                             && rm.getRule().equals(finalTempProgramRule.getProgramRequirementCode().getProReqCode()))
                     .findAny()
                     .orElse(null) == null) {
-                setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet, gradProgramRulesMatch, null, courseCreditException);
+                setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet, courseCreditException);
             } else {
                 logger.debug("!!! Program Rule met Already: {}", tempProgramRule);
             }
@@ -119,8 +118,7 @@ public class MatchIndigenousCreditsRule implements Rule {
                         .findAny()
                         .orElse(null);
                 if (tempProgramRule != null) {
-                    setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet, gradProgramRulesMatch,
-                            "ExceptionalCase", courseCreditException);
+                    setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet, courseCreditException);
                 }
             }
         }
@@ -180,9 +178,8 @@ public class MatchIndigenousCreditsRule implements Rule {
         ruleProcessorData.setRequirementsMet(reqsMet);
     }
 
-    public void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule,
-                                     List<GradRequirement> requirementsMet, List<ProgramRequirement> gradProgramRulesMatch,
-                                     String exceptionalCase, Map<String, Integer> courseCreditException) {
+    private void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule,
+                                     List<GradRequirement> requirementsMet, Map<String, Integer> courseCreditException) {
         tempCourse.setUsed(true);
         tempCourse.setUsedInMatchRule(true);
         if (courseCreditException.get(tempProgramRule.getProgramRequirementCode().getProReqCode()) == null) {
@@ -218,7 +215,6 @@ public class MatchIndigenousCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MatchIndigenousCreditsRule: Rule Processor Data set.");
     }
 
 }

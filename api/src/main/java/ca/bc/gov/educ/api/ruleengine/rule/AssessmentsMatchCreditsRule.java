@@ -3,8 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,7 +54,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
 
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         for (StudentAssessment tempAssessment : assessmentList) {
 
@@ -79,8 +77,8 @@ public class AssessmentsMatchCreditsRule implements Rule {
             logger.debug("Temp Program Rule: {}",tempProgramRule);
             processAssessments(tempAssessmentRequirement,tempProgramRule,requirementsMet,tempAssessment);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
@@ -167,7 +165,6 @@ public class AssessmentsMatchCreditsRule implements Rule {
 	@Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("AssessmentsMatchCreditsRule: Rule Processor Data set.");
     }
 
 }

@@ -32,7 +32,6 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
     public RuleData fire() {
         List<StudentAssessment> studentAssessmentsList = ruleProcessorData.getStudentAssessments();
 
-        logger.debug("###################### Finding Duplicate Registrations ######################");
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
         String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
         boolean inProgressCourse1 = false;
@@ -86,6 +85,5 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("RegistrationsDuplicateAssmtRule: Rule Processor Data set.");
     }
 }

@@ -32,7 +32,6 @@ public class ExcludeAfterProgramCutoffRule implements Rule {
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
-        logger.debug("###################### Finding Course Taken after program cutoff courses ######################");
         if(ruleProcessorData.getGradProgram().getExpiryDate() == null) {
             return ruleProcessorData;
         }
@@ -54,7 +53,7 @@ public class ExcludeAfterProgramCutoffRule implements Rule {
             }
         }
 
-        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses("ExcludeAfterProgramCutoffRule", studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
         logger.debug("Cut-off Courses: {}",
@@ -69,6 +68,5 @@ public class ExcludeAfterProgramCutoffRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("ExcludeAfterProgramCutoffRule: Rule Processor Data set.");
     }
 }
