@@ -159,6 +159,9 @@ public class MinAdultCoursesRule implements Rule {
 				}
 			}
 		}
+		if (!studentCourses.isEmpty()) {
+			ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
+		}
 		return ruleProcessorData;
 	}
 
