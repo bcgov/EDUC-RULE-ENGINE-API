@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,8 +32,9 @@ public class MinCredit1996Rule implements Rule {
 
         List<StudentCourse> tempStudentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-        List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule()).collect(Collectors.toList());
-
+        List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule() || (sc.getLeftOverCredits() != null && sc.getLeftOverCredits() > 0)).collect(Collectors.toList());
+        studentCourses.sort(Comparator.comparing(StudentCourse::getCourseLevel, Comparator.reverseOrder())
+                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
         List<ProgramRequirement> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gpr -> "MC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
@@ -55,6 +57,12 @@ public class MinCredit1996Rule implements Rule {
                         .filter(sc -> sc.getCourseLevel().contains(requiredLevel) && !sc.getCourseCode().startsWith("X"))
                         .mapToInt(StudentCourse::getCredits)
                         .sum();
+                studentCourses
+                        .stream()
+                        .filter(sc -> sc.getCourseLevel().contains(requiredLevel) && !sc.getCourseCode().startsWith("X"))
+                        .forEach(sc -> logger.debug("Total Credits: Course [{}/{}] => Credits [{}], CreditsUsedForGrad [{}], OriginalCredits [{}], leftOverCredits [{}]",
+                                sc.getCourseCode(), sc.getCourseLevel(),
+                                sc.getCredits(), sc.getCreditsUsedForGrad(), sc.getOriginalCredits(), sc.getLeftOverCredits()));
             }
             setCoursesReqMet(studentCourses,gradProgramRule,requiredCredits);
 
@@ -96,7 +104,7 @@ public class MinCredit1996Rule implements Rule {
             logger.debug("Min Credits -> Required: {} Has : {}",requiredCredits,totalCredits);
         }
 
-        studentCourses.addAll(tempStudentCourseList.stream().filter(StudentCourse::isUsedInMatchRule).collect(Collectors.toList()));
+        studentCourses.addAll(tempStudentCourseList.stream().filter(sc -> sc.isUsedInMatchRule() && sc.getLeftOverCredits() == null).collect(Collectors.toList()));
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }
@@ -118,6 +126,10 @@ public class MinCredit1996Rule implements Rule {
 
 	public void processReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
 		sc.setUsed(true);
+        sc.setUsedInMinCreditRule(true);
+        logger.debug("==> MinCredit met Course [{}/{}] => Credits [{}], CreditsUsedForGrad [{}], OriginalCredits [{}], leftOverCredits [{}]",
+                sc.getCourseCode(), sc.getCourseLevel(),
+                sc.getCredits(), sc.getCreditsUsedForGrad(), sc.getOriginalCredits(), sc.getLeftOverCredits());
         AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
     }
     
