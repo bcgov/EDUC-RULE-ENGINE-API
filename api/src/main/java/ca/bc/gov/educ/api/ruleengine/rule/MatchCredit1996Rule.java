@@ -52,7 +52,7 @@ public class MatchCredit1996Rule implements Rule {
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected())
                 .stream().filter(studentCourse -> studentCourse.getFineArtsAppliedSkills() == null
-                                || studentCourse.getFineArtsAppliedSkills().length() <= 0)
+                                || studentCourse.getFineArtsAppliedSkills().length() == 0)
                 .collect(Collectors.toList());
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
                 .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
@@ -119,6 +119,7 @@ public class MatchCredit1996Rule implements Rule {
                                 && tempCourse.getCredits() > Integer.parseInt(tempProgramRule.getProgramRequirementCode().getRequiredCredits())) {
                             int extraCredits = tempCourse.getCredits() - Integer.parseInt(tempProgramRule.getProgramRequirementCode().getRequiredCredits());
                             map1996.put(tempCourse.getCourseCode(), extraCredits);
+                            tempCourse.setLeftOverCredits(extraCredits);
                         }
                     }
                 }
@@ -166,6 +167,7 @@ public class MatchCredit1996Rule implements Rule {
                         if (tempProgramRule != null && tempCourse.getCredits() > Integer.parseInt(tempProgramRule.getProgramRequirementCode().getRequiredCredits())) {
                             int extraCredits = tempCourse.getCredits() - Integer.parseInt(tempProgramRule.getProgramRequirementCode().getRequiredCredits());
                             map1996.put(tempCourse.getCourseCode(), extraCredits);
+                            tempCourse.setLeftOverCredits(extraCredits);
                         }
                     }
                 }
@@ -253,6 +255,7 @@ public class MatchCredit1996Rule implements Rule {
                     if(tempCourse.getCredits() > Integer.parseInt(tempProgramRule.getProgramRequirementCode().getRequiredCredits())) {
                         int extraCredits = tempCourse.getCredits() - Integer.parseInt(tempProgramRule.getProgramRequirementCode().getRequiredCredits());
                         map1996.put(tempCourse.getCourseCode(),extraCredits);
+                        tempCourse.setLeftOverCredits(extraCredits);
                     }
                     setDetailsForCourses(tempCourse, tempProgramRule, requirementsMet);
                 }
@@ -339,9 +342,9 @@ public class MatchCredit1996Rule implements Rule {
     }
     
     public void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet) {
-    	tempCourse.setUsed(true);
+        tempCourse.setUsed(true);
         tempCourse.setUsedInMatchRule(true);
-        tempCourse.setCreditsUsedForGrad(tempCourse.getCredits());
+        tempCourse.setCreditsUsedForGrad(tempCourse.getLeftOverCredits() != null && tempCourse.getLeftOverCredits() > 0? tempCourse.getLeftOverCredits():tempCourse.getCredits());
         AlgorithmSupportRule.setGradReqMet(tempCourse,tempProgramRule);
         tempProgramRule.getProgramRequirementCode().setPassed(true);
         requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel(),tempProgramRule.getProgramRequirementCode().getProReqCode()));

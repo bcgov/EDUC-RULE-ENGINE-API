@@ -35,10 +35,15 @@ public class MinElectiveCredits1996Rule implements Rule {
 
 		Map<String,Integer> map1996 = ruleProcessorData.getMap1996Crse();
 		int ldCourseCounter = 0;
-		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
+		List<StudentCourse> tempStudentCourseList = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-		studentCourses.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
+		List<StudentCourse> minCreditGrade12Courses = tempStudentCourseList.stream().filter(StudentCourse::isUsedInMinCreditRule).collect(Collectors.toList());
+		tempStudentCourseList.removeAll(minCreditGrade12Courses);
+		tempStudentCourseList.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
 				.thenComparing(StudentCourse::getCompletedCoursePercentage).reversed());
+
+		List<StudentCourse> studentCourses = new ArrayList<>(minCreditGrade12Courses);
+		studentCourses.addAll(tempStudentCourseList);
 
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0

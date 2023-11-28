@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -59,10 +60,14 @@ public class StudentCourse implements Serializable {
     private boolean isRestricted;
     private boolean isNotEligibleForElective;
     private boolean isUsedInMatchRule;
+
     private boolean isLessCreditCourse;
     private boolean isValidationCourse;
     private boolean isCutOffCourse;
     private boolean isGrade10Course;
+    @JsonIgnore
+    private boolean isUsedInMinCreditRule;
+    @JsonIgnore
     private Integer leftOverCredits;
 
     public Integer getCreditsUsedForGrad() {
