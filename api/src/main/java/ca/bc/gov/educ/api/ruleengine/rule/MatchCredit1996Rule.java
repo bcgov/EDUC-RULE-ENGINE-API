@@ -52,7 +52,7 @@ public class MatchCredit1996Rule implements Rule {
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected())
                 .stream().filter(studentCourse -> studentCourse.getFineArtsAppliedSkills() == null
-                                || studentCourse.getFineArtsAppliedSkills().length() <= 0)
+                                || studentCourse.getFineArtsAppliedSkills().length() == 0)
                 .collect(Collectors.toList());
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
                 .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
@@ -344,13 +344,10 @@ public class MatchCredit1996Rule implements Rule {
     public void setDetailsForCourses(StudentCourse tempCourse, ProgramRequirement tempProgramRule, List<GradRequirement> requirementsMet) {
         tempCourse.setUsed(true);
         tempCourse.setUsedInMatchRule(true);
-        tempCourse.setCreditsUsedForGrad(tempCourse.getLeftOverCredits() != null && tempCourse.getLeftOverCredits() != 0? tempCourse.getLeftOverCredits():tempCourse.getCredits());
+        tempCourse.setCreditsUsedForGrad(tempCourse.getLeftOverCredits() != null && tempCourse.getLeftOverCredits() > 0? tempCourse.getLeftOverCredits():tempCourse.getCredits());
         AlgorithmSupportRule.setGradReqMet(tempCourse,tempProgramRule);
         tempProgramRule.getProgramRequirementCode().setPassed(true);
         requirementsMet.add(new GradRequirement(tempProgramRule.getProgramRequirementCode().getTraxReqNumber(), tempProgramRule.getProgramRequirementCode().getLabel(),tempProgramRule.getProgramRequirementCode().getProReqCode()));
-        logger.debug("==> MatchCredit [{}/{}] met Course [{}/{}] => Credits [{}], CreditsUsedForGrad [{}], OriginalCredits [{}], LeftOverCredits [{}]",
-                tempProgramRule.getGraduationProgramCode(), tempProgramRule.getProgramRequirementCode().getProReqCode(), tempCourse.getCourseCode(), tempCourse.getCourseLevel(),
-                tempCourse.getCredits(), tempCourse.getCreditsUsedForGrad(), tempCourse.getOriginalCredits(), tempCourse.getLeftOverCredits());
     }
 
     private boolean isFineArtsOrAppliedSkillsRule(String programRequirementCode) {
