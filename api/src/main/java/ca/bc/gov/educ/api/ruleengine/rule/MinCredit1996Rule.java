@@ -40,7 +40,7 @@ public class MinCredit1996Rule implements Rule {
                 .filter(gpr -> "MC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
                             && "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0
                             && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+                .distinct().toList();
 
         if (tempStudentCourseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");

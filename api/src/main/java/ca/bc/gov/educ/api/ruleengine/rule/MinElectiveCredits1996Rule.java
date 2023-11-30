@@ -48,7 +48,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
 						&& "Y".compareTo(gpr.getProgramRequirementCode().getActiveRequirement()) == 0 && "C".compareTo(gpr.getProgramRequirementCode().getRequirementCategory()) == 0)
-				.collect(Collectors.toList());
+				.distinct().toList();
 
 		if (studentCourses.isEmpty()) {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
@@ -71,11 +71,11 @@ public class MinElectiveCredits1996Rule implements Rule {
 						}
 						if (totalCredits + map1996.get(sc.getCourseCode()) <= requiredCredits) {
 							totalCredits += map1996.get(sc.getCourseCode());
-							sc.setCreditsUsedForGrad(map1996.get(sc.getCourseCode()));
+							sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + map1996.get(sc.getCourseCode()));
 						} else {
 							int extraCredits = totalCredits + map1996.get(sc.getCourseCode()) - requiredCredits;
 							totalCredits = requiredCredits;
-							sc.setCreditsUsedForGrad(map1996.get(sc.getCourseCode()) - extraCredits);
+							sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + map1996.get(sc.getCourseCode()) - extraCredits);
 						}
 						AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
 						sc.setUsed(true);
