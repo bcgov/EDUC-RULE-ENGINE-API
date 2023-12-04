@@ -109,18 +109,20 @@ public class MinCredit1996Rule implements Rule {
         for(StudentCourse sc:studentCourses) {
             if(sc.getCourseLevel().contains(gradProgramRule.getProgramRequirementCode().getRequiredLevel().trim()) && !sc.getCourseCode().startsWith("X")) {
         		tC += sc.getCredits();
-                processReqMet(sc,gradProgramRule);
+                processReqMet(sc,gradProgramRule, tC, requiredCredits);
                 if (tC > requiredCredits) {
                     break;
                 }
-
             }
         }		
 	}
 
-	public void processReqMet(StudentCourse sc, ProgramRequirement gradProgramRule) {
+	public void processReqMet(StudentCourse sc, ProgramRequirement gradProgramRule, int totalCredits, int requiredCredits) {
 		sc.setUsed(true);
         sc.setUsedInMinCreditRule(true);
+        if (totalCredits > requiredCredits) {
+            sc.setLeftOverCredits(totalCredits - requiredCredits);
+        }
         AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
     }
     

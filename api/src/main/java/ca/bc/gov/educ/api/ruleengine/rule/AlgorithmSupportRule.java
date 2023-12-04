@@ -146,8 +146,9 @@ public class AlgorithmSupportRule {
             }
         } else {
             if (totalCredits + sc.getCredits() <= requiredCredits) {
-                totalCredits += sc.getCredits();
-                sc.setCreditsUsedForGrad(sc.getCredits());
+                int credits = sc.isUsedInMinCreditRule() && (sc.getLeftOverCredits() != null && sc.getLeftOverCredits() > 0)? sc.getCredits() - sc.getLeftOverCredits() : sc.getCredits();
+                totalCredits += credits;
+                sc.setCreditsUsedForGrad(credits);
             } else {
                 int extraCredits = totalCredits + sc.getCredits() - requiredCredits;
                 totalCredits = requiredCredits;
