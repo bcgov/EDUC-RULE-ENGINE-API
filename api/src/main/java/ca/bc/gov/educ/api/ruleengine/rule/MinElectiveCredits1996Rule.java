@@ -39,8 +39,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 		List<StudentCourse> minCreditGrade12Courses = tempStudentCourseList.stream().filter(StudentCourse::isUsedInMinCreditRule).collect(Collectors.toList());
 		tempStudentCourseList.removeAll(minCreditGrade12Courses);
-		tempStudentCourseList.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
-				.thenComparing(StudentCourse::getCompletedCoursePercentage).reversed());
+		tempStudentCourseList.sort(Comparator.comparing(StudentCourse::getCompletedCoursePercentage).reversed());
 
 		List<StudentCourse> studentCourses = new ArrayList<>(minCreditGrade12Courses);
 		studentCourses.addAll(tempStudentCourseList);
