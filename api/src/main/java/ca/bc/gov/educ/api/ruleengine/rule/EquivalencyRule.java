@@ -273,6 +273,7 @@ public class EquivalencyRule implements Rule {
 
         if (failedRules.isEmpty()) {
             logger.debug("All the failed assessment match rules met the assessment equivalency requirement for optional program!");
+            obj.setOptionalProgramGraduated(true);
         } else {
             // no need to add the failed one into requirementsNotMet as it was processed as failed before in assessment related rule processors
             logger.debug("One or more Match rules did not meet the assessment equivalency requirement for optional program!");
