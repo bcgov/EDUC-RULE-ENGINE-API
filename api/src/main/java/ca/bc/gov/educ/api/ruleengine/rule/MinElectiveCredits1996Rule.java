@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
@@ -38,7 +39,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 		List<StudentCourse> minCreditGrade12Courses = tempStudentCourseList.stream().filter(StudentCourse::isUsedInMinCreditRule).collect(Collectors.toList());
 		List<StudentCourse> minCreditGrade12CoursesWithLeftOverCredits = minCreditGrade12Courses.stream()
-				.filter(sc -> sc.isUsedInMinCreditRule() && (sc.getLeftOverCredits() != null && sc.getLeftOverCredits() > 0)).collect(Collectors.toList());
+				.filter(sc -> sc.isUsedInMinCreditRule() && (sc.getLeftOverCredits() != null && sc.getLeftOverCredits() > 0)).toList();
 		tempStudentCourseList.removeAll(minCreditGrade12Courses);
 		tempStudentCourseList.addAll(minCreditGrade12CoursesWithLeftOverCredits);
 		tempStudentCourseList.sort(Comparator.comparing(StudentCourse::getCompletedCoursePercentage).reversed());
@@ -124,7 +125,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 					sc.setUsed(true);
 				}
 			}
-			if (totalCredits == requiredCredits) {
+			if (Objects.equals(totalCredits, requiredCredits)) {
 				break;
 			}
 		}
