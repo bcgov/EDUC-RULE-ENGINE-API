@@ -121,7 +121,9 @@ public class MinCredit1996Rule implements Rule {
 		sc.setUsed(true);
         sc.setUsedInMinCreditRule(true);
         if (totalCredits > requiredCredits) {
-            sc.setLeftOverCredits(totalCredits - requiredCredits);
+            int leftOverCredit = totalCredits - requiredCredits;
+            sc.setCreditsUsedForGrad(sc.getCredits() - leftOverCredit);
+            sc.setLeftOverCredits(leftOverCredit);
         }
         AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
     }
