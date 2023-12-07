@@ -144,6 +144,16 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 	}
+
+	@Test
+	public void testProcessGradAlgorithmRules_1996EN_emptyCourses() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1996-EN-101039378");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setStudentCourses(new ArrayList<>());
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+	}
 	
 	@Test
 	public void testProcessGradAlgorithmRules_1950EN_3_projectedfalse() {
