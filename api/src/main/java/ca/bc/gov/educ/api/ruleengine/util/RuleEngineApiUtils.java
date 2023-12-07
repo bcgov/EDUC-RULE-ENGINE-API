@@ -14,9 +14,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RuleEngineApiUtils {
 
@@ -112,6 +114,18 @@ public class RuleEngineApiUtils {
 		return Collections.emptyList();
 		
     }
+
+    public static List<ProgramRequirement> getMatchProgramRules(List<ProgramRequirement> gradProgramRules) {
+        if (gradProgramRules.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return gradProgramRules.stream()
+            .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
+                    && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
+                    && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
+            .collect(Collectors.toList());
+    }
+
     public static List<OptionalProgramRequirement> getCloneOptionalProgramRule(List<OptionalProgramRequirement> rules) {
     	ObjectMapper mapper = new ObjectMapper();
 		try {
