@@ -56,24 +56,19 @@ public class MatchCredit1996Rule implements Rule {
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
                 .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
 
-        List<ProgramRequirement> gradProgramRulesMatch = RuleEngineApiUtils.getMatchProgramRules(ruleProcessorData.getGradProgramRules());
-
         if (courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
             return ruleProcessorData;
         }
 
-        List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
-        if(courseRequirements == null) {
-            courseRequirements = new ArrayList<>();
-        }
+        List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements() == null? new ArrayList<>() : ruleProcessorData.getCourseRequirements();
         List<CourseRequirement> originalCourseRequirements = new ArrayList<>(courseRequirements);
 
+        List<ProgramRequirement> gradProgramRulesMatch = RuleEngineApiUtils.getMatchProgramRules(ruleProcessorData.getGradProgramRules());
         logger.debug("#### Match Program Rule size: {}",gradProgramRulesMatch.size());
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
-        
 
         for (StudentCourse tempCourse : fineArtsCourseList) {
             logger.debug("Processing Course: Code= {} Level = {}", tempCourse.getCourseCode(), tempCourse.getCourseLevel());
