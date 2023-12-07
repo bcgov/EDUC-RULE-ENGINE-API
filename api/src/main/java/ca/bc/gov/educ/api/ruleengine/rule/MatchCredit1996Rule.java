@@ -71,7 +71,7 @@ public class MatchCredit1996Rule implements Rule {
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
 
         for (StudentCourse tempCourse : fineArtsCourseList) {
-            logger.debug("Processing Course: Code= {} Level = {}", tempCourse.getCourseCode(), tempCourse.getCourseLevel());
+            logger.debug("Processing FineArts Course: Code= {} Level = {}", tempCourse.getCourseCode(), tempCourse.getCourseLevel());
             logger.debug("Course Requirements size: {}", courseRequirements.size());
 
             List<CourseRequirement> tempCourseRequirements = courseRequirements.stream()
@@ -112,13 +112,13 @@ public class MatchCredit1996Rule implements Rule {
                     }
                 }
             }
-            logger.debug("Temp Program Rule: {}", tempProgramRule);
+            logger.debug("Temp Program Rule for FineArts Course: {}", tempProgramRule);
             processCourse(tempCourse, tempCourseRequirements, tempProgramRule, requirementsMet, gradProgramRulesMatch);
 
             AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
             AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
-        logger.debug("Final Program rules list: {}",finalProgramRulesList);
+        logger.debug("Final Program rules list for FineArts Course: {}",finalProgramRulesList);
         processReqMet(finalProgramRulesList,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
 
         for (StudentCourse tempCourse : courseList) {
