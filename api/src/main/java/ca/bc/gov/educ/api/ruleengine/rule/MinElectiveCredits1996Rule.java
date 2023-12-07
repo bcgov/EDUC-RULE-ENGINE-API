@@ -60,12 +60,12 @@ public class MinElectiveCredits1996Rule implements Rule {
 				requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
 
 				// 1st: minGrade12CreditCourses
-				Pair<Integer, Integer> counts = handleStudentCourses(gradProgramRule, requiredCredits, minCreditGrade12Courses, totalCredits, ldCourseCounter, true);
+				Pair<Integer, Integer> counts = processCourse(gradProgramRule, requiredCredits, minCreditGrade12Courses, totalCredits, ldCourseCounter, true);
 				totalCredits = counts.getLeft();
 				ldCourseCounter = counts.getRight();
 
 				// 2nd: the rest of courses + (minGrade12CreditCourses with leftOverCredit > 0)
-				counts = handleStudentCourses(gradProgramRule, requiredCredits, tempStudentCourseList, totalCredits, ldCourseCounter, false);
+				counts = processCourse(gradProgramRule, requiredCredits, tempStudentCourseList, totalCredits, ldCourseCounter, false);
 				totalCredits = counts.getLeft();
 
 				AlgorithmSupportRule.checkCredits1996(totalCredits,requiredCredits,gradProgramRule,ruleProcessorData);
@@ -78,8 +78,8 @@ public class MinElectiveCredits1996Rule implements Rule {
 		return ruleProcessorData;
 	}
 
-	private Pair<Integer, Integer> handleStudentCourses(ProgramRequirement gradProgramRule, Integer requiredCredits, List<StudentCourse> studentCourses,
-													   Integer totalCredits, Integer ldCourseCounter, boolean onlyMinGrade12CreditCourses) {
+	private Pair<Integer, Integer> processCourse(ProgramRequirement gradProgramRule, Integer requiredCredits, List<StudentCourse> studentCourses,
+												 Integer totalCredits, Integer ldCourseCounter, boolean onlyMinGrade12CreditCourses) {
 		for (StudentCourse sc : studentCourses) {
 			if ((sc.isUsedInMatchRule() || sc.isUsedInMinCreditRule())
 					&& (sc.getLeftOverCredits() != null && sc.getLeftOverCredits() > 0)) {

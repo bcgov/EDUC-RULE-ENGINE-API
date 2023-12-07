@@ -37,12 +37,7 @@ public class MatchCredit1986Rule implements Rule {
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
                 .thenComparing(StudentCourse::getCompletedCoursePercentage).reversed());
 
-        List<ProgramRequirement> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
-                .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
-                        && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
-                        && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+        List<ProgramRequirement> gradProgramRulesMatch = RuleEngineApiUtils.getMatchProgramRules(ruleProcessorData.getGradProgramRules());
 
         if (courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1986 Rule for processing");
