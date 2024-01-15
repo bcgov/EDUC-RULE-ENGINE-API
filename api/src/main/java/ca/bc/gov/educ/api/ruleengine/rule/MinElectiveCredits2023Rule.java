@@ -86,7 +86,7 @@ public class MinElectiveCredits2023Rule implements Rule {
 	}
 	private int processLeftOverCredits(StudentCourse sc, int requiredCredits, int totalCredits, ProgramRequirement gradProgramRule) {
 		if((sc.isUsedInMatchRule() && sc.getLeftOverCredits() != null && sc.getLeftOverCredits() != 0)
-			&& (!gradProgramRule.getGraduationProgramCode().contains("2023") && !hasMatchTypeRule(sc.getGradReqMet()))) {
+			&& (gradProgramRule.getGraduationProgramCode().contains("2023") && hasMatchTypeRule(sc.getGradReqMet()))) {
 				if (totalCredits + sc.getLeftOverCredits() <= requiredCredits) {
 					totalCredits += sc.getLeftOverCredits();
 					sc.setCreditsUsedForGrad(sc.getCreditsUsedForGrad() + sc.getLeftOverCredits());
