@@ -13,6 +13,6 @@
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-RULE-ENGINE-API&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=bcgov_EDUC-RULE-ENGINE-API) &nbsp;
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-RULE-ENGINE-API&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=bcgov_EDUC-RULE-ENGINE-API) &nbsp;
 
-# EDUC-RULE-ENGINE-API &nbsp; ![GitHub repo size](https://img.shields.io/github/repo-size/bcgov/EDUC-RULE-ENGINE-API)
+# EDUC-RULE-ENGINE-API &nbsp; ![GitHub repo size](https://img.shields.io/github/repo-size/bcgov/EDUC-RULE-ENGINE-API) ![GitHub Tag](https://img.shields.io/github/v/tag/bcgov/EDUC-RULE-ENGINE-API)
 Rule Engine API to process rules
 
