@@ -3,7 +3,7 @@
 ###########################################################
 envValue=$1
 APP_NAME=$2
-OPENSHIFT_NAMESPACE=$3
+GRAD_NAMESPACE=$3
 COMMON_NAMESPACE=$4
 BUSINESS_NAMESPACE=$5
 SPLUNK_TOKEN=$6
