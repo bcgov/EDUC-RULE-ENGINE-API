@@ -61,7 +61,7 @@ objects:
                 - configMapRef:
                     name: educ-grad-api-config-map
                 - configMapRef:
-                    name: educ-grad-rule-engine-api-config-map
+                    name: educ-rule-engine-api-config-map
                 - secretRef:
                     name: api-student-graduation-db-secret
               resources:
