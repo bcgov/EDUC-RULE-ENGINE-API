@@ -32,7 +32,7 @@ public class MainProgramCompleteRule implements Rule {
 		List<GradRequirement> nongReason = ruleProcessorData.getNonGradReasons();
 		for (Map.Entry<String, OptionalProgramRuleProcessor> entry : mapOptional.entrySet()) {
 			OptionalProgramRuleProcessor obj = entry.getValue();
-			if(obj != null && obj.isHasOptionalProgram() && obj.isOptionalProgramGraduated()) {
+			if(obj != null && obj.isHasOptionalProgram()) {
 				processMainProgramCompleteRules(nongReason,obj);
 			}
 		}
