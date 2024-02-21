@@ -79,7 +79,7 @@ public class MainProgramCompleteRule implements Rule {
 						nonGReasons = new ArrayList<>();
 
 					nonGReasons.addAll(requirementsNotMet);
-					obj.setNonGradReasonsOptionalProgram(nonGReasons);
+					obj.setNonGradReasonsOptionalProgram(nonGReasons.stream().distinct().toList());
 				}
 			}
 		}
