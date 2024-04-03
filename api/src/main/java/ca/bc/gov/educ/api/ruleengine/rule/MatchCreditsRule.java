@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -125,7 +125,7 @@ public class MatchCreditsRule implements Rule {
         processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
     }
 
-    public void splitSortStudentCourses(List<StudentCourse> studentCourses, Date adultStartDate) {
+    public void splitSortStudentCourses(List<StudentCourse> studentCourses, LocalDate adultStartDate) {
         /*
          * Split Student courses into 2 parts
          * 1. Courses taken after start date
@@ -138,13 +138,7 @@ public class MatchCreditsRule implements Rule {
         List<StudentCourse> coursesOnOrBeforeStartDate = new ArrayList<>();
         for (StudentCourse sc : studentCourses) {
             String courseSessionDate = sc.getSessionDate() + "/01";
-            Date temp = null;
-            try {
-                temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
-            } catch (ParseException e) {
-                logger.debug(e.getMessage());
-            }
-
+            LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
             if (adultStartDate != null && temp != null && temp.compareTo(adultStartDate) > 0) {
                 coursesAfterStartDate.add(sc);
             } else {

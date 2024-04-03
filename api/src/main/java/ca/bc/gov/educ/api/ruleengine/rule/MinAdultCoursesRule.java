@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +63,7 @@ public class MinAdultCoursesRule implements Rule {
 
 			for (StudentCourse sc : tempStudentCourseList) {
 				String courseSessionDate = sc.getSessionDate() + "/01";
-				LocalDate temp = null;
-				try {
-					temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
-				} catch (ParseException e) {
-					logger.debug(e.getMessage());
-				}
-
+				LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
 				// Get Adult Start date from the Data Object
 				LocalDate adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
 
@@ -135,13 +128,7 @@ public class MinAdultCoursesRule implements Rule {
 
 		for (StudentCourse sc : tempStudentCourseList) {
 			String courseSessionDate = sc.getSessionDate() + "/01";
-			LocalDate temp = null;
-			try {
-				temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
-			} catch (ParseException e) {
-				logger.debug(e.getMessage());
-			}
-
+			LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
 			// Get Adult Start date from the Data Object
 			LocalDate adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
 

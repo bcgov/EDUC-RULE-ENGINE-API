@@ -39,7 +39,7 @@ public class RuleEngineApiUtils {
         return simpleDateFormat.format(date);
     }
 
-    public static LocalDate parseLocalDate(String dateString, String dateFormat) throws ParseException {
+    public static LocalDate parseLocalDate(String dateString, String dateFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         LocalDate date = LocalDate.now();
 
