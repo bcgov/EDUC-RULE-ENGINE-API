@@ -32,7 +32,6 @@ public class RegistrationsFailedCrseRule implements Rule {
     public RuleData fire() {
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
-        logger.debug("###################### Finding Failed Registrations ######################");
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
         boolean inProgressCourse = false;
         for (StudentCourse studentCourse : studentCourseList) {
@@ -53,13 +52,14 @@ public class RegistrationsFailedCrseRule implements Rule {
                             .anyMatch(lg -> lg.getGrade().compareTo(finalLetterGrade) == 0
                                     && lg.getPassFlag().compareTo("N") == 0);
 
-                    if (failed)
+                    if (failed) {
                         studentCourse.setFailed(true);
+                    }
                 }
             }
         }
 
-        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses("RegistrationsFailedCrseRule", studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
         logger.debug("Registrations but Failed Courses: {}",(int) studentCourseList.stream().filter(sc-> sc.isDuplicate() && sc.isProjected()).count());
@@ -70,6 +70,5 @@ public class RegistrationsFailedCrseRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("RegistrationsDuplicateCrseRule: Rule Processor Data set.");
     }
 }

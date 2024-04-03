@@ -1,22 +1,21 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Component
@@ -31,8 +30,6 @@ public class IncompleteCoursesRule implements Rule {
     public RuleData fire() {
 
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
-
-        logger.debug("###################### Finding INCOMPLETE courses ######################");
 
         for (StudentCourse studentCourse : studentCourseList) {
             String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
@@ -56,7 +53,7 @@ public class IncompleteCoursesRule implements Rule {
             }
         }
 
-        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses("IncompleteCoursesRule", studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
         logger.debug("Not Completed Courses: {}",(int) studentCourseList.stream().filter(StudentCourse::isNotCompleted).count());
         return ruleProcessorData;
@@ -65,6 +62,5 @@ public class IncompleteCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("IncompleteCoursesRule: Rule Processor Data set.");
     }
 }

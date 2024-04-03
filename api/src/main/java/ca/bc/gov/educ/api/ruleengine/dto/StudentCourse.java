@@ -1,17 +1,20 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentCourse {
+public class StudentCourse implements Serializable {
 
     private String pen;
     private String courseCode;
@@ -57,10 +60,14 @@ public class StudentCourse {
     private boolean isRestricted;
     private boolean isNotEligibleForElective;
     private boolean isUsedInMatchRule;
+
     private boolean isLessCreditCourse;
     private boolean isValidationCourse;
     private boolean isCutOffCourse;
     private boolean isGrade10Course;
+    @JsonIgnore
+    private boolean isUsedInMinCreditRule;
+    @JsonIgnore
     private Integer leftOverCredits;
 
     public Integer getCreditsUsedForGrad() {
@@ -84,15 +91,56 @@ public class StudentCourse {
 
     @Override
     public String toString() {
-        return "StudentCourse [pen=" + pen + ", courseCode=" + courseCode + ", courseName=" + courseName
-                + ", courseLevel=" + courseLevel + ", sessionDate=" + sessionDate + ", customizedCourseName="
-                + customizedCourseName + ", gradReqMet=" + gradReqMet + ", gradReqMetDetail=" + gradReqMetDetail
-                + ", completedCoursePercentage=" + completedCoursePercentage + ", completedCourseLetterGrade="
-                + completedCourseLetterGrade + ", interimPercent=" + interimPercent + ", interimLetterGrade="
-                + interimLetterGrade + ", credits=" + credits + ", creditsUsedForGrad=" + creditsUsedForGrad
-                + ", relatedCourse=" + relatedCourse + ", relatedLevel=" + relatedLevel + ", hasRelatedCourse="
-                + hasRelatedCourse + ", isNotCompleted=" + isNotCompleted + ", isProjected=" + isProjected
-                + ", isFailed=" + isFailed + ", isDuplicate=" + isDuplicate + ", isCareerPrep=" + isCareerPrep
-                + ", isLocallyDeveloped=" + isLocallyDeveloped + ", isUsed=" + isUsed + ", isRestricted=" + isRestricted +"]";
+        return "StudentCourse{" +
+                "pen='" + pen + '\'' +
+                ", courseCode='" + courseCode + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", originalCredits=" + originalCredits +
+                ", courseLevel='" + courseLevel + '\'' +
+                ", sessionDate='" + sessionDate + '\'' +
+                ", customizedCourseName='" + customizedCourseName + '\'' +
+                ", gradReqMet='" + gradReqMet + '\'' +
+                ", gradReqMetDetail='" + gradReqMetDetail + '\'' +
+                ", completedCoursePercentage=" + completedCoursePercentage +
+                ", completedCourseLetterGrade='" + completedCourseLetterGrade + '\'' +
+                ", interimPercent=" + interimPercent +
+                ", interimLetterGrade='" + interimLetterGrade + '\'' +
+                ", bestSchoolPercent=" + bestSchoolPercent +
+                ", bestExamPercent=" + bestExamPercent +
+                ", schoolPercent=" + schoolPercent +
+                ", examPercent=" + examPercent +
+                ", equivOrChallenge='" + equivOrChallenge + '\'' +
+                ", fineArtsAppliedSkills='" + fineArtsAppliedSkills + '\'' +
+                ", metLitNumRequirement='" + metLitNumRequirement + '\'' +
+                ", credits=" + credits +
+                ", creditsUsedForGrad=" + creditsUsedForGrad +
+                ", relatedCourse='" + relatedCourse + '\'' +
+                ", relatedCourseName='" + relatedCourseName + '\'' +
+                ", relatedLevel='" + relatedLevel + '\'' +
+                ", hasRelatedCourse='" + hasRelatedCourse + '\'' +
+                ", isNotCompleted=" + isNotCompleted +
+                ", genericCourseType='" + genericCourseType + '\'' +
+                ", language='" + language + '\'' +
+                ", workExpFlag='" + workExpFlag + '\'' +
+                ", specialCase='" + specialCase + '\'' +
+                ", toWriteFlag='" + toWriteFlag + '\'' +
+                ", provExamCourse='" + provExamCourse + '\'' +
+                ", isProjected=" + isProjected +
+                ", isFailed=" + isFailed +
+                ", isDuplicate=" + isDuplicate +
+                ", isCareerPrep=" + isCareerPrep +
+                ", isLocallyDeveloped=" + isLocallyDeveloped +
+                ", isBoardAuthorityAuthorized=" + isBoardAuthorityAuthorized +
+                ", isIndependentDirectedStudies=" + isIndependentDirectedStudies +
+                ", isUsed=" + isUsed +
+                ", isRestricted=" + isRestricted +
+                ", isNotEligibleForElective=" + isNotEligibleForElective +
+                ", isUsedInMatchRule=" + isUsedInMatchRule +
+                ", isLessCreditCourse=" + isLessCreditCourse +
+                ", isValidationCourse=" + isValidationCourse +
+                ", isCutOffCourse=" + isCutOffCourse +
+                ", isGrade10Course=" + isGrade10Course +
+                ", leftOverCredits=" + leftOverCredits +
+                '}';
     }
 }

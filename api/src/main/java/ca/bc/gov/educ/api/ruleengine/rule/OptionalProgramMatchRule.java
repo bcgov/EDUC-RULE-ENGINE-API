@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -45,7 +44,7 @@ public class OptionalProgramMatchRule {
 
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         while (assessmentIterator.hasNext()) {
             StudentAssessment tempAssessment = assessmentIterator.next();
@@ -60,8 +59,8 @@ public class OptionalProgramMatchRule {
             logger.debug("TempAssmtReq: {}", tempAssessmentRequirement);
             OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramRule(tempAssessmentRequirement, gradOptionalProgramRulesMatch, requirementsMet, tempAssessment, null);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentAssessmentsList(tempAssessment, finalAssessmentList);
+            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList);
         }
 
         obj.setStudentAssessmentsOptionalProgram(finalAssessmentList);
@@ -228,7 +227,7 @@ public class OptionalProgramMatchRule {
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         while (courseIterator.hasNext()) {
             StudentCourse tempCourse = courseIterator.next();
@@ -246,8 +245,8 @@ public class OptionalProgramMatchRule {
 
             OptionalProgramRequirement tempOptionalProgramRule = handleOptionalProgramCourseMatchRule(tempCourseRequirements, null, requirementsMet, tempCourse, gradOptionalProgramRulesMatch);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(tempOptionalProgramRule, finalOptionalProgramRulesList);
         }
         obj.setStudentCoursesOptionalProgram(finalCourseList);
         handleRule(gradOptionalProgramRulesMatch, finalOptionalProgramRulesList, requirementsNotMet, obj, requirementsMet);

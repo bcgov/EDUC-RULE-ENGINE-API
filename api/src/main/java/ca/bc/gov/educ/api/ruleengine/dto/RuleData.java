@@ -1,5 +1,7 @@
 package ca.bc.gov.educ.api.ruleengine.dto;
 
-public interface RuleData {
+import java.io.Serializable;
+
+public interface RuleData extends Serializable {
 
 }

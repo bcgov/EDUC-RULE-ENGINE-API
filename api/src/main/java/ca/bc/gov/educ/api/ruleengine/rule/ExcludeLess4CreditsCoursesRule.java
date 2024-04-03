@@ -28,8 +28,6 @@ public class ExcludeLess4CreditsCoursesRule implements Rule {
     @Override
     public RuleData fire() {
 
-        logger.debug("###################### Finding 2 Credit Courses ######################");
-
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
 
@@ -40,10 +38,10 @@ public class ExcludeLess4CreditsCoursesRule implements Rule {
             }
         }
 
-        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
+        ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses("ExcludeLess4CreditsCoursesRule", studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
         ruleProcessorData.setStudentCourses(studentCourseList);
 
-        logger.debug( "Removed 2 Credit Courses: {0} ",
+        logger.debug( "Removed 2 Credit Courses: {} ",
                 (int) studentCourseList.stream().filter(StudentCourse::isLessCreditCourse).count());
 
         return ruleProcessorData;
@@ -52,6 +50,5 @@ public class ExcludeLess4CreditsCoursesRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("ExcludeLess4CreditsCoursesRule: Rule Processor Data set.");
     }
 }

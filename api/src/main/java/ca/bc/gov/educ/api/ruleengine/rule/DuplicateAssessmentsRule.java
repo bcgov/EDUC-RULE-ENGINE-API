@@ -31,8 +31,6 @@ public class DuplicateAssessmentsRule implements Rule {
 	@Override
 	public RuleData fire() {
 
-		logger.debug("###################### Finding DUPLICATE Assessments ######################");
-
 		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
 		getModifiedAndSortedData(studentAssessmentList);
 
@@ -79,7 +77,7 @@ public class DuplicateAssessmentsRule implements Rule {
 		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
 
-		logger.debug("Duplicate Assessments: {0}",
+		logger.debug("Duplicate Assessments: {}",
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isDuplicate).count());
 		if(ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("SCCP")
 				|| ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1950")
@@ -151,6 +149,5 @@ public class DuplicateAssessmentsRule implements Rule {
 	@Override
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("DuplicateAssessmentsRule: Rule Processor Data set.");
 	}
 }

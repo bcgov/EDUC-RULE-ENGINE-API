@@ -31,19 +31,25 @@ public class RegistrationsDuplicateCrseRule implements Rule {
     public RuleData fire() {
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
-        logger.debug("###################### Finding Duplicate Registrations ######################");
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
         String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
         boolean inProgressCourse1 = false;
         boolean inProgressCourse2 = false;
+        boolean isCompletedCourse1 = false;
+        boolean isCompletedCourse2 = false;
         for (int i = 0; i < studentCourseList.size() - 1; i++) {
 
             for (int j = i + 1; j < studentCourseList.size(); j++) {
-
                     if (studentCourseList.get(i).getCourseCode().equals(studentCourseList.get(j).getCourseCode())
                             && !studentCourseList.get(i).isDuplicate()
                             && studentCourseList.get(i).getCourseLevel().equals(studentCourseList.get(j).getCourseLevel())
                             && !studentCourseList.get(j).isDuplicate()) {
+                        // exclude completed courses (i.e. courses with both finalLG && finalPercentage populated)
+                        isCompletedCourse1 = RuleEngineApiUtils.isCompletedCourse(studentCourseList.get(i).getCompletedCourseLetterGrade(), studentCourseList.get(i).getCompletedCoursePercentage());
+                        isCompletedCourse2 = RuleEngineApiUtils.isCompletedCourse(studentCourseList.get(j).getCompletedCourseLetterGrade(), studentCourseList.get(j).getCompletedCoursePercentage());
+                        if (isCompletedCourse1 || isCompletedCourse2) {
+                            continue;
+                        }
                         try {
                             Date sessionDate1 = RuleEngineApiUtils.parseDate(studentCourseList.get(i).getSessionDate() + "/01", "yyyy/MM/dd");
                             Date sessionDate2 = RuleEngineApiUtils.parseDate(studentCourseList.get(j).getSessionDate() + "/01", "yyyy/MM/dd");
@@ -57,9 +63,9 @@ public class RegistrationsDuplicateCrseRule implements Rule {
                         } catch (ParseException e) {
                             logger.debug("Parse Error {}",e.getMessage());
                         }
+                        
                         if(inProgressCourse1 && inProgressCourse2) {
                             logger.debug("comparing {} with {}  -> Duplicate FOUND - CourseID: {}-{}", studentCourseList.get(i).getCourseCode(), studentCourseList.get(j).getCourseCode(), studentCourseList.get(i).getCourseCode(), studentCourseList.get(i).getCourseLevel());
-
                             if (studentCourseList.get(i).getInterimPercent() > studentCourseList.get(j).getInterimPercent()) {
                                 studentCourseList.get(i).setDuplicate(false);
                                 studentCourseList.get(j).setDuplicate(true);
@@ -92,6 +98,5 @@ public class RegistrationsDuplicateCrseRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("RegistrationsDuplicateCrseRule: Rule Processor Data set.");
     }
 }

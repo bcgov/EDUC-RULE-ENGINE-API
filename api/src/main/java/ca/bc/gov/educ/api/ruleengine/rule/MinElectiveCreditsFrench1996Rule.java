@@ -113,7 +113,6 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MinElectiveCreditsFrench1996Rule: Rule Processor Data set.");
     }
 
 }

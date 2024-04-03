@@ -1,12 +1,11 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.Arrays;
-
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import java.util.Arrays;
 
 @Component
 public class RuleFactory {
@@ -23,7 +22,6 @@ public class RuleFactory {
         try {
             clazz = (Class<Rule>) Class.forName("ca.bc.gov.educ.api.ruleengine.rule." + ruleImplementation);
             rule = clazz.getDeclaredConstructor(RuleProcessorData.class).newInstance(data);
-            logger.debug("Class Created: {}" , rule.getClass());
         } catch (Exception e) {
             logger.debug("ERROR: No Such Class: {}" , ruleImplementation);
             logger.debug("Message: {}" , Arrays.toString(e.getStackTrace()));

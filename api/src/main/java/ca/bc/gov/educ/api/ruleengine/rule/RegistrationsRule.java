@@ -32,8 +32,6 @@ public class RegistrationsRule implements Rule {
     public RuleData fire() {
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
-        logger.debug("###################### Finding PROJECTED courses (For Projected GRAD) ######################");
-
         for (StudentCourse studentCourse : studentCourseList) {
             String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
             String sessionDate = studentCourse.getSessionDate() + "/01";
@@ -67,6 +65,5 @@ public class RegistrationsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("RegistrationsRule: Rule Processor Data set.");
     }
 }

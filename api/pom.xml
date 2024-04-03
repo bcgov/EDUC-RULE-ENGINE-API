@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ca.bc.gov.educ</groupId>
 	<artifactId>educ-grad-rule-engine-api</artifactId>
-	<version>1.8.32</version>
+	<version>1.8.57</version>
 	<name>educ-grad-rule-engine-api</name>
 	<description>Rule Engine API for GRAD team</description>
 

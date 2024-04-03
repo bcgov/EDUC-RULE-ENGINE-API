@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Data
 @Component
-public class GradAlgorithmGraduationStatus {
+public class GradAlgorithmGraduationStatus implements Serializable {
 
 	private String pen;
     private String program;

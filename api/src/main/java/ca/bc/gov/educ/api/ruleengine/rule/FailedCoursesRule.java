@@ -1,19 +1,18 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
-import java.util.List;
-
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
+import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
+import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
-import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
-import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
 @Component
@@ -31,8 +30,6 @@ public class FailedCoursesRule implements Rule {
 
 		List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
-		logger.debug("###################### Finding FAILED courses ######################");
-
 		for (StudentCourse studentCourse : studentCourseList) {
 			String finalLetterGrade = studentCourse.getCompletedCourseLetterGrade();
 			if(finalLetterGrade != null) {
@@ -44,10 +41,10 @@ public class FailedCoursesRule implements Rule {
 				studentCourse.setFailed(true);
 			}
 		}
-		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses(studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
+		ruleProcessorData.setExcludedCourses(RuleProcessorRuleUtils.maintainExcludedCourses("FailedCoursesRule", studentCourseList,ruleProcessorData.getExcludedCourses(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentCourses(studentCourseList);
 
-		logger.debug("Failed Courses: {0} ",
+		logger.debug("Failed Courses: {} ",
 				(int) studentCourseList.stream().filter(StudentCourse::isFailed).count());
 
 		return ruleProcessorData;
@@ -55,6 +52,5 @@ public class FailedCoursesRule implements Rule {
 
 	public void setInputData(RuleData inputData) {
 		ruleProcessorData = (RuleProcessorData) inputData;
-		logger.debug("FailedCoursesRule: Rule Processor Data set.");
 	}
 }

@@ -5,7 +5,6 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +44,8 @@ public class MinCreditsRule implements Rule {
             logger.warn("!!!Empty list sent to Min Credits Rule for processing");
             return ruleProcessorData;
         }
+
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(studentCourses, "12");
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
             requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim());
@@ -92,6 +93,9 @@ public class MinCreditsRule implements Rule {
 
             logger.debug("Min Credits -> Required:{} Has : {}",requiredCredits,totalCredits);
         }
+
+        RuleProcessorRuleUtils.updateCourseLevelForCLC(ruleProcessorData.getStudentCourses(), "");
+
         ruleProcessorData.setStudentCourses(studentCourses);
         return ruleProcessorData;
     }
@@ -123,6 +127,5 @@ public class MinCreditsRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MinCreditsRule: Rule Processor Data set.");
     }
 }

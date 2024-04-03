@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -66,7 +65,7 @@ public class EquivalencyRule implements Rule {
 
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         for (StudentCourse st : courseList) {
             List<CourseRequirement> matchedCourseRequirements = courseRequirementsForEquivalency.stream()
@@ -84,7 +83,7 @@ public class EquivalencyRule implements Rule {
                 if (programRule != null && !programRule.getProgramRequirementCode().isPassed()) {
                     logger.debug("Pseudo Assessment ==> Program rule[{}] - course code[{}] / [{}]", programRule.getProgramRequirementCode().getProReqCode(), st.getCourseCode(), st.getCourseLevel());
                     processAssessmentEquivalency(st, programRule, courseRequirement, ruleProcessorData.getGradStudent().getPen(), requirementsMet, finalAssessmentList);
-                    AlgorithmSupportRule.copyAndAddIntoProgramRulesList(programRule, finalProgramRulesList, objectMapper);
+                    AlgorithmSupportRule.copyAndAddIntoProgramRulesList(programRule, finalProgramRulesList);
                 }
             });
         }
@@ -206,7 +205,7 @@ public class EquivalencyRule implements Rule {
 
         List<StudentAssessment> finalAssessmentList = new ArrayList<>();
         List<OptionalProgramRequirement> finalOptionalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         for (StudentCourse st : courseList) {
             List<CourseRequirement> matchedCourseRequirements = courseRequirementsForEquivalency.stream()
@@ -224,7 +223,7 @@ public class EquivalencyRule implements Rule {
                 if (optionalProgramRule != null && !optionalProgramRule.getOptionalProgramRequirementCode().isPassed()) {
                     logger.debug("Pseudo Assessment ==> Optional Program rule[{}] - course code[{}] / [{}]", optionalProgramRule.getOptionalProgramRequirementCode().getOptProReqCode(), st.getCourseCode(), st.getCourseLevel());
                     processAssessmentEquivalencyOptionalProgram(st, optionalProgramRule, courseRequirement, ruleProcessorData.getGradStudent().getPen(), requirementsMet, finalAssessmentList);
-                    AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(optionalProgramRule, finalOptionalProgramRulesList, objectMapper);
+                    AlgorithmSupportRule.copyAndAddIntoOptionalProgramRulesList(optionalProgramRule, finalOptionalProgramRulesList);
                 }
             });
         }
@@ -274,6 +273,7 @@ public class EquivalencyRule implements Rule {
 
         if (failedRules.isEmpty()) {
             logger.debug("All the failed assessment match rules met the assessment equivalency requirement for optional program!");
+            obj.setOptionalProgramGraduated(true);
         } else {
             // no need to add the failed one into requirementsNotMet as it was processed as failed before in assessment related rule processors
             logger.debug("One or more Match rules did not meet the assessment equivalency requirement for optional program!");
@@ -328,7 +328,7 @@ public class EquivalencyRule implements Rule {
         // Rule# 203, 403, 404
         List<String> failedRuleCodes = gradOptionalProgramRulesMatch
                 .stream()
-                .filter((opr -> !opr.getOptionalProgramRequirementCode().isPassed())).collect(Collectors.toList())
+                .filter((opr -> !opr.getOptionalProgramRequirementCode().isPassed())).toList()
                 .stream()
                 .map(fr -> fr.getOptionalProgramRequirementCode().getOptProReqCode()).collect(Collectors.toList());
 
@@ -361,6 +361,5 @@ public class EquivalencyRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("EquivalencyRule: Rule Processor Data set.");
     }
 }

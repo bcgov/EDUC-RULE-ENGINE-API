@@ -117,6 +117,5 @@ public class MinCredit1986Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MinCredit1986Rule: Rule Processor Data set.");
     }
 }

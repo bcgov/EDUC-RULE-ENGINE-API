@@ -32,7 +32,7 @@ public class MainProgramCompleteRule implements Rule {
 		List<GradRequirement> nongReason = ruleProcessorData.getNonGradReasons();
 		for (Map.Entry<String, OptionalProgramRuleProcessor> entry : mapOptional.entrySet()) {
 			OptionalProgramRuleProcessor obj = entry.getValue();
-			if(obj != null && obj.isHasOptionalProgram() && obj.isOptionalProgramGraduated()) {
+			if(obj != null && obj.isHasOptionalProgram()) {
 				processMainProgramCompleteRules(nongReason,obj);
 			}
 		}
@@ -79,7 +79,7 @@ public class MainProgramCompleteRule implements Rule {
 						nonGReasons = new ArrayList<>();
 
 					nonGReasons.addAll(requirementsNotMet);
-					obj.setNonGradReasonsOptionalProgram(nonGReasons);
+					obj.setNonGradReasonsOptionalProgram(nonGReasons.stream().distinct().toList());
 				}
 			}
 		}
@@ -87,6 +87,5 @@ public class MainProgramCompleteRule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MainProgramCompleteRule: Rule Processor Data set.");
     }
 }

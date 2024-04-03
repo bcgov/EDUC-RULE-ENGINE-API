@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Component
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GradRequirement {
+public class GradRequirement implements Serializable {
     String transcriptRule;
     String description;
     String rule;

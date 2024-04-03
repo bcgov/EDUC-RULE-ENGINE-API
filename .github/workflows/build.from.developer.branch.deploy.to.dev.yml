@@ -1,4 +1,4 @@
-name: Build & Deploy to DEV from main branch
+name: Build & Deploy to DEV from Developer Branch
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
@@ -21,7 +21,7 @@ env:
 
   REPO_NAME: "educ-rule-engine-api"
   APP_DOMAIN: ${{ vars.APP_DOMAIN }}
-  BRANCH: "main"
+  BRANCH: "grad-release"
   TAG: "latest"
   MIN_CPU: "20m"
   MAX_CPU: "100m"
@@ -31,17 +31,31 @@ env:
   MAX_REPLICAS: "7"
 
 on:
+  # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
   workflow_dispatch:
+    inputs:
+      choice:
+        type: choice
+        description: Choose branch to build from
+        options:
+          - develop/alex
+          - develop/chris
+          - develop/jinil
+          - develop/km
+          - develop/mchintha
+          - grad-hotfix
 
 jobs:
   openshift-ci-cd:
-    name: Build and deploy to OpenShift DEV
+    name: Build and deploy to OpenShift DEV from developer branch
     runs-on: ubuntu-20.04
     environment: dev
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.choice }}
 
       - name: Determine image tags
         if: env.TAG == ''
@@ -104,9 +118,9 @@ jobs:
           -p TAG_NAME=${{ env.TAG }} -p HOST_ROUTE=${{ env.REPO_NAME }}-${{ env.OPENSHIFT_NAMESPACE }}.${{ env.APP_DOMAIN }} \
           -p MIN_REPLICAS=${{ env.MIN_REPLICAS }} -p MAX_REPLICAS=${{ env.MAX_REPLICAS }} -p MIN_CPU=${{ env.MIN_CPU }} \
           -p MAX_CPU=${{ env.MAX_CPU }} -p MIN_MEM=${{ env.MIN_MEM }} -p MAX_MEM=${{ env.MAX_MEM }} | oc apply -f -
-          
+
           # UPDATE Configmaps
-          curl -s https://raw.githubusercontent.com/bcgov/${{ env.REPO_NAME }}/${{ env.BRANCH }}/tools/config/update-configmap.sh \
+          curl -s https://raw.githubusercontent.com/bcgov/${{ env.REPO_NAME }}/${{ github.event.inputs.choice }}/tools/config/update-configmap.sh \
           | bash /dev/stdin \
           dev \
           ${{ env.REPO_NAME }} \
@@ -116,8 +130,8 @@ jobs:
           ${{ secrets.SPLUNK_TOKEN }} \
           ${{ vars.APP_LOG_LEVEL }}
           
-          # OVERRIDE Configmaps
-          curl -s https://raw.githubusercontent.com/bcgov/${{ env.REPO_NAME }}/${{ env.BRANCH }}/tools/config/override-configmap-dev.sh \
+          # OVERRIDe Configmaps
+          curl -s https://raw.githubusercontent.com/bcgov/${{ env.REPO_NAME }}/${{ github.event.inputs.choice }}/tools/config/override-configmap-dev.sh \
           | bash /dev/stdin \
           dev \
           ${{ env.REPO_NAME }} \

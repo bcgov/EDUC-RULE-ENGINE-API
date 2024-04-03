@@ -3,7 +3,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -36,12 +37,7 @@ public class MatchCredit1986Rule implements Rule {
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
                 .thenComparing(StudentCourse::getCompletedCoursePercentage).reversed());
 
-        List<ProgramRequirement> gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
-                .stream()
-                .filter(gradProgramRule -> "M".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
-                        && "Y".compareTo(gradProgramRule.getProgramRequirementCode().getActiveRequirement()) == 0
-                        && "C".compareTo(gradProgramRule.getProgramRequirementCode().getRequirementCategory()) == 0)
-                .collect(Collectors.toList());
+        List<ProgramRequirement> gradProgramRulesMatch = RuleEngineApiUtils.getMatchProgramRules(ruleProcessorData.getGradProgramRules());
 
         if (courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1986 Rule for processing");
@@ -58,7 +54,7 @@ public class MatchCredit1986Rule implements Rule {
 
         List<StudentCourse> finalCourseList = new ArrayList<>();
         List<ProgramRequirement> finalProgramRulesList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
         for (StudentCourse tempCourse : courseList) {
             logger.debug("Processing Course: Code= {} Level = {}", tempCourse.getCourseCode(), tempCourse.getCourseLevel());
@@ -88,8 +84,8 @@ public class MatchCredit1986Rule implements Rule {
             logger.debug("Temp Program Rule: {}", tempProgramRule);
             processCourse(tempCourse, tempCourseRequirement, tempProgramRule, requirementsMet);
 
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList, objectMapper);
-            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(tempCourse, finalCourseList);
+            AlgorithmSupportRule.copyAndAddIntoProgramRulesList(tempProgramRule, finalProgramRulesList);
         }
 
         logger.debug("Final Program rules list: {}",finalProgramRulesList);
@@ -196,7 +192,6 @@ public class MatchCredit1986Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("MatchCredit1986Rule: Rule Processor Data set.");
     }
 
 }

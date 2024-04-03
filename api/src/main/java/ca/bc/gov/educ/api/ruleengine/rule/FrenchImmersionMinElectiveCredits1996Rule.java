@@ -2,7 +2,6 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 
 import ca.bc.gov.educ.api.ruleengine.dto.*;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,9 +41,9 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
                 .collect(Collectors.toList());
        
         logger.debug("#### French Immersion Min Credit Elective Optional Program Rule size: {}",gradOptionalProgramMinCreditElectiveRulesMatch.size());
-        ObjectMapper objectMapper = new ObjectMapper();
+        
 
-        List<StudentCourse> modifiedList = RuleEngineApiUtils.getClone(courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).collect(Collectors.toList()));
+        List<StudentCourse> modifiedList = RuleEngineApiUtils.getClone(courseList.stream().filter(sc -> !sc.isUsed()).sorted(Comparator.comparing(StudentCourse::getCourseLevel).reversed()).toList());
 
         List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
@@ -60,7 +59,7 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
                     totalCreditsGrade11or12 = processCredits(pR,totalCreditsGrade11or12,sc,requirementsMet);
                 }
             }
-            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList2, objectMapper);
+            AlgorithmSupportRule.copyAndAddIntoStudentCoursesList(sc, finalCourseList2);
             
             if ((totalCreditsGrade11or12 == requiredCreditsGrad11or12) && totalCreditsGrade11or12 != 0) {
             	break;
@@ -134,7 +133,6 @@ public class FrenchImmersionMinElectiveCredits1996Rule implements Rule {
     @Override
     public void setInputData(RuleData inputData) {
         ruleProcessorData = (RuleProcessorData) inputData;
-        logger.debug("FrenchImmersionMinElectiveCreditRule: Rule Processor Data set.");
     }
 
 }
