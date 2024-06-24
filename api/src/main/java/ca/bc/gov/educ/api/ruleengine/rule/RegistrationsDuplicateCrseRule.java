@@ -20,7 +20,7 @@ import java.util.*;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistrationsDuplicateCrseRule implements Rule {
+public class RegistrationsDuplicateCrseRule extends BaseRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(RegistrationsDuplicateCrseRule.class);
 
@@ -51,8 +51,8 @@ public class RegistrationsDuplicateCrseRule implements Rule {
                             continue;
                         }
                         try {
-                            Date sessionDate1 = RuleEngineApiUtils.parseDate(studentCourseList.get(i).getSessionDate() + "/01", "yyyy/MM/dd");
-                            Date sessionDate2 = RuleEngineApiUtils.parseDate(studentCourseList.get(j).getSessionDate() + "/01", "yyyy/MM/dd");
+                            Date sessionDate1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentCourseList.get(i).getSessionDate() + "/01", "yyyy/MM/dd"));
+                            Date sessionDate2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentCourseList.get(j).getSessionDate() + "/01", "yyyy/MM/dd"));
                             String sDate1 = RuleEngineApiUtils.formatDate(sessionDate1, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                             String sDate2 = RuleEngineApiUtils.formatDate(sessionDate2, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
 

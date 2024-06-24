@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MatchCreditsRule implements Rule {
+public class MatchCreditsRule extends BaseRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(MatchCreditsRule.class);
 
@@ -140,7 +140,7 @@ public class MatchCreditsRule implements Rule {
             String courseSessionDate = sc.getSessionDate() + "/01";
             Date temp = null;
             try {
-                temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
+                temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd"));
             } catch (ParseException e) {
                 logger.debug(e.getMessage());
             }

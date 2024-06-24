@@ -21,7 +21,7 @@ import java.util.*;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistrationsFailedCrseRule implements Rule {
+public class RegistrationsFailedCrseRule extends BaseRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(RegistrationsFailedCrseRule.class);
 
@@ -36,7 +36,7 @@ public class RegistrationsFailedCrseRule implements Rule {
         boolean inProgressCourse = false;
         for (StudentCourse studentCourse : studentCourseList) {
             try {
-                Date sessionDate = RuleEngineApiUtils.parseDate(studentCourse.getSessionDate() + "/01", "yyyy/MM/dd");
+                Date sessionDate = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentCourse.getSessionDate() + "/01", "yyyy/MM/dd"));
                 String sDate = RuleEngineApiUtils.formatDate(sessionDate, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                 String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                 int diff = RuleEngineApiUtils.getDifferenceInMonths(sDate,today);
