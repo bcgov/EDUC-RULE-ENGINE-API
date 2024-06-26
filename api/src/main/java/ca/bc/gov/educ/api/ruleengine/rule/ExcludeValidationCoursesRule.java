@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,13 +13,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @Data
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExcludeValidationCoursesRule implements Rule {
+public class ExcludeValidationCoursesRule extends BaseRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(ExcludeValidationCoursesRule.class);
 
@@ -33,8 +36,14 @@ public class ExcludeValidationCoursesRule implements Rule {
 
         for (StudentCourse studentCourse : studentCourseList) {
             String sessionDate = studentCourse.getSessionDate() + "/01";
+            try {
+                Date temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd"));
+                sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy/MM/dd");
+            } catch (ParseException pe) {
+                logger.error("ERROR: {}",pe.getMessage());
+            }
             String cName = studentCourse.getCourseCode()+studentCourse.getCourseLevel();
-            if (studentCourse.getProvExamCourse().compareTo("Y")==0 && sessionDate.equalsIgnoreCase("2005/06/01") && (cName.compareTo("SS11") == 0
+            if (studentCourse.getProvExamCourse().compareTo("Y")==0 && sessionDate.equalsIgnoreCase("2005/06/30") && (cName.compareTo("SS11") == 0
                     || cName.compareTo("SCH11") == 0
                     || cName.compareTo("FNS12") == 0)) {
                 studentCourse.setValidationCourse(true);

@@ -14,10 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RuleEngineApiUtils {
@@ -50,7 +47,7 @@ public class RuleEngineApiUtils {
     	 Date temp;
 		 Date sDate = null;
          try {
-            temp = RuleEngineApiUtils.parseDate(actualSessionDate, RuleEngineApiConstants.DATE_FORMAT);
+            temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(actualSessionDate, RuleEngineApiConstants.DATE_FORMAT));
             String sDates = RuleEngineApiUtils.formatDate(temp, RuleEngineApiConstants.DATE_FORMAT);
             sDate = RuleEngineApiUtils.parseDate(sDates, RuleEngineApiConstants.DATE_FORMAT);
          } catch (ParseException pe) {
@@ -140,12 +137,12 @@ public class RuleEngineApiUtils {
 
     public static boolean checkDateForRestrictedCourses(String startDate,String endDate,String currentSessionDate) {
         try {
-            Date sDate = parseDate(startDate+"/01",RuleEngineApiConstants.DATE_FORMAT);
+            Date sDate = toLastDayOfMonth(parseDate(startDate+"/01",RuleEngineApiConstants.DATE_FORMAT));
             if(endDate != null) {
-                Date eDate = parseDate(endDate + "/01", RuleEngineApiConstants.DATE_FORMAT);
-                return parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT).after(sDate) && parseDate(currentSessionDate + "/01", "yyyy/MM/dd").before(eDate);
+                Date eDate = toLastDayOfMonth(parseDate(endDate + "/01", RuleEngineApiConstants.DATE_FORMAT));
+                return toLastDayOfMonth(parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT)).after(sDate) && toLastDayOfMonth(parseDate(currentSessionDate + "/01", "yyyy/MM/dd")).before(eDate);
             }else {
-                return parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT).after(sDate);
+                return toLastDayOfMonth(parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT)).after(sDate);
             }
         } catch (ParseException e) {
             logger.error(ERROR_MSG,e.getMessage());
@@ -159,9 +156,9 @@ public class RuleEngineApiUtils {
         sessionDate2 = sessionDate2 + "/01";
 
         try {
-            Date temp1 = RuleEngineApiUtils.parseDate(sessionDate1, "yyyy/MM/dd");
+            Date temp1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate1, "yyyy/MM/dd"));
             sessionDate1 = RuleEngineApiUtils.formatDate(temp1, "yyyy-MM-dd");
-            Date temp2 = RuleEngineApiUtils.parseDate(sessionDate2, "yyyy/MM/dd");
+            Date temp2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate2, "yyyy/MM/dd"));
             sessionDate2 = RuleEngineApiUtils.formatDate(temp2, "yyyy-MM-dd");
         } catch (ParseException pe) {
             logger.error("ERROR: {}",pe.getMessage());
@@ -179,8 +176,15 @@ public class RuleEngineApiUtils {
     // Courses with both finalLG(Letter Grade) & finalPercentage have some values
     public static boolean isCompletedCourse(String finalGrade, Double finalPercentage) {
         if (finalGrade != null && finalPercentage != null) {
-            return !"".equalsIgnoreCase(finalGrade.trim()) && finalPercentage.compareTo(0.0) > 0;
+            return !"".equalsIgnoreCase(finalGrade.trim()) && finalPercentage.compareTo(0.0D) > 0;
         }
         return false;
+    }
+
+    private static Date toLastDayOfMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return cal.getTime();
     }
 }

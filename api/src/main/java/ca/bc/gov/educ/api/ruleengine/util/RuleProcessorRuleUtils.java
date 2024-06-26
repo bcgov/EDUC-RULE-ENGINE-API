@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -162,8 +163,9 @@ public class RuleProcessorRuleUtils {
 
         for (StudentCourse studentCourse : studentCourses) {
             try {
-                if (dateFormat.parse(studentCourse.getSessionDate() + "/01").compareTo(gradDate) > 0) {
-                    gradDate = dateFormat.parse(studentCourse.getSessionDate() + "/01");
+                Date dateTocompare = toLastDayOfMonth(dateFormat.parse(studentCourse.getSessionDate() + "/01"));
+                if (dateTocompare.compareTo(gradDate) > 0) {
+                    gradDate = dateTocompare;
                 }
             } catch (ParseException e) {
                 logger.debug("Error {}",e.getMessage());
@@ -192,5 +194,12 @@ public class RuleProcessorRuleUtils {
                 sc.setCourseLevel(courseLevel);
             }
         });
+    }
+
+    private static Date toLastDayOfMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return cal.getTime();
     }
 }

@@ -21,7 +21,7 @@ import java.util.*;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistrationsDuplicateAssmtRule implements Rule {
+public class RegistrationsDuplicateAssmtRule extends BaseRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(RegistrationsDuplicateAssmtRule.class);
 
@@ -44,8 +44,8 @@ public class RegistrationsDuplicateAssmtRule implements Rule {
                             && !studentAssessmentsList.get(i).isDuplicate()
                             && !studentAssessmentsList.get(j).isDuplicate()) {
                         try {
-                            Date sessionDate1 = RuleEngineApiUtils.parseDate(studentAssessmentsList.get(i).getSessionDate() + "/01", "yyyy/MM/dd");
-                            Date sessionDate2 = RuleEngineApiUtils.parseDate(studentAssessmentsList.get(j).getSessionDate() + "/01", "yyyy/MM/dd");
+                            Date sessionDate1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentAssessmentsList.get(i).getSessionDate() + "/01", "yyyy/MM/dd"));
+                            Date sessionDate2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentAssessmentsList.get(j).getSessionDate() + "/01", "yyyy/MM/dd"));
                             String sDate1 = RuleEngineApiUtils.formatDate(sessionDate1, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                             String sDate2 = RuleEngineApiUtils.formatDate(sessionDate2, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
 

@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExcludeAfterProgramCutoffRule implements Rule {
+public class ExcludeAfterProgramCutoffRule extends BaseRule implements Rule {
     private static Logger logger = LoggerFactory.getLogger(ExcludeAfterProgramCutoffRule.class);
 
     @Autowired
@@ -40,7 +40,7 @@ public class ExcludeAfterProgramCutoffRule implements Rule {
 
             String sessionDate = studentCourse.getSessionDate() + "/01";
             try {
-                Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
+                Date temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd"));
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
                 logger.error("ERROR: {}",pe.getMessage());
