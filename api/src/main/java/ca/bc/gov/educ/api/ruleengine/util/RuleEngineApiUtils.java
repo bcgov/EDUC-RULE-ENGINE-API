@@ -176,7 +176,7 @@ public class RuleEngineApiUtils {
     // Courses with both finalLG(Letter Grade) & finalPercentage have some values
     public static boolean isCompletedCourse(String finalGrade, Double finalPercentage) {
         if (finalGrade != null && finalPercentage != null) {
-            return !"".equalsIgnoreCase(finalGrade.trim()) && finalPercentage.compareTo(0.0) > 0;
+            return !"".equalsIgnoreCase(finalGrade.trim()) && finalPercentage.compareTo(0.0D) > 0;
         }
         return false;
     }

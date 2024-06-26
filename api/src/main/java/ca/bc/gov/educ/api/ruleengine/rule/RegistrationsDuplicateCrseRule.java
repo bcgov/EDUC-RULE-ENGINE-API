@@ -37,8 +37,10 @@ public class RegistrationsDuplicateCrseRule extends BaseRule implements Rule {
         boolean inProgressCourse2 = false;
         boolean isCompletedCourse1 = false;
         boolean isCompletedCourse2 = false;
-        for (int i = 0; i < studentCourseList.size() - 1; i++) {
 
+        studentCourseList.sort(Comparator.comparing(StudentCourse::getCourseCode));
+
+        for (int i = 0; i < studentCourseList.size() - 1; i++) {
             for (int j = i + 1; j < studentCourseList.size(); j++) {
                     if (studentCourseList.get(i).getCourseCode().equals(studentCourseList.get(j).getCourseCode())
                             && !studentCourseList.get(i).isDuplicate()
