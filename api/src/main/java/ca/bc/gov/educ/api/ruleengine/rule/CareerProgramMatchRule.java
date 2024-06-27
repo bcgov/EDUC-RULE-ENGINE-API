@@ -38,6 +38,11 @@ public class CareerProgramMatchRule implements Rule {
     	List<GradRequirement> requirementsMet = new ArrayList<>();
         List<GradRequirement> requirementsNotMet = new ArrayList<>();
 
+        List<CourseRequirement> courseRequirements = ruleProcessorData.getCourseRequirements();
+        if(courseRequirements == null) {
+            courseRequirements = new ArrayList<>();
+        }
+
         List<StudentCourse> courseList = RuleProcessorRuleUtils.getUniqueStudentCourses(
         		obj.getStudentCoursesOptionalProgram(), ruleProcessorData.isProjected());
         List<OptionalProgramRequirement> careerProgramRulesMatch = obj.getOptionalProgramRules()
@@ -57,8 +62,16 @@ public class CareerProgramMatchRule implements Rule {
         while (studentCourseIterator.hasNext()) {
             
         	StudentCourse sc = studentCourseIterator.next();
-        	for(OptionalProgramRequirement pR:careerProgramRulesMatch) {            	
-            	if(pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
+            List<CourseRequirement> matchedCourseRequirements = courseRequirements.stream()
+                    .filter(cr -> sc.getCourseCode().compareTo(cr.getCourseCode()) == 0
+                            && sc.getCourseLevel().compareTo(cr.getCourseLevel()) == 0)
+                    .toList();
+
+        	for(OptionalProgramRequirement pR:careerProgramRulesMatch) {
+                long matchedCount = matchedCourseRequirements.stream()
+                        .filter(cr -> cr.getRuleCode().getCourseRequirementCode().compareTo(pR.getOptionalProgramRequirementCode().getOptProReqCode()) == 0)
+                        .count();
+                if(matchedCount > 0 && (pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0)) {
                     requiredCredits = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
                     if (totalCredits + sc.getCredits() <= requiredCredits) {
                         totalCredits += sc.getCredits();
