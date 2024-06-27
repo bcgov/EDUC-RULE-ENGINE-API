@@ -58,7 +58,7 @@ public class CareerProgramMatchRule implements Rule {
             
         	StudentCourse sc = studentCourseIterator.next();
         	for(OptionalProgramRequirement pR:careerProgramRulesMatch) {            	
-            	if((pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) && (sc.getWorkExpFlag() != null && sc.getWorkExpFlag().equalsIgnoreCase("Y"))) {
+            	if(pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) {
                     requiredCredits = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
                     if (totalCredits + sc.getCredits() <= requiredCredits) {
                         totalCredits += sc.getCredits();
