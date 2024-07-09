@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistrationsRule implements Rule {
+public class RegistrationsRule extends BaseRule implements Rule {
 
     private static Logger logger = LoggerFactory.getLogger(RegistrationsRule.class);
 
@@ -37,7 +37,7 @@ public class RegistrationsRule implements Rule {
             String sessionDate = studentCourse.getSessionDate() + "/01";
 
             try {
-                Date temp = RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd");
+                Date temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd"));
                 sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
             } catch (ParseException pe) {
                 logger.error("ERROR: {}",pe.getMessage());

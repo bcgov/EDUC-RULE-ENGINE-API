@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MinAdultCoursesRule implements Rule {
+public class MinAdultCoursesRule extends BaseRule implements Rule {
 
 	private static Logger logger = LoggerFactory.getLogger(MinAdultCoursesRule.class);
 
@@ -66,7 +66,7 @@ public class MinAdultCoursesRule implements Rule {
 				String courseSessionDate = sc.getSessionDate() + "/01";
 				Date temp = null;
 				try {
-					temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
+					temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd"));
 				} catch (ParseException e) {
 					logger.debug(e.getMessage());
 				}
@@ -137,7 +137,7 @@ public class MinAdultCoursesRule implements Rule {
 			String courseSessionDate = sc.getSessionDate() + "/01";
 			Date temp = null;
 			try {
-				temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
+				temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd"));
 			} catch (ParseException e) {
 				logger.debug(e.getMessage());
 			}
