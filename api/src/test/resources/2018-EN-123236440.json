@@ -2750,6 +2750,7 @@
   },
   "school": {
     "minCode": "06161000",
+    "schoolId": "e389910e-be69-4521-a69f-54346511b141",
     "schoolName": "SJ BURNSIDE CONTINUING EDUCATION",
     "districtName": "GREATER VICTORIA",
     "transcriptEligibility": "Y",

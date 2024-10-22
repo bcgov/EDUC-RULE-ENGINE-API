@@ -5010,6 +5010,7 @@
   },
   "school": {
     "minCode": "03499101",
+    "schoolId": "8fff13ab-aebb-4eb1-8ed4-e8649f34446f",
     "schoolName": "ABBOTSFORD VIRTUAL SCHOOL",
     "districtName": "ABBOTSFORD",
     "transcriptEligibility": "Y",

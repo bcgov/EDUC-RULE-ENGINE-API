@@ -4861,6 +4861,7 @@
   },
   "school": {
     "minCode": "03636000",
+    "schoolId": "74ebdf25-9fda-407a-96da-d0fe2b9c0b2b",
     "schoolName": "CONTINUING ED SD 36",
     "districtName": "SURREY",
     "transcriptEligibility": "Y",

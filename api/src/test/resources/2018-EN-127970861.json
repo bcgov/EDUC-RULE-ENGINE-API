@@ -5270,6 +5270,7 @@
   },
   "school": {
     "minCode": "03996007",
+    "schoolId": "1a7e95b1-0fe6-45b4-88f5-aac09597be9b",
     "schoolName": "VANCOUVER COLLEGE",
     "districtName": "VANCOUVER",
     "transcriptEligibility": "Y",
