@@ -5282,8 +5282,8 @@
     "countryCode": "CA",
     "postal": "V6M3A5",
     "openFlag": "Y",
-    "schoolCategoryCode": "01",
-    "schoolCategoryCodeInstitute": "PUBLIC"
+    "schoolCategoryLegacyCode": "01",
+    "schoolCategoryCode": "PUBLIC"
   },
   "ldCounter": 0,
   "cpList": [],

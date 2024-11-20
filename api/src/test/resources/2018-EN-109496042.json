@@ -4873,8 +4873,8 @@
     "countryCode": "CA",
     "postal": "V3V5W4",
     "openFlag": "Y",
-    "schoolCategoryCode": "01",
-    "schoolCategoryCodeInstitute": "PUBLIC"
+    "schoolCategoryLegacyCode": "01",
+    "schoolCategoryCode": "PUBLIC"
   },
   "ldCounter": 0,
   "cpList": [],

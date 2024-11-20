@@ -2762,8 +2762,8 @@
     "countryCode": "CA",
     "postal": "V8T4T5",
     "openFlag": "Y",
-    "schoolCategoryCode": "01",
-    "schoolCategoryCodeInstitute": "PUBLIC"
+    "schoolCategoryLegacyCode": "01",
+    "schoolCategoryCode": "PUBLIC"
   },
   "ldCounter": 0,
   "cpList": [],
