@@ -5022,8 +5022,8 @@
     "countryCode": "CA",
     "postal": "V2S2P3",
     "openFlag": "Y",
-    "schoolCategoryCode": "01",
-    "schoolCategoryCodeInstitute": "PUBLIC"
+    "schoolCategoryLegacyCode": "01",
+    "schoolCategoryCode": "PUBLIC"
   },
   "ldCounter": 0,
   "cpList": [],
