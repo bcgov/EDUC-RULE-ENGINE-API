@@ -18,6 +18,7 @@ public class GradAlgorithmGraduationStatus implements Serializable {
     private String honoursStanding;
     private String recalculateGradStatus; 
     private String schoolOfRecord;
+    private UUID schoolOfRecordId;
     private String studentGrade;
     private String studentStatus;
     private UUID studentID;

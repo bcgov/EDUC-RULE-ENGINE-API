@@ -1,0 +1,231 @@
+meta {
+  name: processGradAlgorithmRules
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/rule-engine/run-grad-algorithm-rules
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "gradStudent": {
+      "studentID": "",
+      "pen": "",
+      "legalFirstName": "",
+      "legalMiddleNames": "",
+      "legalLastName": "",
+      "dob": "",
+      "sexCode": "",
+      "genderCode": "",
+      "studentCitizenship": "",
+      "usualFirstName": "",
+      "usualMiddleNames": "",
+      "usualLastName": "",
+      "email": "",
+      "emailVerified": "",
+      "deceasedDate": "",
+      "postalCode": "",
+      "mincode": "",
+      "localID": "",
+      "gradeCode": "",
+      "gradeYear": "",
+      "demogCode": "",
+      "statusCode": "",
+      "memo": "",
+      "trueStudentID": "",
+      "program": "",
+      "schoolOfRecord": "",
+      "schoolOfRecordId": "",
+      "schoolOfRecordName": "",
+      "schoolOfRecordindependentAffiliation": "",
+      "studentGrade": "",
+      "studentStatus": ""
+    },
+    "letterGradeList": [
+      {
+        "grade": "",
+        "gpaMarkValue": "",
+        "passFlag": ""
+      }
+    ],
+    "specialCaseList": [
+      {
+        "spCase": "",
+        "label": "",
+        "displayOrder": "",
+        "description": "",
+        "passFlag": "",
+        "effectiveDate": "",
+        "expiryDate": ""
+      }
+    ],
+    "algorithmRules": [
+      {
+        "programAlgoRuleID": "",
+        "graduationProgramCode": "",
+        "sortOrder": "",
+        "algorithmRuleCode": {
+          "algoRuleCode": "",
+          "ruleImplementation": "",
+          "label": "",
+          "description": "",
+          "displayOrder": "",
+          "isActiveRule": ""
+        }
+      }
+    ],
+    "gradProgramRules": [
+      {
+        "programRequirementID": "",
+        "graduationProgramCode": "",
+        "programRequirementCode": {
+          "proReqCode": "",
+          "label": "",
+          "description": "",
+          "requirementTypeCode": {
+            "reqTypeCode": "",
+            "label": "",
+            "displayOrder": "",
+            "description": "",
+            "effectiveDate": "",
+            "expiryDate": ""
+          },
+          "requiredCredits": "",
+          "notMetDesc": "",
+          "requiredLevel": "",
+          "languageOfInstruction": "",
+          "activeRequirement": "",
+          "requirementCategory": "",
+          "traxReqNumber": "",
+          "passed": "",
+          "tempFailed": ""
+        }
+      }
+    ],
+    "mapOptional": {},
+    "studentCourses": [],
+    "excludedCourses": [],
+    "excludedAssessments": [],
+    "studentAssessments": [],
+    "courseRequirements": [
+      {
+        "courseRequirementId": "",
+        "courseCode": "",
+        "courseLevel": "",
+        "ruleCode": {
+          "courseRequirementCode": "",
+          "label": "",
+          "description": "",
+          "effectiveDate": "",
+          "expiryDate": ""
+        },
+        "courseName": ""
+      }
+    ],
+    "courseRestrictions": [
+      {
+        "courseRestrictionId": "",
+        "mainCourse": "",
+        "mainCourseLevel": "",
+        "restrictedCourse": "",
+        "restrictedCourseLevel": "",
+        "restrictionStartDate": "",
+        "restrictionEndDate": ""
+      }
+    ],
+    "assessmentRequirements": [
+      {
+        "assessmentRequirementId": "",
+        "assessmentCode": "",
+        "ruleCode": {
+          "assmtRequirementCode": "",
+          "label": "",
+          "description": "",
+          "effectiveDate": "",
+          "expiryDate": ""
+        }
+      }
+    ],
+    "assessmentList": [
+      {
+        "assessmentCode": "",
+        "assessmentName": "",
+        "language": "",
+        "startDate": "",
+        "endDate": ""
+      }
+    ],
+    "nonGradReasons": [],
+    "requirementsMet": [],
+    "gradStatus": {
+      "pen": "",
+      "program": "",
+      "programCompletionDate": "",
+      "gpa": "",
+      "honoursStanding": "",
+      "recalculateGradStatus": "",
+      "schoolOfRecord": "",
+      "schoolOfRecordId": "",
+      "studentGrade": "",
+      "studentStatus": "",
+      "studentID": "",
+      "consumerEducationRequirementMet": "",
+      "adultStartDate": ""
+    },
+    "gradOptionalProgramStatus": {
+      "pen": "",
+      "optionalProgramID": "",
+      "studentOptionalProgramData": "",
+      "optionalProgramCompletionDate": "",
+      "optionalStudentCourses": {
+        "studentCourseList": []
+      },
+      "optionalNonGradReasons": [],
+      "optionalRequirementsMet": [],
+      "studentID": "",
+      "optionalGraduated": ""
+    },
+    "gradProgram": {
+      "programCode": "",
+      "programName": "",
+      "description": "",
+      "displayOrder": "",
+      "effectiveDate": "",
+      "expiryDate": ""
+    },
+    "school": {
+      "minCode": "",
+      "schoolId": "",
+      "schoolName": "",
+      "districtId": "",
+      "districtName": "",
+      "transcriptEligibility": "",
+      "certificateEligibility": "",
+      "address1": "",
+      "address2": "",
+      "city": "",
+      "provCode": "",
+      "countryCode": "",
+      "postal": "",
+      "openFlag": "",
+      "schoolCategoryCode": "",
+      "schoolCategoryLegacyCode": ""
+    },
+    "ldCounter": "",
+    "cpList": [
+      {
+        "id": "",
+        "careerProgramCode": "",
+        "careerProgramName": "",
+        "studentID": ""
+      }
+    ],
+    "consumerEdFlagUsed": "",
+    "projected": "",
+    "graduated": ""
+  }
+}
