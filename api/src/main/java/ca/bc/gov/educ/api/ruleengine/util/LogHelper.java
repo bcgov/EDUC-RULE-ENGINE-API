@@ -20,6 +20,7 @@ public final class LogHelper {
   private static final ObjectMapper mapper = new ObjectMapper();
   private static final String EXCEPTION = "Exception ";
   JsonTransformer jsonTransformer;
+
   private LogHelper() {
 
   }
