@@ -5,21 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
-import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
 public final class LogHelper {
   private static final ObjectMapper mapper = new ObjectMapper();
   private static final String EXCEPTION = "Exception ";
-  JsonTransformer jsonTransformer;
 
   private LogHelper() {
 
@@ -65,28 +62,6 @@ public final class LogHelper {
     if (!logging) return;
     try {
       MDC.putCloseable("msg", message);
-      log.info("");
-      MDC.clear();
-    } catch (final Exception exception) {
-      log.error(EXCEPTION, exception);
-    }
-  }
-
-  public void logClientHttpReqResponseDetails(@NonNull final HttpMethod method, final String url, final int responseCode, final List<String> correlationID,
-                                              final List<String> requestSource, final boolean logging) {
-    if (!logging) return;
-    try {
-      final Map<String, Object> httpMap = new HashMap<>();
-      httpMap.put("client_http_response_code", responseCode);
-      httpMap.put("client_http_request_method", method.toString());
-      httpMap.put("client_http_request_url", url);
-      if (correlationID != null) {
-        httpMap.put("correlation_id", String.join(",", correlationID));
-      }
-      if (requestSource != null) {
-        httpMap.put("request_source", String.join(",", requestSource));
-      }
-      MDC.putCloseable("httpEvent", jsonTransformer.marshall(httpMap));
       log.info("");
       MDC.clear();
     } catch (final Exception exception) {
