@@ -1083,6 +1083,17 @@ public class RuleEngineServiceTest {
 	}
 
 	@Test
+	public void testProcessGradAlgorithmRules1950_OneMonthRule() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
+		assertFalse(ruleProcessorData.isGraduated());
+	}
+
+	@Test
 	public void testProcessGradAlgorithmRules2004_EN_117346452() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("2004-EN-117346452");
 		assert ruleProcessorData != null;
@@ -1204,6 +1215,8 @@ public class RuleEngineServiceTest {
 					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("SCCP-130319387-fail.json")).getFile());
 			case "1950-122740988" ->
 					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-122740988.json")).getFile());
+			case "1950-OneMonthRule" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-OneMonthRule.json")).getFile());
 			case "2004-EN-117346452" ->
 					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2004-EN-117346452.json")).getFile());
 			case "1986-EN-105581557" ->
