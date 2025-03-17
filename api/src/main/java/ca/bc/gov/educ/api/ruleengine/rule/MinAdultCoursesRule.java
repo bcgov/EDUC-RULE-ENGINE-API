@@ -5,18 +5,19 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Component
 @NoArgsConstructor
@@ -64,17 +65,12 @@ public class MinAdultCoursesRule extends BaseRule implements Rule {
 
 			for (StudentCourse sc : tempStudentCourseList) {
 				String courseSessionDate = sc.getSessionDate() + "/01";
-				Date temp = null;
-				try {
-					temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
-				} catch (ParseException e) {
-					logger.debug(e.getMessage());
-				}
+				LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
 
 				// Get Adult Start date from the Data Object
-				Date adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
+				LocalDate adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
 
-				if( adultStartDate != null && temp != null && temp.compareTo(adultStartDate) > 0
+				if( adultStartDate != null && temp != null && temp.isAfter(adultStartDate)
 						&& (totalCredits + sc.getCredits()) <= requiredCredits) {
 					totalCredits += sc.getCredits();
 					AlgorithmSupportRule.setGradReqMet(sc,gradProgramRule);
@@ -135,17 +131,12 @@ public class MinAdultCoursesRule extends BaseRule implements Rule {
 
 		for (StudentCourse sc : tempStudentCourseList) {
 			String courseSessionDate = sc.getSessionDate() + "/01";
-			Date temp = null;
-			try {
-				temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
-			} catch (ParseException e) {
-				logger.debug(e.getMessage());
-			}
+			LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
 
 			// Get Adult Start date from the Data Object
-			Date adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
+			LocalDate adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
 
-			if(adultStartDate != null && temp != null && temp.compareTo(adultStartDate) <= 0) {
+			if(adultStartDate != null && temp != null && !temp.isAfter(adultStartDate)) {
 				carryForwardCoursesCount++;
 
 				if (carryForwardCoursesCount > 2) {
