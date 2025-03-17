@@ -1094,6 +1094,18 @@ public class RuleEngineServiceTest {
 	}
 
 	@Test
+	public void testProcessGradAlgorithmRules_whenNullCourseList_ThenReturn() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData.setStudentCourses(null);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
+		assertFalse(ruleProcessorData.isGraduated());
+	}
+
+	@Test
 	public void testProcessGradAlgorithmRules_whenEmptyCourseList_ThenReturn() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
 		assert ruleProcessorData != null;
