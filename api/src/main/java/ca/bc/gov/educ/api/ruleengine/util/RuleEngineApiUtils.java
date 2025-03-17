@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,13 @@ public class RuleEngineApiUtils {
         }
 
         return date;
+    }
+
+    public static Date toDate(LocalDate localDate) {
+        if(localDate == null) return null;
+        return Date.from(localDate.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
     
     public static Date parsingTraxDate(String sessionDate) {
