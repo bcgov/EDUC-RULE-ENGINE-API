@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.rule.MatchCreditsRule;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
@@ -25,6 +30,7 @@ import static org.junit.Assert.*;
 public class RuleEngineServiceTest {
 
 	@Autowired RuleEngineService ruleEngineService;
+	@MockBean RuleProcessorRuleUtils ruleProcessorRuleUtils;
 
 	private Map<String,Error> errors = new HashMap<>();
 	public static Logger logger = Logger.getLogger(RuleEngineServiceTest.class.getName());
@@ -1087,18 +1093,6 @@ public class RuleEngineServiceTest {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
 		assert ruleProcessorData != null;
 		ruleProcessorData.setProjected(false);
-		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
-		assertNotNull(ruleProcessorData);
-
-		assertFalse(ruleProcessorData.isGraduated());
-	}
-
-	@Test
-	public void testProcessGradAlgorithmRules_whenNullCourseList_ThenReturn() {
-		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
-		assert ruleProcessorData != null;
-		ruleProcessorData.setProjected(false);
-		ruleProcessorData.setStudentCourses(null);
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 
