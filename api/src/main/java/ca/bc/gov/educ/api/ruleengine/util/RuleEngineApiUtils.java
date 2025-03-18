@@ -14,8 +14,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
 
 public class RuleEngineApiUtils {
 
@@ -24,9 +26,27 @@ public class RuleEngineApiUtils {
 
     private RuleEngineApiUtils() {}
 
+    public static String formatDate(LocalDate date, String dateFormat) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
+        return date.format(formatter);
+    }
+
 	public static String formatDate(Date date, String dateFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         return simpleDateFormat.format(date);
+    }
+
+    public static LocalDate parseLocalDate(String dateString, String dateFormat) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+        LocalDate date = LocalDate.now();
+
+        try {
+            date = simpleDateFormat.parse(dateString).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        } catch (ParseException e) {
+            logger.error(ERROR_MSG,e.getMessage());
+        }
+
+        return date;
     }
 
     public static Date parseDate(String dateString, String dateFormat) throws ParseException {
@@ -40,6 +60,13 @@ public class RuleEngineApiUtils {
         }
 
         return date;
+    }
+
+    public static Date toDate(LocalDate localDate) {
+        if(localDate == null) return null;
+        return Date.from(localDate.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
     
     public static Date parsingTraxDate(String sessionDate) {
@@ -166,11 +193,7 @@ public class RuleEngineApiUtils {
 
         int diff1 = RuleEngineApiUtils.getDifferenceInMonths(sessionDate1,today);
         int diff2 = RuleEngineApiUtils.getDifferenceInMonths(sessionDate2,today);
-        if(diff1 < diff2) {
-            return true;
-        }else{
-            return false;
-        }
+        return diff1 < diff2;
     }
 
     // Courses with both finalLG(Letter Grade) & finalPercentage have some values
