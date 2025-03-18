@@ -5,16 +5,18 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Component
 @NoArgsConstructor
@@ -125,7 +127,7 @@ public class MatchCreditsRule extends BaseRule implements Rule {
         processReqMetAndNotMet(finalProgramRulesList,requirementsNotMet,finalCourseList,originalCourseRequirements,requirementsMet,gradProgramRulesMatch);
     }
 
-    public void splitSortStudentCourses(List<StudentCourse> studentCourses, Date adultStartDate) {
+    public void splitSortStudentCourses(List<StudentCourse> studentCourses, LocalDate adultStartDate) {
         /*
          * Split Student courses into 2 parts
          * 1. Courses taken after start date
@@ -138,14 +140,9 @@ public class MatchCreditsRule extends BaseRule implements Rule {
         List<StudentCourse> coursesOnOrBeforeStartDate = new ArrayList<>();
         for (StudentCourse sc : studentCourses) {
             String courseSessionDate = sc.getSessionDate() + "/01";
-            Date temp = null;
-            try {
-                temp = RuleEngineApiUtils.parseDate(courseSessionDate, "yyyy/MM/dd");
-            } catch (ParseException e) {
-                logger.debug(e.getMessage());
-            }
+            LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
 
-            if (adultStartDate != null && temp != null && temp.compareTo(adultStartDate) > 0) {
+            if (adultStartDate != null && temp != null && temp.isAfter(adultStartDate)) {
                 coursesAfterStartDate.add(sc);
             } else {
                 coursesOnOrBeforeStartDate.add(sc);

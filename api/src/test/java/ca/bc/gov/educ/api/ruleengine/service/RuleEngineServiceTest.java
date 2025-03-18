@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
+import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
+import ca.bc.gov.educ.api.ruleengine.rule.MatchCreditsRule;
+import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
@@ -25,6 +30,7 @@ import static org.junit.Assert.*;
 public class RuleEngineServiceTest {
 
 	@Autowired RuleEngineService ruleEngineService;
+	@MockBean RuleProcessorRuleUtils ruleProcessorRuleUtils;
 
 	private Map<String,Error> errors = new HashMap<>();
 	public static Logger logger = Logger.getLogger(RuleEngineServiceTest.class.getName());
@@ -1083,6 +1089,52 @@ public class RuleEngineServiceTest {
 	}
 
 	@Test
+	public void testProcessGradAlgorithmRules1950_OneMonthRule() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
+		assertFalse(ruleProcessorData.isGraduated());
+	}
+
+	@Test
+	public void testProcessGradAlgorithmRules_whenEmptyCourseList_ThenReturn() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData.setStudentCourses(new ArrayList<>());
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
+		assertFalse(ruleProcessorData.isGraduated());
+	}
+
+	@Test
+	public void testProcessGradAlgorithmRules_whenEmptyCourseRequirements_ThenReturn() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData.setCourseRequirements(null);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
+		assertFalse(ruleProcessorData.isGraduated());
+	}
+
+	@Test
+	public void testProcessGradAlgorithmRules1950_WhenTwoRequirementsMet_ThenRemoveNonGradReasons() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("1950-OneMonthRule");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+
+		assertFalse(ruleProcessorData.isGraduated());
+	}
+
+	@Test
 	public void testProcessGradAlgorithmRules2004_EN_117346452() {
 		RuleProcessorData ruleProcessorData = getRuleProcessorData("2004-EN-117346452");
 		assert ruleProcessorData != null;
@@ -1204,6 +1256,8 @@ public class RuleEngineServiceTest {
 					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("SCCP-130319387-fail.json")).getFile());
 			case "1950-122740988" ->
 					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-122740988.json")).getFile());
+			case "1950-OneMonthRule" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("1950-OneMonthRule.json")).getFile());
 			case "2004-EN-117346452" ->
 					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2004-EN-117346452.json")).getFile());
 			case "1986-EN-105581557" ->
