@@ -1207,6 +1207,16 @@ public class RuleEngineServiceTest {
 		assertFalse(ruleProcessorData.isGraduated());
 	}
 
+	@Test
+	public void testProcessGradAlgorithmRules2018_EN_cutoff_rule() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-CUTOFF-RULE-DATA");
+		assert ruleProcessorData != null;
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+		assertNotNull(ruleProcessorData);
+		assertFalse(ruleProcessorData.isGraduated());
+	}
+
 
 	//
 	
@@ -1274,6 +1284,8 @@ public class RuleEngineServiceTest {
 					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-127970861.json")).getFile());
 			case "2018-EN-126187616" ->
 					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("2018-EN-126187616.json")).getFile());
+			case "2018-EN-CUTOFF-RULE-DATA" ->
+					new File(Objects.requireNonNull(RuleEngineServiceTest.class.getClassLoader().getResource("cutoff-rule-data.json")).getFile());
 			default -> null;
 		};
 		RuleProcessorData data;
