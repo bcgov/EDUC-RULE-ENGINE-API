@@ -19,6 +19,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.time.format.DateTimeFormatter;
 
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DEFAULT_DATE_FORMAT;
+
 public class RuleEngineApiUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleEngineApiUtils.class);
@@ -167,7 +170,7 @@ public class RuleEngineApiUtils {
             Date sDate = toLastDayOfMonth(parseDate(startDate+"/01",RuleEngineApiConstants.DATE_FORMAT));
             if(endDate != null) {
                 Date eDate = toLastDayOfMonth(parseDate(endDate + "/01", RuleEngineApiConstants.DATE_FORMAT));
-                return toLastDayOfMonth(parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT)).after(sDate) && toLastDayOfMonth(parseDate(currentSessionDate + "/01", "yyyy/MM/dd")).before(eDate);
+                return toLastDayOfMonth(parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT)).after(sDate) && toLastDayOfMonth(parseDate(currentSessionDate + "/01", DATE_FORMAT)).before(eDate);
             }else {
                 return toLastDayOfMonth(parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT)).after(sDate);
             }
@@ -178,15 +181,15 @@ public class RuleEngineApiUtils {
     }
 
     public static boolean compareCourseSessionDates(String sessionDate1,String sessionDate2) {
-        String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
+        String today = RuleEngineApiUtils.formatDate(new Date(), DEFAULT_DATE_FORMAT);
         sessionDate1 = sessionDate1 + "/01";
         sessionDate2 = sessionDate2 + "/01";
 
         try {
-            Date temp1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate1, "yyyy/MM/dd"));
-            sessionDate1 = RuleEngineApiUtils.formatDate(temp1, "yyyy-MM-dd");
-            Date temp2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate2, "yyyy/MM/dd"));
-            sessionDate2 = RuleEngineApiUtils.formatDate(temp2, "yyyy-MM-dd");
+            Date temp1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate1, DATE_FORMAT));
+            sessionDate1 = RuleEngineApiUtils.formatDate(temp1, DEFAULT_DATE_FORMAT);
+            Date temp2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate2, DATE_FORMAT));
+            sessionDate2 = RuleEngineApiUtils.formatDate(temp2, DEFAULT_DATE_FORMAT);
         } catch (ParseException pe) {
             logger.error("ERROR: {}",pe.getMessage());
         }

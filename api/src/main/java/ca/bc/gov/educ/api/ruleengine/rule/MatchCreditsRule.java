@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Component
@@ -140,7 +142,7 @@ public class MatchCreditsRule extends BaseRule implements Rule {
         List<StudentCourse> coursesOnOrBeforeStartDate = new ArrayList<>();
         for (StudentCourse sc : studentCourses) {
             String courseSessionDate = sc.getSessionDate() + "/01";
-            LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
+            LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, DATE_FORMAT);
 
             if (adultStartDate != null && temp != null && temp.isAfter(adultStartDate)) {
                 coursesAfterStartDate.add(sc);

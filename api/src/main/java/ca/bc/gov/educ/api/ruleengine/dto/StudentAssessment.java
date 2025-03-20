@@ -29,6 +29,7 @@ public class StudentAssessment implements Serializable {
     private boolean isProjected;
     private boolean isNotCompleted;
     private String equivalentCode;
+    private boolean isCutOffAssessment;
 
     @Override
     public boolean equals(Object o) {

@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.util.*;
 
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+
 @Data
 @Component
 @NoArgsConstructor
@@ -36,7 +38,7 @@ public class RegistrationsFailedCrseRule extends BaseRule implements Rule {
         boolean inProgressCourse = false;
         for (StudentCourse studentCourse : studentCourseList) {
             try {
-                Date sessionDate = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentCourse.getSessionDate() + "/01", "yyyy/MM/dd"));
+                Date sessionDate = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentCourse.getSessionDate() + "/01", DATE_FORMAT));
                 String sDate = RuleEngineApiUtils.formatDate(sessionDate, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                 String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                 int diff = RuleEngineApiUtils.getDifferenceInMonths(sDate,today);

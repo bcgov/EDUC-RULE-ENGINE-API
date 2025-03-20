@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Component
@@ -65,7 +67,7 @@ public class MinAdultCoursesRule extends BaseRule implements Rule {
 
 			for (StudentCourse sc : tempStudentCourseList) {
 				String courseSessionDate = sc.getSessionDate() + "/01";
-				LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
+				LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, DATE_FORMAT);
 
 				// Get Adult Start date from the Data Object
 				LocalDate adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
@@ -131,7 +133,7 @@ public class MinAdultCoursesRule extends BaseRule implements Rule {
 
 		for (StudentCourse sc : tempStudentCourseList) {
 			String courseSessionDate = sc.getSessionDate() + "/01";
-			LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, "yyyy/MM/dd");
+			LocalDate temp = RuleEngineApiUtils.parseLocalDate(courseSessionDate, DATE_FORMAT);
 
 			// Get Adult Start date from the Data Object
 			LocalDate adultStartDate = ruleProcessorData.getGradStatus().getAdultStartDate();
