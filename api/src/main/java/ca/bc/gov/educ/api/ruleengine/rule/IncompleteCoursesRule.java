@@ -17,6 +17,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DEFAULT_DATE_FORMAT;
+
 @Data
 @Component
 @NoArgsConstructor
@@ -32,12 +35,12 @@ public class IncompleteCoursesRule extends BaseRule implements Rule {
         List<StudentCourse> studentCourseList = RuleProcessorRuleUtils.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(),ruleProcessorData.isProjected());
 
         for (StudentCourse studentCourse : studentCourseList) {
-            String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
+            String today = RuleEngineApiUtils.formatDate(new Date(), DEFAULT_DATE_FORMAT);
             String sessionDate = studentCourse.getSessionDate() + "/01";
 
             try {
-                Date temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd"));
-                sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy-MM-dd");
+                Date temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate, DATE_FORMAT));
+                sessionDate = RuleEngineApiUtils.formatDate(temp, DEFAULT_DATE_FORMAT);
             } catch (ParseException pe) {
                 logger.error("ERROR: {}" , pe.getMessage());
             }

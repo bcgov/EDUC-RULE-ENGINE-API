@@ -17,6 +17,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+
 @Data
 @Component
 @NoArgsConstructor
@@ -37,8 +39,8 @@ public class ExcludeValidationCoursesRule extends BaseRule implements Rule {
         for (StudentCourse studentCourse : studentCourseList) {
             String sessionDate = studentCourse.getSessionDate() + "/01";
             try {
-                Date temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate, "yyyy/MM/dd"));
-                sessionDate = RuleEngineApiUtils.formatDate(temp, "yyyy/MM/dd");
+                Date temp = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate, DATE_FORMAT));
+                sessionDate = RuleEngineApiUtils.formatDate(temp, DATE_FORMAT);
             } catch (ParseException pe) {
                 logger.error("ERROR: {}",pe.getMessage());
             }

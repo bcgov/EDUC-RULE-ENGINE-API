@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.util.*;
 
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+
 @Data
 @Component
 @NoArgsConstructor
@@ -44,8 +46,8 @@ public class RegistrationsDuplicateAssmtRule extends BaseRule implements Rule {
                             && !studentAssessmentsList.get(i).isDuplicate()
                             && !studentAssessmentsList.get(j).isDuplicate()) {
                         try {
-                            Date sessionDate1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentAssessmentsList.get(i).getSessionDate() + "/01", "yyyy/MM/dd"));
-                            Date sessionDate2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentAssessmentsList.get(j).getSessionDate() + "/01", "yyyy/MM/dd"));
+                            Date sessionDate1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentAssessmentsList.get(i).getSessionDate() + "/01", DATE_FORMAT));
+                            Date sessionDate2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentAssessmentsList.get(j).getSessionDate() + "/01", DATE_FORMAT));
                             String sDate1 = RuleEngineApiUtils.formatDate(sessionDate1, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                             String sDate2 = RuleEngineApiUtils.formatDate(sessionDate2, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
 
