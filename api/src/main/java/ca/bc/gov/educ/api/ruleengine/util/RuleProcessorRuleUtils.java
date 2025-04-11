@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+
 public class RuleProcessorRuleUtils {
 
     private RuleProcessorRuleUtils() {}
@@ -123,16 +125,17 @@ public class RuleProcessorRuleUtils {
         
          List<StudentAssessment> uniqueStudentAssessmentList = studentAssessments
                 .stream()
-                .filter(sc -> !sc.isNotCompleted()
-                        && !sc.isDuplicate()
-                        && !sc.isFailed())
+                .filter(sa -> !sa.isNotCompleted()
+                        && !sa.isDuplicate()
+                        && !sa.isFailed()
+                        && !sa.isCutOffAssessment())
                 .collect(Collectors.toList());
 
         if (!projected) {
             logger.debug("Excluding Registrations!");
             uniqueStudentAssessmentList = uniqueStudentAssessmentList
                     .stream()
-                    .filter(sc -> !sc.isProjected())
+                    .filter(sa -> !sa.isProjected())
                     .collect(Collectors.toList());
         } else
             logger.debug("Including Registrations!");
@@ -143,17 +146,18 @@ public class RuleProcessorRuleUtils {
     public static List<StudentAssessment> getExcludedStudentAssessments(List<StudentAssessment> studentAssessments, boolean projected) {
         return studentAssessments
                 .stream()
-                .filter(sc -> sc.isNotCompleted()
-                        || sc.isDuplicate()
-                        || sc.isFailed()
-                        || (!projected && sc.isProjected()))
+                .filter(sa -> sa.isNotCompleted()
+                        || sa.isDuplicate()
+                        || sa.isFailed()
+                        || sa.isCutOffAssessment()
+                        || (!projected && sa.isProjected()))
                 .collect(Collectors.toList());
     }
     
     public static String getGradDate(List<StudentCourse> studentCourses) {
 
         Date gradDate = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
         try {
             gradDate = dateFormat.parse("1700/01/01");

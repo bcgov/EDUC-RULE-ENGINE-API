@@ -14,8 +14,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
+
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
+import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DEFAULT_DATE_FORMAT;
 
 public class RuleEngineApiUtils {
 
@@ -24,9 +29,27 @@ public class RuleEngineApiUtils {
 
     private RuleEngineApiUtils() {}
 
+    public static String formatDate(LocalDate date, String dateFormat) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
+        return date.format(formatter);
+    }
+
 	public static String formatDate(Date date, String dateFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         return simpleDateFormat.format(date);
+    }
+
+    public static LocalDate parseLocalDate(String dateString, String dateFormat) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+        LocalDate date = LocalDate.now();
+
+        try {
+            date = simpleDateFormat.parse(dateString).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        } catch (ParseException e) {
+            logger.error(ERROR_MSG,e.getMessage());
+        }
+
+        return date;
     }
 
     public static Date parseDate(String dateString, String dateFormat) throws ParseException {
@@ -40,6 +63,13 @@ public class RuleEngineApiUtils {
         }
 
         return date;
+    }
+
+    public static Date toDate(LocalDate localDate) {
+        if(localDate == null) return null;
+        return Date.from(localDate.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
     
     public static Date parsingTraxDate(String sessionDate) {
@@ -140,7 +170,7 @@ public class RuleEngineApiUtils {
             Date sDate = toLastDayOfMonth(parseDate(startDate+"/01",RuleEngineApiConstants.DATE_FORMAT));
             if(endDate != null) {
                 Date eDate = toLastDayOfMonth(parseDate(endDate + "/01", RuleEngineApiConstants.DATE_FORMAT));
-                return toLastDayOfMonth(parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT)).after(sDate) && toLastDayOfMonth(parseDate(currentSessionDate + "/01", "yyyy/MM/dd")).before(eDate);
+                return toLastDayOfMonth(parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT)).after(sDate) && toLastDayOfMonth(parseDate(currentSessionDate + "/01", DATE_FORMAT)).before(eDate);
             }else {
                 return toLastDayOfMonth(parseDate(currentSessionDate + "/01", RuleEngineApiConstants.DATE_FORMAT)).after(sDate);
             }
@@ -151,26 +181,22 @@ public class RuleEngineApiUtils {
     }
 
     public static boolean compareCourseSessionDates(String sessionDate1,String sessionDate2) {
-        String today = RuleEngineApiUtils.formatDate(new Date(), "yyyy-MM-dd");
+        String today = RuleEngineApiUtils.formatDate(new Date(), DEFAULT_DATE_FORMAT);
         sessionDate1 = sessionDate1 + "/01";
         sessionDate2 = sessionDate2 + "/01";
 
         try {
-            Date temp1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate1, "yyyy/MM/dd"));
-            sessionDate1 = RuleEngineApiUtils.formatDate(temp1, "yyyy-MM-dd");
-            Date temp2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate2, "yyyy/MM/dd"));
-            sessionDate2 = RuleEngineApiUtils.formatDate(temp2, "yyyy-MM-dd");
+            Date temp1 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate1, DATE_FORMAT));
+            sessionDate1 = RuleEngineApiUtils.formatDate(temp1, DEFAULT_DATE_FORMAT);
+            Date temp2 = toLastDayOfMonth(RuleEngineApiUtils.parseDate(sessionDate2, DATE_FORMAT));
+            sessionDate2 = RuleEngineApiUtils.formatDate(temp2, DEFAULT_DATE_FORMAT);
         } catch (ParseException pe) {
             logger.error("ERROR: {}",pe.getMessage());
         }
 
         int diff1 = RuleEngineApiUtils.getDifferenceInMonths(sessionDate1,today);
         int diff2 = RuleEngineApiUtils.getDifferenceInMonths(sessionDate2,today);
-        if(diff1 < diff2) {
-            return true;
-        }else{
-            return false;
-        }
+        return diff1 < diff2;
     }
 
     // Courses with both finalLG(Letter Grade) & finalPercentage have some values
