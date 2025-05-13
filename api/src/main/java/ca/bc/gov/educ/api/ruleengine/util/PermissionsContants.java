@@ -1,6 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.util;
 
-public interface PermissionsConstants {
+public interface PermissionsContants {
 	String _PREFIX = "hasAuthority('";
 	String _SUFFIX = "')";
 

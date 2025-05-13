@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.service.RuleEngineService;
-import ca.bc.gov.educ.api.ruleengine.util.PermissionsConstants;
+import ca.bc.gov.educ.api.ruleengine.util.PermissionsContants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -30,7 +30,7 @@ public class RuleEngineController {
     RuleEngineService ruleEngineService;
 
     @PostMapping ("/run-grad-algorithm-rules")
-    @PreAuthorize(PermissionsConstants.RUN_RULE_ENGINE)
+    @PreAuthorize(PermissionsContants.RUN_RULE_ENGINE)
     public RuleProcessorData processGradAlgorithmRules(@RequestBody RuleProcessorData ruleProcessorData) {
         logger.debug("**** Processing Grad Algorithm Rules");
         return ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
