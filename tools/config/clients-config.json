@@ -1,0 +1,14 @@
+[
+  {
+    "clientId": "grad-rule-engine-api-client",
+    "scopes": ["RUN_RULE_ENGINE"],
+    "settings": {
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    }
+  }
+]

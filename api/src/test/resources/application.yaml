@@ -66,3 +66,7 @@ springdoc:
 splunk:
   log-helper:
     enabled: false
+
+endpoint:
+  keycloak:
+    token-uri: https://soam-dev.apps.silver.devops.gov.bc.ca/auth/realms/master/protocol/openid-connect/token
