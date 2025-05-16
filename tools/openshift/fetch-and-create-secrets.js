@@ -6,7 +6,7 @@ const https = require('https');
 const keycloakUrl = process.env.KEYCLOAK_URL;
 const realm = process.env.KEYCLOAK_REALM;
 const openshiftApi = process.env.OPENSHIFT_SERVER;
-const gradNamespace = process.env.GRAD_NAMESPACE;
+const gradNamespace = `${process.env.GRAD_NAMESPACE}-${process.env.TARGET_ENV}`;
 const openshiftNamespace = process.env.OPENSHIFT_NAMESPACE;
 const openshiftToken = process.env.OPENSHIFT_TOKEN;
 
