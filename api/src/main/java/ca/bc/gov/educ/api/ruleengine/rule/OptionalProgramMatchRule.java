@@ -94,7 +94,7 @@ public class OptionalProgramMatchRule {
             for (AssessmentRequirement ar : tempAssessmentRequirement) {
                 if (tempOptionalProgramRule == null) {
                     tempOptionalProgramRule = gradOptionalProgramRulesMatch.stream()
-                            .filter(pr -> pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo(ar.getRuleCode().getAssmtRequirementCode()) == 0)
+                            .filter(pr -> pr.getOptionalProgramRequirementCode().getOptProReqCode().compareTo(ar.getProgramRequirementCode()) == 0)
                             .findAny()
                             .orElse(null);
                 }

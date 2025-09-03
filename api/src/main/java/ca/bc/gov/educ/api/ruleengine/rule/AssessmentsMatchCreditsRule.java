@@ -68,7 +68,7 @@ public class AssessmentsMatchCreditsRule implements Rule {
                 for (AssessmentRequirement ar : tempAssessmentRequirement) {
                     if (tempProgramRule == null) {
                         tempProgramRule = gradProgramRulesMatch.stream()
-                                .filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo(ar.getRuleCode().getAssmtRequirementCode()) == 0)
+                                .filter(pr -> pr.getProgramRequirementCode().getProReqCode().compareTo(ar.getProgramRequirementCode()) == 0)
                                 .findAny()
                                 .orElse(null);
                     }

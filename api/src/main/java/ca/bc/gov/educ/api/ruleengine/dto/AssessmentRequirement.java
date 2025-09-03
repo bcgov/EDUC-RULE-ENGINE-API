@@ -11,6 +11,6 @@ import java.util.UUID;
 public class AssessmentRequirement implements Serializable {
 
 	private UUID assessmentRequirementId;
-	private String assessmentCode;   
-	private AssessmentRequirementCode ruleCode;
+	private String assessmentCode;
+	private String programRequirementCode;
 }
