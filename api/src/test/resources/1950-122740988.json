@@ -1,4 +1,4 @@
-{
+﻿{
   "gradStudent": {
     "studentID": "ac339d70-7649-1a2e-8176-4a2980d32066",
     "pen": "122740988",
@@ -3199,24 +3199,12 @@
     {
       "assessmentRequirementId": "b247fbd2-3d61-fd0e-e053-98e9228e3dbe",
       "assessmentCode": "LTE10",
-      "ruleCode": {
-        "assmtRequirementCode": "115",
-        "label": "Literacy 10 Assessment",
-        "description": "Literacy 10 Assessment",
-        "effectiveDate": 1624147200000,
-        "expiryDate": null
-      }
+      "programRequirementCode": "115"
     },
     {
       "assessmentRequirementId": "b29a121c-ee49-d1f0-e053-98e9228ef4a6",
       "assessmentCode": "LTE10",
-      "ruleCode": {
-        "assmtRequirementCode": "403",
-        "label": "Literacy 10 Assessment",
-        "description": "Literacy 10 Assessment",
-        "effectiveDate": 1624147200000,
-        "expiryDate": null
-      }
+      "programRequirementCode": "403"
     }
   ],
   "assessmentList": [
