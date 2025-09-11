@@ -186,6 +186,7 @@ public class MatchCreditsRule extends BaseRule implements Rule {
             logger.debug("tempCourse= {}", tempCourse);
             if(tempCourse.getCourseCode().startsWith("Y")
                     && tempCourse.getCourseLevel().contains("11")
+                    && tempCourse.getFineArtsAppliedSkills() != null
                     && (tempCourse.getFineArtsAppliedSkills().compareTo("B") == 0
                     || tempCourse.getFineArtsAppliedSkills().compareTo("F") == 0
                     || tempCourse.getFineArtsAppliedSkills().compareTo("A") == 0)) {
