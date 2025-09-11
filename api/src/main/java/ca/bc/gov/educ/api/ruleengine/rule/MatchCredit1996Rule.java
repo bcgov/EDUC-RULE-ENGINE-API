@@ -46,7 +46,7 @@ public class MatchCredit1996Rule implements Rule {
                         && studentCourse.getFineArtsAppliedSkills().length() > 0)
                 .collect(Collectors.toList());
         fineArtsCourseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
-                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
+                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Double::compareTo)).reversed());
 
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected())
@@ -54,7 +54,7 @@ public class MatchCredit1996Rule implements Rule {
                                 || studentCourse.getFineArtsAppliedSkills().length() == 0)
                 .collect(Collectors.toList());
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel)
-                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder()));
+                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Double::compareTo)).reversed());
 
         if (courseList.isEmpty()) {
             logger.warn("!!!Empty list sent to Match Credit 1996 Rule for processing");
