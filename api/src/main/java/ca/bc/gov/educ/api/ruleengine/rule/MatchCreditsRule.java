@@ -183,6 +183,7 @@ public class MatchCreditsRule extends BaseRule implements Rule {
                 logger.debug("!!! Program Rule met Already: {}",tempProgramRule);
             }
         }else {
+            logger.debug("tempCourse= {}", tempCourse);
             if(tempCourse.getCourseCode().startsWith("Y")
                     && tempCourse.getCourseLevel().contains("11")
                     && (tempCourse.getFineArtsAppliedSkills().compareTo("B") == 0
