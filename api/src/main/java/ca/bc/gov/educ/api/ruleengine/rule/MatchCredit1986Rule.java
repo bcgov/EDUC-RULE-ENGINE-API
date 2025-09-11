@@ -6,7 +6,6 @@ import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Data
 @Component
 @NoArgsConstructor
@@ -36,13 +34,8 @@ public class MatchCredit1986Rule implements Rule {
 
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-
-        for(StudentCourse studentCourse : courseList) {
-            log.debug("courseCode={} :: courseLevel={}", studentCourse.getCourseCode(), studentCourse.getCourseLevel());
-        }
-
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
-                .thenComparing(StudentCourse::getCompletedCoursePercentage).reversed());
+                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Double::compareTo)).reversed());
 
         List<ProgramRequirement> gradProgramRulesMatch = RuleEngineApiUtils.getMatchProgramRules(ruleProcessorData.getGradProgramRules());
 

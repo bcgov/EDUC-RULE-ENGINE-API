@@ -36,11 +36,8 @@ public class MinElectiveCredits1986Rule implements Rule {
 		Integer ldCourseCounter = ruleProcessorData.getLdCounter();
 		List<StudentCourse> studentCourses = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
-		for(StudentCourse studentCourse : studentCourses) {
-			log.debug("courseCode={} :: courseLevel={}", studentCourse.getCourseCode(), studentCourse.getCourseLevel());
-		}
 		studentCourses.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
-				.thenComparing(StudentCourse::getCompletedCoursePercentage).reversed());
+				.thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Double::compareTo)).reversed());
 
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0

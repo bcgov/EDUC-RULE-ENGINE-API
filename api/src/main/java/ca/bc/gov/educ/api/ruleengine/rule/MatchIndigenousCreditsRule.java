@@ -108,6 +108,7 @@ public class MatchIndigenousCreditsRule implements Rule {
         } else {
             if (tempCourse.getCourseCode().startsWith("Y")
                     && tempCourse.getCourseLevel().contains("11")
+                    && tempCourse.getFineArtsAppliedSkills() != null
                     && (tempCourse.getFineArtsAppliedSkills().compareTo("B") == 0
                     || tempCourse.getFineArtsAppliedSkills().compareTo("F") == 0
                     || tempCourse.getFineArtsAppliedSkills().compareTo("A") == 0)) {
