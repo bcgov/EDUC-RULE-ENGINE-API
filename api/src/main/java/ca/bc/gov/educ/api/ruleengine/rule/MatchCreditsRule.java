@@ -56,7 +56,7 @@ public class MatchCreditsRule extends BaseRule implements Rule {
             courseList.sort(
                     Comparator.comparing(StudentCourse::getCourseLevel)
                             .thenComparing(StudentCourse::getCompletedCourseLetterGrade, Comparator.nullsLast(String::compareTo))
-                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder())
+                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Comparator.reverseOrder()))
             );
 
             gradProgramRulesMatch = ruleProcessorData.getGradProgramRules()
@@ -155,7 +155,7 @@ public class MatchCreditsRule extends BaseRule implements Rule {
             coursesAfterStartDate.sort(
                     Comparator.comparing(StudentCourse::getCourseLevel)
                             .thenComparing(StudentCourse::getCompletedCourseLetterGrade, Comparator.nullsLast(String::compareTo))
-                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder())
+                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Comparator.reverseOrder()))
             );
             studentCourses.addAll(coursesAfterStartDate);
         }
@@ -163,7 +163,7 @@ public class MatchCreditsRule extends BaseRule implements Rule {
             coursesOnOrBeforeStartDate.sort(
                     Comparator.comparing(StudentCourse::getCourseLevel)
                             .thenComparing(StudentCourse::getCompletedCourseLetterGrade, Comparator.nullsLast(String::compareTo))
-                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.reverseOrder())
+                            .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Comparator.reverseOrder()))
             );
             studentCourses.addAll(coursesOnOrBeforeStartDate);
         }
