@@ -34,7 +34,7 @@ public class MinCredit1996Rule implements Rule {
                 ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         List<StudentCourse> studentCourses = tempStudentCourseList.stream().filter(sc -> !sc.isUsedInMatchRule() || (sc.getLeftOverCredits() != null && sc.getLeftOverCredits() > 0)).collect(Collectors.toList());
         studentCourses.sort(Comparator.comparing(StudentCourse::getCourseLevel, Comparator.reverseOrder())
-                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Double::compareTo)).reversed());
+                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Comparator.reverseOrder())));
         List<ProgramRequirement> gradProgramRules = ruleProcessorData.getGradProgramRules()
                 .stream()
                 .filter(gpr -> "MC".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0

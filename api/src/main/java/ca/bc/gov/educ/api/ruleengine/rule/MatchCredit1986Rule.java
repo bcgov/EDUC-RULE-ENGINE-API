@@ -35,7 +35,7 @@ public class MatchCredit1986Rule implements Rule {
         List<StudentCourse> courseList = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
         courseList.sort(Comparator.comparing(StudentCourse::getCourseLevel).reversed()
-                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Double::compareTo)).reversed());
+                .thenComparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Comparator.reverseOrder())));
 
         List<ProgramRequirement> gradProgramRulesMatch = RuleEngineApiUtils.getMatchProgramRules(ruleProcessorData.getGradProgramRules());
 

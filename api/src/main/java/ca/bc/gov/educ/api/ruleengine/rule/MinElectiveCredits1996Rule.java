@@ -42,7 +42,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 				.filter(sc -> sc.isUsedInMinCreditRule() && (sc.getLeftOverCredits() != null && sc.getLeftOverCredits() > 0)).toList();
 		tempStudentCourseList.removeAll(minCreditGrade12Courses);
 		tempStudentCourseList.addAll(minCreditGrade12CoursesWithLeftOverCredits);
-		tempStudentCourseList.sort(Comparator.comparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Double::compareTo)).reversed());
+		tempStudentCourseList.sort(Comparator.comparing(StudentCourse::getCompletedCoursePercentage, Comparator.nullsLast(Comparator.reverseOrder())));
 
 		List<ProgramRequirement> gradProgramRules = ruleProcessorData
 				.getGradProgramRules().stream().filter(gpr -> "MCE".compareTo(gpr.getProgramRequirementCode().getRequirementTypeCode().getReqTypeCode()) == 0
