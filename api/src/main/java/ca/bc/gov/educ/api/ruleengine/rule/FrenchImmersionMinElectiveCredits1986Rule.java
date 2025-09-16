@@ -54,7 +54,7 @@ public class FrenchImmersionMinElectiveCredits1986Rule implements Rule {
         while (studentCourseIterator2.hasNext()) {            
         	StudentCourse sc = studentCourseIterator2.next();
             for(OptionalProgramRequirement pR:gradOptionalProgramMinCreditElectiveRulesMatch) {
-                if(!sc.getCourseCode().startsWith("X") && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F")){
+                if(!sc.getCourseCode().startsWith("X") && sc.getLanguage() != null && sc.getLanguage().toUpperCase().startsWith("F")){
                     requiredCreditsGrad11or12 = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
                     totalCreditsGrade11or12 = processCredits(pR,totalCreditsGrade11or12,sc,requirementsMet);
                 }
