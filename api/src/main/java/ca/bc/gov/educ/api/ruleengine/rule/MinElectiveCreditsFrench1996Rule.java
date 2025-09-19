@@ -55,7 +55,7 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
                            .filter(sc -> !sc.isUsedInMatchRule()
                                    && (sc.getCourseLevel().contains("11")
                                    || sc.getCourseLevel().contains("12"))
-                                   && sc.getLanguage() != null && sc.getLanguage().trim().compareTo("F")==0)
+                                   && sc.getLanguage() != null && sc.getLanguage().trim().toUpperCase().startsWith("F"))
                            .collect(Collectors.toList());
 
 

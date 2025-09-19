@@ -106,11 +106,15 @@ public class RestrictedCoursesRule implements Rule {
 
     private void compareCredits(StudentCourse sCourse, StudentCourse tempCourseRestriction, List<StudentCourse> studentCourses, int i) {
         if (sCourse.getCredits().equals(tempCourseRestriction.getCredits())) {
-            if (sCourse.getCompletedCoursePercentage().equals(tempCourseRestriction.getCompletedCoursePercentage())) {
+            if (computeCompletedCoursePercentage(sCourse.getCompletedCoursePercentage()).equals(computeCompletedCoursePercentage(tempCourseRestriction.getCompletedCoursePercentage()))) {
                 compareSessionDates(sCourse, tempCourseRestriction, studentCourses, i);
             } else
-                studentCourses.get(i).setRestricted(sCourse.getCompletedCoursePercentage() <= tempCourseRestriction.getCompletedCoursePercentage());
+                studentCourses.get(i).setRestricted(computeCompletedCoursePercentage(sCourse.getCompletedCoursePercentage()) <= computeCompletedCoursePercentage(tempCourseRestriction.getCompletedCoursePercentage()));
         } else studentCourses.get(i).setRestricted(sCourse.getCredits() <= tempCourseRestriction.getCredits());
+    }
+
+    private Double computeCompletedCoursePercentage(Double completedCoursePercentage) {
+        return completedCoursePercentage != null ? completedCoursePercentage : Double.valueOf("0");
     }
 
     private void compareSessionDates(StudentCourse sCourse, StudentCourse tempCourseRestriction, List<StudentCourse> studentCourses, int i) {

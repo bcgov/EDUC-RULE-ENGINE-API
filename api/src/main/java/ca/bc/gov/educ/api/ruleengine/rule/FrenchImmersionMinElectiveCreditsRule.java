@@ -65,7 +65,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         	StudentCourse sc = studentCourseIterator.next();
         	if(!requirementAchieved) {
 	        	for(OptionalProgramRequirement pR:gradOptionalProgramMinCreditElectiveRulesMatch) {            	
-	        		if((pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) && sc.getLanguage() != null && sc.getLanguage().equalsIgnoreCase("F")) {
+	        		if((pR.getOptionalProgramRequirementCode().getRequiredLevel() == null || pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("") == 0) && sc.getLanguage() != null && sc.getLanguage().toUpperCase().startsWith("F")) {
 	        			requiredCredits = Integer.parseInt(pR.getOptionalProgramRequirementCode().getRequiredCredits());
 	        			totalCredits = processCredits(pR,totalCredits,sc,requirementsMet);
 	        		}
@@ -97,7 +97,7 @@ public class FrenchImmersionMinElectiveCreditsRule implements Rule {
         			if(pR.getOptionalProgramRequirementCode().getRequiredLevel() != null
                             && pR.getOptionalProgramRequirementCode().getRequiredLevel().trim().compareTo("11 or 12") == 0
                             && sc.getLanguage() != null
-                            && sc.getLanguage().equalsIgnoreCase("F")
+                            && sc.getLanguage().toUpperCase().startsWith("F")
                             && (sc.getCourseLevel().trim().contains("11") || sc.getCourseLevel().trim().contains("12")
                                             || sc.getCourseCode().contains("CLC"))
                     ) {
