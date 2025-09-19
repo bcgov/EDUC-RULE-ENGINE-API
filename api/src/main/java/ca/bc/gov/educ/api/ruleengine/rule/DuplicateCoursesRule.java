@@ -46,13 +46,13 @@ public class DuplicateCoursesRule implements Rule {
                     if (studentCourseList.get(i).getCredits() > studentCourseList.get(j).getCredits()) {
                         studentCourseList.get(i).setDuplicate(false);
                         studentCourseList.get(j).setDuplicate(true);
-                    } else if (studentCourseList.get(i).getCompletedCoursePercentage() > studentCourseList.get(j).getCompletedCoursePercentage()) {
+                    } else if (computeCompletedCoursePercentage(studentCourseList.get(i).getCompletedCoursePercentage()) > computeCompletedCoursePercentage(studentCourseList.get(j).getCompletedCoursePercentage())) {
                         studentCourseList.get(i).setDuplicate(false);
                         studentCourseList.get(j).setDuplicate(true);
-                    } else if (studentCourseList.get(i).getCompletedCoursePercentage() < studentCourseList.get(j).getCompletedCoursePercentage()) {
+                    } else if (computeCompletedCoursePercentage(studentCourseList.get(i).getCompletedCoursePercentage()) < computeCompletedCoursePercentage(studentCourseList.get(j).getCompletedCoursePercentage())) {
                         studentCourseList.get(i).setDuplicate(true);
                         studentCourseList.get(j).setDuplicate(false);
-                    } else if (studentCourseList.get(i).getCompletedCoursePercentage().equals(studentCourseList.get(j).getCompletedCoursePercentage())) {
+                    } else if (computeCompletedCoursePercentage(studentCourseList.get(i).getCompletedCoursePercentage()).equals(computeCompletedCoursePercentage(studentCourseList.get(j).getCompletedCoursePercentage()))) {
                     	compareSessionDates(studentCourseList,i,j);                        
                     }
                 }  //Do Nothing
@@ -74,6 +74,10 @@ public class DuplicateCoursesRule implements Rule {
             studentCourseList.get(i).setDuplicate(true);
             studentCourseList.get(j).setDuplicate(false);
         }
+    }
+
+    private Double computeCompletedCoursePercentage(Double completedCoursePercentage) {
+        return completedCoursePercentage != null ? completedCoursePercentage : Double.valueOf("0");
     }
     
     @Override
