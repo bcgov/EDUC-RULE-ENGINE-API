@@ -68,10 +68,12 @@ public class RegistrationsDuplicateCrseRule extends BaseRule implements Rule {
                         
                         if(inProgressCourse1 && inProgressCourse2) {
                             logger.debug("comparing {} with {}  -> Duplicate FOUND - CourseID: {}-{}", studentCourseList.get(i).getCourseCode(), studentCourseList.get(j).getCourseCode(), studentCourseList.get(i).getCourseCode(), studentCourseList.get(i).getCourseLevel());
-                            if (studentCourseList.get(i).getInterimPercent() > studentCourseList.get(j).getInterimPercent()) {
+                            var interimPercent1 = studentCourseList.get(i).getInterimPercent() != null ?  studentCourseList.get(i).getInterimPercent() : 0;
+                            var interimPercent2 = studentCourseList.get(j).getInterimPercent() != null ?  studentCourseList.get(j).getInterimPercent() : 0;
+                            if (interimPercent1 > interimPercent2) {
                                 studentCourseList.get(i).setDuplicate(false);
                                 studentCourseList.get(j).setDuplicate(true);
-                            } else if (studentCourseList.get(i).getInterimPercent() < studentCourseList.get(j).getInterimPercent()) {
+                            } else if (interimPercent1 < interimPercent2) {
                                 studentCourseList.get(i).setDuplicate(true);
                                 studentCourseList.get(j).setDuplicate(false);
                             } else {
