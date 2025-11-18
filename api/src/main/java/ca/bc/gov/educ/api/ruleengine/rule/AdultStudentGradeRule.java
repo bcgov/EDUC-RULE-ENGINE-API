@@ -41,8 +41,8 @@ public class AdultStudentGradeRule implements Rule {
 
             for (ProgramRequirement gradProgramRule : gradProgramRules) {
                 logger.debug("StudentGrade: {}", ruleProcessorData.getGradStudent().getStudentGrade());
-
-                if ("AD".compareTo(ruleProcessorData.getGradStudent().getStudentGrade()) != 0) {
+                String studentGrade = ruleProcessorData.getGradStudent().getStudentGrade();
+                if (!studentGrade.equalsIgnoreCase("GA") && !studentGrade.equalsIgnoreCase("AD")) {
                     gradProgramRule.getProgramRequirementCode().setPassed(false);
                     List<GradRequirement> nonGradReasons = ruleProcessorData.getNonGradReasons();
 
