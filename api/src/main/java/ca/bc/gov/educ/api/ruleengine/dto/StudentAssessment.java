@@ -30,6 +30,7 @@ public class StudentAssessment implements Serializable {
     private boolean isNotCompleted;
     private String equivalentCode;
     private boolean isCutOffAssessment;
+    private boolean didNotAttemptFlag;
 
     @Override
     public boolean equals(Object o) {
