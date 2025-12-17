@@ -31,9 +31,16 @@ public class IncompleteAssessmentsRule implements Rule {
 
          for (StudentAssessment studentAssessment : studentAssessmentList) {
              String specialCase = StringUtils.isBlank(studentAssessment.getSpecialCase())? "" : studentAssessment.getSpecialCase();
-             if ("".compareTo(specialCase.trim()) == 0 && studentAssessment.isDidNotAttemptFlag()) {
-                 studentAssessment.setNotCompleted(true);
-             }
+             /*if(false) {
+                 if ("".compareTo(specialCase.trim()) == 0 && studentAssessment.isDidNotAttemptFlag()) {
+                     studentAssessment.setNotCompleted(true);
+                 }
+             } else {*/
+                 String wroteFlag = StringUtils.isBlank(studentAssessment.getWroteFlag())? "" : studentAssessment.getWroteFlag();
+                 if ("".compareTo(specialCase.trim()) == 0 && "N".compareTo(wroteFlag.trim()) == 0) {
+                     studentAssessment.setNotCompleted(true);
+                 }
+             //}
         }
 
         ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));

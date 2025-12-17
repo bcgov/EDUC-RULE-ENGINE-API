@@ -87,3 +87,5 @@ splunk:
 endpoint:
   keycloak:
     token-uri: ${TOKEN_ISSUER_URL}/protocol/openid-connect/token
+
+enable-v2-changes: ${ENABLE_V2_CHANGES}
