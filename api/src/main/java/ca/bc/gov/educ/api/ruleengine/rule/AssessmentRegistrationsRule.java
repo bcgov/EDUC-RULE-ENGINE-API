@@ -4,6 +4,7 @@ import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRuleProcessor;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiUtils;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
@@ -37,15 +38,15 @@ public class AssessmentRegistrationsRule implements Rule {
 		for (StudentAssessment studentAssessment : studentAssessmentList) {
 			String specialCase = StringUtils.isBlank(studentAssessment.getSpecialCase())? "" : studentAssessment.getSpecialCase();
 			String wroteFlag = StringUtils.isBlank(studentAssessment.getWroteFlag())? "" : studentAssessment.getWroteFlag();
-			/*if(constants.isEnableV2Changes()) {
+			if(RuleEngineApiConstants.isEnableV2Changes()) {
 				if ("".compareTo(specialCase.trim()) == 0 && "N".compareTo(wroteFlag.trim()) == 0) {
 					studentAssessment.setProjected(true);
 				}
-			} else {*/
+			} else {
 				if ("".compareTo(specialCase.trim()) == 0 && "".compareTo(wroteFlag.trim()) == 0) {
 					studentAssessment.setProjected(true);
 				}
-			//}
+			}
 		}
 
 		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));

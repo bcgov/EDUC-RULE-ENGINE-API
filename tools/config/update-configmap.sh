@@ -50,6 +50,14 @@ PARSER_CONFIG="
 ###########################################################
 #Setup for config-maps
 ###########################################################
+
+if [ "$envValue" == "prod" ]
+then
+  ENABLE_V2_CHANGES="false"
+else
+  ENABLE_V2_CHANGES="true"
+fi
+
 echo Creating config map "$APP_NAME"-config-map
 oc create -n "$BUSINESS_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map \
  --from-literal=APP_LOG_LEVEL="$APP_LOG_LEVEL" \
