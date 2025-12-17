@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class IncompleteAssessmentsRule implements Rule {
 
     @Autowired
     private RuleProcessorData ruleProcessorData;
+    @Autowired
+    RuleEngineApiConstants constants;
 
     public RuleData fire() {
 
@@ -31,8 +34,15 @@ public class IncompleteAssessmentsRule implements Rule {
 
          for (StudentAssessment studentAssessment : studentAssessmentList) {
              String specialCase = StringUtils.isBlank(studentAssessment.getSpecialCase())? "" : studentAssessment.getSpecialCase();
-             if ("".compareTo(specialCase.trim()) == 0 && studentAssessment.isDidNotAttemptFlag()) {
-                 studentAssessment.setNotCompleted(true);
+             if(constants.isEnableV2Changes()) {
+                 if ("".compareTo(specialCase.trim()) == 0 && studentAssessment.isDidNotAttemptFlag()) {
+                     studentAssessment.setNotCompleted(true);
+                 }
+             } else {
+                 String wroteFlag = StringUtils.isBlank(studentAssessment.getWroteFlag())? "" : studentAssessment.getWroteFlag();
+                 if ("".compareTo(specialCase.trim()) == 0 && "N".compareTo(wroteFlag.trim()) == 0) {
+                     studentAssessment.setNotCompleted(true);
+                 }
              }
         }
 

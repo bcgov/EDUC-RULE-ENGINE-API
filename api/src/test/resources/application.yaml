@@ -70,3 +70,5 @@ splunk:
 endpoint:
   keycloak:
     token-uri: https://soam-dev.apps.silver.devops.gov.bc.ca/auth/realms/master/protocol/openid-connect/token
+
+enable-v2-changes: false

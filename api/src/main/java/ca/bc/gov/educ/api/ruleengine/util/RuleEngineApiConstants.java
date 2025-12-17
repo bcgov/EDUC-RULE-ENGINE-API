@@ -40,4 +40,7 @@ public class RuleEngineApiConstants {
 
     @Value("${endpoint.keycloak.token-uri}")
     private String tokenUrl;
+
+    @Value("${enable-v2-changes}")
+    private boolean enableV2Changes;
 }
