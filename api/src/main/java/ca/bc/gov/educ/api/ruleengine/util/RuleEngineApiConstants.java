@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.util;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,4 +44,18 @@ public class RuleEngineApiConstants {
 
     @Value("${enable-v2-changes}")
     private boolean enableV2Changes;
+
+    private static RuleEngineApiConstants instance;
+
+    @PostConstruct
+    public void init() {
+        instance = this;
+    }
+
+    public static boolean isEnableV2Changes() {
+        if (instance == null) {
+            throw new IllegalStateException("RuleEngineApiConstants not initialized");
+        }
+        return instance.enableV2Changes;
+    }
 }

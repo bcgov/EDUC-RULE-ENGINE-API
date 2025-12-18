@@ -3,6 +3,7 @@ package ca.bc.gov.educ.api.ruleengine.rule;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
+import ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,16 +32,16 @@ public class IncompleteAssessmentsRule implements Rule {
 
          for (StudentAssessment studentAssessment : studentAssessmentList) {
              String specialCase = StringUtils.isBlank(studentAssessment.getSpecialCase())? "" : studentAssessment.getSpecialCase();
-             /*if(false) {
+             if(RuleEngineApiConstants.isEnableV2Changes()) {
                  if ("".compareTo(specialCase.trim()) == 0 && studentAssessment.isDidNotAttemptFlag()) {
                      studentAssessment.setNotCompleted(true);
                  }
-             } else {*/
+             } else {
                  String wroteFlag = StringUtils.isBlank(studentAssessment.getWroteFlag())? "" : studentAssessment.getWroteFlag();
                  if ("".compareTo(specialCase.trim()) == 0 && "N".compareTo(wroteFlag.trim()) == 0) {
                      studentAssessment.setNotCompleted(true);
                  }
-             //}
+             }
         }
 
         ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
