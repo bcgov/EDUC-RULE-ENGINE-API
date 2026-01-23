@@ -63,7 +63,7 @@ oc create -n "$BUSINESS_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map 
  --from-literal=APP_LOG_LEVEL="$APP_LOG_LEVEL" \
  --from-literal=ENABLE_SPLUNK_LOG_HELPER="true" \
  --from-literal=ENABLE_COMPRESSION="true" \
- --from-literal=ENABLE_V2_CHANGES="false"
+ --from-literal=ENABLE_V2_CHANGES="$ENABLE_V2_CHANGES"
  --dry-run=client -o yaml | oc apply -f -
 
 echo Creating config map "$APP_NAME"-flb-sc-config-map
