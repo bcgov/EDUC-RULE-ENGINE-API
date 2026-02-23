@@ -53,7 +53,7 @@ PARSER_CONFIG="
 
 if [ "$envValue" == "prod" ]
 then
-  ENABLE_V2_CHANGES="false"
+  ENABLE_V2_CHANGES="true"
 else
   ENABLE_V2_CHANGES="true"
 fi
