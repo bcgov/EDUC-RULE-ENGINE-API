@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,9 @@ public class MinCreditsRule implements Rule {
         }
 
         RuleProcessorRuleUtils.updateCourseLevelForCLC(studentCourses, "12");
+
+        // sorting gives preference to non-projected courses GRAD2-3792
+        studentCourses.sort(Comparator.comparing(StudentCourse::isProjected));
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {
             requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim());

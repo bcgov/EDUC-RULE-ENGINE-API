@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,8 @@ public class MinCreditsElective12OtherRule implements Rule {
 			AlgorithmSupportRule.processEmptyCourseCondition(ruleProcessorData,ruleProcessorData.getGradProgramRules(),requirementsNotMet);
 			return ruleProcessorData;
 		}
+
+		studentCourses.sort(Comparator.comparing(StudentCourse::isProjected));
 
 		List<String> socialStudiesCourseCodeList = ruleProcessorData.getCourseRequirements().stream().filter(cr -> "502".equals(cr.getRuleCode().getCourseRequirementCode())).map(CourseRequirement::getCourseCode).collect(Collectors.toList());
 		if (socialStudiesCourseCodeList.isEmpty()) {

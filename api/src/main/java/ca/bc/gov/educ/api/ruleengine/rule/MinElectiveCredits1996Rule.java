@@ -37,6 +37,7 @@ public class MinElectiveCredits1996Rule implements Rule {
 		int ldCourseCounter = 0;
 		List<StudentCourse> tempStudentCourseList = RuleProcessorRuleUtils
 				.getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
+
 		List<StudentCourse> minCreditGrade12Courses = tempStudentCourseList.stream().filter(StudentCourse::isUsedInMinCreditRule).collect(Collectors.toList());
 		List<StudentCourse> minCreditGrade12CoursesWithLeftOverCredits = minCreditGrade12Courses.stream()
 				.filter(sc -> sc.isUsedInMinCreditRule() && (sc.getLeftOverCredits() != null && sc.getLeftOverCredits() > 0)).toList();
