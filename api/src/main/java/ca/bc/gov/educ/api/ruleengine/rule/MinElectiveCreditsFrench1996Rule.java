@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,8 @@ public class MinElectiveCreditsFrench1996Rule implements Rule {
 
         List<StudentCourse> studentCourses = RuleProcessorRuleUtils
                 .getUniqueStudentCourses(ruleProcessorData.getStudentCourses(), ruleProcessorData.isProjected());
+
+        studentCourses.sort(Comparator.comparing(StudentCourse::isProjected));
 
         logger.debug("Unique Courses: {}",studentCourses.size());
 

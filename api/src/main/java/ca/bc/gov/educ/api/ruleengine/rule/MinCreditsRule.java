@@ -48,7 +48,7 @@ public class MinCreditsRule implements Rule {
 
         RuleProcessorRuleUtils.updateCourseLevelForCLC(studentCourses, "12");
 
-        // sorting gives preference to non-projected courses to get assigned grad reqt
+        // sorting gives preference to non-projected courses GRAD2-3792
         studentCourses.sort(Comparator.comparing(StudentCourse::isProjected));
 
         for (ProgramRequirement gradProgramRule : gradProgramRules) {

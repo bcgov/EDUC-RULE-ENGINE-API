@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,8 @@ public class MinCreditsElective12Rule implements Rule {
 			logger.warn("!!!Empty list sent to Min Elective Credits Rule for processing");
 			return ruleProcessorData;
 		}
+
+		studentCourses.sort(Comparator.comparing(StudentCourse::isProjected));
 
 		for (ProgramRequirement gradProgramRule : gradProgramRules) {
 			requiredCredits = Integer.parseInt(gradProgramRule.getProgramRequirementCode().getRequiredCredits().trim()); // list
