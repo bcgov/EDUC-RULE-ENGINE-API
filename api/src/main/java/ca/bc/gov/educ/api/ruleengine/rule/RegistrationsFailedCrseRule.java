@@ -33,7 +33,6 @@ public class RegistrationsFailedCrseRule extends BaseRule implements Rule {
     @Override
     public RuleData fire() {
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
-
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
         boolean inProgressCourse = false;
         for (StudentCourse studentCourse : studentCourseList) {
