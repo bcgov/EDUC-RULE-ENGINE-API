@@ -73,9 +73,10 @@ public class MinElectiveCredits1996Rule implements Rule {
 				totalCredits = 0;
 			}
 		}
-
-		if(ruleProcessorData.getGradProgram().getProgramCode().equalsIgnoreCase("1996-EN"))
+		String programCode = ruleProcessorData.getGradProgram().getProgramCode();
+		if(programCode.equalsIgnoreCase("1996-EN") || programCode.equalsIgnoreCase("1996-PF")) {
 			ruleProcessorData.getStudentCourses().addAll(ruleProcessorData.getExcludedCourses());
+		}
 		return ruleProcessorData;
 	}
 
