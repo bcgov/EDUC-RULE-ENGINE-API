@@ -33,10 +33,12 @@ public class RegistrationsFailedCrseRule extends BaseRule implements Rule {
     @Override
     public RuleData fire() {
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
-
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
         boolean inProgressCourse = false;
         for (StudentCourse studentCourse : studentCourseList) {
+            if (RuleEngineApiUtils.isCompletedCourse(studentCourse.getCompletedCourseLetterGrade(), studentCourse.getCompletedCoursePercentage())) {
+                continue;
+            }
             try {
                 Date sessionDate = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentCourse.getSessionDate() + "/01", DATE_FORMAT));
                 String sDate = RuleEngineApiUtils.formatDate(sessionDate, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);

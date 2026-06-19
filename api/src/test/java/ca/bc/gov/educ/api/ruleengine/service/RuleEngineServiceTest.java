@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
-import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentCourse;
-import ca.bc.gov.educ.api.ruleengine.rule.MatchCreditsRule;
 import ca.bc.gov.educ.api.ruleengine.util.RuleProcessorRuleUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
@@ -1205,6 +1202,38 @@ public class RuleEngineServiceTest {
 		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
 		assertNotNull(ruleProcessorData);
 		assertFalse(ruleProcessorData.isGraduated());
+	}
+
+	@Test
+	public void testRegistrationsFailedCourseRuleIgnoresFailingInterimWhenFinalExists() {
+		RuleProcessorData ruleProcessorData = getRuleProcessorData("2018-EN-126187616");
+		assertNotNull(ruleProcessorData);
+		ruleProcessorData.setProjected(false);
+		ruleProcessorData.getStudentCourses().add(
+				StudentCourse.builder()
+						.courseCode("ZZZ")
+						.courseName("Regression Test Course")
+						.courseLevel("12")
+						.sessionDate("209912")
+						.credits(4)
+						.gradReqMet("")
+						.gradReqMetDetail("")
+						.completedCoursePercentage(67.0)
+						.completedCourseLetterGrade("C")
+						.interimPercent(42.0)
+						.interimLetterGrade("F")
+						.build()
+		);
+
+		ruleProcessorData = ruleEngineService.processGradAlgorithmRules(ruleProcessorData);
+
+		assertNotNull(ruleProcessorData);
+		StudentCourse preservedCourse = ruleProcessorData.getStudentCourses().stream()
+				.filter(course -> "ZZZ".equals(course.getCourseCode()) && "12".equals(course.getCourseLevel()))
+				.findFirst()
+				.orElse(null);
+		assertNotNull(preservedCourse);
+		assertFalse(preservedCourse.isFailed());
 	}
 
 	@Test
