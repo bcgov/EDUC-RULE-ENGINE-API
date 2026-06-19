@@ -34,6 +34,7 @@ public class RegistrationsFailedCrseRule extends BaseRule implements Rule {
     public RuleData fire() {
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
+        // test comment
         boolean inProgressCourse = false;
         for (StudentCourse studentCourse : studentCourseList) {
             if (RuleEngineApiUtils.isCompletedCourse(studentCourse.getCompletedCourseLetterGrade(), studentCourse.getCompletedCoursePercentage())) {
