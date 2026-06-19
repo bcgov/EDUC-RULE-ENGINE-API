@@ -38,9 +38,16 @@ jobs:
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
+      - name: Check Sonar inputs
+        shell: bash
+        run: |
+          [ -n "${{ secrets.SONAR_TOKEN }}" ] && echo "SONAR_TOKEN present" || echo "SONAR_TOKEN missing"
+          [ -n "${{ vars.SONAR_HOST_URL }}" ] && echo "SONAR_HOST_URL present" || echo "SONAR_HOST_URL missing"
+          [ -n "${{ vars.SONAR_ORG }}" ] && echo "SONAR_ORG present" || echo "SONAR_ORG missing"
+          [ -n "${{ vars.SONAR_PROJECT_KEY }}" ] && echo "SONAR_PROJECT_KEY present" || echo "SONAR_PROJECT_KEY missing"
       - name: Run Sonar Analysis
         run: mvn sonar:sonar
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
           -Dsonar.organization=${{ vars.SONAR_ORG }}
           -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
