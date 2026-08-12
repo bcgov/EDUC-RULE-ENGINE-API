@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.ruleengine.rule;
 
+import ca.bc.gov.educ.api.ruleengine.dto.OptionalProgramRuleProcessor;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleData;
 import ca.bc.gov.educ.api.ruleengine.dto.RuleProcessorData;
 import ca.bc.gov.educ.api.ruleengine.dto.StudentAssessment;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Data
 @Component
@@ -28,29 +31,10 @@ public class FailedAssessmentsRule implements Rule {
 	@Override
 	public RuleData fire() {
 
-		List<StudentAssessment> studentAssessmentList =  RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(),ruleProcessorData.isProjected());
+		List<StudentAssessment> studentAssessmentList = RuleProcessorRuleUtils.getUniqueStudentAssessments(ruleProcessorData.getStudentAssessments(), ruleProcessorData.isProjected());
 
-		for (StudentAssessment studentAssessment : studentAssessmentList) {
-
-			boolean failed = ruleProcessorData.getSpecialCaseList().stream()
-					.anyMatch(lg -> lg.getSpCase()
-							.compareTo(studentAssessment.getSpecialCase() != null
-									? studentAssessment.getSpecialCase().trim()
-									: "") == 0
-							&& lg.getPassFlag().compareTo("N") == 0);
-
-			if (failed)
-				studentAssessment.setFailed(true);
-			String exceededWriteFlag;
-            if(studentAssessment.getExceededWriteFlag() == null) {
-            	exceededWriteFlag = "";
-            }else {
-            	exceededWriteFlag = studentAssessment.getExceededWriteFlag();
-            }
-			if ("Y".compareTo(exceededWriteFlag.trim()) == 0) {
-				studentAssessment.setFailed(true);
-			}
-		}
+		markFailedAssessments(studentAssessmentList);
+		markOptionalProgramAssessmentsFailed();
 
 		ruleProcessorData.setExcludedAssessments(RuleProcessorRuleUtils.maintainExcludedAssessments(studentAssessmentList,ruleProcessorData.getExcludedAssessments(),ruleProcessorData.isProjected()));
 		ruleProcessorData.setStudentAssessments(studentAssessmentList);
@@ -59,6 +43,36 @@ public class FailedAssessmentsRule implements Rule {
 				(int) studentAssessmentList.stream().filter(StudentAssessment::isFailed).count());
 
 		return ruleProcessorData;
+	}
+
+	private void markOptionalProgramAssessmentsFailed() {
+		Map<String, OptionalProgramRuleProcessor> optionalPrograms = ruleProcessorData.getMapOptional();
+		if (optionalPrograms == null) {
+			return;
+		}
+
+		optionalPrograms.values().stream()
+				.map(OptionalProgramRuleProcessor::getStudentAssessmentsOptionalProgram)
+				.filter(Objects::nonNull)
+				.forEach(this::markFailedAssessments);
+	}
+
+	private void markFailedAssessments(List<StudentAssessment> studentAssessments) {
+		for (StudentAssessment studentAssessment : studentAssessments) {
+			boolean failed = ruleProcessorData.getSpecialCaseList().stream()
+					.anyMatch(specialCase -> specialCase.getSpCase()
+							.compareTo(studentAssessment.getSpecialCase() != null
+									? studentAssessment.getSpecialCase().trim()
+									: "") == 0
+							&& specialCase.getPassFlag().compareTo("N") == 0);
+
+			String exceededWriteFlag = studentAssessment.getExceededWriteFlag() == null
+					? ""
+					: studentAssessment.getExceededWriteFlag();
+			if (failed || "Y".equals(exceededWriteFlag.trim())) {
+				studentAssessment.setFailed(true);
+			}
+		}
 	}
 
 	public void setInputData(RuleData inputData) {
