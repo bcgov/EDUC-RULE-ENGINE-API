@@ -33,6 +33,11 @@ jobs:
             ${{ runner.os }}-maven-5Jun-
       - name: Run unit tests
         run: mvn -f pom.xml clean package
+      - name: Set up JDK 21 for Sonar
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: 21
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
