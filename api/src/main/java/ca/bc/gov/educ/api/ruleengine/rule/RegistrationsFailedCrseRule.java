@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
@@ -33,7 +35,7 @@ public class RegistrationsFailedCrseRule extends BaseRule implements Rule {
     @Override
     public RuleData fire() {
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
+        String today = LocalDate.now(ZoneId.of(RuleEngineApiConstants.BC_TIME_ZONE)).toString();
         boolean inProgressCourse = false;
         for (StudentCourse studentCourse : studentCourseList) {
             if (RuleEngineApiUtils.isCompletedCourse(studentCourse.getCompletedCourseLetterGrade(), studentCourse.getCompletedCoursePercentage())) {
@@ -42,7 +44,6 @@ public class RegistrationsFailedCrseRule extends BaseRule implements Rule {
             try {
                 Date sessionDate = toLastDayOfMonth(RuleEngineApiUtils.parseDate(studentCourse.getSessionDate() + "/01", DATE_FORMAT));
                 String sDate = RuleEngineApiUtils.formatDate(sessionDate, RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
-                String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
                 int diff = RuleEngineApiUtils.getDifferenceInMonths(sDate,today);
 
                 inProgressCourse = diff <= 0;

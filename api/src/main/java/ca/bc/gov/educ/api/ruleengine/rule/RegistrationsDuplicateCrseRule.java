@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import static ca.bc.gov.educ.api.ruleengine.util.RuleEngineApiConstants.DATE_FORMAT;
@@ -33,8 +35,7 @@ public class RegistrationsDuplicateCrseRule extends BaseRule implements Rule {
     public RuleData fire() {
         List<StudentCourse> studentCourseList = ruleProcessorData.getStudentCourses();
 
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
-        String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
+        String today = LocalDate.now(ZoneId.of(RuleEngineApiConstants.BC_TIME_ZONE)).toString();
         boolean inProgressCourse1 = false;
         boolean inProgressCourse2 = false;
         boolean isCompletedCourse1 = false;
