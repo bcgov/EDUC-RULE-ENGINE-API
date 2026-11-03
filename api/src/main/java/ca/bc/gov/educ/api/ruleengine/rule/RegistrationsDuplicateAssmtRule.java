@@ -34,7 +34,7 @@ public class RegistrationsDuplicateAssmtRule extends BaseRule implements Rule {
     public RuleData fire() {
         List<StudentAssessment> studentAssessmentsList = ruleProcessorData.getStudentAssessments();
 
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("PST"), Locale.CANADA);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(RuleEngineApiConstants.BC_TIME_ZONE), Locale.CANADA);
         String today = RuleEngineApiUtils.formatDate(cal.getTime(), RuleEngineApiConstants.DEFAULT_DATE_FORMAT);
         boolean inProgressCourse1 = false;
         boolean inProgressCourse2 = false;
